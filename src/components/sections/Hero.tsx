@@ -307,6 +307,16 @@ export function Hero() {
           },
           1.4,
         )
+        .to(
+          "[data-monogram]",
+          { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(2)" },
+          0.85,
+        )
+        .to(
+          "[data-wordmark-rule]",
+          { scaleX: 1, duration: 0.8, ease: "power3.out" },
+          1.2,
+        )
         .to([viewfinderRef.current, "[data-cue]"], {
           opacity: 1,
           duration: 0.6,
