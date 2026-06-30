@@ -817,7 +817,9 @@ function MagneticCTA(props: CTAProps) {
     const { as: _as, primary: _p, children, ...rest } = props;
     return (
       <a
-        ref={(el) => (ref.current = el)}
+        ref={(el) => {
+          ref.current = el;
+        }}
         className={cls}
         {...rest}
       >
@@ -828,7 +830,9 @@ function MagneticCTA(props: CTAProps) {
   const { as: _as, primary: _p, children, ...rest } = props;
   return (
     <button
-      ref={(el) => (ref.current = el)}
+      ref={(el) => {
+        ref.current = el;
+      }}
       className={cls}
       {...rest}
     >
