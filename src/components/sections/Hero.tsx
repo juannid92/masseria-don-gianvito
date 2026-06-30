@@ -5,44 +5,46 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PinMarker, type Pin } from "@/components/site/PinMarker";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import heroAerial from "@/assets/hero-aerial.jpg";
+import heroAerialAsset from "@/assets/masseria-aerial.asset.json";
+
+const heroAerial = heroAerialAsset.url;
 
 /**
- * Pin posizionati in percentuale sull'immagine aerea.
- * Coordinate plausibili — facili da ricalibrare (top/left in %).
+ * Pin posizionati in percentuale sull'immagine aerea reale della masseria.
+ * Coordinate facili da ricalibrare (top/left in %).
  */
 const PINS: Pin[] = [
   {
-    id: "allevamento",
-    label: "Allevamento",
-    caption: "I nostri capi, nutriti con il grano che coltiviamo in masseria.",
-    to: "/allevamento",
-    top: 32,
-    left: 80,
+    id: "braceria",
+    label: "Braceria",
+    caption: "La brace viva. Cottura, taglio e servizio al tavolo.",
+    to: "/braceria",
+    top: 8,
+    left: 58,
   },
   {
     id: "caseificio",
     label: "Caseificio",
     caption: "Latte appena munto, formaggi freschi e stagionati ogni mattina.",
     to: "/caseificio",
-    top: 52,
-    left: 41,
+    top: 20,
+    left: 46,
   },
   {
     id: "macelleria",
     label: "Macelleria",
     caption: "Banco a vista, tagli del giorno, frollature curate dal macellaio.",
     to: "/macelleria",
-    top: 56,
-    left: 60,
+    top: 26,
+    left: 80,
   },
   {
-    id: "braceria",
-    label: "Braceria",
-    caption: "La brace viva. Cottura, taglio e servizio al tavolo.",
-    to: "/braceria",
-    top: 80,
-    left: 50,
+    id: "allevamento",
+    label: "Allevamento",
+    caption: "I nostri capi, nutriti con il grano che coltiviamo in masseria.",
+    to: "/allevamento",
+    top: 62,
+    left: 32,
   },
 ];
 
