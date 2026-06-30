@@ -268,15 +268,14 @@ export function Hero() {
       </motion.div>
 
       {/* Scroll hint */}
-      <motion.a
-        href="#fornello-pronto"
-        aria-label="Scorri per continuare il viaggio"
+      <motion.div
+        aria-hidden
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 1 }}
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 text-[color:var(--crema)]/70 hover:text-[color:var(--oro)]"
+        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 text-[color:var(--crema)]/70"
       >
-        <span className="font-eyebrow text-[9px]">Scorri</span>
+        <span className="font-eyebrow text-[9px]">Sorvola</span>
         <motion.span
           aria-hidden
           className="block h-8 w-px"
@@ -287,7 +286,7 @@ export function Hero() {
           animate={reduced ? undefined : { scaleY: [0.4, 1, 0.4], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
         />
-      </motion.a>
+      </motion.div>
     </section>
   );
 }
