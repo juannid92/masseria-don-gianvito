@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "Fornello Pronto", href: "#fornello-pronto" },
-  { label: "La Masseria", href: "#la-masseria" },
-  { label: "Macelleria", href: "#macelleria" },
-  { label: "Eventi", href: "#eventi" },
-  { label: "Contatti", href: "#contatti" },
+  { label: "Allevamento", to: "/allevamento" as const },
+  { label: "Caseificio", to: "/caseificio" as const },
+  { label: "Macelleria", to: "/macelleria" as const },
+  { label: "Braceria", to: "/braceria" as const },
 ];
 
 export function Navbar() {
