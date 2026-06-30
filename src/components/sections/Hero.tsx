@@ -618,46 +618,64 @@ export function Hero() {
         }}
       >
         <div data-copy-line className="max-w-fit">
-          <p className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--oro)] md:text-xs">
-            QUI NON ARRIVA NIENTE DA FUORI
+          <p
+            data-eyebrow
+            className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs"
+            style={{ letterSpacing: "0.22em" }}
+          >
+            IL RITO DELLA BRACE
           </p>
         </div>
 
         <div className="relative max-w-3xl">
-          {/* velo locale per leggibilità */}
+          {/* velo locale --grad-night per leggibilità AA, solo sotto al blocco testo */}
           <div
             aria-hidden
             className="pointer-events-none absolute -inset-x-6 -inset-y-8 -z-10"
             style={{
               background:
-                "radial-gradient(ellipse 90% 80% at 20% 60%, rgba(26,18,16,0.78) 0%, rgba(26,18,16,0.45) 55%, transparent 85%)",
+                "radial-gradient(ellipse 90% 85% at 18% 55%, rgba(26,18,16,0.82) 0%, rgba(61,42,30,0.45) 55%, transparent 88%)",
             }}
           />
-          <h1 className="font-display text-balance text-[clamp(2.8rem,7vw,6.5rem)] leading-[0.95] text-[color:var(--crema)]">
+          <h1
+            className="font-display text-balance leading-[0.95] text-[color:var(--crema)]"
+            style={{ fontSize: "clamp(2.6rem, 7vw, 6.2rem)" }}
+          >
             <span data-copy-line className="block overflow-hidden">
-              La carne che mangi stasera,
+              Senti la{" "}
+              <span
+                data-copy-accent
+                className="relative italic text-[color:var(--terracotta)]"
+              >
+                brace
+              </span>
             </span>
             <span data-copy-line className="block overflow-hidden">
-              l'abbiamo{" "}
-              <span className="italic text-[color:var(--terracotta)]">cresciuta</span>{" "}
-              noi.
+              prima ancora di{" "}
+              <span
+                data-copy-accent
+                className="relative italic text-[color:var(--terracotta)]"
+              >
+                arrivare
+              </span>
+              .
             </span>
           </h1>
           <div data-copy-line className="overflow-hidden">
-            <p className="mt-6 max-w-[46ch] text-sm leading-relaxed text-[color:var(--crema)]/85 md:text-base">
-              Sorvola Masseria Don Gianvito: ogni punto che vedi è un mestiere
-              che facciamo con le nostre mani. Dalla stalla alla brace, non
-              passiamo mai la mano a nessuno.
+            <p className="mt-6 max-w-[48ch] text-sm leading-relaxed text-[color:var(--crema)]/85 md:text-base">
+              Una masseria dove la carne nasce, cresce e finisce sul fuoco.
+              Siediti dove tutto ha inizio.
             </p>
           </div>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <MagneticCTA
-              data-cta
-              as="a"
-              href="tel:+393339395750"
-              primary
-            >
+          <div data-cta className="mt-7">
+            <p className="font-sans text-[13px] text-[color:var(--oro)]/70">
+              Noci, Puglia — dalla stalla alla brace
+            </p>
+          </div>
+
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <MagneticCTA data-cta as="a" href="tel:+393339395750" primary>
               Prenota un tavolo
             </MagneticCTA>
             <MagneticCTA
