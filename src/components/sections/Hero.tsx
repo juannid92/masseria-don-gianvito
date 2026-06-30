@@ -183,6 +183,12 @@ export function Hero() {
         y: 24,
         opacity: 0,
       });
+      gsap.set("[data-eyebrow]", { opacity: 0, letterSpacing: "0.12em" });
+      gsap.set("[data-copy-accent]", {
+        opacity: 0,
+        y: 24,
+        textShadow: "0 0 0px rgba(179,58,26,0)",
+      });
       gsap.set("[data-cta]", { opacity: 0, y: 16 });
       gsap.set("[data-pin]", { scale: 0, opacity: 0 });
       gsap.set("[data-cue]", { opacity: 0 });
