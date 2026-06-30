@@ -6,6 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import heroAerialAsset from "@/assets/masseria-aerial.asset.json";
+import pinAllevamentoImg from "@/assets/pin-allevamento.jpg";
+import pinCaseificioImg from "@/assets/pin-caseificio.jpg";
+import pinMacelleriaImg from "@/assets/pin-macelleria.jpg";
+import pinBraceriaImg from "@/assets/pin-braceria.jpg";
 
 /* ─────────────────────────────────────────────────────────────
  * HERO — "IL SORVOLO"
@@ -18,10 +22,12 @@ type Pin = {
   id: PinId;
   label: string;
   caption: string;
-  coords: string; // micro-coordinate decorative
+  description: string;
+  thumb: string;
+  coords: string;
   to: "/allevamento" | "/caseificio" | "/macelleria" | "/braceria";
-  top: number; // %
-  left: number; // %
+  top: number;
+  left: number;
 };
 
 const PINS: Pin[] = [
@@ -29,37 +35,45 @@ const PINS: Pin[] = [
     id: "allevamento",
     label: "Allevamento",
     caption: "Dove tutto comincia.",
+    description: "Dove tutto comincia: i nostri capi, nella nostra terra.",
+    thumb: pinAllevamentoImg,
     coords: "40°47'21\"N · 17°07'48\"E",
     to: "/allevamento",
-    top: 62,
-    left: 32,
+    top: 58,
+    left: 16,
   },
   {
     id: "caseificio",
     label: "Caseificio",
     caption: "Il latte di ogni mattina.",
+    description: "Il latte di ogni mattina, trasformato in formaggio.",
+    thumb: pinCaseificioImg,
     coords: "40°47'19\"N · 17°07'52\"E",
     to: "/caseificio",
-    top: 20,
-    left: 46,
+    top: 22,
+    left: 40,
   },
   {
     id: "macelleria",
     label: "Macelleria",
     caption: "La carne, a vista.",
+    description: "La carne, a vista: scegli il tuo taglio.",
+    thumb: pinMacelleriaImg,
     coords: "40°47'17\"N · 17°07'55\"E",
     to: "/macelleria",
-    top: 26,
-    left: 80,
+    top: 30,
+    left: 82,
   },
   {
     id: "braceria",
     label: "Ristorante / Braceria",
     caption: "La brace, ogni sera.",
+    description: "La brace accesa ogni sera, servita al tavolo.",
+    thumb: pinBraceriaImg,
     coords: "40°47'15\"N · 17°07'50\"E",
     to: "/braceria",
-    top: 8,
-    left: 58,
+    top: 12,
+    left: 64,
   },
 ];
 
