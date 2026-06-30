@@ -6,6 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import heroAerialAsset from "@/assets/masseria-aerial.asset.json";
+import pinAllevamentoImg from "@/assets/pin-allevamento.jpg";
+import pinCaseificioImg from "@/assets/pin-caseificio.jpg";
+import pinMacelleriaImg from "@/assets/pin-macelleria.jpg";
+import pinBraceriaImg from "@/assets/pin-braceria.jpg";
 
 /* ─────────────────────────────────────────────────────────────
  * HERO — "IL SORVOLO"
@@ -18,10 +22,12 @@ type Pin = {
   id: PinId;
   label: string;
   caption: string;
-  coords: string; // micro-coordinate decorative
+  description: string;
+  thumb: string;
+  coords: string;
   to: "/allevamento" | "/caseificio" | "/macelleria" | "/braceria";
-  top: number; // %
-  left: number; // %
+  top: number;
+  left: number;
 };
 
 const PINS: Pin[] = [
@@ -29,37 +35,45 @@ const PINS: Pin[] = [
     id: "allevamento",
     label: "Allevamento",
     caption: "Dove tutto comincia.",
+    description: "Dove tutto comincia: i nostri capi, nella nostra terra.",
+    thumb: pinAllevamentoImg,
     coords: "40°47'21\"N · 17°07'48\"E",
     to: "/allevamento",
-    top: 62,
-    left: 32,
+    top: 58,
+    left: 16,
   },
   {
     id: "caseificio",
     label: "Caseificio",
     caption: "Il latte di ogni mattina.",
+    description: "Il latte di ogni mattina, trasformato in formaggio.",
+    thumb: pinCaseificioImg,
     coords: "40°47'19\"N · 17°07'52\"E",
     to: "/caseificio",
-    top: 20,
-    left: 46,
+    top: 22,
+    left: 40,
   },
   {
     id: "macelleria",
     label: "Macelleria",
     caption: "La carne, a vista.",
+    description: "La carne, a vista: scegli il tuo taglio.",
+    thumb: pinMacelleriaImg,
     coords: "40°47'17\"N · 17°07'55\"E",
     to: "/macelleria",
-    top: 26,
-    left: 80,
+    top: 30,
+    left: 82,
   },
   {
     id: "braceria",
     label: "Ristorante / Braceria",
     caption: "La brace, ogni sera.",
+    description: "La brace accesa ogni sera, servita al tavolo.",
+    thumb: pinBraceriaImg,
     coords: "40°47'15\"N · 17°07'50\"E",
     to: "/braceria",
-    top: 8,
-    left: 58,
+    top: 12,
+    left: 64,
   },
 ];
 
@@ -192,6 +206,8 @@ export function Hero() {
       gsap.set("[data-cta]", { opacity: 0, y: 16 });
       gsap.set("[data-pin]", { scale: 0, opacity: 0 });
       gsap.set("[data-cue]", { opacity: 0 });
+      gsap.set("[data-monogram]", { scale: 0.4, opacity: 0, transformOrigin: "50% 50%" });
+      gsap.set("[data-wordmark-rule]", { scaleX: 0 });
       gsap.set(viewfinderRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -290,6 +306,16 @@ export function Hero() {
             stagger: 0.14,
           },
           1.4,
+        )
+        .to(
+          "[data-monogram]",
+          { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(2)" },
+          0.85,
+        )
+        .to(
+          "[data-wordmark-rule]",
+          { scaleX: 1, duration: 0.8, ease: "power3.out" },
+          1.2,
         )
         .to([viewfinderRef.current, "[data-cue]"], {
           opacity: 1,
@@ -549,15 +575,16 @@ export function Hero() {
         }}
       />
 
-      {/* L5 — PIN LAYER (desktop) */}
+      {/* L5 — PIN LAYER (desktop) — sopra al copy per evitare occlusioni */}
       <div
         ref={pinLayerRef}
-        className="absolute inset-0 z-20 hidden md:block"
+        className="pointer-events-none absolute inset-0 z-40 hidden md:block"
       >
         {PINS.map((p) => {
           const isActive = (hoverPin ?? activePin) === p.id;
           const isOtherActive = (hoverPin ?? activePin) && !isActive;
-          const flipRight = p.left < 38;
+          const flipRight = p.left < 42;
+          const flipDown = p.top < 28;
           return (
             <div
               key={p.id}
@@ -576,14 +603,13 @@ export function Hero() {
                   onFocus={() => setActivePin(p.id)}
                   onBlur={() => setActivePin(null)}
                   onClick={() => dive(p)}
-                  aria-label={`Apri la pagina ${p.label} — ${p.caption}`}
+                  aria-label={`Apri la pagina ${p.label} — ${p.description}`}
                   whileHover={{ scale: 1.25 }}
                   whileFocus={{ scale: 1.25 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                  className="group relative block h-7 w-7 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
+                  className="group relative block h-7 w-7 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
                 >
-                  {/* glow brace */}
                   <span
                     aria-hidden
                     className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full"
@@ -593,7 +619,6 @@ export function Hero() {
                       filter: "blur(2px)",
                     }}
                   />
-                  {/* sigillo */}
                   <span
                     data-pin-core
                     aria-hidden
@@ -604,49 +629,74 @@ export function Hero() {
                   </span>
                 </motion.button>
 
-                {/* Leader line + Label */}
+                {/* Preview card con leader line in oro */}
                 <AnimatePresence>
                   {isActive && (
                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25 }}
+                      initial={{ opacity: 0, y: flipDown ? -8 : 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: flipDown ? -8 : 8 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                       className={[
-                        "pointer-events-none absolute top-1/2 z-30 w-[280px] -translate-y-1/2",
+                        "pointer-events-auto absolute z-50 w-[300px]",
+                        flipDown ? "top-8" : "bottom-8",
                         flipRight ? "left-6" : "right-6",
                       ].join(" ")}
                     >
                       <motion.span
                         aria-hidden
                         className={[
-                          "absolute top-1/2 h-px",
-                          flipRight ? "right-full" : "left-full",
+                          "absolute h-px",
+                          flipDown ? "bottom-full" : "top-full",
+                          flipRight ? "left-0" : "right-0",
                         ].join(" ")}
                         style={{
                           background:
                             "linear-gradient(90deg, transparent, var(--oro))",
                         }}
                         initial={{ width: 0 }}
-                        animate={{ width: 56 }}
+                        animate={{ width: 48 }}
                         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       />
-                      <motion.div
-                        initial={{ clipPath: "inset(0 100% 0 0)", x: flipRight ? -8 : 8 }}
-                        animate={{ clipPath: "inset(0 0% 0 0)", x: 0 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className={flipRight ? "text-left" : "text-right"}
+                      <a
+                        href={p.to}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dive(p);
+                        }}
+                        className="block overflow-hidden rounded-2xl border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/85 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85),0_0_0_1px_rgba(196,154,74,0.15)] backdrop-blur-xl ring-0 transition-transform hover:scale-[1.015]"
                       >
-                        <p className="font-eyebrow text-[10px] tracking-[0.18em] text-[color:var(--oro)]">
-                          {p.label}
-                        </p>
-                        <p className="font-display mt-1 text-lg italic leading-snug text-[color:var(--crema)]">
-                          {p.caption}
-                        </p>
-                        <p className="mt-1.5 font-mono text-[10px] text-[color:var(--crema)]/55">
-                          {p.coords}
-                        </p>
-                      </motion.div>
+                        <div className="relative aspect-[16/10] w-full overflow-hidden">
+                          <img
+                            src={p.thumb}
+                            alt=""
+                            loading="lazy"
+                            width={640}
+                            height={400}
+                            className="h-full w-full object-cover"
+                            draggable={false}
+                          />
+                          <div
+                            aria-hidden
+                            className="absolute inset-0"
+                            style={{
+                              background:
+                                "linear-gradient(180deg, transparent 50%, rgba(26,18,16,0.85) 100%)",
+                            }}
+                          />
+                        </div>
+                        <div className="px-4 pb-4 pt-3">
+                          <p className="font-eyebrow text-[10px] uppercase tracking-[0.28em] text-[color:var(--oro)]">
+                            {p.label}
+                          </p>
+                          <p className="mt-1.5 text-[13px] leading-snug text-[color:var(--crema)]/90">
+                            {p.description}
+                          </p>
+                          <p className="mt-3 font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--terracotta)]">
+                            Scopri →
+                          </p>
+                        </div>
+                      </a>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -656,73 +706,110 @@ export function Hero() {
         })}
       </div>
 
-      {/* L6 — COPY */}
+      {/* L6 — COPY / LOGOTIPO */}
       <div
         ref={copyRef}
-        className="relative z-30 flex h-full flex-col justify-between px-6 pt-28 pb-28 md:pt-32 lg:px-14"
+        className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center"
         style={{
           opacity: (hoverPin ?? activePin) ? 0.25 : 1,
           transition: "opacity .35s",
         }}
       >
-        <div data-copy-line className="max-w-fit">
+        <div data-copy-line>
           <p
             data-eyebrow
             className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs"
-            style={{ letterSpacing: "0.22em" }}
+            style={{ letterSpacing: "0.32em" }}
           >
             IL RITO DELLA BRACE
           </p>
         </div>
 
-        <div className="relative max-w-3xl">
-          {/* velo locale --grad-night per leggibilità AA, solo sotto al blocco testo */}
+
+        <div className="relative mt-5 flex max-w-3xl flex-col items-center">
+          {/* velo locale per leggibilità */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-x-6 -inset-y-8 -z-10"
+            className="pointer-events-none absolute -inset-x-16 -inset-y-12 -z-10"
             style={{
               background:
-                "radial-gradient(ellipse 90% 85% at 18% 55%, rgba(26,18,16,0.82) 0%, rgba(61,42,30,0.45) 55%, transparent 88%)",
+                "radial-gradient(ellipse 80% 75% at 50% 55%, rgba(26,18,16,0.78) 0%, rgba(61,42,30,0.4) 55%, transparent 88%)",
             }}
           />
-          <h1
-            className="font-display text-balance leading-[0.95] text-[color:var(--crema)]"
-            style={{ fontSize: "clamp(2.6rem, 7vw, 6.2rem)" }}
+
+          {/* Monogramma DG — sigillo ceralacca */}
+          <div
+            data-monogram
+            className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_10px_30px_-6px_rgba(179,58,26,0.7),inset_0_0_10px_rgba(0,0,0,0.45)]"
+            style={{ background: "var(--grad-ember)" }}
+            aria-hidden
           >
-            <span data-copy-line className="block overflow-hidden">
-              Senti la{" "}
+            <span
+              className="font-display text-[26px] italic leading-none text-[color:var(--crema)]"
+              style={{ textShadow: "0 1px 0 rgba(0,0,0,0.4)" }}
+            >
+              DG
+            </span>
+          </div>
+
+          {/* Riga 1 — "Masseria" */}
+          <h1 className="flex flex-col items-center text-[color:var(--crema)]">
+            <span data-copy-line className="block overflow-hidden leading-none">
               <span
-                data-copy-accent
-                className="relative italic text-[color:var(--terracotta)]"
+                className="font-display block leading-[0.95]"
+                style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}
               >
-                brace
+                <span className="italic">M</span>asseria
               </span>
             </span>
-            <span data-copy-line className="block overflow-hidden">
-              prima ancora di{" "}
+
+            {/* Riga 2 — filetti + DON GIANVITO */}
+            <span
+              data-wordmark
+              className="mt-4 flex w-full items-center justify-center gap-4"
+              aria-label="Don Gianvito"
+            >
+              <span
+                data-wordmark-rule
+                aria-hidden
+                className="h-px w-[clamp(40px,12vw,140px)] origin-right"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, var(--oro))",
+                }}
+              />
               <span
                 data-copy-accent
-                className="relative italic text-[color:var(--terracotta)]"
+                className="font-eyebrow whitespace-nowrap text-[clamp(0.85rem,1.6vw,1.25rem)] text-[color:var(--oro)]"
+                style={{ letterSpacing: "0.35em" }}
               >
-                arrivare
+                DON GIANVITO
               </span>
-              .
+              <span
+                data-wordmark-rule
+                aria-hidden
+                className="h-px w-[clamp(40px,12vw,140px)] origin-left"
+                style={{
+                  background:
+                    "linear-gradient(270deg, transparent, var(--oro))",
+                }}
+              />
             </span>
           </h1>
-          <div data-copy-line className="overflow-hidden">
-            <p className="mt-6 max-w-[48ch] text-sm leading-relaxed text-[color:var(--crema)]/85 md:text-base">
-              Una masseria dove la carne nasce, cresce e finisce sul fuoco.
-              Siediti dove tutto ha inizio.
+
+          {/* Microriga mestieri */}
+          <div data-copy-line className="mt-6 overflow-hidden">
+            <p
+              className="font-sans text-[13px] text-[color:var(--crema)]/70 md:text-[14px]"
+              style={{ letterSpacing: "0.1em" }}
+            >
+              Allevamento · Caseificio · Macelleria · Braceria
+              <span className="text-[color:var(--oro)]/70"> — Noci, Puglia</span>
             </p>
           </div>
 
-          <div data-cta className="mt-7">
-            <p className="font-sans text-[13px] text-[color:var(--oro)]/70">
-              Noci, Puglia — dalla stalla alla brace
-            </p>
-          </div>
-
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* CTA compatte */}
+          <div className="pointer-events-auto mt-8 flex flex-col items-center gap-3 sm:flex-row">
             <MagneticCTA data-cta as="a" href="tel:+393339395750" primary>
               Prenota un tavolo
             </MagneticCTA>
@@ -739,6 +826,7 @@ export function Hero() {
           </div>
         </div>
       </div>
+
 
       {/* L7 — LETTERBOX */}
       <div
