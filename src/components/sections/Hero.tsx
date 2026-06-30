@@ -17,7 +17,7 @@ const PINS: Pin[] = [
   {
     id: "braceria",
     label: "Braceria",
-    caption: "La brace viva. Cottura, taglio e servizio al tavolo.",
+    caption: "La brace, ogni sera.",
     to: "/braceria",
     top: 8,
     left: 58,
@@ -25,7 +25,7 @@ const PINS: Pin[] = [
   {
     id: "caseificio",
     label: "Caseificio",
-    caption: "Latte appena munto, formaggi freschi e stagionati ogni mattina.",
+    caption: "Il latte di ogni mattina.",
     to: "/caseificio",
     top: 20,
     left: 46,
@@ -33,7 +33,7 @@ const PINS: Pin[] = [
   {
     id: "macelleria",
     label: "Macelleria",
-    caption: "Banco a vista, tagli del giorno, frollature curate dal macellaio.",
+    caption: "La carne, a vista.",
     to: "/macelleria",
     top: 26,
     left: 80,
@@ -41,7 +41,7 @@ const PINS: Pin[] = [
   {
     id: "allevamento",
     label: "Allevamento",
-    caption: "I nostri capi, nutriti con il grano che coltiviamo in masseria.",
+    caption: "Dove tutto comincia.",
     to: "/allevamento",
     top: 62,
     left: 32,
@@ -187,7 +187,7 @@ export function Hero() {
           transition={{ delay: 0.2, duration: 0.8 }}
           className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs"
         >
-          Noci · Puglia · Dal campo alla brace
+          Qui non arriva niente da fuori
         </motion.p>
 
         {/* Headline block — bottom left */}
@@ -196,11 +196,13 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display text-balance text-[clamp(2.25rem,6.5vw,5.75rem)] leading-[0.95] text-[color:var(--crema)]"
+            className="font-display text-balance text-[clamp(2.25rem,6.2vw,5.5rem)] leading-[0.98] text-[color:var(--crema)]"
           >
-            Tutta la nostra filiera,
+            La carne che mangi stasera,
             <br />
-            <span className="text-[color:var(--terracotta)]">vista dall’alto.</span>
+            l’abbiamo{" "}
+            <span className="italic text-[color:var(--terracotta)]">cresciuta</span>{" "}
+            noi.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -208,8 +210,9 @@ export function Hero() {
             transition={{ delay: 0.55, duration: 0.9 }}
             className="mt-6 max-w-xl text-sm leading-relaxed text-[color:var(--crema)]/80 md:text-base"
           >
-            Esplora la masseria: tocca un punto per scoprire allevamento,
-            caseificio, macelleria e braceria.
+            Sorvola Masseria Don Gianvito: ogni punto che vedi è un mestiere
+            che facciamo con le nostre mani. Dalla stalla alla brace, non
+            passiamo mai la mano a nessuno.
           </motion.p>
 
           {/* CTAs */}
@@ -220,7 +223,7 @@ export function Hero() {
             className="mt-8 flex flex-wrap items-center gap-3"
           >
             <motion.a
-              href="#contatti"
+              href="tel:+393339395750"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="bg-grad-brace font-eyebrow inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[11px] text-[color:var(--crema)] shadow-[0_14px_36px_-10px_rgba(179,58,26,0.65)] ring-1 ring-white/10"
@@ -228,12 +231,12 @@ export function Hero() {
               Prenota un tavolo
             </motion.a>
             <motion.a
-              href="#fornello-pronto"
+              href="/braceria"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="font-eyebrow inline-flex items-center justify-center rounded-full border border-[color:var(--oro)]/55 px-7 py-3.5 text-[11px] text-[color:var(--crema)] transition-colors hover:bg-[color:var(--oro)]/10"
             >
-              Scopri il Fornello Pronto
+              Entra nella masseria
             </motion.a>
           </motion.div>
 
@@ -265,15 +268,14 @@ export function Hero() {
       </motion.div>
 
       {/* Scroll hint */}
-      <motion.a
-        href="#fornello-pronto"
-        aria-label="Scorri per continuare il viaggio"
+      <motion.div
+        aria-hidden
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 1 }}
-        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 text-[color:var(--crema)]/70 hover:text-[color:var(--oro)]"
+        className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 flex flex-col items-center gap-2 text-[color:var(--crema)]/70"
       >
-        <span className="font-eyebrow text-[9px]">Scorri</span>
+        <span className="font-eyebrow text-[9px]">Sorvola</span>
         <motion.span
           aria-hidden
           className="block h-8 w-px"
@@ -284,7 +286,7 @@ export function Hero() {
           animate={reduced ? undefined : { scaleY: [0.4, 1, 0.4], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
         />
-      </motion.a>
+      </motion.div>
     </section>
   );
 }
