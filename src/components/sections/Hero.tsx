@@ -17,7 +17,7 @@ const PINS: Pin[] = [
   {
     id: "braceria",
     label: "Braceria",
-    caption: "La brace viva. Cottura, taglio e servizio al tavolo.",
+    caption: "La brace, ogni sera.",
     to: "/braceria",
     top: 8,
     left: 58,
@@ -25,7 +25,7 @@ const PINS: Pin[] = [
   {
     id: "caseificio",
     label: "Caseificio",
-    caption: "Latte appena munto, formaggi freschi e stagionati ogni mattina.",
+    caption: "Il latte di ogni mattina.",
     to: "/caseificio",
     top: 20,
     left: 46,
@@ -33,7 +33,7 @@ const PINS: Pin[] = [
   {
     id: "macelleria",
     label: "Macelleria",
-    caption: "Banco a vista, tagli del giorno, frollature curate dal macellaio.",
+    caption: "La carne, a vista.",
     to: "/macelleria",
     top: 26,
     left: 80,
@@ -41,7 +41,7 @@ const PINS: Pin[] = [
   {
     id: "allevamento",
     label: "Allevamento",
-    caption: "I nostri capi, nutriti con il grano che coltiviamo in masseria.",
+    caption: "Dove tutto comincia.",
     to: "/allevamento",
     top: 62,
     left: 32,
