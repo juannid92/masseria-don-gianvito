@@ -1,27 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FilieraPlaceholder } from "@/components/sections/FilieraPlaceholder";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { ContinuousBackground } from "@/components/site/ContinuousBackground";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { CaseificioStory } from "@/components/sections/CaseificioStory";
 
 export const Route = createFileRoute("/caseificio")({
   head: () => ({
     meta: [
-      { title: "Caseificio — Masseria Don Gianvito" },
+      { title: "Caseificio — Capitolo 02 · Masseria Don Gianvito" },
       {
         name: "description",
         content:
-          "Latte appena munto, formaggi freschi e stagionati lavorati nel caseificio della masseria.",
+          "Il latte di ogni mattina, lavorato a mano: ricotta, primo sale, nodini, fiordilatte, caciocavallo. Capitolo 02 del racconto dalla terra alla brace.",
       },
-      { property: "og:title", content: "Caseificio · Masseria Don Gianvito" },
+      {
+        property: "og:title",
+        content: "Caseificio · Il latte di ogni mattina",
+      },
       {
         property: "og:description",
-        content: "Dal latte della masseria al banco, ogni giorno.",
+        content:
+          "Capitolo 02 della filiera Masseria Don Gianvito: dal latte appena munto alla stagionatura.",
       },
     ],
   }),
-  component: () => (
-    <FilieraPlaceholder
-      eyebrow="Tappa 02 · Il latte"
-      title="Caseificio"
-      lede="Formaggi freschi e stagionati, lavorati a mano con il latte della nostra masseria."
-    />
-  ),
+  component: CaseificioPage,
 });
+
+function CaseificioPage() {
+  return (
+    <SmoothScroll>
+      <ContinuousBackground />
+      <Navbar />
+      <main className="relative">
+        <CaseificioStory />
+      </main>
+      <Footer />
+    </SmoothScroll>
+  );
+}
