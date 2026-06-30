@@ -1,78 +1,112 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
+import aerialAsset from "@/assets/masseria-aerial.asset.json";
 import terraImg from "@/assets/allev-a-terra.jpg";
-import animaliImg from "@/assets/allev-b-animali.jpg";
-import granoImg from "@/assets/allev-c-grano.jpg";
-import tempoImg from "@/assets/allev-d-tempo.jpg";
+import panoramaImg from "@/assets/allev-panorama.jpg";
 import latteImg from "@/assets/allev-bridge-latte.jpg";
+import pBovino from "@/assets/allev-p-bovino.jpg";
+import pOvino from "@/assets/allev-p-ovino.jpg";
+import pSuino from "@/assets/allev-p-suino.jpg";
+import pEquino from "@/assets/allev-p-equino.jpg";
+import pAvicolo from "@/assets/allev-p-avicolo.jpg";
 
-type Chapter = {
+/* ───────────────────────────────────────── DATA ────────────────────────────── */
+
+type Portrait = {
   id: string;
-  index: string;
-  eyebrow: string;
-  title: string;
-  accent: string;
-  body: string;
-  note?: string;
+  tag: string;           // "N° 047" — sigillo/marca auricolare
+  name: string;          // "La prima del mattino"
+  species: string;       // "Podolica · Bovino"
+  micro: string;         // micro-storia di una riga
   img: string;
-  /** color-grade overlay sopra la foto, AA-safe */
-  grade: string;
+  /** posizione orizzontale lungo la carrellata, 0..1 */
+  at: number;
+  /** profondità: 0 lontano, 1 vicino — definisce parallax & scala */
+  depth: number;
+  /** offset verticale in vh (per non allineare le card) */
+  vy: number;
 };
 
-const CHAPTERS: Chapter[] = [
+const PORTRAITS: Portrait[] = [
   {
-    id: "terra",
-    index: "Cap. A",
-    eyebrow: "La terra",
-    title: "Tutto nasce ",
-    accent: "qui.",
-    body: "Sulla nostra terra di Noci, all'aria dell'Alta Murgia, gli animali crescono con il ritmo lento della campagna.",
-    note: "Noci, Alta Murgia · estensione DA CONFERMARE",
-    img: terraImg,
-    grade:
-      "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(107,115,64,0.18) 55%, rgba(26,18,16,0.78) 100%)",
+    id: "bovino",
+    tag: "N° 047",
+    name: "La prima del mattino",
+    species: "Podolica · Bovino",
+    micro: "Mangia solo il grano che coltiviamo a Noci.",
+    img: pBovino,
+    at: 0.08,
+    depth: 0.95,
+    vy: 6,
   },
   {
-    id: "animali",
-    index: "Cap. B",
-    eyebrow: "I nostri animali",
-    title: "Li conosciamo ",
-    accent: "uno per uno.",
-    body: "Bovini, ovini, suini, equini e avicoli, allevati in masseria. Non sono numeri: sono il nostro lavoro di ogni giorno.",
-    note: "Specie e capi DA CONFERMARE col cliente",
-    img: animaliImg,
-    grade:
-      "linear-gradient(180deg, rgba(26,18,16,0.45) 0%, rgba(179,58,26,0.10) 55%, rgba(26,18,16,0.78) 100%)",
+    id: "ovino",
+    tag: "N° 112",
+    name: "Nata qui tre primavere fa",
+    species: "Agnello · Ovino",
+    micro: "Cresce libera sull'erba dell'Alta Murgia.",
+    img: pOvino,
+    at: 0.28,
+    depth: 0.6,
+    vy: -8,
   },
   {
-    id: "grano",
-    index: "Cap. C",
-    eyebrow: "Ciò che mangiano",
-    title: "Mangiano quello che ",
-    accent: "coltiviamo noi.",
-    body: "Foraggio e grano nascono nei nostri campi. Per questo sappiamo esattamente cosa arriva nel tuo piatto.",
-    note: "Filiera mangimi DA CONFERMARE",
-    img: granoImg,
-    grade:
-      "linear-gradient(180deg, rgba(26,18,16,0.35) 0%, rgba(196,154,74,0.15) 50%, rgba(26,18,16,0.8) 100%)",
+    id: "suino",
+    tag: "N° 203",
+    name: "Il custode del tartufo",
+    species: "Suino nero · Allevamento brado",
+    micro: "Razzola tra ulivi e ghiande, senza fretta.",
+    img: pSuino,
+    at: 0.5,
+    depth: 1,
+    vy: 4,
   },
   {
-    id: "tempo",
-    index: "Cap. D",
-    eyebrow: "Il loro tempo",
-    title: "Crescono con il ",
-    accent: "loro tempo.",
-    body: "Senza fretta. È lentezza che si sente, poi, sulla brace: nel sapore, nella consistenza, nella memoria del fuoco.",
-    img: tempoImg,
-    grade:
-      "linear-gradient(180deg, rgba(26,18,16,0.40) 0%, rgba(179,58,26,0.25) 50%, rgba(26,18,16,0.88) 100%)",
+    id: "equino",
+    tag: "N° 018",
+    name: "Lo sguardo lungo della campagna",
+    species: "Cavallo murgese",
+    micro: "Pascola con noi da sette inverni.",
+    img: pEquino,
+    at: 0.72,
+    depth: 0.7,
+    vy: -10,
   },
+  {
+    id: "avicolo",
+    tag: "N° 318",
+    name: "Le ore piccole dell'aia",
+    species: "Avicoli · Aia rustica",
+    micro: "Razzolano libere all'ombra del fienile.",
+    img: pAvicolo,
+    at: 0.92,
+    depth: 0.85,
+    vy: 8,
+  },
+];
+
+const SPOTLIGHT_WORDS = [
+  "Tempo",
+  "lento.",
+  "Niente",
+  "scorciatoie.",
+  "Solo",
+  "la",
+  "nostra",
+  "terra,",
+  "le",
+  "nostre",
+  "mani,",
+  "il",
+  "rispetto",
+  "di",
+  "ogni",
+  "stagione.",
 ];
 
 const FILIERA = [
@@ -82,188 +116,207 @@ const FILIERA = [
   { label: "Braceria", to: "/braceria" as const, active: false },
 ];
 
+/* ───────────────────────────────────────── COMPONENT ────────────────────────── */
+
 export function AllevamentoStory() {
   const reduced = useReducedMotion();
   const navigate = useNavigate();
 
-  const introRef = useRef<HTMLElement>(null);
-  const introImgRef = useRef<HTMLDivElement>(null);
-  const introCoverRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const stickyRef = useRef<HTMLDivElement>(null);
-  const layersRef = useRef<HTMLDivElement[]>([]);
-  const panelsRef = useRef<HTMLDivElement[]>([]);
-  const progressRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const aerialRef = useRef<HTMLDivElement>(null);
+  const terraRef = useRef<HTMLDivElement>(null);
+  const coverRef = useRef<HTMLDivElement>(null);
 
-  const bridgeRef = useRef<HTMLElement>(null);
-  const bridgeMaskRef = useRef<HTMLDivElement>(null);
+  const mandriaRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const panoBgRef = useRef<HTMLDivElement>(null);
 
-  const [activeIdx, setActiveIdx] = useState(0);
+  const pattoRef = useRef<HTMLDivElement>(null);
+  const wordsRef = useRef<HTMLSpanElement[]>([]);
+
+  const bridgeRef = useRef<HTMLDivElement>(null);
+
+  const [activeWord, setActiveWord] = useState(0);
   const [diving, setDiving] = useState(false);
 
-  // --- INTRO + STAGE GSAP ---
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (typeof window === "undefined") return;
     if (reduced) return;
-
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // INTRO: dissolvenza dal "tuffo" + ken-burns
-      if (introCoverRef.current && introImgRef.current) {
-        const tl = gsap.timeline();
-        tl.fromTo(
-          introCoverRef.current,
-          { opacity: 1 },
-          { opacity: 0, duration: 1.6, ease: "power3.out" },
+      /* ───── MOV 1 · ATTERRAGGIO ───── */
+      // morph aerea → terra all'apertura: cover si dissolve, aerial si scala, terra svela
+      const introTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      introTl
+        .set(terraRef.current, { autoAlpha: 0, scale: 1.15 })
+        .set(aerialRef.current, { autoAlpha: 1, scale: 1, filter: "blur(0px) brightness(0.55)" })
+        .to(coverRef.current, { autoAlpha: 0, duration: 1.4 }, 0)
+        .to(
+          aerialRef.current,
+          { scale: 1.35, filter: "blur(6px) brightness(0.7)", duration: 2.4 },
+          0.1,
         )
-          .fromTo(
-            introImgRef.current,
-            { scale: 1.18, filter: "brightness(0.55) saturate(0.6)" },
-            {
-              scale: 1.05,
-              filter: "brightness(0.85) saturate(0.95)",
-              duration: 2.2,
-              ease: "power2.out",
-            },
-            0,
-          )
-          .from(
-            "[data-intro-reveal]",
-            {
-              yPercent: 110,
-              duration: 1,
-              ease: "power4.out",
-              stagger: 0.12,
-            },
-            0.55,
-          )
-          .from(
-            "[data-intro-fade]",
-            { opacity: 0, y: 18, duration: 0.7, stagger: 0.08 },
-            1.2,
-          );
-      }
+        .to(terraRef.current, { autoAlpha: 1, scale: 1.05, duration: 1.8 }, 0.6)
+        .to(aerialRef.current, { autoAlpha: 0, duration: 1.1 }, 1.1)
+        .from(
+          "[data-mov1-reveal]",
+          { yPercent: 110, duration: 1, stagger: 0.1 },
+          1.0,
+        )
+        .from(
+          "[data-mov1-fade]",
+          { opacity: 0, y: 18, duration: 0.7, stagger: 0.08 },
+          1.4,
+        )
+        .fromTo(
+          "[data-filo-mov1]",
+          { strokeDashoffset: 900 },
+          { strokeDashoffset: 0, duration: 1.6, ease: "power2.out" },
+          1.0,
+        );
 
-      // Ken-burns lentissimo sull'intro
-      if (introImgRef.current) {
-        gsap.to(introImgRef.current, {
-          scale: 1.18,
-          yPercent: -3,
+      // Ken-burns leggero sulla terra durante il primo scroll
+      gsap.to(terraRef.current, {
+        scale: 1.16,
+        yPercent: -3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".mov1",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      /* ───── MOV 2 · LA MANDRIA (matchMedia: desktop pin+translateX) ───── */
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 768px)", () => {
+        const section = mandriaRef.current;
+        const track = trackRef.current;
+        if (!section || !track) return;
+        const distance = () => track.scrollWidth - window.innerWidth;
+
+        const st = gsap.to(track, {
+          x: () => -distance(),
           ease: "none",
           scrollTrigger: {
-            trigger: introRef.current,
+            trigger: section,
             start: "top top",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      }
-
-      // STAGE pinnato con cross-fade dei 4 capitoli
-      if (stageRef.current && stickyRef.current) {
-        const layers = layersRef.current;
-        const panels = panelsRef.current;
-
-        // Setup iniziale dei layer (A visibile, gli altri spenti)
-        layers.forEach((l, i) => {
-          gsap.set(l, { opacity: i === 0 ? 1 : 0, scale: 1.04 });
-        });
-        panels.forEach((p, i) => {
-          gsap.set(p, { autoAlpha: i === 0 ? 1 : 0, y: i === 0 ? 0 : 30 });
-        });
-
-        const segments = CHAPTERS.length; // 4
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: stageRef.current,
-            start: "top top",
-            end: () => `+=${segments * 100}%`,
+            end: () => `+=${distance()}`,
+            pin: true,
             scrub: 0.6,
-            pin: stickyRef.current,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onUpdate: (st) => {
-              const idx = Math.min(
-                segments - 1,
-                Math.floor(st.progress * segments),
-              );
-              setActiveIdx(idx);
-              if (progressRef.current) {
-                progressRef.current.style.transform = `scaleX(${st.progress})`;
-              }
-            },
           },
         });
 
-        // Per ogni transizione i -> i+1
-        for (let i = 0; i < segments - 1; i++) {
-          const from = layers[i];
-          const to = layers[i + 1];
-          const pFrom = panels[i];
-          const pTo = panels[i + 1];
-          tl.to(pFrom, { autoAlpha: 0, y: -30, duration: 0.4 }, i + 0.55)
-            .to(to, { opacity: 1, duration: 0.6 }, i + 0.5)
-            .to(from, { opacity: 0, duration: 0.6 }, i + 0.65)
-            .fromTo(
-              pTo,
-              { autoAlpha: 0, y: 30 },
-              { autoAlpha: 1, y: 0, duration: 0.5 },
-              i + 0.8,
-            );
-        }
-
-        // micro parallax/ken-burns su ogni layer durante la sua presenza
-        layers.forEach((l) => {
-          gsap.to(l, {
-            scale: 1.12,
-            yPercent: -2,
+        // panorama parallax (più lento del dolly)
+        if (panoBgRef.current) {
+          gsap.to(panoBgRef.current, {
+            xPercent: -25,
             ease: "none",
             scrollTrigger: {
-              trigger: stageRef.current,
+              trigger: section,
               start: "top top",
-              end: () => `+=${segments * 100}%`,
+              end: () => `+=${distance()}`,
               scrub: true,
             },
           });
+        }
+
+        // ritratti: stagger di entrata sui rispettivi at%
+        track.querySelectorAll<HTMLElement>("[data-portrait]").forEach((el) => {
+          gsap.from(el, {
+            yPercent: 12,
+            autoAlpha: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: el,
+              containerAnimation: st,
+              start: "left 85%",
+              toggleActions: "play none none reverse",
+            },
+          });
+        });
+
+        return () => st.kill();
+      });
+
+      mm.add("(max-width: 767px)", () => {
+        // mobile: card verticali con micro-reveal
+        gsap.utils.toArray<HTMLElement>("[data-portrait-mobile]").forEach((el) => {
+          gsap.from(el, {
+            y: 40,
+            autoAlpha: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 85%" },
+          });
+        });
+      });
+
+      /* ───── MOV 3 · IL PATTO COL TEMPO (spotlight reading) ───── */
+      const patto = pattoRef.current;
+      if (patto && wordsRef.current.length) {
+        const total = wordsRef.current.length;
+        gsap.set(wordsRef.current, { opacity: 0.18 });
+
+        ScrollTrigger.create({
+          trigger: patto,
+          start: "top top",
+          end: () => `+=${total * 80}`,
+          pin: true,
+          scrub: 0.4,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            const idx = Math.min(total - 1, Math.floor(self.progress * total));
+            setActiveWord(idx);
+            wordsRef.current.forEach((w, i) => {
+              const dist = Math.abs(i - idx);
+              const op = i === idx ? 1 : Math.max(0.12, 0.6 - dist * 0.18);
+              gsap.to(w, { opacity: op, duration: 0.25, overwrite: "auto" });
+            });
+          },
         });
       }
 
-      // BRIDGE: rivelazione del latte con mask
+      /* ───── BRIDGE → CASEIFICIO ───── */
       if (bridgeRef.current) {
         gsap.from("[data-bridge-text]", {
-          y: 30,
+          y: 26,
           opacity: 0,
           duration: 0.9,
           ease: "power3.out",
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: bridgeRef.current,
-            start: "top 70%",
-          },
+          stagger: 0.1,
+          scrollTrigger: { trigger: bridgeRef.current, start: "top 70%" },
         });
-        if (bridgeMaskRef.current) {
-          gsap.fromTo(
-            bridgeMaskRef.current,
-            { clipPath: "inset(50% 0 50% 0)" },
-            {
-              clipPath: "inset(0% 0 0% 0)",
-              duration: 1.6,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: bridgeRef.current,
-                start: "top 80%",
-              },
-            },
-          );
-        }
       }
-    });
+    }, rootRef);
 
-    return () => ctx.revert();
+    // refresh dopo fonts e immagini
+    const onReady = () => ScrollTrigger.refresh();
+    if (document.fonts?.ready) document.fonts.ready.then(onReady);
+    window.addEventListener("load", onReady);
+
+    return () => {
+      window.removeEventListener("load", onReady);
+      ctx.revert();
+    };
   }, [reduced]);
 
-  // --- DIVE -> /caseificio ---
+  // sync con lenis
+  useEffect(() => {
+    if (reduced) return;
+    const lenis = (window as unknown as { __lenis?: { on: (e: string, cb: () => void) => void } })
+      .__lenis;
+    if (!lenis) return;
+    const update = () => ScrollTrigger.update();
+    lenis.on("scroll", update);
+  }, [reduced]);
+
   const goCaseificio = () => {
     if (reduced) {
       navigate({ to: "/caseificio" });
@@ -274,330 +327,339 @@ export function AllevamentoStory() {
   };
 
   return (
-    <div className="relative">
-      {/* ============ INTRO ============ */}
-      <section
-        ref={introRef}
-        className="relative h-[100svh] w-full overflow-hidden"
-        aria-label="Apertura del capitolo Allevamento"
+    <div ref={rootRef} className="relative bg-[color:var(--carbone)] text-[color:var(--crema)]">
+      {/* ──────────────── PERSISTENT NAV ──────────────── */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-center justify-between px-6 pt-6 md:px-10 md:pt-8">
+        <Link
+          to="/"
+          className="pointer-events-auto font-eyebrow group inline-flex items-center gap-2 text-[11px] text-[color:var(--crema)]/85 transition-colors hover:text-[color:var(--oro)]"
+          aria-label="Torna alla masseria"
+        >
+          <span aria-hidden className="transition-transform group-hover:-translate-x-1">←</span>
+          La masseria
+        </Link>
+        <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-[11px]">
+          01 / 04 — Allevamento
+        </p>
+      </div>
+
+      <nav
+        aria-label="Filiera"
+        className="pointer-events-none fixed inset-x-0 top-16 z-40 mx-auto hidden max-w-3xl items-center justify-center gap-6 md:flex"
       >
-        {/* foto */}
+        {FILIERA.map((f, i) => (
+          <div key={f.to} className="pointer-events-auto flex items-center gap-6">
+            <Link
+              to={f.to}
+              className={[
+                "font-eyebrow text-[10px] tracking-[0.28em] transition-colors",
+                f.active
+                  ? "text-[color:var(--oro)]"
+                  : "text-[color:var(--crema)]/55 hover:text-[color:var(--crema)]",
+              ].join(" ")}
+              aria-current={f.active ? "page" : undefined}
+            >
+              <span className="text-[color:var(--oro)]/70 mr-2">0{i + 1}</span>
+              {f.label}
+            </Link>
+            {i < FILIERA.length - 1 && (
+              <span aria-hidden className="h-px w-6 bg-[color:var(--crema)]/15" />
+            )}
+          </div>
+        ))}
+      </nav>
+
+      {/* ════════════════════ MOV 1 · ATTERRAGGIO ════════════════════ */}
+      <section
+        className="mov1 relative h-[100svh] w-full overflow-hidden"
+        aria-label="Atterraggio dal volo del drone"
+      >
+        {/* aerial layer */}
         <div
-          ref={introImgRef}
-          className="absolute inset-0 -z-10 will-change-transform"
+          ref={aerialRef}
+          aria-hidden
+          className="absolute inset-0 will-change-transform"
+          style={{
+            backgroundImage: `url(${aerialAsset.url})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center 45%",
+          }}
+        />
+        {/* terra layer */}
+        <div
+          ref={terraRef}
+          aria-hidden
+          className="absolute inset-0 will-change-transform"
           style={{
             backgroundImage: `url(${terraImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center 55%",
           }}
         />
-        {/* grading AA */}
+        {/* warm grade */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(26,18,16,0.45) 0%, rgba(26,18,16,0.20) 35%, rgba(26,18,16,0.80) 100%)",
+              "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(26,18,16,0.18) 38%, rgba(26,18,16,0.85) 100%)",
           }}
         />
-        {/* "tuffo" warm cover, ereditato dall'hero */}
+        {/* hero "tuffo" cover */}
         <div
-          ref={introCoverRef}
+          ref={coverRef}
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 70% 60% at 50% 55%, rgba(179,58,26,0.85) 0%, rgba(110,26,20,0.95) 45%, rgba(26,18,16,1) 80%)",
+              "radial-gradient(ellipse 70% 60% at 50% 55%, rgba(179,58,26,0.92) 0%, rgba(110,26,20,0.96) 45%, rgba(26,18,16,1) 80%)",
           }}
         />
 
-        {/* TOP overlay: back link + chapter index */}
-        <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 pt-6 md:px-10 md:pt-8">
-          <Link
-            to="/"
-            data-intro-fade
-            className="font-eyebrow group inline-flex items-center gap-2 text-[11px] text-[color:var(--crema)]/80 transition-colors hover:text-[color:var(--oro)]"
-            aria-label="Torna alla masseria"
-          >
-            <span aria-hidden className="transition-transform group-hover:-translate-x-1">
-              ←
-            </span>
-            La masseria
-          </Link>
-          <p
-            data-intro-fade
-            className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-[11px]"
-          >
-            01 / 04 — Allevamento
-          </p>
-        </div>
-
-        {/* Mini-indice filiera */}
-        <nav
-          data-intro-fade
-          aria-label="Filiera"
-          className="absolute inset-x-0 top-16 z-20 mx-auto hidden max-w-3xl items-center justify-center gap-6 md:flex"
+        {/* parola-fantasma "TERRA" */}
+        <p
+          aria-hidden
+          className="font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[color:var(--crema)]/[0.06] italic"
+          style={{ fontSize: "clamp(10rem, 28vw, 26rem)", letterSpacing: "-0.02em" }}
         >
-          {FILIERA.map((f, i) => (
-            <div key={f.to} className="flex items-center gap-6">
-              <Link
-                to={f.to}
-                className={[
-                  "font-eyebrow text-[10px] tracking-[0.28em] transition-colors",
-                  f.active
-                    ? "text-[color:var(--oro)]"
-                    : "text-[color:var(--crema)]/55 hover:text-[color:var(--crema)]",
-                ].join(" ")}
-                aria-current={f.active ? "page" : undefined}
-              >
-                <span className="text-[color:var(--oro)]/70 mr-2">
-                  0{i + 1}
-                </span>
-                {f.label}
-              </Link>
-              {i < FILIERA.length - 1 && (
-                <span aria-hidden className="h-px w-6 bg-[color:var(--crema)]/15" />
-              )}
-            </div>
-          ))}
-        </nav>
+          TERRA
+        </p>
 
-        {/* TITOLO d'ingresso */}
+        {/* filo d'oro — discesa dall'hero */}
+        <svg
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          viewBox="0 0 1440 900"
+          preserveAspectRatio="none"
+        >
+          <path
+            data-filo-mov1
+            d="M 720 -20 C 720 220, 900 360, 720 540 S 540 760, 720 920"
+            fill="none"
+            stroke="var(--oro)"
+            strokeWidth="1"
+            strokeOpacity="0.55"
+            strokeDasharray="900"
+            strokeDashoffset="900"
+          />
+        </svg>
+
+        {/* COPY */}
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
           <div className="overflow-hidden">
             <p
-              data-intro-reveal
+              data-mov1-reveal
               className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)] md:text-xs"
             >
-              Capitolo 01 · Allevamento
+              01 — Dalla terra alla brace · Il primo anello
             </p>
           </div>
 
           <h1
-            className="font-display mt-6 max-w-4xl text-balance leading-[0.95] text-[color:var(--crema)]"
+            className="font-display mt-6 max-w-4xl text-balance leading-[0.95]"
             style={{ fontSize: "clamp(2.8rem, 8vw, 7rem)" }}
           >
             <span className="block overflow-hidden">
-              <span data-intro-reveal className="block">
+              <span data-mov1-reveal className="block">
                 Dove tutto{" "}
-                <span className="italic text-[color:var(--terracotta)]">
-                  comincia.
-                </span>
+                <span className="italic text-[color:var(--terracotta)]">comincia.</span>
               </span>
             </span>
           </h1>
 
           <div className="mt-8 max-w-xl overflow-hidden">
             <p
-              data-intro-reveal
+              data-mov1-reveal
               className="font-sans text-sm leading-relaxed text-[color:var(--crema)]/85 md:text-base"
             >
-              Prima della carne, prima della brace, c'è la nostra terra e i
-              nostri animali.
+              La rugiada sul pascolo, il fiato delle bestie all'alba, la mano callosa sul recinto.
+              Qui non arriva niente da fuori.
             </p>
           </div>
         </div>
 
-        {/* scroll cue */}
         <div
-          data-intro-fade
+          data-mov1-fade
           className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-3 text-[color:var(--crema)]/70"
         >
-          <span className="font-eyebrow text-[10px] tracking-[0.28em]">
-            Scendi nella masseria
-          </span>
-          <motion.span
+          <span className="font-eyebrow text-[10px] tracking-[0.28em]">Scendi nella mandria</span>
+          <span
             aria-hidden
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="h-8 w-px bg-gradient-to-b from-[color:var(--oro)] to-transparent"
+            className="h-8 w-px animate-pulse bg-gradient-to-b from-[color:var(--oro)] to-transparent"
           />
         </div>
       </section>
 
-      {/* ============ STAGE PINNATO (desktop) ============ */}
+      {/* ════════════════════ MOV 2 · LA MANDRIA (desktop) ════════════════════ */}
       <section
-        ref={stageRef}
-        aria-label="Il risveglio della masseria"
-        className="relative hidden md:block"
-        style={{ height: `${CHAPTERS.length * 100}vh` }}
+        ref={mandriaRef}
+        aria-label="La mandria — carrellata cinematografica"
+        className="relative hidden md:block h-[100svh] w-full overflow-hidden bg-[color:var(--carbone)]"
       >
+        {/* panorama background (più lento) */}
         <div
-          ref={stickyRef}
-          className="sticky top-0 h-[100svh] w-full overflow-hidden"
-        >
-          {/* Layer immagini */}
-          {CHAPTERS.map((c, i) => (
-            <div
-              key={c.id}
-              ref={(el) => {
-                if (el) layersRef.current[i] = el;
-              }}
-              aria-hidden
-              className="absolute inset-0 will-change-[opacity,transform]"
-            >
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: `url(${c.img})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              />
-              <div
-                className="absolute inset-0"
-                style={{ background: c.grade }}
-              />
-            </div>
-          ))}
+          ref={panoBgRef}
+          aria-hidden
+          className="absolute inset-y-0 left-0 will-change-transform"
+          style={{
+            width: "180%",
+            backgroundImage: `url(${panoramaImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        {/* grade */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(26,18,16,0.10) 45%, rgba(26,18,16,0.85) 100%)",
+          }}
+        />
 
-          {/* Top progress overlay */}
-          <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-6 pt-6 md:px-10 md:pt-8">
-            <Link
-              to="/"
-              className="font-eyebrow group inline-flex items-center gap-2 text-[11px] text-[color:var(--crema)]/85 transition-colors hover:text-[color:var(--oro)]"
+        {/* track orizzontale */}
+        <div
+          ref={trackRef}
+          className="relative flex h-full items-center will-change-transform"
+          style={{ width: "320vw", paddingLeft: "12vw", paddingRight: "12vw" }}
+        >
+          {/* eyebrow intro fluttuante */}
+          <div className="absolute left-[10vw] top-[18vh] max-w-md">
+            <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-xs">
+              MOV 02 · La mandria
+            </p>
+            <h2
+              className="font-display mt-4 text-balance leading-[0.95]"
+              style={{ fontSize: "clamp(2.2rem, 5vw, 4.6rem)" }}
             >
-              <span aria-hidden className="transition-transform group-hover:-translate-x-1">
-                ←
-              </span>
-              La masseria
-            </Link>
-            <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-[11px]">
-              01 / 04 — Allevamento
+              Li conosciamo <span className="italic text-[color:var(--terracotta)]">uno per uno.</span>
+            </h2>
+            <p className="font-sans mt-5 text-sm text-[color:var(--crema)]/80 md:text-base">
+              Un piano-sequenza lungo il pascolo. Ogni ritratto è una bestia che cresce qui,
+              col suo nome, il suo tempo, la sua storia.
             </p>
           </div>
 
-          {/* Progress bar capitoli */}
-          <div className="absolute inset-x-0 top-16 z-20 mx-auto max-w-6xl px-6 md:px-10">
-            <div className="flex items-center gap-2">
-              {CHAPTERS.map((c, i) => (
-                <div key={c.id} className="flex-1">
-                  <p
-                    className={[
-                      "font-eyebrow mb-2 text-[9px] tracking-[0.28em] transition-colors",
-                      i === activeIdx
-                        ? "text-[color:var(--oro)]"
-                        : "text-[color:var(--crema)]/40",
-                    ].join(" ")}
-                  >
-                    {c.index} · {c.eyebrow}
-                  </p>
-                  <div className="h-px w-full bg-[color:var(--crema)]/15">
-                    <motion.div
-                      animate={{
-                        scaleX:
-                          i < activeIdx
-                            ? 1
-                            : i === activeIdx
-                              ? 0.5
-                              : 0,
-                      }}
-                      transition={{ duration: 0.4, ease: "easeOut" }}
-                      style={{ transformOrigin: "left" }}
-                      className="h-full origin-left bg-[color:var(--oro)]"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* portraits */}
+          {PORTRAITS.map((p) => {
+            const left = `${12 + p.at * 280}vw`; // distribuzione lungo la track (320vw - padding)
+            const scale = 0.7 + p.depth * 0.5;
+            const z = Math.round(p.depth * 10);
+            return (
+              <article
+                key={p.id}
+                data-portrait
+                className="absolute"
+                style={{
+                  left,
+                  top: `calc(50% + ${p.vy}vh)`,
+                  transform: `translate(-50%, -50%) scale(${scale})`,
+                  zIndex: z,
+                  width: "clamp(280px, 26vw, 460px)",
+                }}
+              >
+                <PortraitCard p={p} />
+              </article>
+            );
+          })}
 
-          {/* Pannelli testo (uno per capitolo, sovrapposti) */}
-          {CHAPTERS.map((c, i) => (
-            <div
-              key={c.id}
-              ref={(el) => {
-                if (el) panelsRef.current[i] = el;
-              }}
-              className="pointer-events-none absolute inset-0 z-10 flex items-end"
+          {/* outro micro-frase a fine carrellata */}
+          <div className="absolute right-[6vw] top-[64vh] max-w-sm text-right">
+            <p className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--oro)]/80">
+              Specie e capi DA CONFERMARE
+            </p>
+            <p
+              className="font-display mt-3 italic text-[color:var(--crema)]/90"
+              style={{ fontSize: "clamp(1.25rem, 2.2vw, 1.8rem)" }}
             >
-              <div className="mx-auto w-full max-w-6xl px-6 pb-24 md:px-10 md:pb-32">
-                <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)]">
-                  {c.index} · {c.eyebrow}
-                </p>
-                <h2
-                  className="font-display mt-5 max-w-4xl text-balance leading-[0.95] text-[color:var(--crema)]"
-                  style={{ fontSize: "clamp(2.4rem, 6.5vw, 5.5rem)" }}
-                >
-                  {c.title}
-                  <span className="italic text-[color:var(--terracotta)]">
-                    {c.accent}
-                  </span>
-                </h2>
-                <p className="font-sans mt-6 max-w-xl text-base leading-relaxed text-[color:var(--crema)]/85 md:text-lg">
-                  {c.body}
-                </p>
-                {c.note && (
-                  <p className="font-eyebrow mt-5 text-[10px] tracking-[0.24em] text-[color:var(--crema)]/45">
-                    ⓘ {c.note}
-                  </p>
-                )}
-              </div>
-            </div>
+              Non sono numeri. Sono il nostro lavoro di ogni giorno.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════ MOV 2 · MOBILE (stack verticale) ════════════════════ */}
+      <section
+        aria-label="La mandria — versione mobile"
+        className="relative block md:hidden bg-[color:var(--carbone)] px-6 py-20"
+      >
+        <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)]">
+          MOV 02 · La mandria
+        </p>
+        <h2
+          className="font-display mt-3 text-balance leading-[0.95]"
+          style={{ fontSize: "clamp(2.2rem, 9vw, 3.2rem)" }}
+        >
+          Li conosciamo <span className="italic text-[color:var(--terracotta)]">uno per uno.</span>
+        </h2>
+        <p className="font-sans mt-4 text-sm text-[color:var(--crema)]/80">
+          Ogni ritratto è una bestia che cresce qui. Col suo nome, il suo tempo, la sua storia.
+        </p>
+        <div className="mt-10 space-y-8">
+          {PORTRAITS.map((p) => (
+            <article key={p.id} data-portrait-mobile>
+              <PortraitCard p={p} />
+            </article>
           ))}
         </div>
       </section>
 
-      {/* ============ STACKED FALLBACK (mobile + reduced-motion) ============ */}
+      {/* ════════════════════ MOV 3 · IL PATTO COL TEMPO ════════════════════ */}
       <section
-        aria-label="Il risveglio della masseria — versione mobile"
-        className="relative md:hidden"
+        ref={pattoRef}
+        aria-label="Il patto col tempo"
+        className="relative h-[100svh] w-full overflow-hidden bg-[color:var(--carbone)]"
       >
-        {CHAPTERS.map((c) => (
-          <article
-            key={c.id}
-            className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden"
+        {/* vignetta calda */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(179,58,26,0.10) 0%, rgba(26,18,16,0) 60%)",
+          }}
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+          <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-xs">
+            MOV 03 · Il patto col tempo
+          </p>
+          <p
+            className="font-display mt-10 max-w-5xl text-balance leading-[1.1]"
+            style={{ fontSize: "clamp(1.6rem, 4.2vw, 3.4rem)" }}
           >
-            <div
-              aria-hidden
-              className="absolute inset-0 -z-10"
-              style={{
-                backgroundImage: `url(${c.img})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 -z-10"
-              style={{ background: c.grade }}
-            />
-            <div className="px-6 pb-16 pt-32">
-              <p className="font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
-                {c.index} · {c.eyebrow}
-              </p>
-              <h2
-                className="font-display mt-4 text-balance leading-[0.98] text-[color:var(--crema)]"
-                style={{ fontSize: "clamp(2.2rem, 9vw, 3.4rem)" }}
+            {SPOTLIGHT_WORDS.map((w, i) => (
+              <span
+                key={`${w}-${i}`}
+                ref={(el) => {
+                  if (el) wordsRef.current[i] = el;
+                }}
+                className={
+                  i === activeWord
+                    ? "text-[color:var(--crema)]"
+                    : "text-[color:var(--crema)]"
+                }
+                style={{ display: "inline-block", marginRight: "0.35em" }}
               >
-                {c.title}
-                <span className="italic text-[color:var(--terracotta)]">
-                  {c.accent}
-                </span>
-              </h2>
-              <p className="font-sans mt-5 text-[15px] leading-relaxed text-[color:var(--crema)]/85">
-                {c.body}
-              </p>
-              {c.note && (
-                <p className="font-eyebrow mt-4 text-[10px] tracking-[0.24em] text-[color:var(--crema)]/50">
-                  ⓘ {c.note}
-                </p>
-              )}
-            </div>
-          </article>
-        ))}
+                {w}
+              </span>
+            ))}
+          </p>
+          <p className="font-eyebrow mt-12 text-[10px] tracking-[0.32em] text-[color:var(--crema)]/45">
+            Il giuramento dell'allevamento — Masseria Don Gianvito, Noci
+          </p>
+        </div>
       </section>
 
-      {/* ============ BRIDGE → CASEIFICIO ============ */}
+      {/* ════════════════════ BRIDGE → CASEIFICIO ════════════════════ */}
       <section
         ref={bridgeRef}
-        aria-label="Ponte verso il Caseificio"
-        className="relative min-h-[100svh] w-full overflow-hidden"
+        aria-label="Ponte al Caseificio"
+        className="relative h-[100svh] w-full overflow-hidden"
       >
         <div
-          ref={bridgeMaskRef}
           aria-hidden
-          className="absolute inset-0 -z-10"
+          className="absolute inset-0"
           style={{
             backgroundImage: `url(${latteImg})`,
             backgroundSize: "cover",
@@ -606,96 +668,113 @@ export function AllevamentoStory() {
         />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(26,18,16,0.85) 0%, rgba(26,18,16,0.55) 45%, rgba(26,18,16,0.92) 100%)",
+              "linear-gradient(180deg, rgba(26,18,16,0.78) 0%, rgba(26,18,16,0.35) 40%, rgba(26,18,16,0.92) 100%)",
           }}
         />
-
-        <div className="relative mx-auto flex min-h-[100svh] w-full max-w-5xl flex-col items-center justify-center px-6 text-center">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <p
             data-bridge-text
-            className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)]"
+            className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-xs"
           >
-            Continua il racconto
+            Capitolo 02 · in arrivo
           </p>
           <h2
             data-bridge-text
-            className="font-display mt-6 max-w-3xl text-balance leading-[0.98] text-[color:var(--crema)]"
-            style={{ fontSize: "clamp(2.2rem, 6vw, 4.6rem)" }}
+            className="font-display mt-6 max-w-3xl text-balance leading-[0.95]"
+            style={{ fontSize: "clamp(2.2rem, 6vw, 5rem)" }}
           >
             E ogni mattina, da questa terra,{" "}
-            <span className="italic text-[color:var(--terracotta)]">
-              arriva il latte.
-            </span>
+            <span className="italic text-[color:var(--terracotta)]">arriva il latte.</span>
           </h2>
           <p
             data-bridge-text
-            className="font-sans mt-6 max-w-xl text-[color:var(--crema)]/80 md:text-lg"
+            className="font-sans mt-6 max-w-xl text-sm text-[color:var(--crema)]/80 md:text-base"
           >
-            Dal pascolo al caseificio: la prossima tappa del racconto.
+            La stessa cura della stalla si sposta nelle mani del casaro, prima che il giorno cominci.
           </p>
-
-          <motion.button
+          <button
             data-bridge-text
             type="button"
             onClick={goCaseificio}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="bg-grad-brace mt-10 inline-flex items-center gap-3 rounded-full px-8 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--crema)] shadow-[0_18px_50px_-12px_rgba(179,58,26,0.7)] ring-1 ring-[color:var(--oro)]/30"
+            className="group mt-12 inline-flex items-center gap-3 border border-[color:var(--oro)]/60 px-6 py-3 text-[color:var(--crema)] transition-colors hover:bg-[color:var(--oro)]/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)]"
           >
-            Continua
-            <span aria-hidden className="text-[color:var(--oro)]">
-              →
+            <span className="font-eyebrow text-[11px] tracking-[0.32em]">
+              Continua → Il Caseificio
             </span>
-            Il Caseificio
-          </motion.button>
-
-          <p
-            data-bridge-text
-            className="font-eyebrow mt-6 text-[10px] tracking-[0.28em] text-[color:var(--crema)]/45"
-          >
-            02 / 04 — Caseificio
-          </p>
-        </div>
-
-        {/* Progress globale capitolo, in basso */}
-        <div className="absolute inset-x-0 bottom-0 z-10 mx-auto max-w-6xl px-6 pb-6 md:px-10">
-          <div className="h-px w-full bg-[color:var(--crema)]/15">
-            <div
-              ref={progressRef}
-              className="h-full origin-left bg-[color:var(--oro)]"
-              style={{ transform: "scaleX(1)" }}
-            />
-          </div>
+          </button>
         </div>
       </section>
 
-      {/* DIVE overlay (transizione coerente con l'hero) */}
-      <AnimatePresence>
-        {diving && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="pointer-events-none fixed inset-0 z-[100]"
+      {/* dive cover */}
+      {diving && (
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-[60] animate-[fade-in_0.35s_ease-out]"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(242,232,213,0.95) 0%, rgba(242,232,213,1) 60%, var(--carbone) 100%)",
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ───────────────────────────────────────── PORTRAIT CARD ────────────────────── */
+
+function PortraitCard({ p }: { p: Portrait }) {
+  return (
+    <div className="group relative">
+      <div
+        className="relative overflow-hidden border border-[color:var(--crema)]/10 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)]"
+        style={{ aspectRatio: "4/5" }}
+      >
+        <img
+          src={p.img}
+          alt={`${p.name} — ${p.species} alla Masseria Don Gianvito`}
+          loading="lazy"
+          width={768}
+          height={960}
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(26,18,16,0) 35%, rgba(26,18,16,0.85) 100%)",
+          }}
+        />
+        {/* sigillo / marca auricolare */}
+        <div className="absolute left-3 top-3 flex items-center gap-2 border border-[color:var(--oro)]/70 bg-[color:var(--carbone)]/70 px-2.5 py-1 backdrop-blur">
+          <span
             aria-hidden
+            className="h-1.5 w-1.5 rounded-full bg-[color:var(--oro)] shadow-[0_0_8px_var(--oro)]"
+          />
+          <span className="font-eyebrow text-[9px] tracking-[0.28em] text-[color:var(--oro)]">
+            {p.tag}
+          </span>
+        </div>
+
+        {/* meta */}
+        <div className="absolute inset-x-0 bottom-0 p-4">
+          <p className="font-eyebrow text-[9px] tracking-[0.28em] text-[color:var(--crema)]/70">
+            {p.species}
+          </p>
+          <p
+            className="font-display mt-1 italic leading-tight text-[color:var(--crema)]"
+            style={{ fontSize: "clamp(1rem, 1.4vw, 1.35rem)" }}
           >
-            <motion.div
-              initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: 1.6, opacity: 1 }}
-              transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(circle at 50% 55%, rgba(242,232,213,0.95) 0%, rgba(196,154,74,0.85) 30%, rgba(26,18,16,1) 75%)",
-              }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {p.name}
+          </p>
+          <p className="font-sans mt-2 text-xs leading-snug text-[color:var(--crema)]/80">
+            {p.micro}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
