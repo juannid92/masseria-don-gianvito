@@ -108,19 +108,19 @@ export function Navbar() {
       >
         <ul className="flex flex-col gap-1 px-6 py-4">
           {NAV_LINKS.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
+            <li key={l.to}>
+              <Link
+                to={l.to}
                 onClick={() => setOpen(false)}
                 className="font-eyebrow block py-3 text-xs text-[color:var(--crema)]/90"
               >
                 {l.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li className="pt-2">
             <a
-              href="#contatti"
+              href="tel:+393339395750"
               onClick={() => setOpen(false)}
               className="bg-grad-brace font-eyebrow inline-flex w-full items-center justify-center rounded-full px-6 py-3 text-xs text-[color:var(--crema)]"
             >
