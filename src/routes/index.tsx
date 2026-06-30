@@ -44,7 +44,7 @@ function HomePage() {
       <Navbar />
 
       <main className="relative">
-        <HeroPlaceholder />
+        <Hero />
 
         <SectionDivider />
         <FornelloPronto />

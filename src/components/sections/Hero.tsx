@@ -276,16 +276,11 @@ export function Hero() {
           aria-hidden
           className="block h-8 w-px"
           style={{
-            background:
-              "linear-gradient(180deg, var(--oro), transparent)",
+            transformOrigin: "top",
+            background: "linear-gradient(180deg, var(--oro), transparent)",
           }}
           animate={reduced ? undefined : { scaleY: [0.4, 1, 0.4], opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            transformOrigin: "top",
-            background:
-              "linear-gradient(180deg, var(--oro), transparent)",
-          }}
         />
       </motion.a>
     </section>
