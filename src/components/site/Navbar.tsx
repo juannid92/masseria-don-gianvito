@@ -36,8 +36,8 @@ export function Navbar() {
       ].join(" ")}
     >
       <nav className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:py-5">
-        <a
-          href="#hero"
+        <Link
+          to="/"
           className="group flex items-baseline gap-2 text-[color:var(--crema)]"
           aria-label="Masseria Don Gianvito — home"
         >
@@ -47,24 +47,25 @@ export function Navbar() {
           <span className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs">
             Don Gianvito
           </span>
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((l) => (
-            <li key={l.href}>
-              <a
-                href={l.href}
+            <li key={l.to}>
+              <Link
+                to={l.to}
                 className="font-eyebrow text-[11px] text-[color:var(--crema)]/85 transition-colors hover:text-[color:var(--oro)]"
+                activeProps={{ className: "text-[color:var(--oro)]" }}
               >
                 {l.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
         <div className="hidden lg:block">
           <motion.a
-            href="#contatti"
+            href="tel:+393339395750"
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             className="bg-grad-brace inline-flex items-center justify-center rounded-full px-6 py-2.5 font-eyebrow text-[11px] text-[color:var(--crema)] shadow-[0_10px_30px_-10px_rgba(179,58,26,0.7)] ring-1 ring-white/10"
