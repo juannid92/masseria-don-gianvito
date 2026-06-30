@@ -11,10 +11,12 @@ import pinCaseificioImg from "@/assets/pin-caseificio.jpg";
 import pinMacelleriaImg from "@/assets/pin-macelleria.jpg";
 import pinBraceriaImg from "@/assets/pin-braceria.jpg";
 
-/* ─────────────────────────────────────────────────────────────
- * HERO — "IL SORVOLO"
- * Mappa catastale vivente · drone cinematografico sulla masseria
- * ──────────────────────────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────
+ * HERO — "IL SORVOLO · LA MAPPA CATASTALE VIVENTE"
+ * Concept-first: la masseria vista dall'alto come un unico
+ * organismo. Un filo d'oro catastale collega i 4 mestieri
+ * (sigilli di brace incandescenti). Click = tuffo nel luogo.
+ * ───────────────────────────────────────────────────────────── */
 
 type PinId = "allevamento" | "caseificio" | "macelleria" | "braceria";
 
@@ -26,8 +28,12 @@ type Pin = {
   thumb: string;
   coords: string;
   to: "/allevamento" | "/caseificio" | "/macelleria" | "/braceria";
+  /** Posizione % sulla mappa */
   top: number;
   left: number;
+  /** Etichetta editoriale: posizione del leader-line */
+  labelSide: "left" | "right";
+  labelDy: number; // offset verticale dell'etichetta in % rispetto al pin
 };
 
 const PINS: Pin[] = [
@@ -35,67 +41,83 @@ const PINS: Pin[] = [
     id: "allevamento",
     label: "Allevamento",
     caption: "Dove tutto comincia.",
-    description: "Dove tutto comincia: i nostri capi, nella nostra terra.",
+    description: "I nostri capi, sulla nostra terra. Murgia, aria aperta, tempo lento.",
     thumb: pinAllevamentoImg,
-    coords: "40°47'21\"N · 17°07'48\"E",
+    coords: "40.6428°N · 17.0421°E",
     to: "/allevamento",
     top: 58,
     left: 16,
+    labelSide: "right",
+    labelDy: 6,
   },
   {
     id: "caseificio",
     label: "Caseificio",
     caption: "Il latte di ogni mattina.",
-    description: "Il latte di ogni mattina, trasformato in formaggio.",
+    description: "Latte appena munto, lavorato a mano prima che il giorno cominci.",
     thumb: pinCaseificioImg,
-    coords: "40°47'19\"N · 17°07'52\"E",
+    coords: "40.6427°N · 17.0418°E",
     to: "/caseificio",
-    top: 22,
+    top: 24,
     left: 40,
+    labelSide: "left",
+    labelDy: -8,
   },
   {
     id: "macelleria",
     label: "Macelleria",
     caption: "La carne, a vista.",
-    description: "La carne, a vista: scegli il tuo taglio.",
+    description: "Banco a vista, tagli del giorno, frollature curate dal macellaio.",
     thumb: pinMacelleriaImg,
-    coords: "40°47'17\"N · 17°07'55\"E",
+    coords: "40.6425°N · 17.0415°E",
     to: "/macelleria",
     top: 30,
     left: 82,
+    labelSide: "left",
+    labelDy: -6,
   },
   {
     id: "braceria",
-    label: "Ristorante / Braceria",
+    label: "Braceria",
     caption: "La brace, ogni sera.",
-    description: "La brace accesa ogni sera, servita al tavolo.",
+    description: "Cottura su brace viva, taglio e servizio al tavolo. Il rito.",
     thumb: pinBraceriaImg,
-    coords: "40°47'15\"N · 17°07'50\"E",
+    coords: "40.6424°N · 17.0419°E",
     to: "/braceria",
-    top: 12,
+    top: 14,
     left: 64,
+    labelSide: "right",
+    labelDy: -4,
   },
 ];
 
 const heroAerial = heroAerialAsset.url;
 
-/* Catastal SVG — linee di confine sottili in oro */
+/* ─────────── L3 · CATASTAL OVERLAY + FILO D'ORO ───────────
+ * Linee topografiche di sfondo + UN UNICO percorso d'oro
+ * che attraversa i 4 sigilli — la prova visiva della filiera.
+ */
 function CatastalOverlay() {
+  // path che collega i 4 pin nell'ordine di filiera
+  const order: PinId[] = ["allevamento", "caseificio", "macelleria", "braceria"];
+  const pts = order.map((id) => PINS.find((p) => p.id === id)!);
+  const filo = `M${pts[0].left},${pts[0].top} C${pts[0].left + 18},${pts[0].top - 18} ${pts[1].left - 12},${pts[1].top + 14} ${pts[1].left},${pts[1].top} S${pts[2].left - 14},${pts[2].top - 4} ${pts[2].left},${pts[2].top} S${pts[3].left + 8},${pts[3].top + 12} ${pts[3].left},${pts[3].top}`;
+
   return (
     <svg
-      data-catastal
       className="pointer-events-none absolute inset-0 h-full w-full"
       viewBox="0 0 100 100"
       preserveAspectRatio="none"
       aria-hidden
-      style={{ mixBlendMode: "overlay", opacity: 0.55 }}
     >
+      {/* Linee catastali di sfondo */}
       <g
         fill="none"
         stroke="#c49a4a"
-        strokeWidth="0.15"
+        strokeWidth="0.12"
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
+        style={{ mixBlendMode: "overlay", opacity: 0.45 }}
       >
         <path data-catastal-path d="M2,18 Q22,14 38,22 T70,28 T98,22" />
         <path data-catastal-path d="M4,42 Q28,38 50,46 T82,52 L98,50" />
@@ -105,20 +127,41 @@ function CatastalOverlay() {
         <path data-catastal-path d="M82,4 Q86,32 80,60 T86,100" />
         <path data-catastal-path strokeDasharray="0.6 0.9" d="M6,30 L94,34" />
         <path data-catastal-path strokeDasharray="0.6 0.9" d="M10,78 L90,82" />
-        <path data-catastal-path strokeDasharray="0.3 0.6" d="M30,6 L34,94" />
-        <path data-catastal-path strokeDasharray="0.3 0.6" d="M68,4 L72,96" />
       </g>
-      {/* micro-annotazioni angolari */}
+
+      {/* IL FILO D'ORO — connessione dei 4 mestieri */}
+      <path
+        data-filo-shadow
+        d={filo}
+        fill="none"
+        stroke="#1a1210"
+        strokeWidth="0.55"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        opacity="0.6"
+      />
+      <path
+        data-filo
+        d={filo}
+        fill="none"
+        stroke="#c49a4a"
+        strokeWidth="0.28"
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        style={{ filter: "drop-shadow(0 0 4px rgba(196,154,74,0.6))" }}
+      />
+
+      {/* Micro-annotazioni angolari (Oswald monospace look) */}
       <g
         fill="#c49a4a"
         fontSize="1.1"
         fontFamily="ui-monospace, monospace"
-        opacity="0.55"
+        opacity="0.6"
       >
-        <text x="2.5" y="3.5">N 40°47'</text>
-        <text x="86" y="3.5">SETT. IV</text>
-        <text x="2.5" y="98.5">FOGLIO 12</text>
-        <text x="80" y="98.5">PART. 437</text>
+        <text x="2.5" y="3.5">FOGLIO 12 · NOCI (BA)</text>
+        <text x="74" y="3.5">SETTORE IV</text>
+        <text x="2.5" y="98.5">PART. 437 · 439 · 441</text>
+        <text x="76" y="98.5">SCALA 1:2000</text>
       </g>
     </svg>
   );
@@ -131,7 +174,7 @@ function FilmGrain() {
     <svg
       className="pointer-events-none absolute inset-0 h-full w-full"
       aria-hidden
-      style={{ mixBlendMode: "overlay", opacity: 0.08 }}
+      style={{ mixBlendMode: "overlay", opacity: 0.07 }}
     >
       <filter id={`grain-${id}`}>
         <feTurbulence
@@ -157,6 +200,7 @@ export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const catastalRef = useRef<HTMLDivElement>(null);
+  const ghostRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const pinLayerRef = useRef<HTMLDivElement>(null);
   const letterTopRef = useRef<HTMLDivElement>(null);
@@ -164,181 +208,170 @@ export function Hero() {
   const viewfinderRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
 
-  const [activePin, setActivePin] = useState<PinId | null>(null);
   const [hoverPin, setHoverPin] = useState<PinId | null>(null);
+  const [focusPin, setFocusPin] = useState<PinId | null>(null);
+  const [sheetPin, setSheetPin] = useState<PinId | null>(null);
   const [diving, setDiving] = useState<PinId | null>(null);
   const [touch, setTouch] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     setTouch(window.matchMedia("(pointer: coarse)").matches);
+    // Js-ready guard: contenuto sempre visibile in fallback, ma sblocca
+    // l'intro cinematografica una volta che JS è in piedi.
+    setReady(true);
   }, []);
 
-  /* ─── INTRO TIMELINE + AMBIENT LOOP + SCROLL OUTRO ─── */
+  const activePin = hoverPin ?? focusPin;
+
+  /* ─── INTRO TIMELINE · AMBIENT LOOP · SCROLL OUTRO ─── */
   useEffect(() => {
-    if (reduced || typeof window === "undefined") return;
+    if (reduced || !ready || typeof window === "undefined") return;
     gsap.registerPlugin(ScrollTrigger, Flip);
 
     const ctx = gsap.context(() => {
-      // Stato iniziale
+      // Stato iniziale (solo con JS attivo: il fallback resta visibile)
       gsap.set([letterTopRef.current, letterBotRef.current], { height: "12vh" });
       gsap.set(photoRef.current, {
         scale: 1.18,
-        rotate: -1.5,
-        filter: "blur(6px) brightness(0.7)",
+        filter: "blur(8px) brightness(0.65)",
         transformOrigin: "50% 55%",
       });
       gsap.set("[data-catastal-path]", {
-        strokeDasharray: 200,
-        strokeDashoffset: 200,
+        strokeDasharray: 220,
+        strokeDashoffset: 220,
       });
+      gsap.set("[data-filo], [data-filo-shadow]", {
+        strokeDasharray: 320,
+        strokeDashoffset: 320,
+      });
+      gsap.set("[data-ghost]", { opacity: 0, y: 30 });
       gsap.set("[data-copy-line]", {
         clipPath: "inset(100% 0 0 0)",
         y: 24,
         opacity: 0,
       });
       gsap.set("[data-eyebrow]", { opacity: 0, letterSpacing: "0.12em" });
-      gsap.set("[data-copy-accent]", {
-        opacity: 0,
-        y: 24,
-        textShadow: "0 0 0px rgba(179,58,26,0)",
-      });
+      gsap.set("[data-meta]", { opacity: 0, y: 8 });
+      gsap.set("[data-meta-rule]", { scaleX: 0 });
       gsap.set("[data-cta]", { opacity: 0, y: 16 });
       gsap.set("[data-pin]", { scale: 0, opacity: 0 });
+      gsap.set("[data-pin-label], [data-pin-leader]", { opacity: 0 });
       gsap.set("[data-cue]", { opacity: 0 });
-      gsap.set("[data-monogram]", { scale: 0.4, opacity: 0, transformOrigin: "50% 50%" });
+      gsap.set("[data-monogram]", {
+        scale: 0.4,
+        opacity: 0,
+        transformOrigin: "50% 50%",
+      });
       gsap.set("[data-wordmark-rule]", { scaleX: 0 });
       gsap.set(viewfinderRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // 1. Letterbox cinemascope
       tl.to([letterTopRef.current, letterBotRef.current], {
         height: 0,
-        duration: 1.0,
+        duration: 0.8,
         ease: "power3.inOut",
-      })
-        .to(
-          photoRef.current,
-          {
-            scale: 1.12,
-            rotate: 0,
-            filter: "blur(0px) brightness(1)",
-            duration: 1.6,
-            ease: "expo.out",
-          },
-          0.2,
-        )
-        .to(
-          "[data-catastal-path]",
-          {
-            strokeDashoffset: 0,
-            duration: 1.4,
-            ease: "power2.out",
-            stagger: 0.06,
-          },
-          0.6,
-        )
-        .to(
-          "[data-copy-line]",
-          {
-            clipPath: "inset(0% 0 0 0)",
-            y: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: "power4.out",
-            stagger: 0.12,
-          },
-          1.0,
-        )
-        .to(
-          "[data-eyebrow]",
-          {
-            opacity: 1,
-            letterSpacing: "0.22em",
-            duration: 0.8,
-            ease: "power3.out",
-          },
-          0.9,
-        )
-        .to(
-          "[data-copy-accent]",
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power4.out",
-            stagger: 0.08,
-          },
-          1.08,
-        )
-        .to(
-          "[data-copy-accent]",
-          {
-            textShadow:
-              "0 0 22px rgba(179,58,26,0.65), 0 0 44px rgba(196,154,74,0.35)",
-            duration: 0.45,
-            ease: "power2.out",
-            stagger: 0.08,
-          },
-          1.15,
-        )
-        .to(
-          "[data-copy-accent]",
-          {
-            textShadow: "0 0 0px rgba(179,58,26,0)",
-            duration: 1.1,
-            ease: "power2.inOut",
-            stagger: 0.08,
-          },
-          1.7,
-        )
-        .to(
-          "[data-cta]",
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
-          1.6,
-        )
-        .to(
-          "[data-pin]",
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.7,
-            ease: "back.out(2)",
-            stagger: 0.14,
-          },
-          1.4,
-        )
-        .to(
-          "[data-monogram]",
-          { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(2)" },
-          0.85,
-        )
-        .to(
-          "[data-wordmark-rule]",
-          { scaleX: 1, duration: 0.8, ease: "power3.out" },
-          1.2,
-        )
-        .to([viewfinderRef.current, "[data-cue]"], {
-          opacity: 1,
-          duration: 0.6,
-        }, 2.2);
+      });
 
-      // Skip / accelera se l'utente scrolla
+      // 2. La mappa "arriva" (drone che scende)
+      tl.to(
+        photoRef.current,
+        {
+          scale: 1.04,
+          filter: "blur(0px) brightness(1)",
+          duration: 1.6,
+          ease: "expo.out",
+        },
+        0.2,
+      );
+
+      // 3. Parola-fantasma (NOCI)
+      tl.to("[data-ghost]", { opacity: 0.07, y: 0, duration: 1.2 }, 0.4);
+
+      // 4. Linee catastali di sfondo
+      tl.to(
+        "[data-catastal-path]",
+        { strokeDashoffset: 0, duration: 1.2, stagger: 0.05 },
+        0.6,
+      );
+
+      // 5. FILO D'ORO che si disegna (la firma)
+      tl.to(
+        ["[data-filo-shadow]", "[data-filo]"],
+        { strokeDashoffset: 0, duration: 1.4, ease: "power2.inOut", stagger: 0.05 },
+        0.9,
+      );
+
+      // 6. Metadati editoriali + filetti
+      tl.to("[data-meta-rule]", { scaleX: 1, duration: 0.7 }, 1.1);
+      tl.to("[data-meta]", { opacity: 1, y: 0, duration: 0.5, stagger: 0.05 }, 1.2);
+
+      // 7. Logotipo: monogramma DG → Masseria mask-reveal → filetti + DON GIANVITO
+      tl.to(
+        "[data-monogram]",
+        { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(2)" },
+        1.0,
+      );
+      tl.to(
+        "[data-copy-line]",
+        {
+          clipPath: "inset(0% 0 0 0)",
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: "power4.out",
+          stagger: 0.1,
+        },
+        1.2,
+      );
+      tl.to("[data-eyebrow]", { opacity: 1, letterSpacing: "0.32em", duration: 0.8 }, 1.1);
+      tl.to("[data-wordmark-rule]", { scaleX: 1, duration: 0.8 }, 1.4);
+
+      // 8. CTA
+      tl.to("[data-cta]", { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, 1.7);
+
+      // 9. SIGILLI DI BRACE — si accendono in stagger come braci
+      tl.to(
+        "[data-pin]",
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 0.7,
+          ease: "back.out(2.2)",
+          stagger: 0.12,
+        },
+        1.6,
+      );
+      tl.to(
+        ["[data-pin-leader]", "[data-pin-label]"],
+        { opacity: 1, duration: 0.6, stagger: 0.08 },
+        2.0,
+      );
+
+      // 10. Cue + viewfinder
+      tl.to([viewfinderRef.current, "[data-cue]"], { opacity: 1, duration: 0.6 }, 2.3);
+
+      // Skip se l'utente scrolla durante l'intro
       const onScroll = () => {
         if (tl.progress() < 1) tl.timeScale(2.4);
       };
       window.addEventListener("scroll", onScroll, { passive: true, once: true });
 
-      // Ambient drone-hover (loop continuo)
-      gsap.to(stageRef.current, {
-        y: 4,
-        duration: 6,
+      // Ambient drone-hover loop
+      gsap.to(photoRef.current, {
+        scale: 1.08,
+        duration: 18,
         ease: "sine.inOut",
         yoyo: true,
         repeat: -1,
+        delay: 2.6,
       });
-      gsap.to(photoRef.current, {
-        scale: 1.16,
-        duration: 20,
+      gsap.to(stageRef.current, {
+        y: 6,
+        duration: 7,
         ease: "sine.inOut",
         yoyo: true,
         repeat: -1,
@@ -347,7 +380,7 @@ export function Hero() {
       // Pin respiro (sfasati)
       gsap.utils.toArray<HTMLElement>("[data-pin-core]").forEach((el, i) => {
         gsap.to(el, {
-          scale: 1.06,
+          scale: 1.08,
           duration: 2.4,
           ease: "sine.inOut",
           yoyo: true,
@@ -356,74 +389,74 @@ export function Hero() {
         });
       });
 
-      // Outro su scroll: continuità con sezioni sotto
+      // Outro: parallax leggero su scroll
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top top",
         end: "bottom top",
         scrub: true,
-        animation: gsap.timeline().to(stageRef.current, {
-          scale: 1.05,
-          yPercent: -6,
-          ease: "none",
-        }),
+        invalidateOnRefresh: true,
+        animation: gsap
+          .timeline()
+          .to(stageRef.current, { yPercent: 12, ease: "none" }, 0)
+          .to([copyRef.current, ghostRef.current], { opacity: 0, yPercent: -20, ease: "none" }, 0)
+          .to("[data-meta]", { opacity: 0, ease: "none" }, 0),
       });
+
+      return () => window.removeEventListener("scroll", onScroll);
     }, sectionRef);
 
     return () => ctx.revert();
-  }, [reduced]);
+  }, [reduced, ready]);
 
-  /* ─── MOUSE PARALLAX MULTILIVELLO + VIEWFINDER ─── */
+  /* ─── MOUSE PARALLAX + VIEWFINDER ─── */
   useEffect(() => {
-    if (reduced || touch || typeof window === "undefined") return;
+    if (reduced || touch || !ready || typeof window === "undefined") return;
     const section = sectionRef.current;
     if (!section) return;
 
-    const xPhoto = gsap.quickTo(photoRef.current, "x", { duration: 0.8, ease: "power3.out" });
-    const yPhoto = gsap.quickTo(photoRef.current, "y", { duration: 0.8, ease: "power3.out" });
+    const xPhoto = gsap.quickTo(photoRef.current, "x", { duration: 0.9, ease: "power3.out" });
+    const yPhoto = gsap.quickTo(photoRef.current, "y", { duration: 0.9, ease: "power3.out" });
     const xCat = gsap.quickTo(catastalRef.current, "x", { duration: 0.7, ease: "power3.out" });
     const yCat = gsap.quickTo(catastalRef.current, "y", { duration: 0.7, ease: "power3.out" });
-    const xCopy = gsap.quickTo(copyRef.current, "x", { duration: 0.6, ease: "power3.out" });
-    const yCopy = gsap.quickTo(copyRef.current, "y", { duration: 0.6, ease: "power3.out" });
     const xPins = gsap.quickTo(pinLayerRef.current, "x", { duration: 0.7, ease: "power3.out" });
     const yPins = gsap.quickTo(pinLayerRef.current, "y", { duration: 0.7, ease: "power3.out" });
-
-    const xVF = gsap.quickTo(viewfinderRef.current, "x", { duration: 0.35, ease: "power3.out" });
-    const yVF = gsap.quickTo(viewfinderRef.current, "y", { duration: 0.35, ease: "power3.out" });
+    const xCopy = gsap.quickTo(copyRef.current, "x", { duration: 0.7, ease: "power3.out" });
+    const yCopy = gsap.quickTo(copyRef.current, "y", { duration: 0.7, ease: "power3.out" });
+    const xVF = gsap.quickTo(viewfinderRef.current, "x", { duration: 0.3, ease: "power3.out" });
+    const yVF = gsap.quickTo(viewfinderRef.current, "y", { duration: 0.3, ease: "power3.out" });
 
     const onMove = (e: MouseEvent) => {
       const r = section.getBoundingClientRect();
       const cx = (e.clientX - r.left) / r.width - 0.5;
       const cy = (e.clientY - r.top) / r.height - 0.5;
-      xPhoto(cx * -8);
-      yPhoto(cy * -8);
-      xCat(cx * -14);
-      yCat(cy * -14);
-      xPins(cx * -18);
-      yPins(cy * -18);
-      xCopy(cx * -22);
-      yCopy(cy * -22);
-
+      xPhoto(cx * -10);
+      yPhoto(cy * -10);
+      xCat(cx * -16);
+      yCat(cy * -16);
+      xPins(cx * -20);
+      yPins(cy * -20);
+      xCopy(cx * -24);
+      yCopy(cy * -24);
       xVF(e.clientX - r.left);
       yVF(e.clientY - r.top);
     };
 
     section.addEventListener("mousemove", onMove);
     return () => section.removeEventListener("mousemove", onMove);
-  }, [reduced, touch]);
+  }, [reduced, touch, ready]);
 
   /* ─── HOVER: SPOTLIGHT + DESATURAZIONE ─── */
   useEffect(() => {
     if (reduced) return;
-    const target = hoverPin ?? activePin;
     const stage = stageRef.current;
     const spot = spotlightRef.current;
     if (!stage || !spot) return;
 
-    if (target) {
-      const pin = PINS.find((p) => p.id === target)!;
+    if (activePin) {
+      const p = PINS.find((x) => x.id === activePin)!;
       gsap.to(stage, {
-        filter: "brightness(0.6) saturate(0.7)",
+        filter: "brightness(0.55) saturate(0.6)",
         duration: 0.4,
         ease: "power2.out",
       });
@@ -431,8 +464,9 @@ export function Hero() {
         opacity: 1,
         duration: 0.4,
         ease: "power2.out",
-        "--sx": `${pin.left}%`,
-        "--sy": `${pin.top}%`,
+        "--sx": `${p.left}%`,
+        "--sy": `${p.top}%`,
+        "--sr": "22vw",
       } as gsap.TweenVars);
     } else {
       gsap.to(stage, {
@@ -442,7 +476,7 @@ export function Hero() {
       });
       gsap.to(spot, { opacity: 0, duration: 0.5, ease: "power2.out" });
     }
-  }, [hoverPin, activePin, reduced]);
+  }, [activePin, reduced]);
 
   /* ─── CLICK: TUFFO NEL LUOGO ─── */
   const dive = useCallback(
@@ -459,13 +493,16 @@ export function Hero() {
         onComplete: () => navigate({ to: pin.to }),
       });
       if (spot) {
-        gsap.set(spot, { "--sx": `${pin.left}%`, "--sy": `${pin.top}%` } as gsap.TweenVars);
+        gsap.set(spot, {
+          "--sx": `${pin.left}%`,
+          "--sy": `${pin.top}%`,
+        } as gsap.TweenVars);
         tl.to(
           spot,
           {
             opacity: 1,
-            "--sr": "160%",
-            duration: 0.8,
+            "--sr": "180%",
+            duration: 0.9,
             ease: "power3.inOut",
           } as gsap.TweenVars,
           0,
@@ -475,17 +512,17 @@ export function Hero() {
         tl.to(
           stage,
           {
-            scale: 1.5,
+            scale: 1.6,
             transformOrigin: `${pin.left}% ${pin.top}%`,
-            duration: 0.8,
+            filter: "brightness(1) saturate(1.1)",
+            duration: 0.9,
             ease: "power3.inOut",
-            filter: "brightness(1) saturate(1)",
           },
           0,
         );
       }
       tl.to(
-        [copyRef.current, pinLayerRef.current, viewfinderRef.current],
+        [copyRef.current, pinLayerRef.current, viewfinderRef.current, ghostRef.current],
         { opacity: 0, duration: 0.5, ease: "power2.out" },
         0,
       );
@@ -503,15 +540,15 @@ export function Hero() {
         perspective: "1200px",
         cursor: !reduced && !touch ? "none" : "default",
       }}
-      aria-label="Sorvolo cinematografico della Masseria Don Gianvito"
+      aria-label="Sorvolo cinematografico della Masseria Don Gianvito a Noci"
     >
-      {/* STAGE: tutto ciò che riceve il desat/zoom su hover/click */}
+      {/* STAGE: tutto ciò che riceve desat/zoom su hover/click */}
       <div ref={stageRef} className="absolute inset-0">
-        {/* L0 — Foto aerea */}
+        {/* L0 — Mappa (foto aerea) */}
         <div ref={photoRef} className="absolute inset-0 -m-[6%]">
           <img
             src={heroAerial}
-            alt="Vista aerea all'alba della Masseria Don Gianvito a Noci, con masseria, oliveti, pascoli e stalle"
+            alt="Vista aerea della Masseria Don Gianvito a Noci con allevamento, caseificio, macelleria e braceria"
             width={1920}
             height={1280}
             className="h-full w-full object-cover"
@@ -520,13 +557,13 @@ export function Hero() {
           />
         </div>
 
-        {/* L1 — Color grade caldo */}
+        {/* L1 — Grading caldo + vignetta */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 85% 70% at 50% 62%, rgba(179,58,26,0.18) 0%, transparent 60%)",
+              "radial-gradient(ellipse 85% 70% at 50% 62%, rgba(179,58,26,0.20) 0%, transparent 60%)",
             mixBlendMode: "soft-light",
           }}
         />
@@ -535,19 +572,19 @@ export function Hero() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 35%, rgba(26,18,16,0.55) 80%, rgba(26,18,16,0.85) 100%)",
+              "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 30%, rgba(26,18,16,0.55) 75%, rgba(26,18,16,0.88) 100%)",
           }}
         />
 
         {/* L2 — Grana */}
         <FilmGrain />
 
-        {/* L3 — Mappa catastale */}
+        {/* L3 — Mappa catastale + FILO D'ORO che collega i 4 mestieri */}
         <div ref={catastalRef} className="absolute inset-0">
           <CatastalOverlay />
         </div>
 
-        {/* L4 — Spotlight (mascherato da CSS vars) */}
+        {/* L4 — Spotlight su hover/click */}
         <div
           ref={spotlightRef}
           aria-hidden
@@ -558,52 +595,176 @@ export function Hero() {
               ["--sy" as string]: "50%",
               ["--sr" as string]: "22vw",
               background:
-                "radial-gradient(circle var(--sr) at var(--sx) var(--sy), rgba(255,205,140,0.18) 0%, rgba(255,180,90,0.06) 30%, transparent 60%)",
+                "radial-gradient(circle var(--sr) at var(--sx) var(--sy), rgba(255,205,140,0.22) 0%, rgba(255,180,90,0.08) 30%, transparent 60%)",
               mixBlendMode: "screen",
             } as React.CSSProperties
           }
         />
       </div>
 
-      {/* Bordo notte basso per legibilità */}
+      {/* L3b — Parola-fantasma stratificata (sotto al copy, sopra alla mappa) */}
+      <div
+        ref={ghostRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-[8] hidden items-center justify-center md:flex"
+        style={{ mixBlendMode: "overlay" }}
+      >
+        <span
+          data-ghost
+          className="font-display whitespace-nowrap text-[color:var(--crema)] leading-none"
+          style={{
+            fontSize: "clamp(14rem, 28vw, 28rem)",
+            opacity: 0.06,
+            letterSpacing: "-0.04em",
+            transform: "translateX(-2%)",
+          }}
+        >
+          NOCI
+        </span>
+      </div>
+
+      {/* Bordo notte basso per leggibilità CTA/cue */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-80"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[9] h-80"
         style={{
           background:
-            "linear-gradient(0deg, var(--carbone) 0%, rgba(26,18,16,0.55) 45%, transparent 100%)",
+            "linear-gradient(0deg, var(--carbone) 0%, rgba(26,18,16,0.5) 50%, transparent 100%)",
         }}
       />
 
-      {/* L5 — PIN LAYER (desktop) — sopra al copy per evitare occlusioni */}
+      {/* L6 — METADATI EDITORIALI (angoli) */}
+      <div className="pointer-events-none absolute inset-0 z-30 hidden md:block">
+        <div className="absolute left-6 top-24 flex items-center gap-3">
+          <span
+            data-meta-rule
+            aria-hidden
+            className="block h-px w-12 origin-left"
+            style={{ background: "linear-gradient(90deg, var(--oro), transparent)" }}
+          />
+          <span
+            data-meta
+            className="font-eyebrow text-[10px] text-[color:var(--oro)]"
+            style={{ letterSpacing: "0.32em" }}
+          >
+            QUI NON ARRIVA NIENTE DA FUORI
+          </span>
+        </div>
+        <div className="absolute right-6 top-24">
+          <span
+            data-meta
+            className="font-eyebrow text-[10px] text-[color:var(--crema)]/70"
+            style={{ letterSpacing: "0.28em" }}
+          >
+            40.642°N — 17.042°E
+          </span>
+        </div>
+        <div className="absolute bottom-24 right-6 flex items-center gap-3">
+          <span
+            data-meta
+            className="font-eyebrow text-[10px] text-[color:var(--crema)]/70"
+            style={{ letterSpacing: "0.28em" }}
+          >
+            MASSERIA · NOCI · PUGLIA
+          </span>
+          <span
+            data-meta-rule
+            aria-hidden
+            className="block h-px w-12 origin-right"
+            style={{ background: "linear-gradient(270deg, var(--oro), transparent)" }}
+          />
+        </div>
+      </div>
+
+      {/* L5 — PIN LAYER (desktop) */}
       <div
         ref={pinLayerRef}
         className="pointer-events-none absolute inset-0 z-40 hidden md:block"
       >
         {PINS.map((p) => {
-          const isActive = (hoverPin ?? activePin) === p.id;
-          const isOtherActive = (hoverPin ?? activePin) && !isActive;
-          const flipRight = p.left < 42;
-          const flipDown = p.top < 28;
+          const isActive = activePin === p.id;
+          const isOtherActive = activePin && !isActive;
+          const showCard = isActive;
+          const cardFlipRight = p.left < 42;
+          const cardFlipDown = p.top < 28;
+          const leaderRight = p.labelSide === "right";
+
           return (
             <div
               key={p.id}
-              data-pin
               className="absolute"
               style={{ top: `${p.top}%`, left: `${p.left}%` }}
             >
+              {/* Etichetta editoriale + leader-line (SEMPRE visibile) */}
               <div
-                className="pointer-events-auto relative -translate-x-1/2 -translate-y-1/2"
-                style={{ opacity: isOtherActive ? 0.35 : 1, transition: "opacity .35s" }}
+                className="absolute"
+                style={{
+                  top: `${p.labelDy}%`,
+                  [leaderRight ? "left" : "right"]: "18px",
+                  transform: `translateY(-50%)`,
+                  opacity: isOtherActive ? 0.35 : 1,
+                  transition: "opacity .35s",
+                }}
+              >
+                <div
+                  className={[
+                    "flex items-center gap-3",
+                    leaderRight ? "flex-row" : "flex-row-reverse",
+                  ].join(" ")}
+                >
+                  <span
+                    data-pin-leader
+                    aria-hidden
+                    className="block h-px w-[56px] shrink-0"
+                    style={{
+                      background: leaderRight
+                        ? "linear-gradient(90deg, var(--oro), transparent)"
+                        : "linear-gradient(270deg, var(--oro), transparent)",
+                    }}
+                  />
+                  <div
+                    data-pin-label
+                    className={[
+                      "whitespace-nowrap",
+                      leaderRight ? "text-left" : "text-right",
+                    ].join(" ")}
+                  >
+                    <p
+                      className="font-eyebrow text-[10px] text-[color:var(--oro)]"
+                      style={{ letterSpacing: "0.28em" }}
+                    >
+                      {p.label}
+                    </p>
+                    <p className="font-display text-[15px] italic leading-tight text-[color:var(--crema)]">
+                      {p.caption}
+                    </p>
+                    <p className="mt-0.5 font-eyebrow text-[9px] tracking-[0.22em] text-[color:var(--crema)]/55">
+                      {p.coords}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* SIGILLO DI BRACE */}
+              <div
+                data-pin
+                className="pointer-events-auto absolute"
+                style={{
+                  top: 0,
+                  left: 0,
+                  transform: "translate(-50%, -50%)",
+                  opacity: isOtherActive ? 0.55 : 1,
+                  transition: "opacity .35s",
+                }}
               >
                 <motion.button
                   type="button"
                   onMouseEnter={() => setHoverPin(p.id)}
                   onMouseLeave={() => setHoverPin(null)}
-                  onFocus={() => setActivePin(p.id)}
-                  onBlur={() => setActivePin(null)}
+                  onFocus={() => setFocusPin(p.id)}
+                  onBlur={() => setFocusPin(null)}
                   onClick={() => dive(p)}
-                  aria-label={`Apri la pagina ${p.label} — ${p.description}`}
+                  aria-label={`Apri ${p.label} — ${p.description}`}
                   whileHover={{ scale: 1.25 }}
                   whileFocus={{ scale: 1.25 }}
                   whileTap={{ scale: 0.95 }}
@@ -612,10 +773,10 @@ export function Hero() {
                 >
                   <span
                     aria-hidden
-                    className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full"
                     style={{
                       background:
-                        "radial-gradient(circle, rgba(196,154,74,0.55) 0%, rgba(179,58,26,0.35) 35%, transparent 70%)",
+                        "radial-gradient(circle, rgba(196,154,74,0.55) 0%, rgba(179,58,26,0.32) 35%, transparent 70%)",
                       filter: "blur(2px)",
                     }}
                   />
@@ -625,46 +786,31 @@ export function Hero() {
                     className="relative block h-7 w-7 rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_8px_24px_-4px_rgba(179,58,26,0.7),inset_0_0_8px_rgba(0,0,0,0.4)]"
                     style={{ background: "var(--grad-ember)" }}
                   >
-                    <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]/95 shadow-[0_0_6px_rgba(242,232,213,0.9)]" />
+                    <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]/95 shadow-[0_0_8px_rgba(242,232,213,0.9)]" />
                   </span>
                 </motion.button>
 
-                {/* Preview card con leader line in oro */}
+                {/* Preview card su hover/focus */}
                 <AnimatePresence>
-                  {isActive && (
+                  {showCard && (
                     <motion.div
-                      initial={{ opacity: 0, y: flipDown ? -8 : 8 }}
+                      initial={{ opacity: 0, y: cardFlipDown ? -8 : 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: flipDown ? -8 : 8 }}
+                      exit={{ opacity: 0, y: cardFlipDown ? -8 : 8 }}
                       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                       className={[
                         "pointer-events-auto absolute z-50 w-[300px]",
-                        flipDown ? "top-8" : "bottom-8",
-                        flipRight ? "left-6" : "right-6",
+                        cardFlipDown ? "top-8" : "bottom-8",
+                        cardFlipRight ? "left-6" : "right-6",
                       ].join(" ")}
                     >
-                      <motion.span
-                        aria-hidden
-                        className={[
-                          "absolute h-px",
-                          flipDown ? "bottom-full" : "top-full",
-                          flipRight ? "left-0" : "right-0",
-                        ].join(" ")}
-                        style={{
-                          background:
-                            "linear-gradient(90deg, transparent, var(--oro))",
-                        }}
-                        initial={{ width: 0 }}
-                        animate={{ width: 48 }}
-                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                      />
                       <a
                         href={p.to}
                         onClick={(e) => {
                           e.preventDefault();
                           dive(p);
                         }}
-                        className="block overflow-hidden rounded-2xl border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/85 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85),0_0_0_1px_rgba(196,154,74,0.15)] backdrop-blur-xl ring-0 transition-transform hover:scale-[1.015]"
+                        className="block overflow-hidden rounded-2xl border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/90 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85),0_0_0_1px_rgba(196,154,74,0.15)] backdrop-blur-xl transition-transform hover:scale-[1.015]"
                       >
                         <div className="relative aspect-[16/10] w-full overflow-hidden">
                           <img
@@ -686,13 +832,19 @@ export function Hero() {
                           />
                         </div>
                         <div className="px-4 pb-4 pt-3">
-                          <p className="font-eyebrow text-[10px] uppercase tracking-[0.28em] text-[color:var(--oro)]">
+                          <p
+                            className="font-eyebrow text-[10px] text-[color:var(--oro)]"
+                            style={{ letterSpacing: "0.28em" }}
+                          >
                             {p.label}
                           </p>
                           <p className="mt-1.5 text-[13px] leading-snug text-[color:var(--crema)]/90">
                             {p.description}
                           </p>
-                          <p className="mt-3 font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--terracotta)]">
+                          <p
+                            className="mt-3 font-eyebrow text-[10px] text-[color:var(--terracotta)]"
+                            style={{ letterSpacing: "0.28em" }}
+                          >
                             Scopri →
                           </p>
                         </div>
@@ -706,41 +858,41 @@ export function Hero() {
         })}
       </div>
 
-      {/* L6 — COPY / LOGOTIPO */}
+      {/* L4b — LOGOTIPO (pointer-events:none, CTA riattivano) */}
       <div
         ref={copyRef}
         className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center"
         style={{
-          opacity: (hoverPin ?? activePin) ? 0.25 : 1,
+          opacity: activePin ? 0.22 : 1,
           transition: "opacity .35s",
         }}
       >
-        <div data-copy-line>
-          <p
-            data-eyebrow
-            className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs"
-            style={{ letterSpacing: "0.32em" }}
-          >
-            IL RITO DELLA BRACE
-          </p>
-        </div>
-
-
-        <div className="relative mt-5 flex max-w-3xl flex-col items-center">
-          {/* velo locale per leggibilità */}
+        <div className="relative flex max-w-3xl flex-col items-center">
+          {/* Velo locale per leggibilità AA sopra alla mappa */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-x-16 -inset-y-12 -z-10"
+            className="pointer-events-none absolute -inset-x-20 -inset-y-16 -z-10"
             style={{
               background:
-                "radial-gradient(ellipse 80% 75% at 50% 55%, rgba(26,18,16,0.78) 0%, rgba(61,42,30,0.4) 55%, transparent 88%)",
+                "radial-gradient(ellipse 80% 75% at 50% 55%, rgba(26,18,16,0.78) 0%, rgba(61,42,30,0.38) 55%, transparent 88%)",
             }}
           />
+
+          {/* Eyebrow */}
+          <div data-copy-line className="overflow-hidden">
+            <p
+              data-eyebrow
+              className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs"
+              style={{ letterSpacing: "0.32em" }}
+            >
+              IL RITO DELLA BRACE
+            </p>
+          </div>
 
           {/* Monogramma DG — sigillo ceralacca */}
           <div
             data-monogram
-            className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_10px_30px_-6px_rgba(179,58,26,0.7),inset_0_0_10px_rgba(0,0,0,0.45)]"
+            className="mt-5 flex h-16 w-16 items-center justify-center rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_10px_30px_-6px_rgba(179,58,26,0.7),inset_0_0_10px_rgba(0,0,0,0.45)]"
             style={{ background: "var(--grad-ember)" }}
             aria-hidden
           >
@@ -752,20 +904,18 @@ export function Hero() {
             </span>
           </div>
 
-          {/* Riga 1 — "Masseria" */}
-          <h1 className="flex flex-col items-center text-[color:var(--crema)]">
+          {/* Logotipo */}
+          <h1 className="mt-5 flex flex-col items-center text-[color:var(--crema)]">
             <span data-copy-line className="block overflow-hidden leading-none">
               <span
                 className="font-display block leading-[0.95]"
-                style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}
+                style={{ fontSize: "clamp(2.6rem, 7.5vw, 6.5rem)" }}
               >
                 <span className="italic">M</span>asseria
               </span>
             </span>
 
-            {/* Riga 2 — filetti + DON GIANVITO */}
             <span
-              data-wordmark
               className="mt-4 flex w-full items-center justify-center gap-4"
               aria-label="Don Gianvito"
             >
@@ -774,14 +924,15 @@ export function Hero() {
                 aria-hidden
                 className="h-px w-[clamp(40px,12vw,140px)] origin-right"
                 style={{
-                  background:
-                    "linear-gradient(90deg, transparent, var(--oro))",
+                  background: "linear-gradient(90deg, transparent, var(--oro))",
                 }}
               />
               <span
-                data-copy-accent
-                className="font-eyebrow whitespace-nowrap text-[clamp(0.85rem,1.6vw,1.25rem)] text-[color:var(--oro)]"
-                style={{ letterSpacing: "0.35em" }}
+                className="font-eyebrow whitespace-nowrap text-[color:var(--oro)]"
+                style={{
+                  fontSize: "clamp(0.85rem, 1.6vw, 1.25rem)",
+                  letterSpacing: "0.35em",
+                }}
               >
                 DON GIANVITO
               </span>
@@ -790,8 +941,7 @@ export function Hero() {
                 aria-hidden
                 className="h-px w-[clamp(40px,12vw,140px)] origin-left"
                 style={{
-                  background:
-                    "linear-gradient(270deg, transparent, var(--oro))",
+                  background: "linear-gradient(270deg, transparent, var(--oro))",
                 }}
               />
             </span>
@@ -800,7 +950,7 @@ export function Hero() {
           {/* Microriga mestieri */}
           <div data-copy-line className="mt-6 overflow-hidden">
             <p
-              className="font-sans text-[13px] text-[color:var(--crema)]/70 md:text-[14px]"
+              className="font-sans text-[13px] text-[color:var(--crema)]/75 md:text-[14px]"
               style={{ letterSpacing: "0.1em" }}
             >
               Allevamento · Caseificio · Macelleria · Braceria
@@ -808,7 +958,7 @@ export function Hero() {
             </p>
           </div>
 
-          {/* CTA compatte */}
+          {/* CTA */}
           <div className="pointer-events-auto mt-8 flex flex-col items-center gap-3 sm:flex-row">
             <MagneticCTA data-cta as="a" href="tel:+393339395750" primary>
               Prenota un tavolo
@@ -827,7 +977,6 @@ export function Hero() {
         </div>
       </div>
 
-
       {/* L7 — LETTERBOX */}
       <div
         ref={letterTopRef}
@@ -840,7 +989,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 z-40 bg-[color:var(--carbone)]"
       />
 
-      {/* VIEWFINDER cursor */}
+      {/* VIEWFINDER cursor (desktop, no-touch) */}
       {!reduced && !touch && (
         <div
           ref={viewfinderRef}
@@ -848,12 +997,10 @@ export function Hero() {
           className="pointer-events-none absolute left-0 top-0 z-50 -translate-x-1/2 -translate-y-1/2"
         >
           <div className="relative h-10 w-10">
-            {/* angoli ad L */}
             <span className="absolute left-0 top-0 h-2.5 w-2.5 border-l border-t border-[color:var(--oro)]" />
             <span className="absolute right-0 top-0 h-2.5 w-2.5 border-r border-t border-[color:var(--oro)]" />
             <span className="absolute bottom-0 left-0 h-2.5 w-2.5 border-b border-l border-[color:var(--oro)]" />
             <span className="absolute bottom-0 right-0 h-2.5 w-2.5 border-b border-r border-[color:var(--oro)]" />
-            {/* crosshair */}
             <span className="absolute left-1/2 top-1/2 h-2 w-px -translate-x-1/2 -translate-y-1/2 bg-[color:var(--oro)]/70" />
             <span className="absolute left-1/2 top-1/2 h-px w-2 -translate-x-1/2 -translate-y-1/2 bg-[color:var(--oro)]/70" />
           </div>
@@ -876,7 +1023,7 @@ export function Hero() {
       <div
         data-cue
         aria-hidden
-        className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2 text-[color:var(--crema)]/70"
+        className="absolute bottom-6 left-1/2 z-30 hidden -translate-x-1/2 flex-col items-center gap-2 text-[color:var(--crema)]/70 md:flex"
       >
         <span className="font-eyebrow text-[9px] tracking-[0.3em]">SORVOLA</span>
         <motion.span
@@ -891,35 +1038,101 @@ export function Hero() {
         />
       </div>
 
-      {/* MOBILE FILMSTRIP */}
-      <div className="absolute inset-x-0 bottom-0 z-30 px-4 pb-6 md:hidden">
-        <ul
-          className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2"
-          aria-label="Mestieri della masseria"
-        >
-          {PINS.map((p) => (
-            <li key={p.id} className="snap-start shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setActivePin(p.id);
-                  setTimeout(() => dive(p), 180);
-                }}
-                className="flex w-[68vw] max-w-[280px] flex-col gap-1 rounded-2xl border border-[color:var(--oro)]/30 bg-[color:var(--carbone)]/75 px-4 py-3 text-left backdrop-blur-md"
-              >
-                <span className="font-eyebrow text-[10px] tracking-[0.22em] text-[color:var(--oro)]">
-                  {p.label}
-                </span>
-                <span className="font-display text-base italic text-[color:var(--crema)]">
-                  {p.caption}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
+      {/* MOBILE — Sigilli sulla mappa + bottom-sheet */}
+      <div className="absolute inset-0 z-40 md:hidden">
+        {PINS.map((p) => (
+          <button
+            key={p.id}
+            type="button"
+            onClick={() => setSheetPin(p.id)}
+            aria-label={`Apri ${p.label}`}
+            className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_8px_24px_-4px_rgba(179,58,26,0.7)]"
+            style={{
+              top: `${p.top}%`,
+              left: `${p.left}%`,
+              background: "var(--grad-ember)",
+            }}
+          >
+            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]" />
+          </button>
+        ))}
       </div>
 
-      {/* DIVE OVERLAY — durante la transizione, blocca interazioni */}
+      {/* MOBILE BOTTOM-SHEET */}
+      <AnimatePresence>
+        {sheetPin && (
+          <>
+            <motion.div
+              key="sheet-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setSheetPin(null)}
+              className="absolute inset-0 z-[55] bg-[color:var(--carbone)]/70 md:hidden"
+            />
+            {(() => {
+              const p = PINS.find((x) => x.id === sheetPin)!;
+              return (
+                <motion.div
+                  key="sheet"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "100%" }}
+                  transition={{ type: "spring", stiffness: 280, damping: 32 }}
+                  className="absolute inset-x-0 bottom-0 z-[56] rounded-t-3xl border-t border-[color:var(--oro)]/35 bg-[color:var(--carbone)]/95 p-5 backdrop-blur-xl md:hidden"
+                >
+                  <div className="mx-auto mb-3 h-1 w-12 rounded-full bg-[color:var(--crema)]/30" />
+                  <div className="overflow-hidden rounded-2xl">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden">
+                      <img
+                        src={p.thumb}
+                        alt=""
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                        draggable={false}
+                      />
+                    </div>
+                  </div>
+                  <p
+                    className="font-eyebrow mt-4 text-[10px] text-[color:var(--oro)]"
+                    style={{ letterSpacing: "0.28em" }}
+                  >
+                    {p.label}
+                  </p>
+                  <p className="mt-1 font-display text-2xl italic text-[color:var(--crema)]">
+                    {p.caption}
+                  </p>
+                  <p className="mt-2 text-sm text-[color:var(--crema)]/80">
+                    {p.description}
+                  </p>
+                  <div className="mt-5 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSheetPin(null);
+                        dive(p);
+                      }}
+                      className="bg-grad-brace inline-flex flex-1 items-center justify-center rounded-full px-5 py-3 font-eyebrow text-[11px] tracking-[0.22em] text-[color:var(--crema)] shadow-[0_14px_36px_-10px_rgba(179,58,26,0.65)]"
+                    >
+                      Scopri →
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSheetPin(null)}
+                      className="inline-flex items-center justify-center rounded-full border border-[color:var(--oro)]/50 px-5 py-3 font-eyebrow text-[11px] tracking-[0.22em] text-[color:var(--crema)]"
+                    >
+                      Chiudi
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })()}
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* DIVE OVERLAY — blocca interazioni durante la transizione */}
       {diving && (
         <div className="pointer-events-auto absolute inset-0 z-[60]" aria-hidden />
       )}
