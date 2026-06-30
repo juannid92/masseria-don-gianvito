@@ -714,54 +714,90 @@ export function Hero() {
         </div>
 
 
-        <div className="relative max-w-3xl">
-          {/* velo locale --grad-night per leggibilità AA, solo sotto al blocco testo */}
+        <div className="relative mt-5 flex max-w-3xl flex-col items-center">
+          {/* velo locale per leggibilità */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -inset-x-6 -inset-y-8 -z-10"
+            className="pointer-events-none absolute -inset-x-16 -inset-y-12 -z-10"
             style={{
               background:
-                "radial-gradient(ellipse 90% 85% at 18% 55%, rgba(26,18,16,0.82) 0%, rgba(61,42,30,0.45) 55%, transparent 88%)",
+                "radial-gradient(ellipse 80% 75% at 50% 55%, rgba(26,18,16,0.78) 0%, rgba(61,42,30,0.4) 55%, transparent 88%)",
             }}
           />
-          <h1
-            className="font-display text-balance leading-[0.95] text-[color:var(--crema)]"
-            style={{ fontSize: "clamp(2.6rem, 7vw, 6.2rem)" }}
+
+          {/* Monogramma DG — sigillo ceralacca */}
+          <div
+            data-monogram
+            className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_10px_30px_-6px_rgba(179,58,26,0.7),inset_0_0_10px_rgba(0,0,0,0.45)]"
+            style={{ background: "var(--grad-ember)" }}
+            aria-hidden
           >
-            <span data-copy-line className="block overflow-hidden">
-              Senti la{" "}
+            <span
+              className="font-display text-[26px] italic leading-none text-[color:var(--crema)]"
+              style={{ textShadow: "0 1px 0 rgba(0,0,0,0.4)" }}
+            >
+              DG
+            </span>
+          </div>
+
+          {/* Riga 1 — "Masseria" */}
+          <h1 className="flex flex-col items-center text-[color:var(--crema)]">
+            <span data-copy-line className="block overflow-hidden leading-none">
               <span
-                data-copy-accent
-                className="relative italic text-[color:var(--terracotta)]"
+                className="font-display block leading-[0.95]"
+                style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}
               >
-                brace
+                <span className="italic">M</span>asseria
               </span>
             </span>
-            <span data-copy-line className="block overflow-hidden">
-              prima ancora di{" "}
+
+            {/* Riga 2 — filetti + DON GIANVITO */}
+            <span
+              data-wordmark
+              className="mt-4 flex w-full items-center justify-center gap-4"
+              aria-label="Don Gianvito"
+            >
+              <span
+                data-wordmark-rule
+                aria-hidden
+                className="h-px w-[clamp(40px,12vw,140px)] origin-right"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, var(--oro))",
+                }}
+              />
               <span
                 data-copy-accent
-                className="relative italic text-[color:var(--terracotta)]"
+                className="font-eyebrow whitespace-nowrap text-[clamp(0.85rem,1.6vw,1.25rem)] text-[color:var(--oro)]"
+                style={{ letterSpacing: "0.35em" }}
               >
-                arrivare
+                DON GIANVITO
               </span>
-              .
+              <span
+                data-wordmark-rule
+                aria-hidden
+                className="h-px w-[clamp(40px,12vw,140px)] origin-left"
+                style={{
+                  background:
+                    "linear-gradient(270deg, transparent, var(--oro))",
+                }}
+              />
             </span>
           </h1>
-          <div data-copy-line className="overflow-hidden">
-            <p className="mt-6 max-w-[48ch] text-sm leading-relaxed text-[color:var(--crema)]/85 md:text-base">
-              Una masseria dove la carne nasce, cresce e finisce sul fuoco.
-              Siediti dove tutto ha inizio.
+
+          {/* Microriga mestieri */}
+          <div data-copy-line className="mt-6 overflow-hidden">
+            <p
+              className="font-sans text-[13px] text-[color:var(--crema)]/70 md:text-[14px]"
+              style={{ letterSpacing: "0.1em" }}
+            >
+              Allevamento · Caseificio · Macelleria · Braceria
+              <span className="text-[color:var(--oro)]/70"> — Noci, Puglia</span>
             </p>
           </div>
 
-          <div data-cta className="mt-7">
-            <p className="font-sans text-[13px] text-[color:var(--oro)]/70">
-              Noci, Puglia — dalla stalla alla brace
-            </p>
-          </div>
-
-          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* CTA compatte */}
+          <div className="pointer-events-auto mt-8 flex flex-col items-center gap-3 sm:flex-row">
             <MagneticCTA data-cta as="a" href="tel:+393339395750" primary>
               Prenota un tavolo
             </MagneticCTA>
@@ -778,6 +814,7 @@ export function Hero() {
           </div>
         </div>
       </div>
+
 
       {/* L7 — LETTERBOX */}
       <div
