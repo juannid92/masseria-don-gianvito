@@ -206,6 +206,8 @@ export function Hero() {
       gsap.set("[data-cta]", { opacity: 0, y: 16 });
       gsap.set("[data-pin]", { scale: 0, opacity: 0 });
       gsap.set("[data-cue]", { opacity: 0 });
+      gsap.set("[data-monogram]", { scale: 0.4, opacity: 0, transformOrigin: "50% 50%" });
+      gsap.set("[data-wordmark-rule]", { scaleX: 0 });
       gsap.set(viewfinderRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
