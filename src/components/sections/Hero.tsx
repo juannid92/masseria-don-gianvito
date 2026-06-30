@@ -234,6 +234,47 @@ export function Hero() {
           1.0,
         )
         .to(
+          "[data-eyebrow]",
+          {
+            opacity: 1,
+            letterSpacing: "0.22em",
+            duration: 0.8,
+            ease: "power3.out",
+          },
+          0.9,
+        )
+        .to(
+          "[data-copy-accent]",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power4.out",
+            stagger: 0.08,
+          },
+          1.08,
+        )
+        .to(
+          "[data-copy-accent]",
+          {
+            textShadow:
+              "0 0 22px rgba(179,58,26,0.65), 0 0 44px rgba(196,154,74,0.35)",
+            duration: 0.45,
+            ease: "power2.out",
+            stagger: 0.08,
+          },
+          1.15,
+        )
+        .to(
+          "[data-copy-accent]",
+          {
+            textShadow: "0 0 0px rgba(179,58,26,0)",
+            duration: 1.1,
+            ease: "power2.inOut",
+            stagger: 0.08,
+          },
+          1.7,
+        )
           "[data-cta]",
           { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 },
           1.6,
