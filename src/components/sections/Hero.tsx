@@ -563,15 +563,16 @@ export function Hero() {
         }}
       />
 
-      {/* L5 — PIN LAYER (desktop) */}
+      {/* L5 — PIN LAYER (desktop) — sopra al copy per evitare occlusioni */}
       <div
         ref={pinLayerRef}
-        className="absolute inset-0 z-20 hidden md:block"
+        className="pointer-events-none absolute inset-0 z-40 hidden md:block"
       >
         {PINS.map((p) => {
           const isActive = (hoverPin ?? activePin) === p.id;
           const isOtherActive = (hoverPin ?? activePin) && !isActive;
-          const flipRight = p.left < 38;
+          const flipRight = p.left < 42;
+          const flipDown = p.top < 28;
           return (
             <div
               key={p.id}
@@ -590,14 +591,13 @@ export function Hero() {
                   onFocus={() => setActivePin(p.id)}
                   onBlur={() => setActivePin(null)}
                   onClick={() => dive(p)}
-                  aria-label={`Apri la pagina ${p.label} — ${p.caption}`}
+                  aria-label={`Apri la pagina ${p.label} — ${p.description}`}
                   whileHover={{ scale: 1.25 }}
                   whileFocus={{ scale: 1.25 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 320, damping: 18 }}
-                  className="group relative block h-7 w-7 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
+                  className="group relative block h-7 w-7 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
                 >
-                  {/* glow brace */}
                   <span
                     aria-hidden
                     className="absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full"
@@ -607,7 +607,6 @@ export function Hero() {
                       filter: "blur(2px)",
                     }}
                   />
-                  {/* sigillo */}
                   <span
                     data-pin-core
                     aria-hidden
@@ -618,49 +617,74 @@ export function Hero() {
                   </span>
                 </motion.button>
 
-                {/* Leader line + Label */}
+                {/* Preview card con leader line in oro */}
                 <AnimatePresence>
                   {isActive && (
                     <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.25 }}
+                      initial={{ opacity: 0, y: flipDown ? -8 : 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: flipDown ? -8 : 8 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                       className={[
-                        "pointer-events-none absolute top-1/2 z-30 w-[280px] -translate-y-1/2",
+                        "pointer-events-auto absolute z-50 w-[300px]",
+                        flipDown ? "top-8" : "bottom-8",
                         flipRight ? "left-6" : "right-6",
                       ].join(" ")}
                     >
                       <motion.span
                         aria-hidden
                         className={[
-                          "absolute top-1/2 h-px",
-                          flipRight ? "right-full" : "left-full",
+                          "absolute h-px",
+                          flipDown ? "bottom-full" : "top-full",
+                          flipRight ? "left-0" : "right-0",
                         ].join(" ")}
                         style={{
                           background:
                             "linear-gradient(90deg, transparent, var(--oro))",
                         }}
                         initial={{ width: 0 }}
-                        animate={{ width: 56 }}
+                        animate={{ width: 48 }}
                         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       />
-                      <motion.div
-                        initial={{ clipPath: "inset(0 100% 0 0)", x: flipRight ? -8 : 8 }}
-                        animate={{ clipPath: "inset(0 0% 0 0)", x: 0 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        className={flipRight ? "text-left" : "text-right"}
+                      <a
+                        href={p.to}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          dive(p);
+                        }}
+                        className="block overflow-hidden rounded-2xl border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/85 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85),0_0_0_1px_rgba(196,154,74,0.15)] backdrop-blur-xl ring-0 transition-transform hover:scale-[1.015]"
                       >
-                        <p className="font-eyebrow text-[10px] tracking-[0.18em] text-[color:var(--oro)]">
-                          {p.label}
-                        </p>
-                        <p className="font-display mt-1 text-lg italic leading-snug text-[color:var(--crema)]">
-                          {p.caption}
-                        </p>
-                        <p className="mt-1.5 font-mono text-[10px] text-[color:var(--crema)]/55">
-                          {p.coords}
-                        </p>
-                      </motion.div>
+                        <div className="relative aspect-[16/10] w-full overflow-hidden">
+                          <img
+                            src={p.thumb}
+                            alt=""
+                            loading="lazy"
+                            width={640}
+                            height={400}
+                            className="h-full w-full object-cover"
+                            draggable={false}
+                          />
+                          <div
+                            aria-hidden
+                            className="absolute inset-0"
+                            style={{
+                              background:
+                                "linear-gradient(180deg, transparent 50%, rgba(26,18,16,0.85) 100%)",
+                            }}
+                          />
+                        </div>
+                        <div className="px-4 pb-4 pt-3">
+                          <p className="font-eyebrow text-[10px] uppercase tracking-[0.28em] text-[color:var(--oro)]">
+                            {p.label}
+                          </p>
+                          <p className="mt-1.5 text-[13px] leading-snug text-[color:var(--crema)]/90">
+                            {p.description}
+                          </p>
+                          <p className="mt-3 font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--terracotta)]">
+                            Scopri →
+                          </p>
+                        </div>
+                      </a>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -670,24 +694,25 @@ export function Hero() {
         })}
       </div>
 
-      {/* L6 — COPY */}
+      {/* L6 — COPY / LOGOTIPO */}
       <div
         ref={copyRef}
-        className="relative z-30 flex h-full flex-col justify-between px-6 pt-28 pb-28 md:pt-32 lg:px-14"
+        className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center"
         style={{
           opacity: (hoverPin ?? activePin) ? 0.25 : 1,
           transition: "opacity .35s",
         }}
       >
-        <div data-copy-line className="max-w-fit">
+        <div data-copy-line>
           <p
             data-eyebrow
             className="font-eyebrow text-[10px] text-[color:var(--oro)] md:text-xs"
-            style={{ letterSpacing: "0.22em" }}
+            style={{ letterSpacing: "0.32em" }}
           >
             IL RITO DELLA BRACE
           </p>
         </div>
+
 
         <div className="relative max-w-3xl">
           {/* velo locale --grad-night per leggibilità AA, solo sotto al blocco testo */}
