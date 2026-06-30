@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MacelleriaRouteImport } from './routes/macelleria'
+import { Route as CaseificioRouteImport } from './routes/caseificio'
+import { Route as BraceriaRouteImport } from './routes/braceria'
+import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as IndexRouteImport } from './routes/index'
 
+const MacelleriaRoute = MacelleriaRouteImport.update({
+  id: '/macelleria',
+  path: '/macelleria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseificioRoute = CaseificioRouteImport.update({
+  id: '/caseificio',
+  path: '/caseificio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BraceriaRoute = BraceriaRouteImport.update({
+  id: '/braceria',
+  path: '/braceria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AllevamentoRoute = AllevamentoRouteImport.update({
+  id: '/allevamento',
+  path: '/allevamento',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,78 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/allevamento': typeof AllevamentoRoute
+  '/braceria': typeof BraceriaRoute
+  '/caseificio': typeof CaseificioRoute
+  '/macelleria': typeof MacelleriaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/allevamento': typeof AllevamentoRoute
+  '/braceria': typeof BraceriaRoute
+  '/caseificio': typeof CaseificioRoute
+  '/macelleria': typeof MacelleriaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/allevamento': typeof AllevamentoRoute
+  '/braceria': typeof BraceriaRoute
+  '/caseificio': typeof CaseificioRoute
+  '/macelleria': typeof MacelleriaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/allevamento' | '/braceria' | '/caseificio' | '/macelleria'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/allevamento' | '/braceria' | '/caseificio' | '/macelleria'
+  id:
+    | '__root__'
+    | '/'
+    | '/allevamento'
+    | '/braceria'
+    | '/caseificio'
+    | '/macelleria'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AllevamentoRoute: typeof AllevamentoRoute
+  BraceriaRoute: typeof BraceriaRoute
+  CaseificioRoute: typeof CaseificioRoute
+  MacelleriaRoute: typeof MacelleriaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/macelleria': {
+      id: '/macelleria'
+      path: '/macelleria'
+      fullPath: '/macelleria'
+      preLoaderRoute: typeof MacelleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/caseificio': {
+      id: '/caseificio'
+      path: '/caseificio'
+      fullPath: '/caseificio'
+      preLoaderRoute: typeof CaseificioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/braceria': {
+      id: '/braceria'
+      path: '/braceria'
+      fullPath: '/braceria'
+      preLoaderRoute: typeof BraceriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/allevamento': {
+      id: '/allevamento'
+      path: '/allevamento'
+      fullPath: '/allevamento'
+      preLoaderRoute: typeof AllevamentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +127,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AllevamentoRoute: AllevamentoRoute,
+  BraceriaRoute: BraceriaRoute,
+  CaseificioRoute: CaseificioRoute,
+  MacelleriaRoute: MacelleriaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

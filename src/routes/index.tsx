@@ -5,7 +5,7 @@ import { ContinuousBackground } from "@/components/site/ContinuousBackground";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { SectionDivider } from "@/components/site/SectionDivider";
 import { SectionShell } from "@/components/site/SectionShell";
-import { HeroPlaceholder } from "@/components/sections/HeroPlaceholder";
+import { Hero } from "@/components/sections/Hero";
 import { FornelloPronto } from "@/components/sections/FornelloPronto";
 import { DoveSiamo } from "@/components/sections/DoveSiamo";
 import { Contatti } from "@/components/sections/Contatti";
