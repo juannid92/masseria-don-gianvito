@@ -235,7 +235,7 @@ export function Filiera() {
             data-reveal-thr
             className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro)]/80 md:text-[11px]"
           >
-            LA FILIERA · DALLA TERRA ALLA BRACE
+            LA FILIERA · DAL 2002
           </p>
           <h2
             data-reveal-thr
@@ -247,16 +247,15 @@ export function Filiera() {
               fontWeight: 300,
             }}
           >
-            Qui non arriva <span className="filiera-accent">niente</span> da fuori.
+            Qui non arriva niente da <span className="filiera-accent">fuori</span>.
           </h2>
           <p
             data-reveal-thr
             className="mt-6 text-[color:var(--crema)]/70 md:text-lg"
             style={{ lineHeight: 1.6 }}
           >
-            Da oltre vent&apos;anni alleviamo, trasformiamo e cuciniamo tutto in masseria.
-            Bovini e suini nati e cresciuti qui, latte munto ogni mattina, carne a vista,
-            brace ogni sera.
+            Masseria del &apos;500 tra ulivi secolari. Alleviamo, coltiviamo,
+            trasformiamo e cuciniamo tutto qui — da oltre vent&apos;anni.
           </p>
         </header>
 
