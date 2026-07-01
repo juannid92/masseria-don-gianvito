@@ -7,6 +7,7 @@ import { Hero } from "@/components/sections/Hero";
 import { IlManifesto } from "@/components/sections/IlManifesto";
 import { LaStoria } from "@/components/sections/LaStoria";
 import { IlLuogo } from "@/components/sections/IlLuogo";
+import { LaFiliera } from "@/components/sections/LaFiliera";
 
 export const Route = createFileRoute("/")({
   head: () => ({
