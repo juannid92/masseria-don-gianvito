@@ -46,6 +46,7 @@ function HomePage() {
         <IlManifesto />
         <LaStoria />
         <IlLuogo />
+        <LaFiliera />
       </main>
       <Footer />
     </SmoothScroll>
