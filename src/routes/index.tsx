@@ -42,6 +42,7 @@ function HomePage() {
       <main className="relative">
         <Hero />
         <IlManifesto />
+        <LaStoria />
       </main>
       <Footer />
     </SmoothScroll>
