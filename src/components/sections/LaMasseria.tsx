@@ -245,7 +245,7 @@ export function LaMasseria() {
         <header className="max-w-[1100px]">
           <p
             data-reveal
-            className="mb-6 font-oswald text-[0.72rem] tracking-[0.35em] text-oro/85 uppercase"
+            className="mb-6 font-[Oswald,Inter,sans-serif] text-[0.72rem] tracking-[0.35em] text-oro/85 uppercase"
           >
             La Masseria · Noci, Puglia
           </p>
@@ -337,7 +337,7 @@ export function LaMasseria() {
                   0
                 </span>
                 <span
-                  className="mt-2 block font-oswald text-[0.7rem] tracking-[0.3em] text-crema/70 uppercase"
+                  className="mt-2 block font-[Oswald,Inter,sans-serif] text-[0.7rem] tracking-[0.3em] text-crema/70 uppercase"
                 >
                   {d.k === "DAL" ? "DAL 2002" : d.k === "SPECIE" ? "SPECIE ALLEVATE" : d.k === "MESTIERI" ? "MESTIERI" : "MASSERIA"}
                 </span>
@@ -351,7 +351,7 @@ export function LaMasseria() {
           <p
             ref={closingRef}
             data-reveal
-            className="font-oswald text-oro"
+            className="font-[Oswald,Inter,sans-serif] text-oro"
             style={{
               fontFamily: "'Oswald', sans-serif",
               fontWeight: 500,
