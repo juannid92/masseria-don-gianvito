@@ -1,27 +1,40 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FilieraPlaceholder } from "@/components/sections/FilieraPlaceholder";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { ContinuousBackground } from "@/components/site/ContinuousBackground";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { BraceriaStory } from "@/components/sections/BraceriaStory";
 
 export const Route = createFileRoute("/braceria")({
   head: () => ({
     meta: [
-      { title: "Braceria — Masseria Don Gianvito" },
+      { title: "Braceria — Capitolo 04 · Masseria Don Gianvito" },
       {
         name: "description",
         content:
-          "Brace viva, cottura lenta e servizio al tavolo. L'ultima tappa del viaggio dalla terra alla brace.",
+          "La brace, ogni sera: buio, fuoco, cottura a vista e menù della sera a Noci. Il capitolo finale del racconto dalla terra alla brace — Masseria Don Gianvito.",
       },
-      { property: "og:title", content: "Braceria · Masseria Don Gianvito" },
+      { property: "og:title", content: "Braceria · La brace, ogni sera" },
       {
         property: "og:description",
-        content: "Dove si chiude il rito: brace, taglio, tavolo.",
+        content:
+          "Capitolo 04 della filiera Masseria Don Gianvito: brace di quercia, cottura a vista, menù della sera, prenotazione tavolo.",
       },
+      { property: "og:type", content: "restaurant" },
     ],
   }),
-  component: () => (
-    <FilieraPlaceholder
-      eyebrow="Tappa 04 · Il fuoco"
-      title="Braceria"
-      lede="La brace viva chiude il viaggio. Cottura, taglio e servizio in sala."
-    />
-  ),
+  component: BraceriaPage,
 });
+
+function BraceriaPage() {
+  return (
+    <SmoothScroll>
+      <ContinuousBackground />
+      <Navbar />
+      <main className="relative">
+        <BraceriaStory />
+      </main>
+      <Footer />
+    </SmoothScroll>
+  );
+}
