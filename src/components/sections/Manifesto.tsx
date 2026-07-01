@@ -4,293 +4,471 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /* ──────────────────────────────────────────────────────────────
- * MANIFESTO — "LA FILIERA CHE SI CUCE"
- * Un filo d'oro entra dall'hero, cuce TERRA → LATTE → CARNE → BRACE
- * accendendole come brace, e chiude con la frase-manifesto.
- * Meccanismo-firma unico: cucitura tipografica scroll-driven.
+ * MANIFESTO — "LA FORGIA"
+ * Il giuramento del posto è FORGIATO nel fuoco.
+ * Braci vive (Canvas), scintille (particelle), heat-haze (SVG),
+ * oro fuso (gradient text animato), cursore-torcia, parole che
+ * si "scaldano" e reagiscono alla velocità di scroll.
  * ───────────────────────────────────────────────────────────── */
 
-type Anchor = {
-  id: "terra" | "latte" | "carne" | "brace";
-  word: string;
-  side: "left" | "right";
-  /** posizione desktop in viewBox 1000x1800 (x,y del centro parola) */
-  x: number;
-  y: number;
-  /** legame che segue (verso la prossima ancora) */
-  link?: string;
-};
-
-const ANCHORS: Anchor[] = [
-  { id: "terra", word: "TERRA", side: "left",  x: 240, y: 300,  link: "ciò che pascola" },
-  { id: "latte", word: "LATTE", side: "right", x: 760, y: 720,  link: "ciò che nutre" },
-  { id: "carne", word: "CARNE", side: "left",  x: 260, y: 1140, link: "ciò che cuoce" },
-  { id: "brace", word: "BRACE", side: "right", x: 740, y: 1560 },
-];
+type Ember = { x: number; y: number; r: number; phase: number; speed: number; hueMix: number };
+type Spark = { x: number; y: number; vx: number; vy: number; life: number; ttl: number; size: number };
 
 export function Manifesto() {
   const rootRef = useRef<HTMLElement>(null);
-  const pathDesktopRef = useRef<SVGPathElement>(null);
-  const pathMobileRef = useRef<SVGPathElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const torchRef = useRef<HTMLDivElement>(null);
+  const linesWrapRef = useRef<HTMLDivElement>(null);
+  const oathRef = useRef<HTMLParagraphElement>(null);
   const reduced = useReducedMotion();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const root = rootRef.current;
-    if (!root) return;
+    const canvas = canvasRef.current;
+    if (!root || !canvas) return;
 
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx2d = canvas.getContext("2d", { alpha: true });
+    if (!ctx2d) return;
+
+    const words = Array.from(root.querySelectorAll<HTMLElement>("[data-forge-word]"));
+    const oathChars = oathRef.current
+      ? Array.from(oathRef.current.querySelectorAll<HTMLElement>("[data-oath-char]"))
+      : [];
+
+    // ── REDUCED MOTION: statico, tutto già visibile e "caldo"
     if (reduced) {
-      // parole già accese, filo già disegnato
-      root.querySelectorAll<HTMLElement>("[data-anchor-word]").forEach((el) => {
-        el.classList.add("is-lit");
+      words.forEach((w) => {
+        w.style.opacity = "1";
+        w.style.filter = "none";
+        w.classList.add("is-hot");
       });
-      root.querySelectorAll<HTMLElement>("[data-link-line], [data-manifesto-word]").forEach((el) => {
-        el.style.opacity = "1";
-      });
-      return;
+      oathChars.forEach((c) => (c.style.opacity = "1"));
+      // brace statica
+      const draw = () => {
+        const w = canvas.clientWidth, h = canvas.clientHeight;
+        canvas.width = w * window.devicePixelRatio;
+        canvas.height = h * window.devicePixelRatio;
+        ctx2d.scale(window.devicePixelRatio, window.devicePixelRatio);
+        const grad = ctx2d.createRadialGradient(w / 2, h, 40, w / 2, h, w * 0.7);
+        grad.addColorStop(0, "rgba(179,58,26,0.55)");
+        grad.addColorStop(0.5, "rgba(110,26,20,0.35)");
+        grad.addColorStop(1, "rgba(26,18,16,0)");
+        ctx2d.fillStyle = grad;
+        ctx2d.fillRect(0, 0, w, h);
+      };
+      draw();
+      window.addEventListener("resize", draw);
+      return () => window.removeEventListener("resize", draw);
     }
 
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+    // ── DIMENSIONING
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0;
+    const resize = () => {
+      W = canvas.clientWidth;
+      H = canvas.clientHeight;
+      canvas.width = Math.floor(W * dpr);
+      canvas.height = Math.floor(H * dpr);
+      ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
 
-      const setupPath = (path: SVGPathElement | null) => {
-        if (!path) return null;
-        const len = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-        return len;
-      };
+    // ── EMBERS (letto braci in basso)
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const EMBER_COUNT = isMobile ? 60 : 140;
+    const SPARK_MAX = isMobile ? 30 : 70;
 
-      // stato iniziale: parole spente, righe/manifesto nascosti
-      gsap.set(root.querySelectorAll("[data-anchor-word]"), { opacity: 0.14 });
-      gsap.set(root.querySelectorAll("[data-link-line]"), { opacity: 0, y: 8 });
-      gsap.set(root.querySelectorAll("[data-manifesto-word]"), { opacity: 0, y: 20 });
-
-      const buildTL = (path: SVGPathElement | null) => {
-        const len = setupPath(path);
-        if (!path || !len) return;
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: "+=180%",
-            scrub: 0.6,
-            pin: true,
-            pinSpacing: true,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-          },
+    const embers: Ember[] = [];
+    const seedEmbers = () => {
+      embers.length = 0;
+      for (let i = 0; i < EMBER_COUNT; i++) {
+        embers.push({
+          x: Math.random() * W,
+          y: H - Math.random() * H * 0.28 - 4,
+          r: 8 + Math.random() * 22,
+          phase: Math.random() * Math.PI * 2,
+          speed: 0.6 + Math.random() * 1.2,
+          hueMix: Math.random(),
         });
+      }
+    };
+    seedEmbers();
 
-        tl.to(path, { strokeDashoffset: 0, ease: "none", duration: 4 }, 0);
+    const sparks: Spark[] = [];
+    const spawnSpark = (x: number, y: number, boost = 1) => {
+      if (sparks.length >= SPARK_MAX) return;
+      sparks.push({
+        x,
+        y,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -(0.4 + Math.random() * 1.2) * boost,
+        life: 0,
+        ttl: 1.4 + Math.random() * 2.2,
+        size: 0.6 + Math.random() * 1.8,
+      });
+    };
 
-        // accende ogni ancora quando il filo la raggiunge (progressione lungo la timeline)
-        const times = [0.6, 1.6, 2.6, 3.6];
-        ANCHORS.forEach((a, i) => {
-          const wordEl = root.querySelector(`[data-anchor-word="${a.id}"]`);
-          const linkEl = root.querySelector(`[data-link-line="${a.id}"]`);
-          if (wordEl) {
-            tl.to(wordEl, { opacity: 1, duration: 0.25, onStart: () => wordEl.classList.add("is-lit") }, times[i]);
-          }
-          if (linkEl && a.link) {
-            tl.to(linkEl, { opacity: 1, y: 0, duration: 0.3 }, times[i] + 0.15);
-          }
+    // ── TORCH (cursor)
+    const torch = { x: -9999, y: -9999, active: false };
+    const torchQ = torchRef.current
+      ? {
+          x: gsap.quickTo(torchRef.current, "x", { duration: 0.5, ease: "power3.out" }),
+          y: gsap.quickTo(torchRef.current, "y", { duration: 0.5, ease: "power3.out" }),
+        }
+      : null;
+
+    const onMove = (e: PointerEvent) => {
+      const r = root.getBoundingClientRect();
+      torch.x = e.clientX - r.left;
+      torch.y = e.clientY - r.top;
+      torch.active = true;
+      torchQ?.x(e.clientX - r.left);
+      torchQ?.y(e.clientY - r.top);
+      // scaldare parole vicine
+      words.forEach((w) => {
+        const wr = w.getBoundingClientRect();
+        const cx = wr.left - r.left + wr.width / 2;
+        const cy = wr.top - r.top + wr.height / 2;
+        const d = Math.hypot(cx - torch.x, cy - torch.y);
+        const heat = Math.max(0, 1 - d / 380);
+        w.style.setProperty("--heat", heat.toFixed(3));
+      });
+    };
+    const onLeave = () => {
+      torch.active = false;
+      torch.x = -9999;
+      torch.y = -9999;
+      words.forEach((w) => w.style.setProperty("--heat", "0"));
+    };
+    if (!isMobile) {
+      root.addEventListener("pointermove", onMove);
+      root.addEventListener("pointerleave", onLeave);
+    }
+
+    // ── SCROLL VELOCITY → skew/scale su parole
+    let lastY = window.scrollY;
+    let velocity = 0;
+    let velSmoothed = 0;
+    const lenisEvt = () => {
+      const y = window.scrollY;
+      velocity = y - lastY;
+      lastY = y;
+    };
+    window.addEventListener("scroll", lenisEvt, { passive: true });
+
+    // ── VISIBILITÀ (pause rAF quando fuori viewport)
+    let visible = true;
+    const io = new IntersectionObserver(
+      ([entry]) => (visible = entry.isIntersecting),
+      { threshold: 0.01 },
+    );
+    io.observe(root);
+
+    // ── LOOP (singolo, via gsap.ticker)
+    let t = 0;
+    const tick = () => {
+      if (!visible) return;
+      t += 0.016;
+      velSmoothed += (velocity - velSmoothed) * 0.15;
+      velocity *= 0.85;
+
+      // clear
+      ctx2d.clearRect(0, 0, W, H);
+
+      // haze di fondo caldo
+      const bg = ctx2d.createLinearGradient(0, 0, 0, H);
+      bg.addColorStop(0, "rgba(26,18,16,0)");
+      bg.addColorStop(1, "rgba(110,26,20,0.18)");
+      ctx2d.fillStyle = bg;
+      ctx2d.fillRect(0, 0, W, H);
+
+      // BRACE VIVA
+      ctx2d.globalCompositeOperation = "screen";
+      for (const e of embers) {
+        const pulse = 0.55 + Math.sin(t * e.speed + e.phase) * 0.35;
+        // torcia flare
+        let flare = 0;
+        if (torch.active) {
+          const d = Math.hypot(e.x - torch.x, e.y - torch.y);
+          flare = Math.max(0, 1 - d / 260);
+        }
+        const alpha = Math.min(1, pulse * 0.55 + flare * 0.6);
+        const r = e.r * (1 + flare * 0.35);
+        const g = ctx2d.createRadialGradient(e.x, e.y, 0, e.x, e.y, r);
+        const mix = e.hueMix;
+        g.addColorStop(0, `rgba(255,${180 - mix * 60},${80 - mix * 40},${alpha})`);
+        g.addColorStop(0.4, `rgba(179,58,26,${alpha * 0.55})`);
+        g.addColorStop(1, "rgba(110,26,20,0)");
+        ctx2d.fillStyle = g;
+        ctx2d.beginPath();
+        ctx2d.arc(e.x, e.y, r, 0, Math.PI * 2);
+        ctx2d.fill();
+
+        // spawn scintille dalle braci calde
+        if (Math.random() < 0.008 + flare * 0.06) spawnSpark(e.x, e.y - 4, 1 + flare);
+      }
+
+      // SCINTILLE
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.life += 0.016;
+        s.x += s.vx + (Math.random() - 0.5) * 0.4;
+        s.y += s.vy;
+        s.vy -= 0.01; // salgono
+        const a = Math.max(0, 1 - s.life / s.ttl);
+        ctx2d.fillStyle = `rgba(255,${200 - a * 40},120,${a})`;
+        ctx2d.beginPath();
+        ctx2d.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx2d.fill();
+        if (s.life >= s.ttl || s.y < -20) sparks.splice(i, 1);
+      }
+
+      ctx2d.globalCompositeOperation = "source-over";
+
+      // applica velocità di scroll ai wrap-parole (skew)
+      const sk = gsap.utils.clamp(-6, 6, velSmoothed * 0.25);
+      const sx = 1 + gsap.utils.clamp(-0.04, 0.04, Math.abs(velSmoothed) * 0.004);
+      if (linesWrapRef.current) {
+        linesWrapRef.current.style.transform = `skewY(${sk}deg) scaleX(${sx.toFixed(3)})`;
+      }
+    };
+    gsap.ticker.add(tick);
+
+    // ── RESIZE
+    const onResize = () => {
+      resize();
+      seedEmbers();
+    };
+    window.addEventListener("resize", onResize);
+
+    // ── SCROLL COREOGRAFIA (scrub): parole "si scaldano"
+    const st = ScrollTrigger.create({
+      trigger: root,
+      start: "top 80%",
+      end: "bottom top",
+      scrub: 0.8,
+      invalidateOnRefresh: true,
+      onUpdate: (self) => {
+        const p = self.progress;
+        words.forEach((w, i) => {
+          const localP = gsap.utils.clamp(0, 1, (p - i * 0.05) * 1.6);
+          w.style.setProperty("--forge", localP.toFixed(3));
         });
+      },
+    });
 
-        // manifesto finale
-        const manifestoWords = root.querySelectorAll("[data-manifesto-word]");
-        tl.to(manifestoWords, { opacity: 1, y: 0, duration: 0.4, stagger: 0.08 }, 4.0);
-      };
+    // reveal iniziale (once) — parole visibili di default, qui "solo" scaldata
+    const revealTl = gsap.fromTo(
+      words,
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.1,
+        ease: "back.out(1.4)",
+        stagger: 0.12,
+        scrollTrigger: { trigger: root, start: "top 82%", once: true },
+      },
+    );
 
-      mm.add("(min-width: 768px)", () => {
-        buildTL(pathDesktopRef.current);
+    if (oathChars.length) {
+      gsap.fromTo(
+        oathChars,
+        { opacity: 0, y: 8 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.03,
+          stagger: 0.02,
+          ease: "none",
+          scrollTrigger: { trigger: root, start: "top 40%", once: true },
+        },
+      );
+    }
+
+    // fallback 3s
+    const fb = window.setTimeout(() => {
+      words.forEach((w) => {
+        if (parseFloat(getComputedStyle(w).opacity) < 0.05) w.style.opacity = "1";
       });
-      mm.add("(max-width: 767px)", () => {
-        buildTL(pathMobileRef.current);
+      oathChars.forEach((c) => {
+        if (parseFloat(getComputedStyle(c).opacity) < 0.05) c.style.opacity = "1";
       });
-    }, root);
+    }, 3000);
 
-    return () => ctx.revert();
+    return () => {
+      window.clearTimeout(fb);
+      gsap.ticker.remove(tick);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", lenisEvt);
+      if (!isMobile) {
+        root.removeEventListener("pointermove", onMove);
+        root.removeEventListener("pointerleave", onLeave);
+      }
+      io.disconnect();
+      st.kill();
+      revealTl.scrollTrigger?.kill();
+      revealTl.kill();
+    };
   }, [reduced]);
 
-  // path desktop zig-zag tra le ancore
-  const desktopPath = (() => {
-    const [a, b, c, d] = ANCHORS;
-    return `M 500 0
-            C 500 120, ${a.x} 180, ${a.x} ${a.y}
-            C ${a.x} ${a.y + 200}, ${b.x} ${b.y - 200}, ${b.x} ${b.y}
-            C ${b.x} ${b.y + 200}, ${c.x} ${c.y - 200}, ${c.x} ${c.y}
-            C ${c.x} ${c.y + 200}, ${d.x} ${d.y - 200}, ${d.x} ${d.y}
-            C ${d.x} ${d.y + 160}, 500 ${d.y + 160}, 500 1800`;
-  })();
+  // riga 1: DALLA TERRA · riga 2: ALLA BRACE (rompo la griglia con offset)
+  const line1 = ["DALLA", "TERRA"];
+  const line2 = ["ALLA", "BRACE"];
+  const oathText = "QUI · NON · ARRIVA · NIENTE · DA · FUORI";
 
   return (
     <section
       ref={rootRef}
-      aria-label="Il giuramento — la filiera che si cuce"
-      className="relative w-full overflow-hidden bg-[color:var(--carbone)] text-[color:var(--crema)]"
-      style={{ minHeight: "100svh" }}
+      aria-label="La Forgia — il giuramento della masseria"
+      className="forge relative isolate w-full overflow-hidden bg-[color:var(--carbone)] text-[color:var(--crema)]"
+      style={{ minHeight: "110svh" }}
     >
-      {/* rail marginalia */}
+      {/* SVG turbulence — heat haze */}
+      <svg className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.35] mix-blend-screen" aria-hidden>
+        <defs>
+          <filter id="forge-haze">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="4">
+              <animate attributeName="baseFrequency" dur="9s" values="0.012 0.02;0.02 0.03;0.012 0.02" repeatCount="indefinite" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="6" />
+          </filter>
+          <radialGradient id="forge-vign" cx="50%" cy="60%" r="70%">
+            <stop offset="60%" stopColor="rgba(0,0,0,0)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.85)" />
+          </radialGradient>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#forge-vign)" filter="url(#forge-haze)" />
+      </svg>
+
+      {/* Canvas braci + scintille */}
+      <canvas
+        ref={canvasRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 h-full w-full"
+      />
+
+      {/* Grana */}
+      <div aria-hidden className="grain pointer-events-none absolute inset-0 opacity-60" />
+
+      {/* Torcia cursore */}
+      <div
+        ref={torchRef}
+        aria-hidden
+        className="torch pointer-events-none absolute left-0 top-0 hidden md:block"
+      />
+
+      {/* Rail marginalia */}
       <div className="pointer-events-none absolute left-3 top-6 z-10 hidden md:block">
         <p className="font-eyebrow text-[10px] text-[color:var(--oro)]/70 [writing-mode:vertical-rl] rotate-180">
-          Il Giuramento · La Filiera
+          La Forgia · Il Giuramento
         </p>
       </div>
-      <div className="pointer-events-none absolute right-4 top-6 z-10 md:hidden">
-        <p className="font-eyebrow text-[9px] text-[color:var(--oro)]/70">Il Giuramento</p>
-      </div>
 
-      {/* grana sottile */}
-      <div aria-hidden className="grain absolute inset-0 pointer-events-none" />
-
-      {/* ─── DESKTOP: SVG a piena sezione con parole+filo ─── */}
-      <div className="relative hidden md:block h-[100svh] w-full">
-        <svg
-          viewBox="0 0 1000 1800"
-          preserveAspectRatio="xMidYMid meet"
-          className="absolute inset-0 h-full w-full"
-          aria-hidden
-        >
-          <defs>
-            <linearGradient id="oro-thread" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#C49A4A" stopOpacity="0.9" />
-              <stop offset="50%" stopColor="#B33A1A" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#C49A4A" stopOpacity="0.9" />
-            </linearGradient>
-            <filter id="oro-glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="2.5" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* filo d'oro */}
-          <path
-            ref={pathDesktopRef}
-            d={desktopPath}
-            fill="none"
-            stroke="url(#oro-thread)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            filter="url(#oro-glow)"
-          />
-        </svg>
-
-        {/* parole-ancora in HTML posizionate in % (viewBox 1000x1800) */}
-        {ANCHORS.map((a) => (
-          <div
-            key={a.id}
-            className="absolute -translate-y-1/2"
-            style={{
-              left: `${(a.x / 1000) * 100}%`,
-              top: `${(a.y / 1800) * 100}%`,
-              transform: `translate(${a.side === "left" ? "-10%" : "-90%"}, -50%)`,
-            }}
-          >
-            <span
-              data-anchor-word={a.id}
-              className="anchor-word font-display italic font-light leading-none text-[clamp(4rem,11vw,10rem)] tracking-tight"
-            >
-              {a.word}
-            </span>
-            {a.link && (
-              <p
-                data-link-line={a.id}
-                className={`mt-3 max-w-[22ch] font-sans text-sm text-[color:var(--crema)]/70 ${
-                  a.side === "left" ? "pl-1" : "pr-1 text-right"
-                }`}
-              >
-                — {a.link}
-              </p>
-            )}
-          </div>
-        ))}
-
-        {/* manifesto finale */}
-        <div className="pointer-events-none absolute bottom-[6%] left-1/2 -translate-x-1/2 text-center">
-          <p className="font-display italic text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.05] text-[color:var(--crema)]">
-            <span data-manifesto-word className="inline-block">Dalla&nbsp;</span>
-            <span data-manifesto-word className="inline-block">terra&nbsp;</span>
-            <span data-manifesto-word className="inline-block">alla&nbsp;</span>
-            <span data-manifesto-word className="inline-block text-[color:var(--terracotta)]">brace.</span>
-          </p>
-          <p className="mt-4 font-eyebrow text-[11px] md:text-xs tracking-[0.32em] text-[color:var(--oro)]">
-            <span data-manifesto-word className="inline-block">Qui&nbsp;non&nbsp;arriva&nbsp;niente&nbsp;da&nbsp;fuori.</span>
-          </p>
-        </div>
-      </div>
-
-      {/* ─── MOBILE: colonna centrale con filo verticale ─── */}
-      <div className="relative md:hidden w-full py-24">
-        <svg
-          viewBox="0 0 100 1200"
-          preserveAspectRatio="none"
-          className="absolute left-1/2 top-0 h-full w-[3px] -translate-x-1/2"
-          aria-hidden
-        >
-          <path
-            ref={pathMobileRef}
-            d="M 50 0 L 50 1200"
-            fill="none"
-            stroke="#C49A4A"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity="0.9"
-          />
-        </svg>
-
-        <div className="relative z-10 flex flex-col items-center gap-16 px-6">
-          {ANCHORS.map((a) => (
-            <div key={a.id} className="flex flex-col items-center text-center">
+      {/* Contenuto */}
+      <div className="relative z-10 flex min-h-[110svh] flex-col justify-center px-6 py-24 md:px-16">
+        <div ref={linesWrapRef} className="mx-auto w-full max-w-[1600px] will-change-transform">
+          {/* Riga 1 — offset sinistra */}
+          <div className="flex flex-wrap items-end gap-x-[0.15em] gap-y-2 md:-ml-2">
+            {line1.map((w, i) => (
               <span
-                data-anchor-word={a.id}
-                className="anchor-word font-display italic font-light leading-none text-[clamp(3.5rem,18vw,6rem)]"
+                key={`l1-${i}`}
+                data-forge-word
+                className="forge-word font-display italic"
+                style={{
+                  fontSize: "clamp(3.5rem, 15vw, 14rem)",
+                  lineHeight: 0.9,
+                  transform: i === 1 ? "translateY(0.15em)" : "none",
+                }}
               >
-                {a.word}
+                {w}
               </span>
-              {a.link && (
-                <p
-                  data-link-line={a.id}
-                  className="mt-3 max-w-[24ch] font-sans text-sm text-[color:var(--crema)]/70"
-                >
-                  — {a.link}
-                </p>
-              )}
-            </div>
-          ))}
-
-          <div className="mt-8 text-center">
-            <p className="font-display italic text-[clamp(1.6rem,7vw,2.4rem)] leading-tight text-[color:var(--crema)]">
-              <span data-manifesto-word className="inline-block">Dalla&nbsp;</span>
-              <span data-manifesto-word className="inline-block">terra&nbsp;</span>
-              <span data-manifesto-word className="inline-block">alla&nbsp;</span>
-              <span data-manifesto-word className="inline-block text-[color:var(--terracotta)]">brace.</span>
-            </p>
-            <p className="mt-4 font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
-              <span data-manifesto-word className="inline-block">Qui non arriva niente da fuori.</span>
-            </p>
+            ))}
+          </div>
+          {/* Riga 2 — offset destra, in profondità */}
+          <div className="mt-2 flex flex-wrap items-end justify-end gap-x-[0.15em] gap-y-2 md:mt-6 md:pr-6">
+            {line2.map((w, i) => (
+              <span
+                key={`l2-${i}`}
+                data-forge-word
+                className="forge-word font-display italic"
+                style={{
+                  fontSize: i === 1 ? "clamp(4rem, 18vw, 17rem)" : "clamp(3rem, 12vw, 11rem)",
+                  lineHeight: 0.9,
+                  transform: i === 0 ? "translateY(-0.1em)" : "none",
+                }}
+              >
+                {w}
+              </span>
+            ))}
           </div>
         </div>
+
+        {/* Giuramento inciso */}
+        <p
+          ref={oathRef}
+          className="mt-12 text-center font-eyebrow text-[10px] md:text-[13px] tracking-[0.42em] text-[color:var(--crema)]/80"
+        >
+          {oathText.split("").map((c, i) => (
+            <span key={i} data-oath-char className="inline-block">
+              {c === " " ? "\u00A0" : c}
+            </span>
+          ))}
+        </p>
       </div>
 
       <style>{`
-        .anchor-word {
-          color: color-mix(in oklab, var(--crema) 55%, transparent);
-          transition: color 0.5s ease, text-shadow 0.5s ease, transform 0.5s ease;
+        .forge { --heat: 0; }
+
+        .torch {
+          width: 520px; height: 520px;
+          transform: translate(-50%, -50%);
+          background: radial-gradient(circle, rgba(255,180,90,0.28) 0%, rgba(179,58,26,0.16) 30%, rgba(0,0,0,0) 65%);
+          mix-blend-mode: screen;
+          filter: blur(6px);
+          will-change: transform;
+        }
+
+        .forge-word {
+          --forge: 0;
           display: inline-block;
-          will-change: transform, color;
+          background-image: linear-gradient(
+            100deg,
+            #6e1a14 0%,
+            #b33a1a 22%,
+            #f2c27a 42%,
+            #ffe7b0 50%,
+            #c49a4a 58%,
+            #b33a1a 78%,
+            #6e1a14 100%
+          );
+          background-size: 220% 100%;
+          background-position: calc(100% - var(--forge) * 100%) 50%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          font-weight: 300;
+          font-variation-settings: "wght" calc(300 + var(--forge) * 500 + var(--heat) * 200), "opsz" 144, "SOFT" 30;
+          filter: drop-shadow(0 0 calc(6px + var(--heat) * 22px) rgba(196,154,74, calc(0.15 + var(--heat) * 0.55)))
+                  drop-shadow(0 0 calc(2px + var(--forge) * 20px) rgba(179,58,26, calc(0.15 + var(--forge) * 0.5)));
+          letter-spacing: -0.02em;
+          animation: forgeShimmer 6s linear infinite;
+          transition: font-variation-settings 0.4s ease;
         }
-        .anchor-word.is-lit {
-          color: var(--crema);
-          text-shadow:
-            0 0 18px color-mix(in oklab, var(--terracotta) 55%, transparent),
-            0 0 44px color-mix(in oklab, var(--oro) 40%, transparent);
-          transform: scale(1.02);
+        .forge-word.is-hot {
+          --forge: 1;
         }
-        html.reduce-motion .anchor-word { color: var(--crema); }
+
+        @keyframes forgeShimmer {
+          0%   { background-position: 0% 50%; }
+          100% { background-position: 220% 50%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .forge-word { animation: none; background-position: 60% 50%; }
+        }
       `}</style>
     </section>
   );
