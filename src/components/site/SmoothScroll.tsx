@@ -43,7 +43,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const forceVisibleReveals = () => {
       gsap.utils.toArray<HTMLElement>(revealSelector).forEach((el) => {
         const style = window.getComputedStyle(el);
-        if (style.opacity === "0") {
+        if (Number.parseFloat(style.opacity) < 1) {
           gsap.set(el, { opacity: 1, autoAlpha: 1, y: 0, yPercent: 0, filter: "none" });
         }
       });
