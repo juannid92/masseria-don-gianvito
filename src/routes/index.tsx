@@ -8,6 +8,7 @@ import { IlManifesto } from "@/components/sections/IlManifesto";
 import { LaStoria } from "@/components/sections/LaStoria";
 import { IlLuogo } from "@/components/sections/IlLuogo";
 import { LaFiliera } from "@/components/sections/LaFiliera";
+import { LaTavola } from "@/components/sections/LaTavola";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,6 +48,7 @@ function HomePage() {
         <LaStoria />
         <IlLuogo />
         <LaFiliera />
+        <LaTavola />
       </main>
       <Footer />
     </SmoothScroll>
