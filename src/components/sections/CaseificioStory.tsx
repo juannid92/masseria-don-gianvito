@@ -342,24 +342,15 @@ export function CaseificioStory() {
       }
     }, rootRef);
 
-    const onReady = () => ScrollTrigger.refresh();
-    if (document.fonts?.ready) document.fonts.ready.then(onReady);
-    window.addEventListener("load", onReady);
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh()).catch(() => undefined);
+    }
 
     return () => {
-      window.removeEventListener("load", onReady);
       ctx.revert();
     };
   }, [reduced]);
 
-  useEffect(() => {
-    if (reduced) return;
-    const lenis = (window as unknown as {
-      __lenis?: { on: (e: string, cb: () => void) => void };
-    }).__lenis;
-    if (!lenis) return;
-    lenis.on("scroll", () => ScrollTrigger.update());
-  }, [reduced]);
 
   const goMacelleria = () => {
     if (reduced) {
