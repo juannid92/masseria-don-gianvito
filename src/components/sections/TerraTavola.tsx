@@ -241,7 +241,7 @@ function Mov1({ img }: { img: string }) {
           <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word>Una&nbsp;</span></span>
           <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word>masseria&nbsp;</span></span>
           <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word>del&nbsp;</span></span>
-          <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word italic style={{ color: "var(--oro)" }}>Cinquecento,&nbsp;</span></span>
+          <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word className="italic" style={{ color: "var(--oro)" }}>Cinquecento,&nbsp;</span></span>
           <br className="hidden md:block" />
           <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word>tra&nbsp;</span></span>
           <span className="inline-flex overflow-hidden pb-[0.15em]"><span data-word>gli&nbsp;</span></span>

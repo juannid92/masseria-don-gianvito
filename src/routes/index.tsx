@@ -40,7 +40,7 @@ function HomePage() {
       <Navbar />
       <main className="relative">
         <Hero />
-        <Filiera />
+        <TerraTavola />
       </main>
       <Footer />
     </SmoothScroll>
