@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 import milkMacro from "@/assets/case-milk-macro.jpg";
-import latteImg from "@/assets/case-a-latte.jpg";
+
 import maniImg from "@/assets/case-b-mani.jpg";
 import filaturaImg from "@/assets/case-filatura.jpg";
 import stagionaturaImg from "@/assets/case-d-stagionatura.jpg";
