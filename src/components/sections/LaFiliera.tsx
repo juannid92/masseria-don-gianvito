@@ -534,7 +534,7 @@ function FiliereFragments({
               </h3>
               {ring.reveal === "slide-right" ? (
                 <p
-                  data-etch-rest={ring.reveal === "inset-top" ? true : undefined}
+                  data-etch-rest={undefined}
                   className="mt-5 text-[color:var(--crema)]/70"
                   style={{ lineHeight: 1.6 }}
                 >
