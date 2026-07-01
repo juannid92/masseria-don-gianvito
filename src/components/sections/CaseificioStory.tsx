@@ -5,10 +5,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
+import milkMacro from "@/assets/case-milk-macro.jpg";
 import latteImg from "@/assets/case-a-latte.jpg";
 import maniImg from "@/assets/case-b-mani.jpg";
 import filaturaImg from "@/assets/case-filatura.jpg";
-import formeImg from "@/assets/case-c-forme.jpg";
 import stagionaturaImg from "@/assets/case-d-stagionatura.jpg";
 import carneImg from "@/assets/case-bridge-carne.jpg";
 
@@ -32,6 +32,10 @@ type Product = {
   tag: string;
   line: string;
   img: string;
+  /** posizione broken-grid: colonna, offset verticale (rem), rotazione (deg) */
+  col: 1 | 2 | 3 | 4;
+  push: number;
+  rot: number;
 };
 
 // {DA CONFERMARE col cliente — gamma reale}
@@ -39,51 +43,53 @@ const PRODUCTS: Product[] = [
   {
     id: "mozzarella",
     name: "Mozzarella",
-    tag: "Fatta al mattino",
+    tag: "TAG · fresca del giorno",
     line: "Ancora tiepida, con la sua acqua. Va mangiata oggi.",
     img: mozzarellaImg,
+    col: 1,
+    push: 0,
+    rot: -1.2,
   },
   {
     id: "burrata",
     name: "Burrata",
-    tag: "Cuore di stracciatella",
+    tag: "TAG · cuore di stracciatella",
     line: "Chiusa a mano, una a una. Dentro, la panna del giorno.",
     img: burrataImg,
+    col: 3,
+    push: 12,
+    rot: 1.4,
   },
   {
     id: "ricotta",
     name: "Ricotta",
-    tag: "Dal siero, non dallo scarto",
+    tag: "TAG · dal siero, non dallo scarto",
     line: "Il secondo dono del latte, quando è ancora caldo.",
     img: ricottaImg,
+    col: 2,
+    push: 24,
+    rot: -0.8,
   },
   {
     id: "caciocavallo",
     name: "Caciocavallo",
-    tag: "Appeso, in attesa",
+    tag: "TAG · appeso in cantina",
     line: "Riposa a coppia sulla trave. Il tempo lo scrive.",
     img: caciocavalloImg,
+    col: 4,
+    push: 6,
+    rot: 1.1,
   },
 ];
 
 /* ────────────────────── MILK COLUMN (SVG) ─────────────────────── */
-/**
- * Colonna di latte SVG: 3 path che coprono i 4 stati.
- * - pathLiquid: colata larga con "gocce" (stato 1)
- * - pathCurd:   massa più stretta e irregolare (stato 2)
- * - pathStretch: stringhe verticali lunghissime (stato 3)
- * - pathForm:   raccolta in "gocce/forme" chiuse (stato 4)
- * Morph via attributeplugin (semplice: opacity+scaleY tra 4 path preset).
- */
 function MilkColumn({
-  columnRef,
   liquidRef,
   curdRef,
   stretchRef,
   formRef,
   goldRef,
 }: {
-  columnRef: React.RefObject<HTMLDivElement | null>;
   liquidRef: React.RefObject<SVGPathElement | null>;
   curdRef: React.RefObject<SVGPathElement | null>;
   stretchRef: React.RefObject<SVGGElement | null>;
@@ -92,16 +98,11 @@ function MilkColumn({
 }) {
   return (
     <div
-      ref={columnRef}
       aria-hidden
-      className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-[260px] md:w-[320px]"
+      className="pointer-events-none absolute inset-y-0 left-1/2 w-[240px] -translate-x-1/2 md:w-[320px]"
       style={{ mixBlendMode: "screen" }}
     >
-      <svg
-        viewBox="0 0 200 1000"
-        preserveAspectRatio="none"
-        className="h-full w-full"
-      >
+      <svg viewBox="0 0 200 1000" preserveAspectRatio="none" className="h-full w-full">
         <defs>
           <linearGradient id="milkGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#F2E8D5" stopOpacity="0.95" />
@@ -118,7 +119,6 @@ function MilkColumn({
           </filter>
         </defs>
 
-        {/* STATO 1 · liquido: colata larga con leggera ondulazione */}
         <path
           ref={liquidRef}
           d="M 100 0 C 130 120, 70 260, 100 400 C 130 540, 70 700, 100 1000"
@@ -128,8 +128,6 @@ function MilkColumn({
           strokeLinecap="round"
           filter="url(#milkBlur)"
         />
-
-        {/* STATO 2 · cagliata: massa più stretta e irregolare */}
         <path
           ref={curdRef}
           d="M 100 0 C 115 180, 85 320, 100 500 C 115 680, 88 820, 100 1000"
@@ -139,8 +137,6 @@ function MilkColumn({
           strokeLinecap="round"
           opacity="0"
         />
-
-        {/* STATO 3 · filatura: 5 fili sottili paralleli */}
         <g ref={stretchRef} opacity="0">
           {[70, 88, 100, 112, 130].map((x, i) => (
             <path
@@ -154,16 +150,12 @@ function MilkColumn({
             />
           ))}
         </g>
-
-        {/* STATO 4 · forme: gocce chiuse impilate */}
         <g ref={formRef} opacity="0">
           <ellipse cx="100" cy="200" rx="70" ry="55" fill="url(#milkGrad)" />
           <ellipse cx="100" cy="440" rx="55" ry="45" fill="url(#milkGrad)" />
           <ellipse cx="100" cy="650" rx="65" ry="50" fill="url(#milkGrad)" />
           <ellipse cx="100" cy="860" rx="45" ry="40" fill="url(#milkGrad)" />
         </g>
-
-        {/* FILO D'ORO finale: sostituisce il bianco al bridge */}
         <path
           ref={goldRef}
           d="M 100 0 C 130 200, 70 400, 100 600 C 130 800, 70 950, 100 1000"
@@ -188,14 +180,15 @@ export function CaseificioStory() {
 
   const rootRef = useRef<HTMLDivElement>(null);
 
-  // stato 1 — atterraggio
-  const stageRef = useRef<HTMLDivElement>(null);
-  const albaImgRef = useRef<HTMLDivElement>(null);
-  const albaCoverRef = useRef<HTMLDivElement>(null);
-  const steamRef = useRef<HTMLDivElement>(null);
+  // INGRESSO · dentro la tina
+  const enterRef = useRef<HTMLElement>(null);
+  const milkMacroRef = useRef<HTMLDivElement>(null);
+  const milkTiltRef = useRef<HTMLDivElement>(null);
+  const onMilkTitleRef = useRef<HTMLDivElement>(null);
+  const railTempRef = useRef<HTMLSpanElement>(null);
 
-  // colonna latte
-  const columnRef = useRef<HTMLDivElement>(null);
+  // stage con colonna
+  const stageRef = useRef<HTMLDivElement>(null);
   const liquidRef = useRef<SVGPathElement>(null);
   const curdRef = useRef<SVGPathElement>(null);
   const stretchRef = useRef<SVGGElement>(null);
@@ -203,13 +196,12 @@ export function CaseificioStory() {
   const goldRef = useRef<SVGPathElement>(null);
 
   // stato 2
-  const tempoRef = useRef<HTMLDivElement>(null);
+  const cagliataRef = useRef<HTMLDivElement>(null);
   const tempoBarRef = useRef<HTMLDivElement>(null);
 
-  // bridge
   const bridgeRef = useRef<HTMLElement>(null);
 
-  const [tempC, setTempC] = useState(20);
+  const [tempC, setTempC] = useState(18);
   const [diving, setDiving] = useState(false);
 
   useLayoutEffect(() => {
@@ -218,45 +210,57 @@ export function CaseificioStory() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      /* INTRO · raccogli il ponte dell'allevamento (cremoso) → alba + vapore */
-      const introTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      introTl
-        .to(albaCoverRef.current, { autoAlpha: 0, duration: 1.4 }, 0)
-        .fromTo(
-          albaImgRef.current,
-          { scale: 1.2, filter: "brightness(0.55) saturate(0.5)" },
-          { scale: 1.05, filter: "brightness(0.9) saturate(1)", duration: 2.2 },
-          0,
-        )
-        .from(
-          "[data-alba-reveal]",
-          { yPercent: 110, duration: 1, stagger: 0.1 },
-          0.6,
-        )
-        .from(
-          "[data-alba-fade]",
-          { opacity: 0, y: 18, duration: 0.7, stagger: 0.08 },
-          1.1,
-        );
-
-      // vapore lento in alto
-      if (steamRef.current) {
-        gsap.to(steamRef.current, {
-          yPercent: -35,
-          opacity: 0.15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".alba-sec",
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
+      /* INGRESSO · macro latte immobile che fuma, poi si inclina e arretra */
+      // Il testo "Il latte di ogni mattina" affiora SOPRA il latte
+      if (enterRef.current) {
+        // temperatura del rail: sale continuamente 18→37 sul primo viewport
+        ScrollTrigger.create({
+          trigger: enterRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.4,
+          onUpdate: (self) => {
+            const t = 18 + Math.round(self.progress * 19);
+            if (railTempRef.current) railTempRef.current.textContent = `${t}°`;
           },
         });
+
+        // inclinazione+arretramento del piano di latte (tilt scrub)
+        if (milkTiltRef.current) {
+          gsap.to(milkTiltRef.current, {
+            rotateX: 42,
+            scale: 0.88,
+            yPercent: -8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: enterRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.6,
+            },
+          });
+        }
+
+        // Titolo "sulla superficie": mask reveal via clip-path che si apre
+        if (onMilkTitleRef.current) {
+          gsap.fromTo(
+            onMilkTitleRef.current,
+            { clipPath: "inset(0 100% 0 0)" },
+            {
+              clipPath: "inset(0 0% 0 0)",
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: enterRef.current,
+                start: "top top",
+                end: "bottom top",
+                scrub: 0.5,
+              },
+            },
+          );
+        }
       }
 
-      /* COLONNA LATTE · morph a stati lungo l'intera stage */
-      // stage copre stati 1-4. Progress 0→1 = 0..1 (alba) 1..2 (cagliata) 2..3 (filatura) 3..4 (forme)
-      // Usiamo un'unica timeline scrubbed sul contenitore stageRef.
+      /* COLONNA LATTE · morph a stati sull'intera stage */
       if (stageRef.current) {
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -268,35 +272,29 @@ export function CaseificioStory() {
           },
         });
 
-        // Segmento 0→0.25 : liquido stabile (stato 1)
-        // Segmento 0.25→0.5 : liquido→cagliata
         tl.to(liquidRef.current, { opacity: 0, duration: 0.15 }, 0.25)
           .to(curdRef.current, { opacity: 1, duration: 0.15 }, 0.25)
-
-          // Segmento 0.5→0.75 : cagliata→filatura (stretch verticale del gruppo)
           .to(curdRef.current, { opacity: 0, duration: 0.1 }, 0.5)
           .to(stretchRef.current, { opacity: 1, duration: 0.1 }, 0.5)
           .fromTo(
             stretchRef.current,
             { scaleY: 0.85, transformOrigin: "50% 0%" },
-            { scaleY: 1.15, ease: "power2.out", duration: 0.25 },
+            { scaleY: 1.2, ease: "power2.out", duration: 0.3 },
             0.5,
           )
-
-          // Segmento 0.75→1 : filatura→forme
           .to(stretchRef.current, { opacity: 0, duration: 0.1 }, 0.78)
           .to(formRef.current, { opacity: 1, duration: 0.15 }, 0.78);
       }
 
-      /* STATO 2 · scala tempo/temperatura */
-      if (tempoRef.current && tempoBarRef.current) {
+      /* STATO 2 · scala termica animata */
+      if (cagliataRef.current && tempoBarRef.current) {
         ScrollTrigger.create({
-          trigger: tempoRef.current,
-          start: "top 70%",
-          end: "bottom 30%",
+          trigger: cagliataRef.current,
+          start: "top 75%",
+          end: "bottom 35%",
           scrub: 0.5,
           onUpdate: (self) => {
-            const t = 20 + Math.round(self.progress * 17); // 20°→37°
+            const t = 20 + Math.round(self.progress * 17);
             setTempC(t);
             if (tempoBarRef.current) {
               tempoBarRef.current.style.transform = `scaleY(${self.progress})`;
@@ -305,47 +303,41 @@ export function CaseificioStory() {
         });
       }
 
-      /* Reveal generici sui blocchi copy */
+      /* Reveal generici (visibili di default → si limitano ad animare y/opacity) */
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
         gsap.from(el, {
-          y: 30,
+          y: 24,
           opacity: 0,
-          duration: 0.9,
+          duration: 0.8,
           ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%" },
+          scrollTrigger: { trigger: el, start: "top 88%" },
         });
       });
 
-      /* Reveal prodotti */
+      /* Prodotti broken-grid: entrata sfalsata */
       gsap.utils.toArray<HTMLElement>("[data-product]").forEach((el, i) => {
         gsap.from(el, {
           y: 60,
           opacity: 0,
           duration: 0.9,
           ease: "power3.out",
-          delay: i * 0.05,
+          delay: (i % 3) * 0.06,
           scrollTrigger: { trigger: el, start: "top 82%" },
         });
       });
 
-      /* BRIDGE · bianco → oro */
+      /* BRIDGE · filo bianco → oro */
       if (bridgeRef.current) {
         gsap.to(goldRef.current, {
           strokeDashoffset: 0,
-          duration: 1.4,
+          duration: 1.5,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: bridgeRef.current,
-            start: "top 80%",
-          },
+          scrollTrigger: { trigger: bridgeRef.current, start: "top 80%" },
         });
         gsap.to(formRef.current, {
           opacity: 0,
           duration: 0.6,
-          scrollTrigger: {
-            trigger: bridgeRef.current,
-            start: "top 70%",
-          },
+          scrollTrigger: { trigger: bridgeRef.current, start: "top 75%" },
         });
       }
     }, rootRef);
@@ -360,15 +352,13 @@ export function CaseificioStory() {
     };
   }, [reduced]);
 
-  // Sync Lenis ↔ ScrollTrigger
   useEffect(() => {
     if (reduced) return;
     const lenis = (window as unknown as {
       __lenis?: { on: (e: string, cb: () => void) => void };
     }).__lenis;
     if (!lenis) return;
-    const update = () => ScrollTrigger.update();
-    lenis.on("scroll", update);
+    lenis.on("scroll", () => ScrollTrigger.update());
   }, [reduced]);
 
   const goMacelleria = () => {
@@ -385,7 +375,7 @@ export function CaseificioStory() {
       ref={rootRef}
       className="relative bg-[color:var(--carbone)] text-[color:var(--crema)]"
     >
-      {/* ─────────── PERSISTENT NAV ─────────── */}
+      {/* ─────────── PERSISTENT NAV (minima) ─────────── */}
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 pt-6 md:px-10 md:pt-8">
         <Link
           to="/"
@@ -398,7 +388,7 @@ export function CaseificioStory() {
           La masseria
         </Link>
         <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)] md:text-[11px]">
-          02 / 04 — Caseificio
+          02 / 04
         </p>
       </div>
 
@@ -428,16 +418,103 @@ export function CaseificioStory() {
         ))}
       </nav>
 
-      {/* ══════════════════════════════════════════════════════
-          STAGE = contenitore continuo dei 4 stati.
-          La colonna di latte è UN SOLO elemento position:sticky
-          che vive dentro qui e cambia stato via GSAP scrub.
-         ══════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════════
+          INGRESSO · DENTRO LA TINA (NO HERO)
+          Solo materia + rail verticale a sinistra. Nessun titolo qui.
+         ═══════════════════════════════════════════════════════════ */}
+      <section
+        ref={enterRef}
+        aria-label="Dentro la tina"
+        className="relative h-[180svh] w-full"
+      >
+        {/* piano di latte pinnato, si inclina scendendo */}
+        <div className="sticky top-0 h-[100svh] w-full overflow-hidden [perspective:1200px]">
+          <div
+            ref={milkMacroRef}
+            className="absolute inset-0 -z-10"
+            style={{
+              backgroundImage: `url(${milkMacro})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+          <div
+            ref={milkTiltRef}
+            aria-hidden
+            className="absolute inset-0 will-change-transform"
+            style={{
+              backgroundImage: `url(${milkMacro})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transformOrigin: "50% 100%",
+              transform: "rotateX(0deg) scale(1)",
+            }}
+          />
+          {/* grade caldo minimale (leggibilità del titolo su latte scuro-ambra) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 90% 70% at 50% 55%, transparent 0%, rgba(26,18,16,0.5) 85%)",
+            }}
+          />
+
+          {/* RAIL VERTICALE SINISTRO · marginalia (l'unico testo) */}
+          <div className="pointer-events-none absolute left-4 top-1/2 z-20 -translate-y-1/2 md:left-8">
+            <div
+              className="flex origin-left -rotate-90 items-center gap-6 whitespace-nowrap"
+              style={{ transform: "rotate(-90deg) translateY(-50%)" }}
+            >
+              <span className="font-eyebrow text-[10px] tracking-[0.42em] text-[color:var(--carbone)]/70">
+                CASEIFICIO · II · NOCI
+              </span>
+              <span aria-hidden className="h-px w-10 bg-[color:var(--carbone)]/40" />
+              <span className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--bordeaux)]">
+                18° →{" "}
+                <span ref={railTempRef} className="text-[color:var(--terracotta)]">
+                  18°
+                </span>{" "}
+                → 37°
+              </span>
+            </div>
+          </div>
+
+          {/* Titolo che affiora SULLA SUPERFICIE del latte (mask reveal) */}
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center pb-[18vh]">
+            <div
+              ref={onMilkTitleRef}
+              className="font-display px-6 text-center italic leading-[0.95] text-[color:var(--carbone)]/85 mix-blend-multiply"
+              style={{
+                fontSize: "clamp(2.4rem, 7vw, 6.2rem)",
+                clipPath: "inset(0 100% 0 0)",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Il latte di ogni mattina
+            </div>
+          </div>
+
+          {/* Scroll cue */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-6 z-20 flex flex-col items-center gap-2 text-[color:var(--carbone)]/70">
+            <span className="font-eyebrow text-[10px] tracking-[0.32em]">
+              scendi nella tina
+            </span>
+            <span
+              aria-hidden
+              className="h-8 w-px animate-pulse bg-gradient-to-b from-[color:var(--carbone)]/70 to-transparent"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════
+          STAGE · 4 stati con colonna di latte sticky (SVG morph).
+          Il testo cambia POSIZIONE ad ogni stato.
+         ═══════════════════════════════════════════════════════════ */}
       <div ref={stageRef} className="relative">
-        {/* Colonna latte sticky, alta 100svh, cambia stato lungo la stage */}
         <div className="pointer-events-none sticky top-0 z-10 h-[100svh] w-full">
           <MilkColumn
-            columnRef={columnRef}
             liquidRef={liquidRef}
             curdRef={curdRef}
             stretchRef={stretchRef}
@@ -446,127 +523,11 @@ export function CaseificioStory() {
           />
         </div>
 
-        {/* Sposto tutto il contenuto sopra la colonna con margin negativo
-            così i due layer occupano lo stesso spazio verticale */}
         <div className="relative z-20 -mt-[100svh]">
-          {/* ════════ STATO 1 · L'ALBA & IL VAPORE ════════ */}
+          {/* ══════ STATO 2 · LA CAGLIATA — testo = etichette DESTRA ══════ */}
           <section
-            className="alba-sec relative min-h-[100svh] w-full overflow-hidden"
-            aria-label="Stato 1 · L'alba e il vapore"
-          >
-            <div
-              ref={albaImgRef}
-              aria-hidden
-              className="absolute inset-0 -z-10 will-change-transform"
-              style={{
-                backgroundImage: `url(${latteImg})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -z-10"
-              style={{
-                background:
-                  "linear-gradient(180deg, rgba(26,18,16,0.65) 0%, rgba(26,18,16,0.25) 40%, rgba(26,18,16,0.9) 100%)",
-              }}
-            />
-            {/* vapore */}
-            <div
-              ref={steamRef}
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0 bottom-0 top-1/3 mix-blend-screen"
-              style={{
-                background:
-                  "radial-gradient(ellipse 45% 55% at 50% 75%, rgba(242,232,213,0.22) 0%, transparent 70%)",
-              }}
-            />
-            {/* cover cremoso (raccoglie il ponte allevamento) */}
-            <div
-              ref={albaCoverRef}
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(circle at 50% 55%, rgba(242,232,213,0.95) 0%, rgba(196,154,74,0.7) 35%, rgba(26,18,16,0.95) 80%)",
-              }}
-            />
-
-            {/* parola-fantasma "LATTE" */}
-            <p
-              aria-hidden
-              className="font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap italic text-[color:var(--crema)]/[0.055]"
-              style={{
-                fontSize: "clamp(9rem, 26vw, 24rem)",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              LATTE
-            </p>
-
-            {/* Copy — spostata a sinistra per non coprire la colonna */}
-            <div className="absolute inset-0 flex flex-col items-start justify-center px-6 pt-24 md:pl-[8vw] md:pt-0">
-              <div className="max-w-xl">
-                <div className="overflow-hidden">
-                  <p
-                    data-alba-reveal
-                    className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)] md:text-xs"
-                  >
-                    02 — Dalla terra alla brace · Il secondo anello
-                  </p>
-                </div>
-
-                <h1
-                  className="font-display mt-6 text-balance leading-[0.95] text-[color:var(--crema)]"
-                  style={{ fontSize: "clamp(2.6rem, 6.5vw, 5.6rem)" }}
-                >
-                  <span className="block overflow-hidden">
-                    <span data-alba-reveal className="block">
-                      Il latte di ogni
-                    </span>
-                  </span>
-                  <span className="block overflow-hidden">
-                    <span
-                      data-alba-reveal
-                      className="block italic text-[color:var(--terracotta)]"
-                    >
-                      mattina.
-                    </span>
-                  </span>
-                </h1>
-
-                <div className="mt-8 max-w-md overflow-hidden">
-                  <p
-                    data-alba-reveal
-                    className="font-sans text-sm leading-relaxed text-[color:var(--crema)]/85 md:text-base"
-                  >
-                    Quello che munciamo all'alba è delle bestie che hai appena
-                    lasciato al pascolo. Fuma nel secchio d'acciaio. Non
-                    aspetta.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div
-              data-alba-fade
-              className="absolute inset-x-0 bottom-8 z-20 flex flex-col items-center gap-3 text-[color:var(--crema)]/70"
-            >
-              <span className="font-eyebrow text-[10px] tracking-[0.28em]">
-                Scendi: il bianco diventa
-              </span>
-              <span
-                aria-hidden
-                className="h-8 w-px animate-pulse bg-gradient-to-b from-[color:var(--crema)]/70 to-transparent"
-              />
-            </div>
-          </section>
-
-          {/* ════════ STATO 2 · LA CAGLIATA ════════ */}
-          <section
-            ref={tempoRef}
-            className="relative min-h-[110svh] w-full overflow-hidden"
+            ref={cagliataRef}
+            className="relative min-h-[130svh] w-full overflow-hidden"
             aria-label="Stato 2 · La cagliata"
           >
             <div
@@ -575,7 +536,7 @@ export function CaseificioStory() {
               style={{
                 backgroundImage: `url(${maniImg})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center",
+                backgroundPosition: "left center",
               }}
             />
             <div
@@ -583,56 +544,73 @@ export function CaseificioStory() {
               className="pointer-events-none absolute inset-0 -z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(26,18,16,0.92) 0%, rgba(61,42,30,0.55) 40%, rgba(26,18,16,0.92) 100%)",
+                  "linear-gradient(90deg, rgba(26,18,16,0.35) 0%, rgba(26,18,16,0.55) 55%, rgba(26,18,16,0.95) 100%)",
               }}
             />
 
-            <div className="mx-auto flex min-h-[110svh] max-w-6xl items-center px-6 md:px-10">
-              {/* Scala termica a sinistra */}
-              <aside
-                aria-hidden
-                className="mr-8 hidden h-[60vh] w-px shrink-0 bg-[color:var(--crema)]/15 md:block"
-              >
-                <div className="relative h-full w-px">
+            {/* etichette da laboratorio a DESTRA, allineate a scala termica verticale */}
+            <div className="absolute inset-y-0 right-0 flex w-full max-w-md items-center px-6 md:px-10">
+              <div className="flex w-full items-stretch gap-6">
+                {/* scala termica */}
+                <div
+                  aria-hidden
+                  className="relative h-[62vh] w-px shrink-0 bg-[color:var(--crema)]/15"
+                >
                   <div
                     ref={tempoBarRef}
                     className="absolute inset-0 w-px origin-top bg-[color:var(--terracotta)]"
                     style={{ transform: "scaleY(0)" }}
                   />
+                  {[20, 25, 30, 35, 37].map((t, i) => (
+                    <span
+                      key={t}
+                      className="font-eyebrow absolute -left-8 text-[9px] tracking-[0.28em] text-[color:var(--crema)]/50"
+                      style={{ top: `${(i / 4) * 100}%` }}
+                    >
+                      {t}°
+                    </span>
+                  ))}
                 </div>
-              </aside>
 
-              <div className="max-w-xl" data-reveal>
-                <p className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)]">
-                  Stato 02 · La cagliata
-                </p>
-                <p className="font-display mt-3 text-[color:var(--oro)]/85 text-3xl italic md:text-4xl">
-                  {tempC}° · l'attesa
-                </p>
-                <h2
-                  className="font-display mt-4 text-balance leading-[0.98] text-[color:var(--crema)]"
-                  style={{ fontSize: "clamp(2.2rem, 5vw, 4.4rem)" }}
-                >
-                  Il liquido{" "}
-                  <span className="italic text-[color:var(--terracotta)]">
-                    si rapprende.
-                  </span>
-                </h2>
-                <p className="font-sans mt-6 max-w-md text-base leading-relaxed text-[color:var(--crema)]/85">
-                  Nessuna scorciatoia. La temperatura sale piano, il caglio
-                  entra, e poi ci sono solo le mani a decidere quando la massa
-                  è pronta. Come si è sempre fatto.
-                </p>
-                <p className="font-eyebrow mt-6 text-[10px] tracking-[0.28em] text-[color:var(--crema)]/45">
-                  Tempi di lavorazione DA CONFERMARE
-                </p>
+                {/* etichette process */}
+                <ul className="flex-1 space-y-8" data-reveal>
+                  <li>
+                    <p className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)]">
+                      STATO 02 / CAGLIATA
+                    </p>
+                    <p className="font-display mt-1 text-[color:var(--crema)] text-2xl italic md:text-3xl">
+                      {tempC}° · l'attesa
+                    </p>
+                  </li>
+                  <li className="border-l border-[color:var(--oro)]/40 pl-4">
+                    <p className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--crema)]/55">
+                      OP · caglio naturale
+                    </p>
+                    <p className="font-sans mt-1 text-sm text-[color:var(--crema)]/85">
+                      30 minuti di riposo. Nessuna agitazione.
+                    </p>
+                  </li>
+                  <li className="border-l border-[color:var(--oro)]/40 pl-4">
+                    <p className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--crema)]/55">
+                      DEC · a mano
+                    </p>
+                    <p className="font-sans mt-1 text-sm text-[color:var(--crema)]/85">
+                      La rottura la decide il polso, non un timer.
+                    </p>
+                  </li>
+                  <li className="border-l border-[color:var(--crema)]/15 pl-4">
+                    <p className="font-eyebrow text-[9px] tracking-[0.28em] text-[color:var(--crema)]/40">
+                      Tempi DA CONFERMARE
+                    </p>
+                  </li>
+                </ul>
               </div>
             </div>
           </section>
 
-          {/* ════════ STATO 3 · LA FILATURA ════════ */}
+          {/* ══════ STATO 3 · LA FILATURA — testo = didascalia BASSA ══════ */}
           <section
-            className="relative min-h-[130svh] w-full overflow-hidden"
+            className="relative min-h-[140svh] w-full overflow-hidden"
             aria-label="Stato 3 · La filatura"
           >
             <div
@@ -641,7 +619,7 @@ export function CaseificioStory() {
               style={{
                 backgroundImage: `url(${filaturaImg})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center right",
+                backgroundPosition: "center",
               }}
             />
             <div
@@ -649,40 +627,54 @@ export function CaseificioStory() {
               className="pointer-events-none absolute inset-0 -z-10"
               style={{
                 background:
-                  "linear-gradient(90deg, rgba(26,18,16,0.95) 0%, rgba(26,18,16,0.75) 40%, rgba(26,18,16,0.25) 100%)",
+                  "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(26,18,16,0.25) 40%, rgba(26,18,16,0.95) 100%)",
               }}
             />
 
-            <div className="mx-auto flex min-h-[130svh] max-w-6xl items-center px-6 md:px-10">
-              <div className="max-w-xl" data-reveal>
-                <p className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)]">
-                  Stato 03 · La filatura
+            {/* didascalia bassa, corsivo Fraunces */}
+            <figcaption
+              data-reveal
+              className="absolute inset-x-0 bottom-[14vh] mx-auto max-w-2xl px-6 text-center text-[color:var(--crema)]"
+            >
+              <span className="font-eyebrow inline-block text-[10px] tracking-[0.32em] text-[color:var(--oro)]">
+                — stato 03 · filatura · 90° · mani nude —
+              </span>
+              <p
+                className="font-display mt-4 italic leading-[1.05]"
+                style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.6rem)" }}
+              >
+                Il filo{" "}
+                <span className="text-[color:var(--terracotta)]">
+                  non si spezza
+                </span>{" "}
+                mai. Non da noi.
+              </p>
+              <p className="font-sans mt-3 text-xs text-[color:var(--crema)]/70 md:text-sm">
+                Come la filiera: se tieni ferma la mano dal primo gesto
+                all'ultimo, il bianco tiene.
+              </p>
+            </figcaption>
+
+            {/* marginalia laterale — piccolo cartellino tempi */}
+            <div className="pointer-events-none absolute right-6 top-1/3 hidden md:block">
+              <div className="border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/60 px-3 py-2 text-[color:var(--crema)]/85 backdrop-blur">
+                <p className="font-eyebrow text-[9px] tracking-[0.32em] text-[color:var(--oro)]">
+                  N° 03
                 </p>
-                <h2
-                  className="font-display mt-4 text-balance leading-[0.98] text-[color:var(--crema)]"
-                  style={{ fontSize: "clamp(2.2rem, 5.4vw, 4.8rem)" }}
-                >
-                  Un filo che{" "}
-                  <span className="italic text-[color:var(--terracotta)]">
-                    non si spezza.
-                  </span>
-                </h2>
-                <p className="font-sans mt-6 max-w-md text-base leading-relaxed text-[color:var(--crema)]/85">
-                  La pasta si tira, si allunga, si piega. Come la filiera: se
-                  tieni la mano ferma dal primo gesto all'ultimo, il filo non
-                  si spezza. Da noi non si spezza mai.
+                <p className="font-eyebrow mt-1 text-[9px] tracking-[0.28em]">
+                  acqua · 90°
                 </p>
-                <p className="font-eyebrow mt-6 inline-block border-l border-[color:var(--oro)]/50 pl-3 text-[10px] tracking-[0.28em] text-[color:var(--crema)]/60">
-                  90° · acqua bollente · mani nude
+                <p className="font-eyebrow text-[9px] tracking-[0.28em]">
+                  tirata · +40 cm
                 </p>
               </div>
             </div>
           </section>
 
-          {/* ════════ STATO 4 · LA FORMA & IL TEMPO ════════ */}
+          {/* ══════ STATO 4 · LE FORME & IL TEMPO — targhette broken-grid ══════ */}
           <section
-            className="relative min-h-[100svh] w-full overflow-hidden pb-32 pt-24"
-            aria-label="Stato 4 · La forma e il tempo"
+            className="relative min-h-[100svh] w-full overflow-hidden pb-40 pt-24"
+            aria-label="Stato 4 · Le forme e il tempo"
           >
             <div
               aria-hidden
@@ -698,40 +690,30 @@ export function CaseificioStory() {
               className="pointer-events-none absolute inset-0 -z-10"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(26,18,16,0.95) 0%, rgba(26,18,16,0.85) 100%)",
+                  "linear-gradient(180deg, rgba(26,18,16,0.95) 0%, rgba(26,18,16,0.9) 100%)",
               }}
             />
 
+            {/* Nessun titolo grande centrato. Solo una marginalia in alto a destra. */}
             <div className="mx-auto max-w-6xl px-6 md:px-10">
-              <div className="max-w-2xl" data-reveal>
-                <p className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)]">
-                  Stato 04 · La forma e il tempo
-                </p>
-                <h2
-                  className="font-display mt-4 text-balance leading-[0.98] text-[color:var(--crema)]"
-                  style={{ fontSize: "clamp(2.2rem, 5.4vw, 4.8rem)" }}
-                >
-                  Il bianco{" "}
-                  <span className="italic text-[color:var(--terracotta)]">
-                    prende forma.
-                  </span>
-                </h2>
-                <p className="font-sans mt-6 max-w-lg text-base leading-relaxed text-[color:var(--crema)]/85">
-                  Quattro modi di chiamare la stessa mattina. Alcuni si
-                  mangiano oggi, altri riposano sulla trave. Noi sappiamo
-                  quando sono pronti.
+              <div className="flex items-start justify-end" data-reveal>
+                <p className="font-eyebrow max-w-xs text-right text-[10px] tracking-[0.32em] text-[color:var(--crema)]/55">
+                  STATO 04 / FORME · quattro modi di chiamare la stessa mattina
                 </p>
               </div>
 
-              <ul className="mt-16 grid grid-cols-1 gap-x-10 gap-y-16 md:grid-cols-2 lg:mt-24">
-                {PRODUCTS.map((p, i) => (
+              {/* broken grid a 4 colonne su desktop */}
+              <ul className="mt-16 grid grid-cols-2 gap-x-8 gap-y-20 md:mt-24 md:grid-cols-4 md:gap-x-6">
+                {PRODUCTS.map((p) => (
                   <li
                     key={p.id}
                     data-product
-                    className={[
-                      "group relative",
-                      i % 2 === 1 ? "md:mt-24" : "",
-                    ].join(" ")}
+                    className="group relative"
+                    style={{
+                      gridColumn: `${p.col} / span 1`,
+                      marginTop: `${p.push * 4}px`,
+                      transform: `rotate(${p.rot}deg)`,
+                    }}
                   >
                     <div className="relative aspect-[4/5] w-full overflow-hidden bg-[color:var(--marrone)]/40">
                       <img
@@ -740,48 +722,42 @@ export function CaseificioStory() {
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                       />
-                      <div
-                        aria-hidden
-                        className="pointer-events-none absolute inset-0"
-                        style={{
-                          background:
-                            "linear-gradient(180deg, transparent 55%, rgba(26,18,16,0.85) 100%)",
-                        }}
-                      />
-                      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between px-5 pb-4">
-                        <p className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--oro)]">
+                    </div>
+                    {/* targhetta da caseificio */}
+                    <div className="mt-3 flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-eyebrow text-[9px] tracking-[0.32em] text-[color:var(--oro)]">
                           {p.tag}
                         </p>
-                        <span
-                          aria-hidden
-                          className="h-px w-8 bg-[color:var(--oro)]/60"
-                        />
+                        <h3
+                          className="font-display mt-1 leading-none text-[color:var(--crema)]"
+                          style={{ fontSize: "clamp(1.2rem, 1.8vw, 1.6rem)" }}
+                        >
+                          {p.name}
+                        </h3>
                       </div>
+                      <span
+                        aria-hidden
+                        className="mt-2 h-px w-6 shrink-0 bg-[color:var(--oro)]/60"
+                      />
                     </div>
-                    <div className="mt-5">
-                      <h3
-                        className="font-display leading-none text-[color:var(--crema)]"
-                        style={{ fontSize: "clamp(1.6rem, 2.4vw, 2.2rem)" }}
-                      >
-                        {p.name}
-                      </h3>
-                      <p className="font-sans mt-3 max-w-sm text-sm leading-relaxed text-[color:var(--crema)]/75">
-                        {p.line}
-                      </p>
-                    </div>
+                    <p className="font-sans mt-2 max-w-[26ch] text-xs leading-relaxed text-[color:var(--crema)]/70">
+                      {p.line}
+                    </p>
                   </li>
                 ))}
               </ul>
 
-              <p className="font-eyebrow mt-16 text-center text-[10px] tracking-[0.28em] text-[color:var(--crema)]/45">
-                Gamma completa DA CONFERMARE col cliente
+              <p className="font-eyebrow mt-20 text-right text-[10px] tracking-[0.28em] text-[color:var(--crema)]/40">
+                Gamma completa DA CONFERMARE — mozzarella, burrata, stracciatella,
+                nodini, caciocavallo, ricotta, scamorza
               </p>
             </div>
           </section>
         </div>
       </div>
 
-      {/* ══════════════ BRIDGE → MACELLERIA (bianco → oro) ══════════════ */}
+      {/* ══════════════ BRIDGE → MACELLERIA ══════════════ */}
       <section
         ref={bridgeRef}
         className="relative min-h-[95svh] w-full overflow-hidden"
@@ -802,11 +778,11 @@ export function CaseificioStory() {
           className="pointer-events-none absolute inset-0 -z-10"
           style={{
             background:
-              "linear-gradient(180deg, rgba(26,18,16,0.85) 0%, rgba(110,26,20,0.6) 50%, rgba(26,18,16,0.95) 100%)",
+              "linear-gradient(180deg, rgba(26,18,16,0.9) 0%, rgba(110,26,20,0.55) 50%, rgba(26,18,16,0.95) 100%)",
           }}
         />
 
-        {/* filo d'oro verticale che intreccia il bianco */}
+        {/* filo d'oro esce dal centro come continuazione della colonna */}
         <svg
           aria-hidden
           className="pointer-events-none absolute inset-0 h-full w-full"
@@ -817,40 +793,31 @@ export function CaseificioStory() {
             d="M 720 0 C 780 200, 660 400, 720 600 S 780 800, 720 900"
             fill="none"
             stroke="var(--oro)"
-            strokeWidth="1.2"
-            strokeOpacity="0.7"
+            strokeWidth="1.3"
+            strokeOpacity="0.75"
           />
         </svg>
 
         <div className="mx-auto flex min-h-[95svh] max-w-3xl flex-col items-center justify-center px-6 text-center">
           <p
             data-reveal
-            className="font-eyebrow text-[11px] tracking-[0.32em] text-[color:var(--oro)]"
+            className="font-eyebrow text-[10px] tracking-[0.32em] text-[color:var(--oro)]"
           >
-            Il filo cambia colore
+            — il filo cambia colore —
           </p>
-          <h2
-            data-reveal
-            className="font-display mt-6 text-balance leading-[0.98] text-[color:var(--crema)]"
-            style={{ fontSize: "clamp(2.4rem, 6vw, 5rem)" }}
-          >
-            E dallo stesso pascolo,{" "}
-            <span className="italic text-[color:var(--terracotta)]">
-              arriva la carne.
-            </span>
-          </h2>
           <p
             data-reveal
-            className="font-sans mt-8 max-w-lg text-base leading-relaxed text-[color:var(--crema)]/85"
+            className="font-display mt-8 text-balance italic leading-[1.05] text-[color:var(--crema)]"
+            style={{ fontSize: "clamp(1.6rem, 3.4vw, 2.6rem)" }}
           >
-            Le stesse bestie del primo capitolo, cresciute con il nostro grano.
-            La macelleria è la stanza a fianco.
+            E dallo stesso pascolo, dalle stesse bestie,{" "}
+            <span className="text-[color:var(--terracotta)]">arriva la carne.</span>
           </p>
 
           <button
             data-reveal
             onClick={goMacelleria}
-            className="group mt-12 inline-flex items-center gap-4 border border-[color:var(--oro)]/40 px-8 py-4 text-[color:var(--crema)] transition-colors hover:border-[color:var(--oro)] hover:bg-[color:var(--oro)]/10"
+            className="group mt-14 inline-flex items-center gap-4 border border-[color:var(--oro)]/40 px-8 py-4 text-[color:var(--crema)] transition-colors hover:border-[color:var(--oro)] hover:bg-[color:var(--oro)]/10"
             aria-label="Continua verso la macelleria"
           >
             <span className="font-eyebrow text-[11px] tracking-[0.32em]">
@@ -878,7 +845,6 @@ export function CaseificioStory() {
         </div>
       </section>
 
-      {/* DIVE overlay */}
       {diving && (
         <div
           aria-hidden
