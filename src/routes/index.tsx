@@ -5,6 +5,7 @@ import { ContinuousBackground } from "@/components/site/ContinuousBackground";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { Hero } from "@/components/sections/Hero";
 import { IlManifesto } from "@/components/sections/IlManifesto";
+import { LaStoria } from "@/components/sections/LaStoria";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,6 +42,7 @@ function HomePage() {
       <main className="relative">
         <Hero />
         <IlManifesto />
+        <LaStoria />
       </main>
       <Footer />
     </SmoothScroll>
