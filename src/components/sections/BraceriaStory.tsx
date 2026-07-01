@@ -139,11 +139,12 @@ export function BraceriaStory() {
   /* ─── GSAP orchestration ─── */
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
+    if (reduced) return;
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
       // intro: brace respira
-      if (!reduced && emberBedRef.current) {
+      if (emberBedRef.current) {
         gsap.to(emberBedRef.current, {
           filter: "brightness(1.25) saturate(1.15)",
           duration: 2.2,
@@ -190,7 +191,7 @@ export function BraceriaStory() {
               const target = 20 + (i * 60) / Math.max(1, lightRevealsRef.current.length - 1);
               const dist = Math.abs(y - target);
               const near = gsap.utils.clamp(0, 1, 1 - dist / 22);
-              gsap.set(el, { opacity: near, filter: `blur(${(1 - near) * 10}px)` });
+              gsap.set(el, { opacity: 0.86 + near * 0.14, filter: "none" });
             });
           },
         });
@@ -443,10 +444,10 @@ export function BraceriaStory() {
                 lightRevealsRef.current[i] = el;
               }}
               className={[
-                "grid grid-cols-1 items-center gap-8 md:grid-cols-2",
+                "brace-light-reveal grid grid-cols-1 items-center gap-8 md:grid-cols-2",
                 i % 2 === 1 ? "md:[&>*:first-child]:order-2" : "",
               ].join(" ")}
-              style={{ opacity: 0.15 }}
+              style={{ opacity: 1 }}
             >
               <div className="relative aspect-[4/3] overflow-hidden rounded-sm ring-1 ring-[color:var(--oro)]/20">
                 <img
@@ -743,7 +744,7 @@ export function BraceriaStory() {
           <div
             ref={finalPhraseRef}
             className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-8 px-6 text-center"
-            style={{ opacity: 0 }}
+            style={{ opacity: 1 }}
           >
             <div className="font-eyebrow text-[11px] text-[color:var(--oro)]">
               il cerchio si chiude

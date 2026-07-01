@@ -2,7 +2,7 @@ import { Reveal } from "./Reveal";
 
 export function Footer() {
   return (
-    <footer className="relative mt-12 border-t border-white/10 bg-[color:var(--carbone)]/80 backdrop-blur-sm">
+    <footer className="relative mt-12 border-t border-white/10 bg-[color:var(--carbone)]/90">
       <div className="hairline-ember" />
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 py-16 md:grid-cols-3 lg:py-20">
         <Reveal className="space-y-4">

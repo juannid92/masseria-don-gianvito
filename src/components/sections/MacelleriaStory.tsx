@@ -110,9 +110,8 @@ export function MacelleriaStory() {
           },
         });
 
-        gsap.set(stampRef.current, { autoAlpha: 0, scale: 1.35, rotate: -8 });
         gsap.to(stampRef.current, {
-          autoAlpha: 1,
+          opacity: 1,
           scale: 1,
           rotate: -4,
           duration: 0.6,
@@ -120,7 +119,9 @@ export function MacelleriaStory() {
           scrollTrigger: {
             trigger: bancoSectionRef.current,
             start: "40% top",
-            toggleActions: "play none none reverse",
+            toggleActions: "play none none none",
+            once: true,
+            invalidateOnRefresh: true,
           },
         });
 
@@ -184,13 +185,15 @@ export function MacelleriaStory() {
           },
         });
 
-        gsap.from("[data-cell]", {
-          y: 24,
-          autoAlpha: 0,
-          duration: 0.7,
+        gsap.to("[data-cell]", {
+          opacity: 1,
+          autoAlpha: 1,
+          y: 0,
+          filter: "none",
+          duration: 0.6,
           stagger: 0.12,
-          ease: "power3.out",
-          scrollTrigger: { trigger: traceRef.current, start: "top 70%" },
+          ease: "power2.out",
+          scrollTrigger: { trigger: traceRef.current, start: "top 88%", once: true, invalidateOnRefresh: true },
         });
 
         // draw filo taglio↔animale
@@ -212,14 +215,14 @@ export function MacelleriaStory() {
 
       /* ═══ SEZIONE C · IL BANCONE (broken grid stamp reveal) ═══ */
       if (bankRef.current) {
-        gsap.from("[data-prod]", {
-          y: 40,
-          autoAlpha: 0,
-          rotate: (i) => (i % 2 === 0 ? -6 : 6),
-          duration: 0.9,
+        gsap.to("[data-prod]", {
+          opacity: 1,
+          autoAlpha: 1,
+          filter: "none",
+          duration: 0.6,
           stagger: 0.1,
-          ease: "power3.out",
-          scrollTrigger: { trigger: bankRef.current, start: "top 75%" },
+          ease: "power2.out",
+          scrollTrigger: { trigger: bankRef.current, start: "top 88%", once: true, invalidateOnRefresh: true },
         });
       }
 
@@ -564,7 +567,6 @@ export function MacelleriaStory() {
             </p>
             <div
               className="mt-6 border border-[color:var(--oro)]/40 bg-[color:var(--crema)]/[0.03] p-8"
-              style={{ backdropFilter: "blur(2px)" }}
             >
               <p className="font-eyebrow text-[9px] tracking-[0.35em] text-[color:var(--crema)]/60">
                 TAGLIO
@@ -765,7 +767,7 @@ export function MacelleriaStory() {
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         >
           <div
-            className="border border-[color:var(--oro)]/60 bg-[color:var(--carbone)]/60 px-6 py-4 backdrop-blur"
+            className="border border-[color:var(--oro)]/60 bg-[color:var(--carbone)]/75 px-6 py-4"
             style={{ boxShadow: "0 0 60px rgba(179,58,26,0.6)" }}
           >
             <p className="font-eyebrow text-[9px] tracking-[0.35em] text-[color:var(--oro)]/80">

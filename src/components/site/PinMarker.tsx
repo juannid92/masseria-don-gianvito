@@ -120,7 +120,7 @@ export function PinMarker({ pin, index, onActiveChange }: Props) {
                 animate={{ width: 28 }}
                 transition={{ duration: 0.28 }}
               />
-              <div className="rounded-xl border border-[color:var(--oro)]/30 bg-[color:var(--carbone)]/92 px-4 py-3 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)] backdrop-blur-md">
+              <div className="rounded-xl border border-[color:var(--oro)]/30 bg-[color:var(--carbone)]/95 px-4 py-3 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)]">
                 <p className="font-eyebrow text-[10px] text-[color:var(--oro)]">
                   {pin.label}
                 </p>

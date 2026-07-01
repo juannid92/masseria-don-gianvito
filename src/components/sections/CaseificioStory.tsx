@@ -303,26 +303,28 @@ export function CaseificioStory() {
         });
       }
 
-      /* Reveal generici (visibili di default → si limitano ad animare y/opacity) */
+      /* Reveal generici: visibili di default, una sola entrata, mai reverse */
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-        gsap.from(el, {
-          y: 24,
-          opacity: 0,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 88%" },
+        gsap.to(el, {
+          opacity: 1,
+          autoAlpha: 1,
+          y: 0,
+          filter: "none",
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 88%", once: true, invalidateOnRefresh: true },
         });
       });
 
       /* Prodotti broken-grid: entrata sfalsata */
-      gsap.utils.toArray<HTMLElement>("[data-product]").forEach((el, i) => {
-        gsap.from(el, {
-          y: 60,
-          opacity: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          delay: (i % 3) * 0.06,
-          scrollTrigger: { trigger: el, start: "top 82%" },
+      gsap.utils.toArray<HTMLElement>("[data-product]").forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          autoAlpha: 1,
+          filter: "none",
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 88%", once: true, invalidateOnRefresh: true },
         });
       });
 
@@ -478,7 +480,7 @@ export function CaseificioStory() {
               className="font-display px-6 text-center italic leading-[0.95] text-[color:var(--carbone)]/85 mix-blend-multiply"
               style={{
                 fontSize: "clamp(2.4rem, 7vw, 6.2rem)",
-                clipPath: "inset(0 100% 0 0)",
+                clipPath: "inset(0 0% 0 0)",
                 letterSpacing: "-0.01em",
               }}
             >
@@ -648,7 +650,7 @@ export function CaseificioStory() {
 
             {/* marginalia laterale — piccolo cartellino tempi */}
             <div className="pointer-events-none absolute right-6 top-1/3 hidden md:block">
-              <div className="border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/60 px-3 py-2 text-[color:var(--crema)]/85 backdrop-blur">
+              <div className="border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/75 px-3 py-2 text-[color:var(--crema)]/85">
                 <p className="font-eyebrow text-[9px] tracking-[0.32em] text-[color:var(--oro)]">
                   N° 03
                 </p>

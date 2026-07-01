@@ -165,16 +165,18 @@ export function AllevamentoStory() {
         }
 
         track.querySelectorAll<HTMLElement>("[data-portrait]").forEach((el) => {
-          gsap.from(el, {
-            yPercent: 12,
-            autoAlpha: 0,
+          gsap.to(el, {
+            opacity: 1,
+            autoAlpha: 1,
             duration: 0.6,
             ease: "power3.out",
             scrollTrigger: {
               trigger: el,
               containerAnimation: st,
               start: "left 90%",
-              toggleActions: "play none none reverse",
+              toggleActions: "play none none none",
+              once: true,
+              invalidateOnRefresh: true,
             },
           });
         });
@@ -184,12 +186,13 @@ export function AllevamentoStory() {
 
       mm.add("(max-width: 767px)", () => {
         gsap.utils.toArray<HTMLElement>("[data-portrait-mobile]").forEach((el) => {
-          gsap.from(el, {
-            y: 40,
-            autoAlpha: 0,
+          gsap.to(el, {
+            opacity: 1,
+            autoAlpha: 1,
+            y: 0,
             duration: 0.7,
             ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 85%" },
+            scrollTrigger: { trigger: el, start: "top 88%", once: true, invalidateOnRefresh: true },
           });
         });
       });
@@ -235,9 +238,14 @@ export function AllevamentoStory() {
             },
           }
         );
-        gsap.from("[data-bridge-cue]", {
-          y: 20, opacity: 0, duration: 0.9, ease: "power3.out",
-          scrollTrigger: { trigger: bridgeRef.current, start: "top 55%" },
+        gsap.to("[data-bridge-cue]", {
+          y: 0,
+          opacity: 1,
+          autoAlpha: 1,
+          filter: "none",
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: { trigger: bridgeRef.current, start: "top 88%", once: true, invalidateOnRefresh: true },
         });
       }
     }, rootRef);
@@ -378,7 +386,7 @@ export function AllevamentoStory() {
             <div
               ref={horizonTitleRef}
               className="mt-4 will-change-[clip-path]"
-              style={{ clipPath: "inset(0 100% 0 0)" }}
+              style={{ clipPath: "inset(0 0% 0 0)" }}
             >
               <h1
                 className="font-display italic text-center text-balance leading-[1]"
@@ -658,7 +666,7 @@ function PortraitCard({ p }: { p: Portrait }) {
         />
         {/* MARCA AURICOLARE — sigillo con clip a "tag" */}
         <div
-          className="absolute -left-2 top-4 flex items-center gap-2 border border-[color:var(--oro)]/70 bg-[color:var(--carbone)]/85 px-3 py-1.5 backdrop-blur"
+          className="absolute -left-2 top-4 flex items-center gap-2 border border-[color:var(--oro)]/70 bg-[color:var(--carbone)]/90 px-3 py-1.5"
           style={{ clipPath: "polygon(0 50%, 8px 0, 100% 0, 100% 100%, 8px 100%)", paddingLeft: "14px" }}
         >
           <span
