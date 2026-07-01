@@ -39,6 +39,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       "[data-bridge-cue]",
       ".brace-light-reveal",
     ].join(",");
+    const globalRevealSelector = [".reveal", "[data-reveal-item]"].join(",");
 
     const forceVisibleReveals = () => {
       gsap.utils.toArray<HTMLElement>(revealSelector).forEach((el) => {
@@ -92,8 +93,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
-    // Reveal globale: i contenuti sono visibili di default; se JS è pronto entrano una volta sola.
-    const revealTweens = gsap.utils.toArray<HTMLElement>(revealSelector).map((el) =>
+    // Reveal globale solo per i reveal generici: i reveal narrativi restano governati dalla sezione.
+    const revealTweens = gsap.utils.toArray<HTMLElement>(globalRevealSelector).map((el) =>
       gsap.to(el, {
         opacity: 1,
         autoAlpha: 1,
