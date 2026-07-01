@@ -5,8 +5,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
- * Setup globale: Lenis (smooth scroll con inerzia) + GSAP ScrollTrigger.
- * Esposto window.__lenis per debug/uso interno. Disattivato con prefers-reduced-motion.
+ * UNICO MOTORE DI SCROLL.
+ * - Lenis guida lo scroll; il suo raf è pilotato dal ticker di GSAP.
+ * - ScrollTrigger.update() è invocato ad ogni tick di scroll di Lenis.
+ * - scrollerProxy(window) allinea le misure di ScrollTrigger allo scroll reale del document.
+ * - Refresh globale dopo fonts.ready, window.load e ogni <img>/<video> caricata,
+ *   così start/end vengono calcolati con l'altezza definitiva → niente offset.
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const reduced = useReducedMotion();
@@ -27,7 +31,23 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
-    lenis.on("scroll", ScrollTrigger.update);
+    // Sync Lenis → ScrollTrigger (unico listener globale, no doppi handler)
+    const onLenisScroll = () => ScrollTrigger.update();
+    lenis.on("scroll", onLenisScroll);
+
+    // scrollerProxy: allinea le misure di ScrollTrigger allo scroll reale (window/document)
+    ScrollTrigger.scrollerProxy(window, {
+      scrollTop(value) {
+        if (arguments.length && typeof value === "number") {
+          lenis.scrollTo(value, { immediate: true });
+        }
+        return window.scrollY;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+      },
+      pinType: document.body.style.transform ? "transform" : "fixed",
+    });
 
     const raf = (time: number) => {
       lenis.raf(time * 1000);
@@ -35,11 +55,57 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // ─── Refresh globale quando cambia l'altezza reale della pagina ───
+    const refresh = () => ScrollTrigger.refresh();
+
+    // 1) fonts pronti (evita salti dopo il rendering tipografico)
+    let fontsPromise: Promise<unknown> | null = null;
+    if (document.fonts?.ready) {
+      fontsPromise = document.fonts.ready.then(refresh).catch(() => undefined);
+    }
+
+    // 2) window.load (immagini/video del primo paint)
+    if (document.readyState === "complete") {
+      refresh();
+    } else {
+      window.addEventListener("load", refresh, { once: true });
+    }
+
+    // 3) ogni immagine/video che finisce di caricare in seguito (lazy, route change)
+    const attachMediaListeners = () => {
+      const media = document.querySelectorAll<HTMLImageElement | HTMLVideoElement>(
+        "img, video",
+      );
+      media.forEach((el) => {
+        if (el instanceof HTMLImageElement) {
+          if (!el.complete) el.addEventListener("load", refresh, { once: true });
+        } else {
+          el.addEventListener("loadedmetadata", refresh, { once: true });
+        }
+      });
+    };
+    attachMediaListeners();
+
+    const mo = new MutationObserver(() => {
+      // debounce naturale via rAF
+      requestAnimationFrame(attachMediaListeners);
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    // 4) resize → ScrollTrigger già ascolta, ma forziamo un refresh finale
+    const onResize = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", onResize);
+
     return () => {
+      window.removeEventListener("load", refresh);
+      window.removeEventListener("resize", onResize);
+      mo.disconnect();
+      lenis.off("scroll", onLenisScroll);
       gsap.ticker.remove(raf);
       lenis.destroy();
       ScrollTrigger.getAll().forEach((t) => t.kill());
       delete (window as unknown as { __lenis?: Lenis }).__lenis;
+      void fontsPromise;
     };
   }, [reduced]);
 

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -242,23 +242,17 @@ export function AllevamentoStory() {
       }
     }, rootRef);
 
-    const onReady = () => ScrollTrigger.refresh();
-    if (document.fonts?.ready) document.fonts.ready.then(onReady);
-    window.addEventListener("load", onReady);
+    // Refresh locale dopo che i font della pagina sono pronti (le altezze cambiano).
+    // Il sync globale Lenis↔ScrollTrigger e i refresh su load/immagini sono in <SmoothScroll/>.
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh()).catch(() => undefined);
+    }
 
     return () => {
-      window.removeEventListener("load", onReady);
       ctx.revert();
     };
   }, [reduced]);
 
-  useEffect(() => {
-    if (reduced) return;
-    const lenis = (window as unknown as { __lenis?: { on: (e: string, cb: () => void) => void } }).__lenis;
-    if (!lenis) return;
-    const update = () => ScrollTrigger.update();
-    lenis.on("scroll", update);
-  }, [reduced]);
 
   const goCaseificio = () => {
     if (reduced) { navigate({ to: "/caseificio" }); return; }
