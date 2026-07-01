@@ -25,17 +25,17 @@ const RINGS: Ring[] = [
     n: "01",
     title: "Allevamento",
     to: "/allevamento",
-    lede: "Bovini e suini, al pascolo. Nati e cresciuti qui.",
-    fact: "capi allevati in masseria · km 0",
-    alt: "Bovini al pascolo nella Murgia, Masseria Don Gianvito",
+    lede: "Centinaia di capi al pascolo. Bovini Pezzata Rossa × Frisona, ovini, suini, equini, avicoli.",
+    fact: "foraggio e grano coltivati in masseria",
+    alt: "Bovini Pezzata Rossa al pascolo nella Murgia, Masseria Don Gianvito",
     tone: "linear-gradient(135deg, #3D2A1E 0%, #1A1210 60%, #2a1e15 100%)",
   },
   {
     n: "02",
     title: "Caseificio",
     to: "/caseificio",
-    lede: "Il latte di ogni mattina, lavorato a mano.",
-    fact: "latte nostro · mozzarelle, ricotte, stracciatelle",
+    lede: "Il latte munto ogni mattina, lavorato a mano.",
+    fact: "mozzarelle km0 · nodini · primo sale · ricotta",
     alt: "Lavorazione della mozzarella nel caseificio della masseria",
     tone: "linear-gradient(135deg, #2b241f 0%, #1A1210 55%, #3D2A1E 100%)",
   },
@@ -44,7 +44,7 @@ const RINGS: Ring[] = [
     title: "Macelleria",
     to: "/macelleria",
     lede: "La carne, a vista. Ogni taglio si traccia al pascolo.",
-    fact: "frollatura 21–45 gg · lavorazione interna",
+    fact: "frollatura ~15 giorni",
     alt: "Banco macelleria con tagli di carne frollata",
     tone: "linear-gradient(135deg, #6E1A14 0%, #2a120f 60%, #1A1210 100%)",
   },
@@ -52,18 +52,18 @@ const RINGS: Ring[] = [
     n: "04",
     title: "Braceria",
     to: "/braceria",
-    lede: "Ogni sera, sulla brace.",
-    fact: "cena mer–sab · pranzo domenica",
+    lede: "Scegli la carne al banco. La porti al fornello. Te la cuociono sulla brace a carboni.",
+    fact: "mer–sab cena · domenica pranzo",
     alt: "Braci ardenti nella braceria della masseria",
     tone: "linear-gradient(135deg, #B33A1A 0%, #6E1A14 55%, #1A1210 100%)",
   },
 ];
 
 const STATS = [
-  { n: "20+", label: "Anni di mestiere" },
-  { n: "2", label: "Specie · bovini & suini" },
-  { n: "KM 0", label: "Filiera quasi chiusa" },
-  { n: "4", label: "Mestieri · 1 masseria" },
+  { n: "DAL 2002", label: "Oltre 20 anni" },
+  { n: "5 SPECIE", label: "Bovini · ovini · suini · equini · avicoli" },
+  { n: "FILOFORAGGIO", label: "Ortaggi · grano tenero coltivati qui" },
+  { n: "4 MESTIERI", label: "1 masseria" },
 ];
 
 export function Filiera() {
@@ -235,7 +235,7 @@ export function Filiera() {
             data-reveal-thr
             className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro)]/80 md:text-[11px]"
           >
-            LA FILIERA · DALLA TERRA ALLA BRACE
+            LA FILIERA · DAL 2002
           </p>
           <h2
             data-reveal-thr
@@ -247,16 +247,15 @@ export function Filiera() {
               fontWeight: 300,
             }}
           >
-            Qui non arriva <span className="filiera-accent">niente</span> da fuori.
+            Qui non arriva niente da <span className="filiera-accent">fuori</span>.
           </h2>
           <p
             data-reveal-thr
             className="mt-6 text-[color:var(--crema)]/70 md:text-lg"
             style={{ lineHeight: 1.6 }}
           >
-            Da oltre vent&apos;anni alleviamo, trasformiamo e cuciniamo tutto in masseria.
-            Bovini e suini nati e cresciuti qui, latte munto ogni mattina, carne a vista,
-            brace ogni sera.
+            Masseria del &apos;500 tra ulivi secolari. Alleviamo, coltiviamo,
+            trasformiamo e cuciniamo tutto qui — da oltre vent&apos;anni.
           </p>
         </header>
 
@@ -273,18 +272,18 @@ export function Filiera() {
               >
                 <span
                   data-stat={s.n}
-                  className="font-display text-[color:var(--crema)]"
+                  className="font-eyebrow text-[color:var(--oro)]"
                   style={{
-                    fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)",
-                    lineHeight: 1,
-                    letterSpacing: "-0.02em",
-                    fontWeight: 400,
+                    fontSize: "clamp(0.95rem, 1.35vw, 1.15rem)",
+                    lineHeight: 1.1,
+                    letterSpacing: "0.22em",
+                    fontWeight: 500,
                   }}
                 >
                   {s.n}
                 </span>
-                <span className="font-eyebrow mt-3 text-[10px] tracking-[0.28em] text-[color:var(--crema)]/60">
-                  {s.label.toUpperCase()}
+                <span className="mt-3 text-[13px] text-[color:var(--crema)]/65 md:text-sm" style={{ lineHeight: 1.4 }}>
+                  {s.label}
                 </span>
               </div>
             ))}
