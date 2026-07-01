@@ -186,12 +186,9 @@ export function BraceriaStory() {
             const p = self.progress; // 0..1
             const y = 20 + p * 60; // % verticale
             gsap.set(spotRef.current, { top: `${y}%` });
-            lightRevealsRef.current.forEach((el, i) => {
+            lightRevealsRef.current.forEach((el) => {
               if (!el) return;
-              const target = 20 + (i * 60) / Math.max(1, lightRevealsRef.current.length - 1);
-              const dist = Math.abs(y - target);
-              const near = gsap.utils.clamp(0, 1, 1 - dist / 22);
-              gsap.set(el, { opacity: 0.86 + near * 0.14, filter: "none" });
+              gsap.set(el, { opacity: 1, filter: "none" });
             });
           },
         });
