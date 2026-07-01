@@ -4,7 +4,7 @@ import { Footer } from "@/components/site/Footer";
 import { ContinuousBackground } from "@/components/site/ContinuousBackground";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { Hero } from "@/components/sections/Hero";
-import { Filiera } from "@/components/sections/Filiera";
+import { TerraTavola } from "@/components/sections/TerraTavola";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,7 +40,7 @@ function HomePage() {
       <Navbar />
       <main className="relative">
         <Hero />
-        <Filiera />
+        <TerraTavola />
       </main>
       <Footer />
     </SmoothScroll>
