@@ -272,18 +272,18 @@ export function Filiera() {
               >
                 <span
                   data-stat={s.n}
-                  className="font-display text-[color:var(--crema)]"
+                  className="font-eyebrow text-[color:var(--oro)]"
                   style={{
-                    fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)",
-                    lineHeight: 1,
-                    letterSpacing: "-0.02em",
-                    fontWeight: 400,
+                    fontSize: "clamp(0.95rem, 1.35vw, 1.15rem)",
+                    lineHeight: 1.1,
+                    letterSpacing: "0.22em",
+                    fontWeight: 500,
                   }}
                 >
                   {s.n}
                 </span>
-                <span className="font-eyebrow mt-3 text-[10px] tracking-[0.28em] text-[color:var(--crema)]/60">
-                  {s.label.toUpperCase()}
+                <span className="mt-3 text-[13px] text-[color:var(--crema)]/65 md:text-sm" style={{ lineHeight: 1.4 }}>
+                  {s.label}
                 </span>
               </div>
             ))}
