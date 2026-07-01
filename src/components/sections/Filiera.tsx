@@ -60,10 +60,10 @@ const RINGS: Ring[] = [
 ];
 
 const STATS = [
-  { n: "20+", label: "Anni di mestiere" },
-  { n: "2", label: "Specie · bovini & suini" },
-  { n: "KM 0", label: "Filiera quasi chiusa" },
-  { n: "4", label: "Mestieri · 1 masseria" },
+  { n: "DAL 2002", label: "Oltre 20 anni" },
+  { n: "5 SPECIE", label: "Bovini · ovini · suini · equini · avicoli" },
+  { n: "FILOFORAGGIO", label: "Ortaggi · grano tenero coltivati qui" },
+  { n: "4 MESTIERI", label: "1 masseria" },
 ];
 
 export function Filiera() {
