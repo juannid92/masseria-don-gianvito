@@ -83,12 +83,12 @@ function MilkColumn({
   formRef,
   goldRef,
 }: {
-  columnRef: React.RefObject<HTMLDivElement>;
-  liquidRef: React.RefObject<SVGPathElement>;
-  curdRef: React.RefObject<SVGPathElement>;
-  stretchRef: React.RefObject<SVGGElement>;
-  formRef: React.RefObject<SVGGElement>;
-  goldRef: React.RefObject<SVGPathElement>;
+  columnRef: React.RefObject<HTMLDivElement | null>;
+  liquidRef: React.RefObject<SVGPathElement | null>;
+  curdRef: React.RefObject<SVGPathElement | null>;
+  stretchRef: React.RefObject<SVGGElement | null>;
+  formRef: React.RefObject<SVGGElement | null>;
+  goldRef: React.RefObject<SVGPathElement | null>;
 }) {
   return (
     <div
