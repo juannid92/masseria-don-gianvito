@@ -27,7 +27,7 @@ const MARQUEE_ITEMS = [
 
 export function IlManifesto() {
   const rootRef = useRef<HTMLElement>(null);
-  const quoteRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLQuoteElement>(null);
 
   useEffect(() => {
     const root = rootRef.current;
