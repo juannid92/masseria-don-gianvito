@@ -6,6 +6,7 @@ import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { Hero } from "@/components/sections/Hero";
 import { IlManifesto } from "@/components/sections/IlManifesto";
 import { LaStoria } from "@/components/sections/LaStoria";
+import { IlLuogo } from "@/components/sections/IlLuogo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,6 +44,7 @@ function HomePage() {
         <Hero />
         <IlManifesto />
         <LaStoria />
+        <IlLuogo />
       </main>
       <Footer />
     </SmoothScroll>
