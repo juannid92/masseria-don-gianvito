@@ -1,27 +1,39 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FilieraPlaceholder } from "@/components/sections/FilieraPlaceholder";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
+import { ContinuousBackground } from "@/components/site/ContinuousBackground";
+import { Navbar } from "@/components/site/Navbar";
+import { Footer } from "@/components/site/Footer";
+import { MacelleriaStory } from "@/components/sections/MacelleriaStory";
 
 export const Route = createFileRoute("/macelleria")({
   head: () => ({
     meta: [
-      { title: "Macelleria — Masseria Don Gianvito" },
+      { title: "Macelleria — Capitolo 03 · Masseria Don Gianvito" },
       {
         name: "description",
         content:
-          "Banco di macelleria a vista: tagli del giorno, frollature, selezione del macellaio.",
+          "La carne, a vista: diagramma anatomico dei tagli, tracciabilità all'animale del pascolo, armadio di frollatura. Terzo capitolo del racconto dalla terra alla brace.",
       },
-      { property: "og:title", content: "Macelleria · Masseria Don Gianvito" },
+      { property: "og:title", content: "Macelleria · La carne, a vista" },
       {
         property: "og:description",
-        content: "Dal pascolo al banco, senza passaggi intermedi.",
+        content:
+          "Capitolo 03 della filiera Masseria Don Gianvito: tagli tracciati fino agli animali del pascolo, frollatura a vista.",
       },
     ],
   }),
-  component: () => (
-    <FilieraPlaceholder
-      eyebrow="Tappa 03 · La materia"
-      title="Macelleria"
-      lede="Banco a vista, tagli del giorno e frollature curate dal macellaio."
-    />
-  ),
+  component: MacelleriaPage,
 });
+
+function MacelleriaPage() {
+  return (
+    <SmoothScroll>
+      <ContinuousBackground />
+      <Navbar />
+      <main className="relative">
+        <MacelleriaStory />
+      </main>
+      <Footer />
+    </SmoothScroll>
+  );
+}
