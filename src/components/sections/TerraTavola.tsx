@@ -482,6 +482,7 @@ function Mov6({ macel, mozz, ricotta, burrata, cacio }: {
   const vel = useVelocity(scrollY);
   const smoothVel = useSpring(vel, { damping: 40, stiffness: 200 });
   const tilt = useTransform(smoothVel, [-2000, 0, 2000], [-3, 0, 3]);
+  const tiltNeg = useTransform(tilt, (v) => -v);
 
   const PLATES = [
     { img: mozz, title: "Antipasto", desc: "Salumi e formaggi propri, frittelle del nostro grano, ricotta piccante, zucchine marinate." },
@@ -520,7 +521,7 @@ function Mov6({ macel, mozz, ricotta, burrata, cacio }: {
               <motion.article
                 key={p.title}
                 data-reveal-m
-                style={{ rotate: i % 2 === 0 ? tilt : useTransform(tilt, (v) => -v) }}
+                style={{ rotate: i % 2 === 0 ? tilt : tiltNeg }}
                 className={`relative overflow-hidden rounded-lg border ${spans[i]}`}
               >
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105" style={{ backgroundImage: `url(${p.img})` }} />
