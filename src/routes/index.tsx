@@ -40,6 +40,7 @@ function HomePage() {
       <Navbar />
       <main className="relative">
         <Hero />
+        <Manifesto />
       </main>
       <Footer />
     </SmoothScroll>
