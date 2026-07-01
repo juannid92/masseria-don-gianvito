@@ -810,7 +810,7 @@ export function Hero() {
                           e.preventDefault();
                           dive(p);
                         }}
-                        className="block overflow-hidden rounded-2xl border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/90 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85),0_0_0_1px_rgba(196,154,74,0.15)] backdrop-blur-xl transition-transform hover:scale-[1.015]"
+                        className="block overflow-hidden rounded-2xl border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/95 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85),0_0_0_1px_rgba(196,154,74,0.15)] transition-transform hover:scale-[1.015]"
                       >
                         <div className="relative aspect-[16/10] w-full overflow-hidden">
                           <img
@@ -1080,7 +1080,7 @@ export function Hero() {
                   animate={{ y: 0 }}
                   exit={{ y: "100%" }}
                   transition={{ type: "spring", stiffness: 280, damping: 32 }}
-                  className="absolute inset-x-0 bottom-0 z-[56] rounded-t-3xl border-t border-[color:var(--oro)]/35 bg-[color:var(--carbone)]/95 p-5 backdrop-blur-xl md:hidden"
+                  className="absolute inset-x-0 bottom-0 z-[56] rounded-t-3xl border-t border-[color:var(--oro)]/35 bg-[color:var(--carbone)]/98 p-5 md:hidden"
                 >
                   <div className="mx-auto mb-3 h-1 w-12 rounded-full bg-[color:var(--crema)]/30" />
                   <div className="overflow-hidden rounded-2xl">

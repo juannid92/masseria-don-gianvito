@@ -2,7 +2,6 @@ import { useEffect, type ReactNode } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
  * UNICO MOTORE DI SCROLL.
@@ -13,17 +12,56 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  *   così start/end vengono calcolati con l'altezza definitiva → niente offset.
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
-  const reduced = useReducedMotion();
-
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (reduced) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    const root = document.documentElement;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotionClass = () => {
+      root.classList.add("js-ready");
+      root.classList.toggle("reduce-motion", motionQuery.matches);
+    };
+    syncMotionClass();
+    motionQuery.addEventListener("change", syncMotionClass);
+
+    const revealSelector = [
+      ".reveal",
+      "[data-reveal]",
+      "[data-reveal-item]",
+      "[data-product]",
+      "[data-prod]",
+      "[data-cell]",
+      "[data-portrait]",
+      "[data-portrait-mobile]",
+      "[data-bridge-cue]",
+      ".brace-light-reveal",
+    ].join(",");
+    const globalRevealSelector = [".reveal", "[data-reveal-item]"].join(",");
+
+    const forceVisibleReveals = () => {
+      gsap.utils.toArray<HTMLElement>(revealSelector).forEach((el) => {
+        const style = window.getComputedStyle(el);
+        if (Number.parseFloat(style.opacity) < 1) {
+          gsap.set(el, { opacity: 1, autoAlpha: 1, y: 0, yPercent: 0, filter: "none" });
+        }
+      });
+    };
+
+    const fallback = window.setTimeout(forceVisibleReveals, 3000);
+
+    if (motionQuery.matches) {
+      forceVisibleReveals();
+      return () => {
+        window.clearTimeout(fallback);
+        motionQuery.removeEventListener("change", syncMotionClass);
+      };
+    }
 
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.1,
       smoothWheel: true,
       wheelMultiplier: 1,
       touchMultiplier: 1.2,
@@ -55,14 +93,47 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // Reveal globale solo per i reveal generici: i reveal narrativi restano governati dalla sezione.
+    const revealTweens = gsap.utils.toArray<HTMLElement>(globalRevealSelector).map((el) =>
+      gsap.to(el, {
+        opacity: 1,
+        autoAlpha: 1,
+        y: 0,
+        yPercent: 0,
+        filter: "none",
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 88%",
+          once: true,
+          invalidateOnRefresh: true,
+        },
+      }),
+    );
+
     // ─── Refresh globale quando cambia l'altezza reale della pagina ───
     const refresh = () => ScrollTrigger.refresh();
+
+    const refreshAfterStableAssets = async () => {
+      try {
+        await document.fonts?.ready;
+        await Promise.all(
+          Array.from(document.images).map((img) =>
+            img.decode ? img.decode().catch(() => undefined) : Promise.resolve(undefined),
+          ),
+        );
+      } finally {
+        ScrollTrigger.refresh();
+      }
+    };
 
     // 1) fonts pronti (evita salti dopo il rendering tipografico)
     let fontsPromise: Promise<unknown> | null = null;
     if (document.fonts?.ready) {
       fontsPromise = document.fonts.ready.then(refresh).catch(() => undefined);
     }
+    void refreshAfterStableAssets();
 
     // 2) window.load (immagini/video del primo paint)
     if (document.readyState === "complete") {
@@ -78,9 +149,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       );
       media.forEach((el) => {
         if (el instanceof HTMLImageElement) {
-          if (!el.complete) el.addEventListener("load", refresh, { once: true });
+          if (!el.complete) el.addEventListener("load", refreshAfterStableAssets, { once: true });
         } else {
-          el.addEventListener("loadedmetadata", refresh, { once: true });
+          el.addEventListener("loadedmetadata", refreshAfterStableAssets, { once: true });
         }
       });
     };
@@ -99,7 +170,13 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     return () => {
       window.removeEventListener("load", refresh);
       window.removeEventListener("resize", onResize);
+      window.clearTimeout(fallback);
+      motionQuery.removeEventListener("change", syncMotionClass);
       mo.disconnect();
+      revealTweens.forEach((tween) => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+      });
       lenis.off("scroll", onLenisScroll);
       gsap.ticker.remove(raf);
       lenis.destroy();
@@ -107,7 +184,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       delete (window as unknown as { __lenis?: Lenis }).__lenis;
       void fontsPromise;
     };
-  }, [reduced]);
+  }, []);
 
   return <>{children}</>;
 }
