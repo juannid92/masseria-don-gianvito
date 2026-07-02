@@ -11,7 +11,7 @@ const NOTES = [
   "40.642° N — 17.042° E",
   "Murgia dei Trulli · altopiano",
   "Noci (BA) · Puglia",
-  "Ulivi · pietra · brace",
+  "Ulivi · pietra · pane",
 ];
 
 export function IlLuogo() {
@@ -215,7 +215,7 @@ export function IlLuogo() {
       ref={rootRef}
       aria-labelledby="luogo-title"
       className="relative overflow-hidden text-crema"
-      style={{ backgroundColor: "var(--carbone)" }}
+      style={{ backgroundColor: "var(--marrone)" }}
     >
       {/* STAGE: photo + overlays */}
       <div

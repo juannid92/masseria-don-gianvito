@@ -10,7 +10,7 @@ const QUOTE_LINES = [
   "le bestie danno il latte,",
   "il latte diventa formaggi,",
   "la carne si sceglie al banco",
-  "e finisce sulla brace.",
+  "e finisce sulla tavola.",
   "Tutto qui.",
   "Niente arriva da fuori.",
 ];
