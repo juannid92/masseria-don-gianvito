@@ -243,7 +243,7 @@ export function LaTavola() {
           <em className="italic text-[color:var(--terracotta)]">fuoco</em>.
         </h2>
         <p data-in className="mt-6 max-w-2xl text-base text-[color:var(--crema)]/60 md:text-lg">
-          Il rito della Pignata. E tutto il resto, dalla terra alla brace.
+          Il rito della Pignata. E tutto il resto, dalla terra alla tavola.
         </p>
         <div data-in className="mt-10 h-px w-24 bg-[color:var(--oro)]/40" />
       </div>

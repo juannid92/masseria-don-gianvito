@@ -41,19 +41,19 @@ const PANELS: Panel[] = [
     chapter: "III — La filiera",
     title: <>Quattro mestieri, una sola masseria</>,
     text:
-      "Allevamento. Caseificio. Macelleria. Braceria. Ogni anello nasce qui dentro. Il latte di oggi è la mozzarella di domani. Il vitello di primavera è la brace di settembre.",
+      "Allevamento. Caseificio. Macelleria. Braceria. Ogni anello nasce qui dentro. Il latte di oggi è la mozzarella di domani. Il vitello di primavera è la tavola di settembre.",
     imgGradient:
-      "radial-gradient(ellipse at 50% 50%, #6e1a14 0%, #3d1410 55%, #1a1210 100%)",
+      "radial-gradient(ellipse at 50% 50%, #6b7340 0%, #3d2a1e 55%, #1a1210 100%)",
   },
   {
     ghost: "OGGI",
-    chapter: "IV — La brace",
+    chapter: "IV — La tavola",
     title: <>Ogni sera</>,
     text:
-      "Scegli la carne al banco. Ti siedi. Te la portano cotta sulla brace a carboni. Niente arriva da fuori. Dalla terra alla brace, ogni sera, a Noci.",
+      "Scegli la carne al banco. Ti siedi. Te la portano cotta sulla brace a carboni. Niente arriva da fuori. Dalla terra alla tavola, ogni sera, a Noci.",
     cue: "scorri →",
     imgGradient:
-      "radial-gradient(ellipse at 45% 60%, #b33a1a 0%, #6e1a14 40%, #1a1210 100%)",
+      "radial-gradient(ellipse at 45% 60%, #c49a4a 0%, #6b4a2a 40%, #1a1210 100%)",
   },
 ];
 

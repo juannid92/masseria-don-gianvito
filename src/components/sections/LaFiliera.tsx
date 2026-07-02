@@ -122,7 +122,7 @@ const STAGES: Stage[] = [
     headPre: "Che arriva ",
     headline: "in tavola",
     headPost: ".",
-    sub: "Dalla terra alla brace. Qui non arriva niente da fuori.",
+    sub: "Dalla terra alla tavola. Qui non arriva niente da fuori.",
     bg: "radial-gradient(120% 90% at 50% 55%, #6a3a1e 0%, #3D2A1E 50%, #1A1210 100%)",
     overlay:
       "radial-gradient(18% 12% at 50% 40%, rgba(255,210,120,.55) 0, transparent 70%), radial-gradient(60% 20% at 50% 78%, rgba(0,0,0,.5) 0, transparent 70%)",
@@ -136,7 +136,7 @@ export function LaFiliera() {
   const bgRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const circleRef = useRef<SVGPathElement>(null);
-  const sparksCanvasRef = useRef<HTMLCanvasElement>(null);
+  // sparks canvas rimosso — niente scintille "brace" in Filiera
   const [active, setActive] = useState(0);
   const reduced = useReducedMotion();
 
@@ -273,75 +273,8 @@ export function LaFiliera() {
     };
   }, [reduced]);
 
-  // Scintille solo stadio brace (07 → index 6)
-  useEffect(() => {
-    if (reduced) return;
-    if (active !== 6) return;
-    const canvas = sparksCanvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  // Scintille rimosse: la Filiera non è "brace", è morph di materia.
 
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const resize = () => {
-      const r = canvas.getBoundingClientRect();
-      canvas.width = r.width * dpr;
-      canvas.height = r.height * dpr;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    type P = { x: number; y: number; vy: number; vx: number; life: number; max: number; s: number };
-    const parts: P[] = [];
-    const MAX = 10;
-    let raf = 0;
-    let running = true;
-
-    const spawn = () => {
-      if (parts.length >= MAX) return;
-      parts.push({
-        x: canvas.width * (0.3 + Math.random() * 0.4),
-        y: canvas.height * 0.85,
-        vy: -(0.4 + Math.random() * 0.8) * dpr,
-        vx: (Math.random() - 0.5) * 0.3 * dpr,
-        life: 0,
-        max: 60 + Math.random() * 40,
-        s: (1 + Math.random()) * dpr,
-      });
-    };
-
-    const tick = () => {
-      if (!running) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (Math.random() < 0.35) spawn();
-      ctx.globalCompositeOperation = "lighter";
-      for (let i = parts.length - 1; i >= 0; i--) {
-        const p = parts[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy -= 0.005 * dpr;
-        p.life++;
-        const a = 1 - p.life / p.max;
-        if (a <= 0) {
-          parts.splice(i, 1);
-          continue;
-        }
-        ctx.fillStyle = `rgba(255, ${180 + Math.floor(60 * a)}, 80, ${a * 0.9})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-
-    return () => {
-      running = false;
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    };
-  }, [active, reduced]);
 
   // Reduced motion: mostra galleria verticale statica
   if (reduced) {
@@ -490,14 +423,8 @@ export function LaFiliera() {
                   "radial-gradient(100% 80% at 50% 55%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)",
               }}
             />
-            {/* scintille brace */}
-            {active === 6 && (
-              <canvas
-                ref={sparksCanvasRef}
-                className="pointer-events-none absolute inset-0"
-                style={{ mixBlendMode: "screen" }}
-              />
-            )}
+            {/* scintille rimosse: niente "brace" come mood */}
+
             {/* filo d'oro che chiude il cerchio */}
             <svg
               aria-hidden
