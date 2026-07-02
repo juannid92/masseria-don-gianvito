@@ -1,23 +1,41 @@
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
-import { Link } from "@tanstack/react-router";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import sigilloImg from "@/assets/tavola-sigillo.jpg";
-import fuocoImg from "@/assets/tavola-fuoco.jpg";
-import attesaImg from "@/assets/tavola-attesa.jpg";
-import rotturaImg from "@/assets/tavola-rottura.jpg";
 
 /* ──────────────────────────────────────────────────────────────
- * LA TAVOLA — "Il film della Pignata"
- * 4 atti full-viewport (Sigillo → Fuoco → Attesa → Rottura),
- * ognuno con reveal diverso. Counter 00:00→05:00 su scrub.
- * Non è un menu: è il rito che ferma gli orologi.
+ * LA TAVOLA — "La Sera" a Masseria Don Gianvito.
+ * 5 atti verticali: Arrivo · Antipasto · Primi · Arrosto · Dolci.
+ * Tema TERRA & PIETRA. --terracotta solo nel crossfade griglia atto 3.
  * ───────────────────────────────────────────────────────────── */
 
-const MENU_LINE =
-  "Salumi e formaggi propri · Frittelle del nostro grano · Zucchine marinate · Polpettine al sugo · Spezzatino di vitello e maiale · Bombette · Salsiccia · Filetto frollato 15 giorni · Dolcini artigianali";
+const ANTIPASTO = [
+  "Prosciutto crudo di propria produzione",
+  "Sopressata",
+  "Salsiccia secca",
+  "Pancetta tesa",
+  "Nodini",
+  "Primo sale",
+  "Frittelle del nostro grano · ricotta piccante e pomodorini",
+  "Zucchine marinate a sfoglie",
+];
+
+const PRIMI = [
+  "Polpettine al sugo · in pignatiello",
+  "Spezzatino di vitello e maiale",
+];
+
+const ARROSTO = [
+  "Pecora in Pignata · 5 ore nel forno a legna",
+  "Filetto di vitello · Pezzata Rossa × Frisona · frollatura 15 giorni · al sangue",
+  "Bombette",
+  "Salsiccia",
+];
+
+const DOLCI = ["Dolcini artigianali fatti in casa"];
+
+const WHATSAPP = "https://wa.me/393339395750";
 
 export function LaTavola() {
   const rootRef = useRef<HTMLElement>(null);
@@ -30,191 +48,182 @@ export function LaTavola() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // ── INTRO ───────────────────────────────────────────────
-      const intro = root.querySelector<HTMLElement>("[data-intro]");
-      if (intro) {
-        gsap.set(intro.querySelectorAll("[data-in]"), { autoAlpha: 0, y: 24 });
+      const mm = gsap.matchMedia();
+
+      /* Ghost roman parallax */
+      root.querySelectorAll<HTMLElement>("[data-ghost]").forEach((el) => {
+        gsap.to(el, {
+          yPercent: -12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: el.closest("[data-atto]") as Element,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          },
+        });
+      });
+
+      /* ATTO 0 — focus pull */
+      const atto0 = root.querySelector<HTMLElement>("[data-atto='0']");
+      if (atto0) {
+        const img = atto0.querySelector<HTMLElement>("[data-img]");
+        gsap.fromTo(
+          img,
+          { filter: "blur(6px)", scale: 1.06 },
+          {
+            filter: "blur(0px)",
+            scale: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: atto0,
+              start: "top bottom",
+              end: "center center",
+              scrub: 1,
+            },
+          }
+        );
+      }
+
+      /* ATTO 1 — clip circle + stagger voci */
+      const atto1 = root.querySelector<HTMLElement>("[data-atto='1']");
+      if (atto1) {
+        const img = atto1.querySelector<HTMLElement>("[data-img]");
+        const rows = atto1.querySelectorAll<HTMLElement>("[data-row]");
+        gsap.set(img, { clipPath: "circle(0% at 50% 50%)" });
+        gsap.set(rows, { autoAlpha: 0, x: 40 });
         ScrollTrigger.create({
-          trigger: intro,
-          start: "top 80%",
+          trigger: atto1,
+          start: "top 60%",
           once: true,
-          onEnter: () =>
-            gsap.to(intro.querySelectorAll("[data-in]"), {
+          onEnter: () => {
+            gsap.to(img, {
+              clipPath: "circle(75% at 50% 50%)",
+              duration: 1.6,
+              ease: "cubic-bezier(.16,1,.3,1)",
+            });
+            gsap.to(rows, {
+              autoAlpha: 1,
+              x: 0,
+              duration: 0.55,
+              stagger: 0.09,
+              ease: "power2.out",
+              delay: 0.4,
+            });
+          },
+        });
+      }
+
+      /* ATTO 2 — slide sx + mask-wipe testo */
+      const atto2 = root.querySelector<HTMLElement>("[data-atto='2']");
+      if (atto2) {
+        const img = atto2.querySelector<HTMLElement>("[data-img]");
+        const title = atto2.querySelector<HTMLElement>("[data-title]");
+        const rows = atto2.querySelectorAll<HTMLElement>("[data-row]");
+        gsap.set(img, { autoAlpha: 0, x: -80 });
+        gsap.set(title, { clipPath: "inset(0 0 100% 0)" });
+        gsap.set(rows, { autoAlpha: 0, y: 12 });
+        ScrollTrigger.create({
+          trigger: atto2,
+          start: "top 60%",
+          once: true,
+          onEnter: () => {
+            gsap.to(img, { autoAlpha: 1, x: 0, duration: 1.1, ease: "power3.out" });
+            gsap.to(title, {
+              clipPath: "inset(0 0 0% 0)",
+              duration: 1.1,
+              ease: "cubic-bezier(.16,1,.3,1)",
+              delay: 0.2,
+            });
+            gsap.to(rows, {
               autoAlpha: 1,
               y: 0,
-              duration: 0.9,
-              ease: "cubic-bezier(.16,1,.3,1)",
+              duration: 0.6,
+              stagger: 0.1,
+              ease: "power2.out",
+              delay: 0.5,
+            });
+          },
+        });
+      }
+
+      /* ATTO 3 — warm-wash → crossfade griglia terracotta → piatto */
+      const atto3 = root.querySelector<HTMLElement>("[data-atto='3']");
+      if (atto3) {
+        const wash = atto3.querySelector<HTMLElement>("[data-wash]");
+        const grill = atto3.querySelector<HTMLElement>("[data-grill]");
+        const plate = atto3.querySelector<HTMLElement>("[data-plate]");
+        const rows = atto3.querySelectorAll<HTMLElement>("[data-row]");
+        gsap.set(wash, { autoAlpha: 0 });
+        gsap.set(grill, { autoAlpha: 0 });
+        gsap.set(plate, { autoAlpha: 0 });
+        gsap.set(rows, { autoAlpha: 0, y: 14 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: atto3,
+            start: "top 65%",
+            once: true,
+          },
+        });
+        tl.to(wash, { autoAlpha: 1, duration: 1.2, ease: "power2.inOut" })
+          .to(
+            rows,
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.55,
               stagger: 0.08,
-            }),
-        });
-      }
-
-      // ── ATTO 1 · SIGILLO (center clip + typewriter) ─────────
-      const a1 = root.querySelector<HTMLElement>("[data-atto='1']");
-      if (a1) {
-        const photo = a1.querySelector<HTMLElement>("[data-photo]");
-        const typer = a1.querySelector<HTMLElement>("[data-typer]");
-        const marg = a1.querySelectorAll<HTMLElement>("[data-marg]");
-        const fullText = typer?.dataset.text ?? "";
-        if (photo) gsap.set(photo, { clipPath: "circle(0% at 50% 50%)" });
-        if (typer) typer.textContent = "";
-        gsap.set(marg, { autoAlpha: 0, y: 16 });
-
-        ScrollTrigger.create({
-          trigger: a1,
-          start: "top 65%",
-          once: true,
-          onEnter: () => {
-            const tl = gsap.timeline({ defaults: { ease: "cubic-bezier(.16,1,.3,1)" } });
-            if (photo) tl.to(photo, { clipPath: "circle(75% at 50% 50%)", duration: 1.6 }, 0);
-            tl.to(marg, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.08 }, 0.5);
-            if (typer && fullText) {
-              tl.to({ i: 0 }, {
-                i: fullText.length,
-                duration: fullText.length * 0.03,
-                ease: "none",
-                onUpdate: function () {
-                  const v = Math.floor(this.targets()[0].i);
-                  typer.textContent = fullText.slice(0, v);
-                },
-              }, 0.8);
-            }
-          },
-        });
-
-        if (photo) {
-          gsap.to(photo, {
-            yPercent: -6,
-            ease: "none",
-            scrollTrigger: { trigger: a1, start: "top bottom", end: "bottom top", scrub: true },
-          });
-        }
-      }
-
-      // ── ATTO 2 · FUOCO (warm-wash + counter 00:00→05:00) ────
-      const a2 = root.querySelector<HTMLElement>("[data-atto='2']");
-      if (a2) {
-        const photo = a2.querySelector<HTMLElement>("[data-photo]");
-        const wash = a2.querySelector<HTMLElement>("[data-wash]");
-        const counter = a2.querySelector<HTMLElement>("[data-counter]");
-        const copy = a2.querySelectorAll<HTMLElement>("[data-copy]");
-
-        if (photo) gsap.set(photo, { autoAlpha: 0, yPercent: 20 });
-        gsap.set(copy, { autoAlpha: 0, y: 24 });
-        if (wash) gsap.set(wash, { autoAlpha: 0, yPercent: 100 });
-
-        ScrollTrigger.create({
-          trigger: a2,
-          start: "top 70%",
-          once: true,
-          onEnter: () => {
-            const tl = gsap.timeline({ defaults: { ease: "cubic-bezier(.16,1,.3,1)" } });
-            if (photo) tl.to(photo, { autoAlpha: 1, yPercent: 0, duration: 1.4 }, 0);
-            if (wash) {
-              tl.to(wash, { autoAlpha: 0.45, yPercent: 0, duration: 0.9, ease: "sine.out" }, 0);
-              tl.to(wash, { autoAlpha: 0, duration: 1.4, ease: "sine.in" }, 0.9);
-            }
-            tl.to(copy, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1 }, 0.4);
-          },
-        });
-
-        // Counter su scrub
-        if (counter) {
-          const state = { t: 0 };
-          gsap.to(state, {
-            t: 300, // 5 ore in minuti
-            ease: "none",
-            scrollTrigger: { trigger: a2, start: "top 70%", end: "bottom 30%", scrub: true },
-            onUpdate: () => {
-              const mins = Math.floor(state.t);
-              const h = Math.floor(mins / 60);
-              const m = mins % 60;
-              counter.textContent = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+              ease: "power2.out",
             },
-          });
-        }
-
-        if (photo) {
-          gsap.to(photo, {
-            yPercent: -6,
-            ease: "none",
-            scrollTrigger: { trigger: a2, start: "top bottom", end: "bottom top", scrub: true },
-          });
-        }
+            "-=0.6"
+          )
+          .to(grill, { autoAlpha: 1, duration: 0.4, ease: "power2.out" }, "+=0.2")
+          .to(grill, { autoAlpha: 0, duration: 0.6, ease: "power2.inOut" }, "+=1.0")
+          .to(plate, { autoAlpha: 1, duration: 0.9, ease: "power2.out" }, "-=0.3");
       }
 
-      // ── ATTO 3 · ATTESA (letter-spacing collapse) ───────────
-      const a3 = root.querySelector<HTMLElement>("[data-atto='3']");
-      if (a3) {
-        const photo = a3.querySelector<HTMLElement>("[data-photo]");
-        const title = a3.querySelector<HTMLElement>("[data-lstitle]");
-        const marg = a3.querySelectorAll<HTMLElement>("[data-marg]");
-
-        if (photo) gsap.set(photo, { autoAlpha: 0, scale: 1.05 });
-        if (title) gsap.set(title, { autoAlpha: 0, letterSpacing: "0.5em" });
-        gsap.set(marg, { autoAlpha: 0, y: 16 });
-
-        ScrollTrigger.create({
-          trigger: a3,
-          start: "top 70%",
-          once: true,
-          onEnter: () => {
-            const tl = gsap.timeline({ defaults: { ease: "cubic-bezier(.16,1,.3,1)" } });
-            if (photo) tl.to(photo, { autoAlpha: 1, scale: 1, duration: 1.8 }, 0);
-            if (title) tl.to(title, { autoAlpha: 1, letterSpacing: "0em", duration: 1.8 }, 0.2);
-            tl.to(marg, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.08 }, 0.6);
-          },
-        });
-
-        if (photo) {
-          gsap.to(photo, {
-            yPercent: -3,
-            ease: "none",
-            scrollTrigger: { trigger: a3, start: "top bottom", end: "bottom top", scrub: true },
-          });
-        }
-      }
-
-      // ── ATTO 4 · ROTTURA (split + lampo vapore) ─────────────
-      const a4 = root.querySelector<HTMLElement>("[data-atto='4']");
-      if (a4) {
-        const leftHalf = a4.querySelector<HTMLElement>("[data-half='l']");
-        const rightHalf = a4.querySelector<HTMLElement>("[data-half='r']");
-        const flash = a4.querySelector<HTMLElement>("[data-flash]");
-        const copy = a4.querySelectorAll<HTMLElement>("[data-copy]");
-
-        if (leftHalf) gsap.set(leftHalf, { xPercent: 0, clipPath: "inset(0 50% 0 0)" });
-        if (rightHalf) gsap.set(rightHalf, { xPercent: 0, clipPath: "inset(0 0 0 50%)" });
-        gsap.set(copy, { autoAlpha: 0, y: 24 });
-        if (flash) gsap.set(flash, { autoAlpha: 0, scale: 0.6 });
-
-        ScrollTrigger.create({
-          trigger: a4,
-          start: "top 65%",
-          once: true,
-          onEnter: () => {
-            const tl = gsap.timeline({ defaults: { ease: "cubic-bezier(.16,1,.3,1)" } });
-            if (leftHalf) tl.to(leftHalf, { xPercent: -6, duration: 1.4 }, 0);
-            if (rightHalf) tl.to(rightHalf, { xPercent: 6, duration: 1.4 }, 0);
-            if (flash) {
-              tl.to(flash, { autoAlpha: 0.8, scale: 1.1, duration: 0.35, ease: "sine.out" }, 0.25);
-              tl.to(flash, { autoAlpha: 0, duration: 1.2, ease: "sine.in" }, 0.6);
-            }
-            tl.to(copy, { autoAlpha: 1, y: 0, duration: 0.9, stagger: 0.1 }, 0.7);
-          },
-        });
-      }
-
-      // Fallback: forza visibilità dopo 3s
-      const safety = window.setTimeout(() => {
-        root.querySelectorAll<HTMLElement>("[data-photo], [data-copy], [data-marg], [data-lstitle]").forEach((el) => {
-          if (parseFloat(getComputedStyle(el).opacity) < 0.05) {
-            gsap.set(el, { autoAlpha: 1, y: 0, scale: 1, clipPath: "none", letterSpacing: "normal" });
+      /* ATTO 4 — fade + scale dolce */
+      const atto4 = root.querySelector<HTMLElement>("[data-atto='4']");
+      if (atto4) {
+        const wrap = atto4.querySelector<HTMLElement>("[data-fade]");
+        gsap.fromTo(
+          wrap,
+          { autoAlpha: 0, scale: 0.95 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            duration: 1.4,
+            ease: "power2.out",
+            scrollTrigger: { trigger: atto4, start: "top 65%", once: true },
           }
-        });
-      }, 3000);
+        );
+      }
 
-      return () => window.clearTimeout(safety);
+      /* mobile: skip pesanti */
+      mm.add("(max-width: 767px)", () => {
+        gsap.set(
+          root.querySelectorAll<HTMLElement>(
+            "[data-row], [data-img], [data-title], [data-fade]"
+          ),
+          { autoAlpha: 1, x: 0, y: 0, scale: 1, filter: "none" }
+        );
+      });
+
+      /* safety fallback */
+      const safety = window.setTimeout(() => {
+        gsap.set(
+          root.querySelectorAll<HTMLElement>(
+            "[data-row], [data-img], [data-title], [data-fade], [data-wash], [data-plate]"
+          ),
+          { autoAlpha: 1, x: 0, y: 0, scale: 1, filter: "none" }
+        );
+      }, 3500);
+
+      return () => {
+        window.clearTimeout(safety);
+        mm.revert();
+      };
     }, root);
 
     return () => ctx.revert();
@@ -223,297 +232,418 @@ export function LaTavola() {
   return (
     <section
       ref={rootRef}
-      aria-label="La Tavola — il film della Pignata"
-      className="relative isolate overflow-hidden bg-[color:var(--carbone)]"
+      aria-label="La sera alla masseria — la tavola"
+      className="relative isolate"
     >
-      {/* Marcatore fisso in alto */}
-      <div className="relative mx-auto max-w-6xl px-6 pt-24 md:px-10 md:pt-32">
-        <p className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--crema)]/40">
-          05 — La Tavola
-        </p>
-      </div>
+      {/* Grana film */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-40 opacity-[0.035] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
+        }}
+      />
 
-      {/* INTRO */}
-      <div data-intro className="mx-auto max-w-6xl px-6 pt-8 md:px-10 md:pt-12">
-        <h2
-          data-in
-          className="font-display text-4xl leading-[1.05] text-[color:var(--crema)] md:text-6xl lg:text-7xl"
-        >
-          Cinque ore di{" "}
-          <em className="italic text-[color:var(--terracotta)]">fuoco</em>.
-        </h2>
-        <p data-in className="mt-6 max-w-2xl text-base text-[color:var(--crema)]/60 md:text-lg">
-          Il rito della Pignata. E tutto il resto, dalla terra alla tavola.
-        </p>
-        <div data-in className="mt-10 h-px w-24 bg-[color:var(--oro)]/40" />
-      </div>
-
-      {/* ATTO 1 · IL SIGILLO */}
-      <Atto n="01" label="Il Sigillo" data-atto="1">
-        <div className="grid gap-10 md:grid-cols-12 md:items-center">
+      {/* ═══ ATTO 0 · L'ARRIVO ═══ */}
+      <Atto id="0" bg="var(--marrone)" heightVh={100}>
+        <RomanGhost n="0" />
+        <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 items-center gap-10 px-6 py-24 md:grid-cols-12 md:px-10">
+          <div className="md:col-span-6">
+            <p className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--crema)]/40">
+              05 — La Tavola
+            </p>
+            <h2
+              className="mt-6 font-display leading-[0.95] text-[color:var(--crema)]"
+              style={{ fontSize: "clamp(2.6rem,7vw,6rem)" }}
+            >
+              La <em className="italic text-[color:var(--oro)]">sera</em> alla masseria.
+            </h2>
+            <p className="mt-8 max-w-md font-body text-base text-[color:var(--crema)]/70 md:text-lg">
+              Si sceglie la carne al banco. Ti siedi. Si comincia.
+            </p>
+          </div>
           <div className="md:col-span-6">
             <div
-              data-photo
-              className="relative overflow-hidden rounded-sm shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
-              style={{ aspectRatio: "4/5" }}
-            >
-              <img
-                src={sigilloImg}
-                alt="Le mani chiudono la pignata con la pasta del pane"
-                width={1024}
-                height={1024}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-          <div className="md:col-span-6">
-            <p data-marg className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]/80">
-              01 · Il Sigillo
-            </p>
-            <p
-              data-typer
-              data-text="Si chiude con la pasta del pane."
-              className="mt-4 font-display text-3xl leading-[1.15] text-[color:var(--crema)] md:text-5xl min-h-[2em]"
-            >
-              Si chiude con la pasta del pane.
-            </p>
-            <p data-marg className="mt-6 max-w-md text-sm text-[color:var(--crema)]/60 md:text-base">
-              La pignata si sigilla. Dentro: pecora, ortaggi, spezie di stagione. Fuori: il tempo.
-            </p>
-          </div>
-        </div>
-      </Atto>
-
-      {/* ATTO 2 · IL FUOCO */}
-      <Atto n="02" label="Il Fuoco" data-atto="2">
-        <div className="grid gap-10 md:grid-cols-12 md:items-center">
-          <div className="md:col-span-5">
-            <p data-copy className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]/80">
-              02 · Il Fuoco
-            </p>
-            <h3
-              data-copy
-              className="mt-4 font-display text-3xl leading-[1.1] text-[color:var(--crema)] md:text-5xl"
-            >
-              Nel forno a legna. Per{" "}
-              <em className="italic text-[color:var(--terracotta)]">cinque ore</em>.
-            </h3>
-            <div data-copy className="mt-10 flex items-baseline gap-4">
-              <span
-                data-counter
-                className="font-eyebrow text-4xl tabular-nums text-[color:var(--terracotta)] md:text-6xl"
-              >
-                00:00
-              </span>
-              <span className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--crema)]/40">
-                → 05:00
-              </span>
-            </div>
-          </div>
-          <div className="relative md:col-span-7">
-            <div
-              data-photo
-              className="relative overflow-hidden rounded-sm shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
-              style={{ aspectRatio: "5/4" }}
-            >
-              <img
-                src={fuocoImg}
-                alt="Forno a legna acceso"
-                width={1024}
-                height={1024}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-              <div
-                data-wash
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(0deg, rgba(179,58,26,0.85), rgba(110,26,20,0.4) 60%, transparent)",
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </Atto>
-
-      {/* ATTO 3 · L'ATTESA */}
-      <Atto n="03" label="L'Attesa" data-atto="3">
-        <div className="relative">
-          <div
-            data-photo
-            className="relative overflow-hidden rounded-sm shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
-            style={{ aspectRatio: "16/7" }}
-          >
-            <img
-              src={attesaImg}
-              alt="Le braci quiete nel forno"
-              width={1024}
-              height={1024}
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
+              data-img
+              className="relative aspect-[4/5] w-full overflow-hidden"
               style={{
                 background:
-                  "radial-gradient(ellipse at 50% 60%, transparent 30%, rgba(26,18,16,0.6) 90%)",
+                  "linear-gradient(135deg, #2a1c14 0%, #4a3626 55%, #8a6a4a 100%)",
+                boxShadow: "0 30px 80px -20px rgba(0,0,0,0.6)",
               }}
-            />
-          </div>
-          <div className="mt-12 text-center">
-            <p data-marg className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]/80">
-              03 · L'Attesa
-            </p>
-            <h3
-              data-lstitle
-              className="mt-4 font-display text-4xl leading-[1.05] text-[color:var(--crema)] md:text-6xl"
-            >
-              Gli orologi si <em className="italic text-[color:var(--oro)]">fermano</em>.
-            </h3>
-            <p data-marg className="mt-8">
-              <FloatingReview
-                text="Gli orologi si fermano quando la trasportano dal forno alla cucina."
-                src="Luciano Pignataro Wine Blog"
-              />
-            </p>
-          </div>
-        </div>
-      </Atto>
-
-      {/* ATTO 4 · LA ROTTURA */}
-      <Atto n="04" label="La Tavola" data-atto="4">
-        <div className="grid gap-10 md:grid-cols-12 md:items-center">
-          <div className="relative md:col-span-6">
-            <div
-              className="relative overflow-hidden rounded-sm shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]"
-              style={{ aspectRatio: "4/5" }}
             >
               <div
-                data-half="l"
                 className="absolute inset-0"
-                style={{
-                  backgroundImage: `url(${rotturaImg})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              />
-              <div
-                data-half="r"
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: `url(${rotturaImg})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              />
-              <div
-                data-flash
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
                 style={{
                   background:
-                    "radial-gradient(closest-side, rgba(242,232,213,0.85), rgba(242,232,213,0.2) 50%, transparent 75%)",
-                  mixBlendMode: "screen",
-                  filter: "blur(6px)",
+                    "radial-gradient(ellipse at 30% 80%, color-mix(in oklab, var(--oro) 22%, transparent) 0%, transparent 55%), radial-gradient(ellipse at 75% 40%, color-mix(in oklab, var(--crema) 15%, transparent) 0%, transparent 60%)",
                 }}
               />
+              <p className="absolute bottom-4 left-4 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--crema)]/50">
+                Tavoli sotto gli ulivi · l'ora dell'ombra lunga
+              </p>
             </div>
           </div>
-          <div className="md:col-span-6">
-            <p data-copy className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]/80">
-              04 · La Tavola
+        </div>
+      </Atto>
+
+      {/* ═══ ATTO 1 · L'ANTIPASTO ═══ */}
+      <Atto id="1" bg="var(--marrone)" heightVh={110}>
+        <RomanGhost n="I" />
+        <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 py-24 md:grid-cols-12 md:px-10">
+          <div className="md:order-2 md:col-span-6">
+            <div
+              data-img
+              className="relative aspect-square w-full overflow-hidden"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 50%, #d9c7a4 0%, #b89772 50%, #6b4a2a 100%)",
+                boxShadow: "0 30px 80px -20px rgba(0,0,0,0.5)",
+              }}
+            >
+              <div className="absolute inset-6 border border-[color:var(--marrone)]/20" />
+              <p className="absolute bottom-4 right-4 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/60">
+                Tavola apparecchiata · l'antipasto arriva
+              </p>
+            </div>
+          </div>
+          <div className="md:order-1 md:col-span-6">
+            <p className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--crema)]/40">
+              I — L'Antipasto
             </p>
             <h3
-              data-copy
-              className="mt-4 font-display text-3xl leading-[1.1] text-[color:var(--crema)] md:text-5xl"
+              className="mt-6 font-display leading-[0.95] text-[color:var(--crema)]"
+              style={{ fontSize: "clamp(2rem,5.5vw,4.5rem)" }}
             >
-              E il tempo <em className="italic text-[color:var(--oro)]">ritorna</em>.
+              Quello che <em className="italic text-[color:var(--oro)]">non finisce mai</em>.
             </h3>
-            <p data-copy className="mt-6 max-w-md text-sm text-[color:var(--crema)]/70 md:text-base">
-              Filetto alla brace al sangue. Bombette. Salsiccia. Salumi e formaggi propri. Frittelle del nostro grano. Dolcini fatti in casa.
+            <ul className="mt-10 space-y-3">
+              {ANTIPASTO.map((p) => (
+                <li
+                  key={p}
+                  data-row
+                  className="font-body text-[15px] leading-relaxed text-[color:var(--crema)]/70 md:text-base"
+                  style={{ opacity: reduced ? 1 : 0 }}
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 max-w-md font-body text-sm text-[color:var(--crema)]/45">
+              Tutto di nostra produzione. Salumi, formaggi, ortaggi e grano — tutto nasce qui.
             </p>
-            <p data-copy className="mt-4 text-xs italic text-[color:var(--crema)]/45">
-              La carta cambia con le stagioni.
+            <FloatingQuote
+              text="L'antipasto non finisce mai."
+              source="Tripadvisor"
+              align="right"
+            />
+          </div>
+        </div>
+      </Atto>
+
+      {/* ═══ ATTO 2 · I PRIMI ═══ */}
+      <Atto id="2" bg="var(--marrone)" heightVh={100}>
+        <RomanGhost n="II" />
+        <div className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 py-24 md:grid-cols-12 md:px-10">
+          <div className="md:col-span-5">
+            <div
+              data-img
+              className="relative aspect-[4/5] w-full overflow-hidden"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 45% 55%, #6b4a2a 0%, #3d2a1e 60%, #1a1210 100%)",
+                boxShadow: "0 30px 80px -20px rgba(0,0,0,0.6)",
+              }}
+            >
+              <div
+                className="absolute inset-x-0 top-0 h-2/3"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 50% 100%, color-mix(in oklab, var(--crema) 22%, transparent) 0%, transparent 70%)",
+                  filter: "blur(20px)",
+                }}
+              />
+              <p className="absolute bottom-4 left-4 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--crema)]/60">
+                Pignatiello · sugo lento
+              </p>
+            </div>
+          </div>
+          <div className="md:col-span-7">
+            <p className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--crema)]/40">
+              II — I Primi
+            </p>
+            <h3
+              data-title
+              className="mt-6 font-display leading-[0.95] text-[color:var(--crema)]"
+              style={{ fontSize: "clamp(2rem,5.5vw,4.5rem)" }}
+            >
+              Il <em className="italic text-[color:var(--oro)]">sugo</em> lento.
+            </h3>
+            <ul className="mt-10 space-y-3">
+              {PRIMI.map((p) => (
+                <li
+                  key={p}
+                  data-row
+                  className="font-body text-[15px] leading-relaxed text-[color:var(--crema)]/70 md:text-base"
+                  style={{ opacity: reduced ? 1 : 0 }}
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 max-w-md font-body text-sm text-[color:var(--crema)]/45">
+              Il sugo che cuoce lento, dietro la brace, come si è sempre fatto.
             </p>
           </div>
         </div>
       </Atto>
 
-      {/* Menu line + chiusura */}
-      <div className="relative mx-auto max-w-6xl px-6 pt-8 pb-24 md:px-10 md:pb-32">
-        <div className="border-y border-[color:var(--crema)]/10 py-6 text-center">
-          <p className="text-xs leading-relaxed text-[color:var(--crema)]/50 md:text-sm">
-            {MENU_LINE}
-          </p>
-        </div>
+      {/* ═══ ATTO 3 · L'ARROSTO ═══ */}
+      <Atto id="3" bg="var(--carbone)" heightVh={150}>
+        <RomanGhost n="III" />
+        <div
+          data-wash
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            opacity: reduced ? 1 : 0,
+            background:
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--marrone) 70%, transparent) 40%, color-mix(in oklab, var(--crema) 20%, transparent) 100%)",
+          }}
+        />
+        <div className="relative z-10 mx-auto flex min-h-[150vh] w-full max-w-7xl flex-col justify-center gap-14 px-6 py-24 md:px-10">
+          <div className="grid grid-cols-1 items-center gap-14 md:grid-cols-12">
+            <div className="md:col-span-6">
+              <p className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--crema)]/40">
+                III — L'Arrosto
+              </p>
+              <h3
+                className="mt-6 font-display leading-[0.95] text-[color:var(--crema)]"
+                style={{ fontSize: "clamp(2.4rem,6.5vw,5.5rem)" }}
+              >
+                La carne che hai <em className="italic text-[color:var(--oro)]">scelto</em>.
+              </h3>
+              <ul className="mt-10 space-y-3">
+                {ARROSTO.map((p) => (
+                  <li
+                    key={p}
+                    data-row
+                    className="font-body text-[15px] leading-relaxed text-[color:var(--crema)]/75 md:text-base"
+                    style={{ opacity: reduced ? 1 : 0 }}
+                  >
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-10 max-w-lg font-display text-lg italic text-[color:var(--crema)]/85 md:text-2xl">
+                La scegli al banco. Ti siedi. Te la portano cotta alla brace a carboni.
+              </p>
+              <FloatingQuote
+                text="La carne è tenerissima e molto saporita, soprattutto la salsiccia e le bombette."
+                source="Tripadvisor"
+                align="left"
+              />
+            </div>
 
-        <div className="mt-16 text-center">
-          <FloatingReview
-            text="Le mozzarelle km0 sono sublimi."
-            src="Tripadvisor"
-          />
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-            <Link
-              to="/braceria"
-              className="group inline-flex items-center gap-3 rounded-sm bg-grad-brace px-8 py-4 font-eyebrow text-xs tracking-[0.2em] text-[color:var(--crema)] shadow-[0_10px_40px_-10px_rgba(179,58,26,0.6)] transition-transform hover:-translate-y-0.5"
-            >
-              Prenota un tavolo
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link>
+            <div className="relative md:col-span-6">
+              <div
+                className="relative aspect-[4/5] w-full overflow-hidden"
+                style={{
+                  background:
+                    "linear-gradient(160deg, #2a1c14 0%, #6b4a2a 55%, #a67c52 100%)",
+                  boxShadow: "0 30px 80px -20px rgba(0,0,0,0.7)",
+                }}
+              >
+                <p className="absolute bottom-4 left-4 z-10 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--crema)]/70">
+                  Banco macelleria · marmo e lame
+                </p>
+
+                <div
+                  data-grill
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    opacity: 0,
+                    background:
+                      "linear-gradient(180deg, color-mix(in oklab, var(--terracotta) 55%, #1a1210) 0%, #1a1210 100%)",
+                    backgroundImage:
+                      "repeating-linear-gradient(90deg, rgba(0,0,0,0.35) 0 2px, transparent 2px 40px)",
+                  }}
+                />
+
+                <div
+                  data-plate
+                  aria-hidden
+                  className="absolute inset-0"
+                  style={{
+                    opacity: reduced ? 1 : 0,
+                    background:
+                      "radial-gradient(ellipse at 50% 55%, #d9c7a4 0%, #8a6a4a 55%, #2a1c14 100%)",
+                  }}
+                >
+                  <p className="absolute bottom-4 right-4 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--marrone)]">
+                    Il piatto · servito
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="mt-6 font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--crema)]/45">
+        </div>
+      </Atto>
+
+      {/* ═══ ATTO 4 · I DOLCI ═══ */}
+      <Atto id="4" bg="var(--marrone)" heightVh={100}>
+        <RomanGhost n="IV" />
+        <div
+          data-fade
+          className="relative z-10 mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 items-center gap-14 px-6 py-24 md:grid-cols-12 md:px-10"
+          style={{ opacity: reduced ? 1 : 0 }}
+        >
+          <div className="md:col-span-6">
+            <p className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--crema)]/40">
+              IV — I Dolci
+            </p>
+            <h3
+              className="mt-6 font-display leading-[0.95] text-[color:var(--crema)]"
+              style={{ fontSize: "clamp(2rem,5.5vw,4.5rem)" }}
+            >
+              Fatti in <em className="italic text-[color:var(--oro)]">casa</em>.
+            </h3>
+            <ul className="mt-10 space-y-3">
+              {DOLCI.map((p) => (
+                <li
+                  key={p}
+                  className="font-body text-[15px] leading-relaxed text-[color:var(--crema)]/75 md:text-base"
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+            <FloatingQuote
+              text="Dolcetti fatti in casa e antipasti abbondanti."
+              source="Restaurant Guru"
+              align="left"
+            />
+          </div>
+          <div className="md:col-span-6">
+            <div
+              className="relative aspect-square w-full overflow-hidden"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 50%, #f2e8d5 0%, #d9c7a4 50%, #8a6a4a 100%)",
+                boxShadow: "0 20px 60px -20px rgba(0,0,0,0.4)",
+              }}
+            >
+              <p className="absolute bottom-4 right-4 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/70">
+                Dolcini della casa
+              </p>
+            </div>
+          </div>
+        </div>
+      </Atto>
+
+      {/* ═══ CHIUSURA ═══ */}
+      <div
+        className="relative border-t border-[color:var(--crema)]/10"
+        style={{ backgroundColor: "var(--marrone)" }}
+      >
+        <div className="mx-auto w-full max-w-4xl px-6 py-24 text-center md:px-10">
+          <p className="font-display text-xl italic text-[color:var(--crema)]/70 md:text-2xl">
+            La carta cambia con le stagioni e con la materia disponibile.
+          </p>
+          <a
+            href={WHATSAPP}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="tavola-cta mt-10 inline-block font-eyebrow text-[13px] uppercase tracking-[0.3em] text-[color:var(--crema)] md:text-[15px]"
+          >
+            Prenota un tavolo <span aria-hidden>→</span>
+            <span className="tavola-cta-line" aria-hidden />
+          </a>
+          <p className="mt-6 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--crema)]/40">
             Mer–Sab cena · Domenica e festivi pranzo
           </p>
         </div>
       </div>
+
+      <style>{`
+        .tavola-cta { position: relative; padding-bottom: 6px; }
+        .tavola-cta-line {
+          position: absolute; left: 0; bottom: 0; height: 1px; width: 0;
+          background: var(--oro); transition: width .5s cubic-bezier(.16,1,.3,1);
+        }
+        .tavola-cta:hover .tavola-cta-line,
+        .tavola-cta:focus-visible .tavola-cta-line { width: 100%; }
+        @media (prefers-reduced-motion: reduce) { .tavola-cta-line { width: 100%; } }
+      `}</style>
     </section>
   );
 }
+
+/* ── helpers ─────────────────────────────────────────────── */
 
 function Atto({
+  id,
+  bg,
+  heightVh,
   children,
-  n,
-  label,
-  ...rest
 }: {
+  id: string;
+  bg: string;
+  heightVh: number;
   children: React.ReactNode;
-  n: string;
-  label: string;
-  [k: string]: unknown;
 }) {
   return (
-    <section
-      {...rest}
-      aria-label={`Atto ${n} · ${label}`}
-      className="relative mx-auto flex min-h-[85vh] max-w-6xl items-center px-6 py-24 md:min-h-screen md:px-10 md:py-32"
+    <div
+      data-atto={id}
+      className="relative isolate overflow-hidden"
+      style={{ backgroundColor: bg, minHeight: `${heightVh}vh` }}
     >
-      <div className="w-full">{children}</div>
-    </section>
+      {children}
+    </div>
   );
 }
 
-function FloatingReview({ text, src }: { text: string; src: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useSpring(useTransform(scrollYProgress, [0, 1], [24, -24]), {
-    stiffness: 60,
-    damping: 20,
-    mass: 0.6,
-  });
-
+function RomanGhost({ n }: { n: string }) {
   return (
-    <motion.figure ref={ref} style={{ y }} className="mx-auto max-w-2xl px-2 text-center">
-      <blockquote className="font-display text-xl italic leading-snug text-[color:var(--crema)]/75 md:text-2xl">
-        <span className="text-[color:var(--oro)]">“</span>
-        {text}
-        <span className="text-[color:var(--oro)]">”</span>
+    <span
+      aria-hidden
+      data-ghost
+      className="pointer-events-none absolute -right-4 top-1/2 z-0 -translate-y-1/2 select-none font-display leading-none"
+      style={{
+        fontSize: "clamp(10rem, 32vw, 28rem)",
+        color: "color-mix(in oklab, var(--crema) 8%, transparent)",
+        letterSpacing: "-0.05em",
+      }}
+    >
+      {n}
+    </span>
+  );
+}
+
+function FloatingQuote({
+  text,
+  source,
+  align,
+}: {
+  text: string;
+  source: string;
+  align: "left" | "right";
+}) {
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ type: "spring", stiffness: 60, damping: 18 }}
+      className={`mt-10 max-w-sm ${align === "right" ? "md:ml-auto md:text-right" : ""}`}
+    >
+      <blockquote className="font-display text-base italic leading-relaxed text-[color:var(--crema)]/85 md:text-lg">
+        «{text}»
       </blockquote>
-      <figcaption className="mt-3 font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--crema)]/40">
-        — {src}
+      <figcaption className="mt-2 font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--oro)]/70">
+        — {source}
       </figcaption>
     </motion.figure>
   );
