@@ -4,14 +4,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /* ──────────────────────────────────────────────────────────────
- * FOOTER — Taccuino che chiude il racconto.
- * Filo d'oro orizzontale che completa il cerchio.
+ * FOOTER — Taccuino di giorno. Terra e pietra.
+ * Sfondo --crema, testo --marrone. Filo d'oro chiude il cerchio.
  * ───────────────────────────────────────────────────────────── */
 
 export function Footer() {
   const rootRef = useRef<HTMLElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
   const threadRef = useRef<SVGPathElement>(null);
-  const closingRef = useRef<HTMLParagraphElement>(null);
   const reduced = useReducedMotion();
 
   useEffect(() => {
@@ -21,9 +21,9 @@ export function Footer() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const cols = root.querySelectorAll<HTMLElement>("[data-footer-col]");
-      gsap.set(cols, { autoAlpha: 0, y: 20 });
-      gsap.set(closingRef.current, { autoAlpha: 0, clipPath: "inset(0 100% 0 0)" });
+      const rightItems = root.querySelectorAll<HTMLElement>("[data-foot-right]");
+      gsap.set(leftRef.current, { clipPath: "inset(0 100% 0 0)" });
+      gsap.set(rightItems, { autoAlpha: 0, y: 12 });
       if (threadRef.current) {
         threadRef.current.style.strokeDasharray = "1";
         threadRef.current.style.strokeDashoffset = "1";
@@ -34,12 +34,18 @@ export function Footer() {
         start: "top 85%",
         once: true,
         onEnter: () => {
-          gsap.to(cols, {
+          gsap.to(leftRef.current, {
+            clipPath: "inset(0 0% 0 0)",
+            duration: 1.2,
+            ease: "cubic-bezier(.16,1,.3,1)",
+          });
+          gsap.to(rightItems, {
             autoAlpha: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.8,
             stagger: 0.1,
             ease: "power2.out",
+            delay: 0.3,
           });
           if (threadRef.current) {
             gsap.to(threadRef.current, {
@@ -48,20 +54,12 @@ export function Footer() {
               ease: "power2.inOut",
             });
           }
-          gsap.to(closingRef.current, {
-            autoAlpha: 1,
-            clipPath: "inset(0 0% 0 0)",
-            duration: 1.2,
-            delay: 0.6,
-            ease: "cubic-bezier(.16,1,.3,1)",
-          });
         },
       });
 
-      // Fallback 3s
       const safety = window.setTimeout(() => {
-        gsap.set(cols, { autoAlpha: 1, y: 0, clearProps: "clipPath" });
-        gsap.set(closingRef.current, { autoAlpha: 1, clipPath: "none" });
+        gsap.set(leftRef.current, { clipPath: "inset(0 0 0 0)" });
+        gsap.set(rightItems, { autoAlpha: 1, y: 0 });
         if (threadRef.current) threadRef.current.style.strokeDashoffset = "0";
       }, 3000);
       return () => window.clearTimeout(safety);
@@ -73,138 +71,98 @@ export function Footer() {
   return (
     <footer
       ref={rootRef}
-      className="relative mt-0 border-t border-[color:var(--oro)]/30 bg-[#12100E]"
+      className="relative border-t border-[color:var(--marrone)]/20"
+      style={{ backgroundColor: "var(--crema)" }}
     >
-      {/* Filo d'oro orizzontale */}
+      {/* Filo d'oro orizzontale — chiude il cerchio */}
       <svg
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-8 z-0 h-[1px] w-full"
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[1px] w-full"
         viewBox="0 0 1000 1"
         preserveAspectRatio="none"
       >
+        <defs>
+          <linearGradient id="footThread" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stopColor="var(--marrone)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="var(--oro)" stopOpacity="0.9" />
+          </linearGradient>
+        </defs>
         <path
           ref={threadRef}
           d="M0 0.5 L1000 0.5"
-          stroke="var(--oro)"
+          stroke="url(#footThread)"
           strokeWidth="1"
-          opacity="0.22"
           pathLength={1}
         />
       </svg>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-6 py-20 md:grid-cols-4 lg:py-24">
-        {/* Logo lockup */}
-        <div data-footer-col className="space-y-4">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 gap-14 px-6 py-20 md:grid-cols-5 md:gap-10 md:px-10 md:py-24">
+        {/* SINISTRA 60% */}
+        <div ref={leftRef} className="md:col-span-3">
           <div className="flex items-center gap-3">
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--oro)]/60 font-display text-sm text-[color:var(--oro)]">
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[color:var(--marrone)]/60 font-display text-sm text-[color:var(--marrone)]">
               DG
             </span>
             <div className="leading-tight">
-              <p className="font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
+              <p className="font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/60">
                 Masseria
               </p>
-              <p className="font-display text-lg text-[color:var(--crema)]">
+              <p className="font-display text-xl text-[color:var(--marrone)]">
                 Don Gianvito
               </p>
             </div>
           </div>
-          <p className="max-w-xs text-xs leading-relaxed text-[color:var(--crema)]/50">
-            Braceria, macelleria e azienda agricola a filiera propria nella Murgia.
+          <p className="mt-8 max-w-lg font-display text-lg italic text-[color:var(--oro)] md:text-2xl">
+            Dalla terra alla tavola. A Noci, dal 2002.
           </p>
-        </div>
-
-        {/* Contatti */}
-        <div data-footer-col className="space-y-3">
-          <p className="font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
-            Contatti
-          </p>
-          <address className="text-sm not-italic leading-relaxed text-[color:var(--crema)]/80">
-            SP237 ex SS377 per Mottola km 6,5
-            <br />
-            Zona C 76, 70015 Noci (BA)
+          <address className="mt-6 max-w-md text-sm not-italic leading-relaxed text-[color:var(--marrone)]/70">
+            SP237 ex SS377 per Mottola km 6,5 — Zona C 76, 70015 Noci (BA)
           </address>
-          <p className="font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--crema)]/40">
-            40.642° N — 17.042° E
-          </p>
-          <ul className="space-y-1 pt-2 text-sm text-[color:var(--crema)]/80">
-            <li>
-              <a
-                href="tel:+393339395750"
-                className="transition-colors hover:text-[color:var(--terracotta)]"
-              >
-                333 939 5750
-              </a>
-            </li>
-            <li>
-              <a
-                href="tel:+393333870292"
-                className="transition-colors hover:text-[color:var(--terracotta)]"
-              >
-                333 387 0292
-              </a>
-            </li>
-          </ul>
         </div>
 
-        {/* Orari */}
-        <div data-footer-col className="space-y-3">
-          <p className="font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
-            Orari
-          </p>
-          <ul className="space-y-1.5 text-sm text-[color:var(--crema)]/80">
-            <li>Mercoledì–Sabato · Cena</li>
-            <li>Domenica e festivi · Pranzo</li>
-            <li className="text-[color:var(--crema)]/45">
-              Chiuso: lunedì e martedì
-            </li>
-          </ul>
-        </div>
-
-        {/* Social */}
-        <div data-footer-col className="space-y-3">
-          <p className="font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
-            Social
-          </p>
-          <ul className="space-y-1.5 text-sm text-[color:var(--crema)]/80">
-            <li>
-              <a
-                href="https://facebook.com/masseriadongianvito"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="transition-colors hover:text-[color:var(--terracotta)]"
-              >
-                facebook.com/masseriadongianvito
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://instagram.com/masseria_don_gianvito"
-                target="_blank"
-                rel="noreferrer noopener"
-                className="transition-colors hover:text-[color:var(--terracotta)]"
-              >
-                @masseria_don_gianvito
-              </a>
-            </li>
-          </ul>
-        </div>
+        {/* DESTRA 40% — lista tipografica */}
+        <ul className="space-y-3 md:col-span-2 md:justify-self-end md:text-right">
+          <li data-foot-right>
+            <a
+              href="https://facebook.com/masseriadongianvito"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/50 transition-colors hover:text-[color:var(--marrone)]"
+            >
+              Facebook / masseriadongianvito
+            </a>
+          </li>
+          <li data-foot-right>
+            <a
+              href="https://instagram.com/masseria_don_gianvito"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/50 transition-colors hover:text-[color:var(--marrone)]"
+            >
+              Instagram / @masseria_don_gianvito
+            </a>
+          </li>
+          <li data-foot-right>
+            <a
+              href="tel:+393339395750"
+              className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/50 transition-colors hover:text-[color:var(--marrone)]"
+            >
+              Tel / 333 939 5750
+            </a>
+          </li>
+          <li data-foot-right>
+            <span className="font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/50">
+              P.IVA / 05839280723
+            </span>
+          </li>
+        </ul>
       </div>
 
-      {/* Frase di chiusura */}
-      <div className="relative z-10 px-6 pb-6 text-center">
-        <p
-          ref={closingRef}
-          className="font-display text-sm italic text-[color:var(--oro)] md:text-base"
-        >
-          Dalla terra alla brace. Ogni sera, a Noci.
-        </p>
-      </div>
-
-      {/* P.IVA + copyright */}
-      <div className="relative z-10 border-t border-white/5">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-start justify-between gap-2 px-6 py-6 font-eyebrow text-[10px] uppercase tracking-[0.25em] text-[color:var(--crema)]/30 md:flex-row md:items-center">
-          <span>P.IVA 05839280723</span>
-          <span>© 2024 Masseria Don Gianvito · Tutti i diritti riservati</span>
+      <div className="relative z-10 border-t border-[color:var(--marrone)]/15">
+        <div className="mx-auto w-full max-w-7xl px-6 py-6 text-center md:px-10 md:text-left">
+          <p className="font-eyebrow text-[10px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/30">
+            © 2024 · Masseria Don Gianvito · Noci (BA) · Puglia
+          </p>
         </div>
       </div>
     </footer>
