@@ -52,6 +52,7 @@ function HomePage() {
         <LaFiliera />
         <LaTavola />
         <LaVoce />
+        <Prenota />
       </main>
       <Footer />
     </SmoothScroll>
