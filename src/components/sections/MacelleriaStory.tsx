@@ -450,7 +450,7 @@ export function MacelleriaStory() {
               preserveAspectRatio="xMidYMid meet"
             >
               {/* Sagoma completa in tratto oro */}
-              <BovineOutlinePath stroke="var(--oro)" strokeWidth="0.4" opacity="0.9" />
+              <BovineOutlinePath stroke="var(--oro)" strokeWidth="0.4" opacity={0.9} />
 
               {/* Hotspot tagli */}
               {CUTS.map((c) => (
