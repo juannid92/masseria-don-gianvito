@@ -108,6 +108,9 @@
     scroll-behavior: auto; /* gestito da Lenis */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    /* iOS Safari: evita zoom automatico su input < 16px */
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -115,6 +118,19 @@
     color: var(--crema);
     font-family: var(--font-sans);
     overflow-x: hidden;
+    width: 100%;
+    /* Font base 16px per prevenire zoom iOS */
+    font-size: 16px;
+  }
+
+  /* Immagini mai overflow */
+  img, video, svg {
+    max-width: 100%;
+    height: auto;
+  }
+  /* SVG con viewBox non deve forzare height auto quando ha altezza esplicita */
+  svg[height], svg[width] {
+    height: revert;
   }
 
   ::selection {
@@ -252,3 +268,122 @@ html.reduce-motion :is(.reveal, [data-reveal], [data-reveal-item], [data-product
     scroll-behavior: auto !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE SAFETY NET — ≤767px
+   Neutralizza gli effetti visivi più problematici su schermi stretti
+   senza rifare i componenti. Applica regole conservative: niente
+   perspective/rotazioni 3D pesanti, niente translateX pinnate, parole
+   ghost ridotte, aree tap minime, tipografia leggibile.
+   =============================================================== */
+
+@media (max-width: 767px) {
+  /* Nessuna sezione può causare scroll orizzontale */
+  section, header, footer, main, aside, article {
+    max-width: 100vw;
+  }
+
+  /* Ghost/parola-fantasma: mai oltre la viewport */
+  [data-ghost],
+  [data-year-ghost],
+  [data-roman-ghost] {
+    font-size: clamp(4rem, 30vw, 10rem) !important;
+    max-width: 100vw;
+    overflow: hidden;
+    line-height: 0.9;
+  }
+
+  /* Marginalia laterali → in linea */
+  [data-marginalia],
+  [data-rail-inline] {
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+    position: static !important;
+    display: block;
+    padding: 0.5rem 0;
+  }
+
+  /* Rimuovi perspective 3D pesante */
+  [data-3d-stage],
+  [data-voice-stage],
+  [data-perspective-stage] {
+    perspective: none !important;
+    transform-style: flat !important;
+  }
+  /* Voice cards: azzera trasformazioni 3D residue */
+  [data-voice-card] {
+    transform: none !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 1.5rem;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Aree tap minime per link/bottoni testuali interattivi */
+  a, button, [role="button"] {
+    min-height: 44px;
+  }
+  /* eccezioni per link inline dentro paragrafi */
+  p a, li a, blockquote a, footer a {
+    min-height: 0;
+  }
+
+  /* Blocca text-overflow su titoli troppo lunghi */
+  h1, h2, h3 {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+  }
+
+  /* Nessun elemento con position:fixed può forzare larghezze > 100vw */
+  [style*="position: fixed"], .fixed {
+    max-width: 100vw;
+  }
+}
+
+/* Riduzione parole fantasma anche su tablet stretto */
+@media (max-width: 900px) {
+  [data-year-ghost],
+  [data-roman-ghost] {
+    font-size: clamp(4rem, 24vw, 12rem) !important;
+  }
+}
+
+/* Ripristina min-height solo su desktop (pin attivo, colonna latte pinnata) */
+@media (min-width: 768px) {
+  [data-diagram-section] {
+    min-height: 260vh;
+  }
+  [data-stato="2"] { min-height: 150vh; }
+  [data-stato="3"] { min-height: 160vh; }
+  [data-stato="4"] { min-height: 120vh; }
+}
+
+/* Macelleria mobile: mostra tutti i tagli + callout in modo statico,
+   nasconde le leader-line (misallineate senza pin desktop) */
+@media (max-width: 767px) {
+  [data-hotspot] {
+    opacity: 0.9 !important;
+  }
+  [data-callout] {
+    opacity: 1 !important;
+    max-width: 40vw !important;
+    font-size: 0.75rem !important;
+  }
+  [data-leader] {
+    stroke-dashoffset: 0 !important;
+    opacity: 0.4 !important;
+  }
+  [data-diagram-section] .absolute > svg {
+    width: 100% !important;
+    max-height: 60vh !important;
+  }
+}
+
+
+
+
