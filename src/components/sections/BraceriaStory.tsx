@@ -1,104 +1,77 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import embersImg from "@/assets/brace-embers.jpg";
+import salaImg from "@/assets/brace-sala.jpg";
 import handsImg from "@/assets/brace-hands.jpg";
 import cotturaImg from "@/assets/brace-cottura.jpg";
-import salaImg from "@/assets/brace-sala.jpg";
+import tavolaAntipasto from "@/assets/tavola-antipasto.jpg";
+import tavolaAttesa from "@/assets/tavola-attesa.jpg";
 import aerialAsset from "@/assets/masseria-aerial.asset.json";
 
 /* ─────────────────────── DATA ─────────────────────── */
 
-const FILIERA = [
-  { label: "Allevamento", to: "/allevamento" as const, active: false },
-  { label: "Caseificio", to: "/caseificio" as const, active: false },
-  { label: "Macelleria", to: "/macelleria" as const, active: false },
-  { label: "Braceria", to: "/braceria" as const, active: true },
-];
-
-type CookStep = {
-  id: string;
-  img: string;
-  title: string;
-  caption: string;
-  note: string;
-};
-
-const COOKING: CookStep[] = [
+const BEATS = [
   {
-    id: "arrivo",
-    img: cotturaImg,
-    title: "arriva il taglio",
-    caption: "fiorentina · dalla N° 047 · appena posata sulla brace",
-    note: "sale grosso, niente altro. il fuoco fa il resto.",
-  },
-  {
-    id: "scottatura",
-    img: cotturaImg,
-    title: "la crosta",
-    caption: "brace a 400° · 4 minuti per lato · le righe si scavano",
-    note: "il grasso cola, sfrigola, torna su come fumo.",
-  },
-  {
-    id: "riposo",
+    id: "01",
+    label: "Scegli al banco",
+    line: "Il filetto, le bombette, la salsiccia. La scegli tu.",
     img: handsImg,
-    title: "tre dita di crosta",
-    caption: "riposo di 3 minuti · il centro respira",
-    note: "il taglio adesso è pronto. si porta caldo, subito.",
+  },
+  {
+    id: "02",
+    label: "Ti siedi",
+    line: "Nel frattempo, l'antipasto che non finisce mai.",
+    img: tavolaAntipasto,
+  },
+  {
+    id: "03",
+    label: "Alla brace",
+    line: "Te la portano cotta. Al sangue, se la scegli così.",
+    img: cotturaImg,
   },
 ];
 
-type MenuItem = {
-  name: string;
-  desc: string;
-  price?: string;
-};
-type MenuCat = {
-  id: string;
-  label: string;
-  intro: string;
-  items: MenuItem[];
-};
+const MENU = [
+  {
+    cat: "Dall'antipasto",
+    items: [
+      "Salumi e formaggi nostri",
+      "Frittelle del nostro grano · ricotta piccante",
+      "Zucchine marinate",
+    ],
+  },
+  {
+    cat: "Dai primi",
+    items: ["Polpettine al sugo", "Spezzatino di vitello e maiale"],
+  },
+  {
+    cat: "Dalla brace",
+    items: [
+      "Pecora in Pignata · 5 ore, forno a legna",
+      "Filetto di vitello · 15 giorni di frollatura",
+      "Bombette · salsiccia",
+    ],
+  },
+  {
+    cat: "Dolci",
+    items: ["Dolcini artigianali fatti in casa"],
+  },
+];
 
-const MENU: MenuCat[] = [
+const QUOTES = [
   {
-    id: "brace",
-    label: "Dalla Brace",
-    intro: "carne nostra, cotta a vista sulla brace di quercia",
-    items: [
-      { name: "Fiorentina di podolica", desc: "1,2 kg · frollatura 30 gg · N° 047", price: "8 € / hg" },
-      { name: "Costata", desc: "800 g · brace forte · 3 min lato", price: "7 € / hg" },
-      { name: "Tagliata al sale grosso", desc: "600 g · rosmarino della masseria", price: "38" },
-      { name: "Bombette di Noci", desc: "8 pz · capocollo + caciocavallo", price: "14" },
-      { name: "Gnumeredde alla brace", desc: "6 pz · fegatini, alloro, spago", price: "12" },
-      { name: "Salsiccia a punta di coltello", desc: "500 g · suino nero, macinata a mano", price: "16" },
-      { name: "Spiedini misti della masseria", desc: "carne del giorno, alloro, pane", price: "18" },
-    ],
+    text: "All'ingresso ci si sceglie la carne che si vorrà gustare alla brace e una volta seduti al tavolo partono con la carrellata di antipasti misti tipici.",
+    from: "Tripadvisor",
+    at: "mov2",
   },
+  { text: "L'antipasto non finisce mai.", from: "Tripadvisor", at: "mov3" },
   {
-    id: "caseificio",
-    label: "Dal Caseificio",
-    intro: "latte munto la mattina, in tavola la sera",
-    items: [
-      { name: "Burrata del mattino", desc: "cuore filato, panna fresca" },
-      { name: "Mozzarella a mano", desc: "tirata al momento, calda" },
-      { name: "Caciocavallo impiccato", desc: "sciolto sulla brace, su pane" },
-      { name: "Ricotta forte con capocollo", desc: "cucchiaio, pane cotto a legna" },
-    ],
-  },
-  {
-    id: "orto",
-    label: "Dall'Orto",
-    intro: "verdure di stagione, sulla stessa brace",
-    items: [
-      { name: "Cicorielle di campo", desc: "olio della masseria, peperoncino" },
-      { name: "Melanzane alla brace", desc: "menta, aglio, sale" },
-      { name: "Peperoni cornetti", desc: "arrostiti, ammollicati" },
-      { name: "Pane cotto a legna", desc: "grano nostro, lievito madre" },
-    ],
+    text: "Gli orologi si fermano quando la trasportano dal forno alla cucina.",
+    from: "Luciano Pignataro Wine Blog",
+    at: "mov3",
   },
 ];
 
@@ -106,540 +79,480 @@ const MENU: MenuCat[] = [
 
 export function BraceriaStory() {
   const reduced = useReducedMotion();
-
   const rootRef = useRef<HTMLDivElement>(null);
+  const [ora, setOra] = useState("19:30");
 
-  // Intro
-  const introRef = useRef<HTMLDivElement>(null);
-  const emberBedRef = useRef<HTMLDivElement>(null);
-  const smokeRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const [tempC, setTempC] = useState(380);
-
-  // Sez A · luce
-  const lightRef = useRef<HTMLDivElement>(null);
-  const spotRef = useRef<HTMLDivElement>(null);
-  const lightRevealsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  // Sez B · cottura
-  const cookRef = useRef<HTMLDivElement>(null);
-  const [cookIdx, setCookIdx] = useState(0);
-  const cookImgRef = useRef<HTMLDivElement>(null);
-  const grillMarksRef = useRef<SVGGElement>(null);
-
-  // Menù
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  // Chiusura · aerial
-  const closeRef = useRef<HTMLDivElement>(null);
-  const aerialRef = useRef<HTMLDivElement>(null);
-  const goldPathRef = useRef<SVGPathElement>(null);
-  const finalPhraseRef = useRef<HTMLDivElement>(null);
-
-  /* ─── GSAP orchestration ─── */
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
-    if (reduced) return;
+    const root = rootRef.current;
+    if (!root) return;
+
     gsap.registerPlugin(ScrollTrigger);
-
     const ctx = gsap.context(() => {
-      // intro: brace respira
-      if (emberBedRef.current) {
-        gsap.to(emberBedRef.current, {
-          filter: "brightness(1.25) saturate(1.15)",
-          duration: 2.2,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-        });
-      }
+      if (reduced) return;
+      const mm = gsap.matchMedia();
 
-      // titolo emerge dal fumo
-      if (titleRef.current && introRef.current) {
-        gsap.set(titleRef.current, { autoAlpha: 0, filter: "blur(28px)", y: 40 });
+      /* ══════ INGRESSO · SALA VUOTA CHE SI ILLUMINA ══════ */
+      const ing = root.querySelector<HTMLElement>("[data-mov='ing']");
+      const salaLight = root.querySelector<HTMLElement>("[data-sala-light]");
+      const darkVeil = root.querySelector<HTMLElement>("[data-dark-veil]");
+      const salaTitle = root.querySelector<HTMLElement>("[data-sala-title]");
+
+      if (ing && salaLight && darkVeil) {
         ScrollTrigger.create({
-          trigger: introRef.current,
+          trigger: ing,
           start: "top top",
           end: "bottom top",
-          scrub: 0.8,
+          scrub: 1,
           onUpdate: (self) => {
             const p = self.progress;
-            gsap.set(titleRef.current, {
-              autoAlpha: Math.min(1, p * 2.2),
-              filter: `blur(${Math.max(0, 28 - p * 34)}px)`,
-              y: 40 - p * 40,
-            });
-            gsap.set(smokeRef.current, { y: -p * 180, opacity: 0.55 + p * 0.2 });
-            setTempC(Math.round(380 + p * 40));
+            gsap.set(darkVeil, { autoAlpha: 1 - p * 0.85 });
+            gsap.set(salaLight, { autoAlpha: p * 0.55 });
+            const ore = 19 + Math.floor(p * 3);
+            const min = Math.floor((p * 60) % 60);
+            setOra(`${String(ore).padStart(2, "0")}:${String(min).padStart(2, "0")}`);
           },
         });
-      }
-
-      // sez A · spotlight scrub
-      if (spotRef.current && lightRef.current) {
-        ScrollTrigger.create({
-          trigger: lightRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.6,
-          onUpdate: (self) => {
-            const p = self.progress; // 0..1
-            const y = 20 + p * 60; // % verticale
-            gsap.set(spotRef.current, { top: `${y}%` });
-            lightRevealsRef.current.forEach((el) => {
-              if (!el) return;
-              gsap.set(el, { opacity: 1, filter: "none" });
-            });
-          },
-        });
-      }
-
-      // sez B · cottura pinned
-      if (cookRef.current && cookImgRef.current) {
-        const media = gsap.matchMedia();
-        media.add("(min-width: 768px)", () => {
-          const st = ScrollTrigger.create({
-            trigger: cookRef.current,
-            start: "top top",
-            end: "+=" + window.innerHeight * COOKING.length,
-            pin: true,
-            scrub: 0.6,
-            onUpdate: (self) => {
-              const idx = Math.min(
-                COOKING.length - 1,
-                Math.floor(self.progress * COOKING.length),
-              );
-              setCookIdx(idx);
-              const stepP = self.progress * COOKING.length - idx;
-              // cottura: crudo→scottato: saturazione + contrasto + calore
-              gsap.set(cookImgRef.current, {
-                filter: `saturate(${0.6 + self.progress * 0.9}) contrast(${0.9 + self.progress * 0.4}) hue-rotate(${-self.progress * 12}deg) brightness(${0.9 + self.progress * 0.2})`,
-              });
-              // grill marks scale-x
-              if (grillMarksRef.current) {
-                gsap.set(grillMarksRef.current, {
-                  opacity: self.progress,
-                  scaleX: 0.2 + self.progress * 0.8,
-                  transformOrigin: "center center",
-                });
-              }
-              // subtle heat haze via y jitter on step
-              gsap.set(cookImgRef.current, {
-                y: Math.sin(stepP * Math.PI * 2) * 3,
-              });
+        if (salaTitle) {
+          gsap.fromTo(
+            salaTitle,
+            { clipPath: "inset(0 100% 0 0)" },
+            {
+              clipPath: "inset(0 0% 0 0)",
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: ing,
+                start: "65% top",
+                end: "bottom top",
+                scrub: 1,
+              },
             },
-          });
-          return () => st.kill();
-        });
+          );
+        }
       }
 
-      // chiusura · zoom-out da brace a mappa aerea + filo d'oro
-      if (closeRef.current && aerialRef.current) {
-        gsap.set(aerialRef.current, { scale: 2.4, opacity: 0 });
+      /* ══════ MOV 2 · IL RITO (3 beat morph) ══════ */
+      mm.add("(min-width: 900px)", () => {
+        const mov2 = root.querySelector<HTMLElement>("[data-mov='2']");
+        const stage = root.querySelector<HTMLElement>("[data-stage]");
+        if (!mov2 || !stage) return;
+
         ScrollTrigger.create({
-          trigger: closeRef.current,
-          start: "top bottom",
-          end: "bottom bottom",
-          scrub: 0.8,
+          trigger: mov2,
+          start: "top top",
+          end: "+=" + BEATS.length * 100 + "%",
+          pin: stage,
+          scrub: 1,
           onUpdate: (self) => {
             const p = self.progress;
-            gsap.set(aerialRef.current, {
-              scale: 2.4 - p * 1.4,
-              opacity: gsap.utils.clamp(0, 1, p * 1.8),
-            });
-            if (goldPathRef.current) {
-              const len = goldPathRef.current.getTotalLength();
-              gsap.set(goldPathRef.current, {
-                strokeDasharray: len,
-                strokeDashoffset: len * (1 - p),
+            const activeIdx = Math.min(
+              BEATS.length - 1,
+              Math.floor(p * BEATS.length),
+            );
+            BEATS.forEach((b, i) => {
+              const el = root.querySelector<HTMLElement>(`[data-beat='${b.id}']`);
+              if (!el) return;
+              gsap.set(el, {
+                autoAlpha: i === activeIdx ? 1 : 0,
+                scale: i === activeIdx ? 1 : 1.06,
               });
-            }
-            gsap.set(finalPhraseRef.current, {
-              autoAlpha: gsap.utils.clamp(0, 1, (p - 0.6) * 2.5),
-              y: (1 - p) * 30,
             });
+            const grill = root.querySelector<HTMLElement>("[data-grill-wash]");
+            if (grill) {
+              // Warm-wash --terracotta SOLO nel beat 3 (breve)
+              const in3 = p > 0.66 && p < 0.9 ? (p - 0.66) / 0.24 : 0;
+              const out3 = p >= 0.9 ? 1 - (p - 0.9) / 0.1 : in3;
+              gsap.set(grill, { autoAlpha: Math.max(0, Math.min(0.55, out3)) });
+            }
+          },
+        });
+      });
+
+      // Mobile: beat verticali con reveal
+      mm.add("(max-width: 899px)", () => {
+        BEATS.forEach((b) => {
+          const el = root.querySelector<HTMLElement>(`[data-beat-mobile='${b.id}']`);
+          if (!el) return;
+          gsap.fromTo(
+            el,
+            { y: 40, autoAlpha: 0 },
+            {
+              y: 0,
+              autoAlpha: 1,
+              duration: 0.6,
+              ease: "power2.out",
+              scrollTrigger: { trigger: el, start: "top 85%", once: true },
+            },
+          );
+        });
+      });
+
+      /* ══════ MOV 3 · MENÙ EDITORIALE (stagger portate) ══════ */
+      root.querySelectorAll<HTMLElement>("[data-menu-cat]").forEach((el, i) => {
+        gsap.fromTo(
+          el,
+          { y: 30, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            delay: i * 0.05,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 88%", once: true },
+          },
+        );
+      });
+      root.querySelectorAll<HTMLElement>("[data-menu-item]").forEach((el, i) => {
+        gsap.fromTo(
+          el,
+          { y: 16, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.5,
+            delay: 0.08 + (i % 8) * 0.05,
+            ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+          },
+        );
+      });
+
+      /* ══════ CHIUSURA · zoom-out alla mappa aerea ══════ */
+      const closeSec = root.querySelector<HTMLElement>("[data-mov='close']");
+      const aerial = root.querySelector<HTMLElement>("[data-aerial-close]");
+      if (closeSec && aerial) {
+        gsap.fromTo(
+          aerial,
+          { scale: 3.2, autoAlpha: 0.2, filter: "blur(6px)" },
+          {
+            scale: 1,
+            autoAlpha: 1,
+            filter: "blur(0px)",
+            ease: "none",
+            scrollTrigger: {
+              trigger: closeSec,
+              start: "top bottom",
+              end: "center center",
+              scrub: 1,
+            },
+          },
+        );
+      }
+
+      /* Filo d'oro che chiude il cerchio */
+      const thread = root.querySelector<SVGPathElement>("[data-close-thread]");
+      if (thread) {
+        const len = thread.getTotalLength?.() ?? 800;
+        gsap.set(thread, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(thread, {
+          strokeDashoffset: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: closeSec,
+            start: "top 80%",
+            end: "bottom bottom",
+            scrub: 1,
           },
         });
       }
-
-      // refresh dopo mount
-      ScrollTrigger.refresh();
-    }, rootRef);
+    }, root);
 
     return () => ctx.revert();
   }, [reduced]);
-
-  /* ─── click su categoria menù (soft scroll interno via lenis) ─── */
-  useEffect(() => {
-    // niente: uso ancore native
-  }, []);
 
   return (
     <div
       ref={rootRef}
       className="relative w-full text-[color:var(--crema)]"
-      style={{ background: "var(--carbone)" }}
+      style={{ background: "var(--marrone)" }}
     >
-      {/* Filiera sub-nav */}
-      <nav
-        aria-label="Filiera"
-        className="pointer-events-auto sticky top-16 z-30 mx-auto flex w-full max-w-6xl items-center justify-center gap-3 px-4 py-2"
-      >
-        {FILIERA.map((f) => (
-          <Link
-            key={f.to}
-            to={f.to}
-            className={[
-              "font-eyebrow rounded-full px-3 py-1.5 text-[10px] transition-all",
-              f.active
-                ? "bg-[color:var(--terracotta)]/25 text-[color:var(--oro)] ring-1 ring-[color:var(--oro)]/40"
-                : "text-[color:var(--crema)]/65 hover:text-[color:var(--crema)]",
-            ].join(" ")}
-          >
-            {f.label}
-          </Link>
-        ))}
-      </nav>
-
-      {/* ────────────── INGRESSO · IL BUIO & LA BRACE ────────────── */}
+      {/* ══════════════════ INGRESSO · SALA VUOTA ══════════════════ */}
       <section
-        ref={introRef}
-        className="relative h-[220svh] w-full"
-        aria-label="Il buio e la brace"
+        data-mov="ing"
+        className="relative h-[220vh]"
+        aria-label="La sala vuota"
       >
-        <div className="sticky top-0 h-svh w-full overflow-hidden">
-          {/* Rail marginalia (desktop) */}
-          <div className="pointer-events-none absolute left-6 top-1/2 z-20 hidden -translate-y-1/2 md:block">
-            <div className="font-eyebrow flex flex-col items-start gap-6 text-[10px] text-[color:var(--crema)]/70 [writing-mode:vertical-rl] [transform:rotate(180deg)]">
-              <span className="text-[color:var(--oro)]">BRACERIA · IV · NOCI</span>
-              <span>
-                brace ·{" "}
-                <span className="text-[color:var(--terracotta)]">{tempC}°</span>
-              </span>
-              <span>mer–sab · sera</span>
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          {/* Sala */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${salaImg})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "brightness(0.35) saturate(0.7)",
+            }}
+          />
+          {/* Warm wash che si accende */}
+          <div
+            data-sala-light
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 50% 55%, color-mix(in oklab, var(--crema) 65%, transparent) 0%, transparent 60%)",
+              opacity: 0,
+            }}
+          />
+          {/* Velo scuro che si toglie */}
+          <div
+            data-dark-veil
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: "rgba(26,18,16,0.85)" }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, transparent 40%, rgba(26,18,16,0.65) 100%)",
+            }}
+          />
+
+          {/* Rail sinistro */}
+          <div
+            aria-hidden
+            className="absolute left-4 md:left-8 top-0 h-full flex items-center pointer-events-none z-10"
+          >
+            <div
+              className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/55"
+              style={{
+                writingMode: "vertical-rl",
+                transform: "rotate(180deg)",
+                letterSpacing: "0.3em",
+              }}
+            >
+              BRACERIA · IV · NOCI · {ora} APERTURA
             </div>
           </div>
 
-          {/* letto di brace */}
-          <div
-            ref={emberBedRef}
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${embersImg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center 70%",
-              filter: "brightness(1) saturate(1)",
-            }}
-          />
-          {/* vignetta */}
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 60% 55% at 50% 75%, transparent 0%, rgba(26,18,16,0.55) 55%, var(--carbone) 100%)",
-            }}
-          />
-          {/* fumo che sale */}
-          <div
-            ref={smokeRef}
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-[80svh]"
-            style={{
-              background:
-                "radial-gradient(ellipse 55% 40% at 50% 100%, rgba(242,232,213,0.14) 0%, rgba(242,232,213,0.06) 40%, transparent 75%)",
-              opacity: 0.55,
-              mixBlendMode: "screen",
-            }}
-          />
-          {/* scintille */}
-          <div aria-hidden className="absolute inset-0 overflow-hidden">
-            {Array.from({ length: 24 }).map((_, i) => {
-              const left = (i * 137) % 100;
-              const delay = (i % 8) * 0.6;
-              const dur = 4 + ((i * 7) % 5);
-              return (
-                <span
-                  key={i}
-                  className="absolute block h-1 w-1 rounded-full"
-                  style={{
-                    left: `${left}%`,
-                    bottom: "45%",
-                    background: "var(--terracotta)",
-                    boxShadow: "0 0 6px var(--terracotta), 0 0 12px var(--oro)",
-                    animation: `spark-rise ${dur}s ${delay}s linear infinite`,
-                    opacity: 0.85,
-                  }}
-                />
-              );
-            })}
-          </div>
-
-          {/* Titolo che emerge dal fumo */}
-          <div className="absolute inset-x-0 top-[38%] flex flex-col items-center px-6 text-center">
+          {/* Titolo che emerge con la luce */}
+          <div className="absolute inset-x-0 top-[52%] flex justify-center pointer-events-none px-6 z-20">
             <h1
-              ref={titleRef}
-              className="font-display text-4xl leading-[0.95] tracking-tight text-[color:var(--crema)] md:text-7xl"
-              style={{ textShadow: "0 0 40px rgba(179,58,26,0.55)" }}
+              data-sala-title
+              className="font-display text-center leading-[0.9]"
+              style={{
+                color: "var(--crema)",
+                fontSize: "clamp(2.4rem, 7.5vw, 6rem)",
+                fontWeight: 300,
+                textShadow: "0 2px 40px rgba(26,18,16,0.7)",
+                letterSpacing: "-0.02em",
+              }}
             >
-              La brace,{" "}
-              <em className="italic text-[color:var(--terracotta)]">ogni sera</em>.
+              La brace, ogni sera
             </h1>
           </div>
 
-          {/* Cue */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 text-[color:var(--crema)]/60">
-            <span className="font-eyebrow text-[10px]">siediti al buio</span>
-            <span className="block h-8 w-px bg-[color:var(--oro)]/60" />
+          <div className="absolute bottom-8 inset-x-0 flex justify-center pointer-events-none z-20">
+            <div className="font-eyebrow text-[10px] text-[color:var(--crema)]/50 tracking-[0.3em]">
+              ↓ ENTRA
+            </div>
           </div>
+          <div className="grain absolute inset-0 pointer-events-none" />
         </div>
       </section>
 
-      {/* ────────────── SEZIONE A · LA LUCE DELLA BRACE ────────────── */}
+      {/* ══════════════════ MOV 2 · IL RITO (desktop pinned) ══════════════════ */}
       <section
-        ref={lightRef}
-        className="relative w-full bg-[color:var(--carbone)] py-[10svh]"
-        aria-label="La luce della brace"
+        data-mov="2"
+        className="relative hidden md:block"
+        aria-label="Il rito"
+        style={{ minHeight: "400vh", background: "var(--marrone)" }}
       >
-        {/* spotlight che segue lo scroll */}
         <div
-          ref={spotRef}
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 z-10 h-[80svh] w-[80svh] -translate-x-1/2 -translate-y-1/2"
-          style={{
-            top: "20%",
-            background:
-              "radial-gradient(circle at 50% 50%, rgba(196,154,74,0.22) 0%, rgba(179,58,26,0.16) 25%, transparent 60%)",
-            mixBlendMode: "screen",
-          }}
-        />
-
-        <div className="relative z-20 mx-auto grid max-w-6xl grid-cols-1 gap-24 px-6 md:gap-40">
-          {[
-            {
-              img: handsImg,
-              eyebrow: "il gesto",
-              title: "Mani che conoscono il fuoco",
-              text: "Il brace-master gira, sposta, avvicina. Sente il calore col dorso. Non usa un timer: usa gli occhi e l'olfatto.",
-            },
-            {
-              img: cotturaImg,
-              eyebrow: "la griglia",
-              title: "Solo quercia, solo brace viva",
-              text: "Legna delle nostre campagne, mai carbonella. Quando la fiamma cala e il letto è rosso, si comincia a cuocere.",
-            },
-            {
-              img: salaImg,
-              eyebrow: "la sala",
-              title: "Al buio, intorno al fuoco",
-              text: "Poche luci, molto silenzio, il fuoco che parla. Si mangia come si mangiava una volta: tutto arriva dallo stesso posto.",
-            },
-          ].map((r, i) => (
+          data-stage
+          className="relative h-screen w-full overflow-hidden"
+        >
+          {/* Beat backgrounds */}
+          {BEATS.map((b, i) => (
             <div
-              key={r.title}
-              ref={(el) => {
-                lightRevealsRef.current[i] = el;
+              key={b.id}
+              data-beat={b.id}
+              className="absolute inset-0 will-change-transform"
+              style={{
+                backgroundImage: `url(${b.img})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: i === 0 ? 1 : 0,
+                filter: "brightness(0.6) saturate(0.85)",
               }}
-              className={[
-                "brace-light-reveal grid grid-cols-1 items-center gap-8 md:grid-cols-2",
-                i % 2 === 1 ? "md:[&>*:first-child]:order-2" : "",
-              ].join(" ")}
-              style={{ opacity: 1 }}
-            >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-sm ring-1 ring-[color:var(--oro)]/20">
-                <img
-                  src={r.img}
-                  alt={r.title}
-                  loading="lazy"
-                  width={1024}
-                  height={768}
-                  className="h-full w-full object-cover"
-                  style={{ filter: "brightness(0.9) contrast(1.05)" }}
-                />
-                <div
-                  aria-hidden
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(26,18,16,0.15) 0%, rgba(26,18,16,0.55) 100%)",
-                  }}
-                />
-              </div>
-              <div>
-                <div className="font-eyebrow mb-3 text-[11px] text-[color:var(--oro)]">
-                  {r.eyebrow}
-                </div>
-                <h3 className="font-display text-3xl leading-tight md:text-4xl">
-                  {r.title}
-                </h3>
-                <p className="mt-4 max-w-md text-[color:var(--crema)]/80">
-                  {r.text}
-                </p>
-              </div>
-            </div>
+            />
           ))}
-        </div>
-      </section>
-
-      {/* ────────────── SEZIONE B · LA COTTURA ────────────── */}
-      <section
-        ref={cookRef}
-        className="relative w-full overflow-hidden bg-[color:var(--carbone)]"
-        aria-label="La cottura"
-      >
-        <div className="relative h-svh w-full">
-          {/* Immagine cottura */}
+          {/* Warm wash --crema per il tavolo (beat 2 e 3) */}
           <div
-            ref={cookImgRef}
-            className="absolute inset-0"
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: `url(${COOKING[cookIdx].img})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "saturate(0.6) contrast(0.9)",
+              background:
+                "linear-gradient(180deg, rgba(61,42,30,0.3) 0%, rgba(26,18,16,0.55) 100%)",
             }}
           />
-          {/* grill marks overlay */}
-          <svg
+          {/* Warm wash --terracotta SOLO nel beat 3 (griglia) */}
+          <div
+            data-grill-wash
             aria-hidden
-            className="absolute inset-0 h-full w-full"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-          >
-            <g ref={grillMarksRef} opacity={0}>
-              {[20, 35, 50, 65, 80].map((y) => (
-                <line
-                  key={y}
-                  x1={5}
-                  x2={95}
-                  y1={y}
-                  y2={y}
-                  stroke="rgba(20,10,8,0.75)"
-                  strokeWidth={2.2}
-                />
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 50% 80%, color-mix(in oklab, var(--terracotta) 60%, transparent) 0%, transparent 55%)",
+              opacity: 0,
+            }}
+          />
+
+          {/* Etichette numeriche stamp */}
+          <div className="absolute inset-0 z-10 flex items-end pb-16 md:pb-24 px-8 md:px-16">
+            <div className="grid grid-cols-3 gap-6 w-full max-w-6xl mx-auto">
+              {BEATS.map((b) => (
+                <div key={b.id} className="text-center">
+                  <div
+                    className="font-eyebrow text-[11px] md:text-[13px] mb-2"
+                    style={{
+                      color: "var(--oro)",
+                      letterSpacing: "0.35em",
+                    }}
+                  >
+                    {b.id} · {b.label.toUpperCase()}
+                  </div>
+                  <div
+                    className="font-display italic text-[color:var(--crema)]/90 leading-snug max-w-xs mx-auto"
+                    style={{ fontSize: "clamp(0.95rem, 1.2vw, 1.15rem)", fontWeight: 300 }}
+                  >
+                    {b.line}
+                  </div>
+                </div>
               ))}
-            </g>
-          </svg>
-          {/* heat haze */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 90% 45% at 50% 60%, rgba(179,58,26,0.18) 0%, transparent 60%)",
-              mixBlendMode: "screen",
-            }}
-          />
-          {/* vignetta */}
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, transparent 40%, rgba(26,18,16,0.85) 100%)",
-            }}
-          />
-
-          {/* marginalia superiore */}
-          <div className="font-eyebrow absolute left-6 top-6 z-20 text-[10px] text-[color:var(--oro)]/80">
-            II · la cottura
-          </div>
-          <div className="font-eyebrow absolute right-6 top-6 z-20 text-[10px] text-[color:var(--crema)]/60">
-            {String(cookIdx + 1).padStart(2, "0")} / {String(COOKING.length).padStart(2, "0")}
-          </div>
-
-          {/* didascalia in basso */}
-          <div className="absolute inset-x-0 bottom-0 z-20 px-6 pb-12 md:pb-16">
-            <div className="mx-auto max-w-3xl">
-              <div className="font-eyebrow mb-2 text-[10px] text-[color:var(--terracotta)]">
-                {COOKING[cookIdx].title}
-              </div>
-              <div className="font-display text-2xl leading-tight md:text-4xl">
-                {COOKING[cookIdx].caption}
-              </div>
-              <div className="mt-2 max-w-xl text-sm text-[color:var(--crema)]/70">
-                {COOKING[cookIdx].note}
-              </div>
             </div>
+          </div>
+
+          {/* Cornice titolo mov2 in alto */}
+          <div className="absolute top-8 left-8 z-10 font-eyebrow text-[10px] text-[color:var(--crema)]/60 tracking-[0.3em]">
+            IL RITO · TRE MOMENTI
+          </div>
+
+          {/* Recensione mov2 */}
+          <div className="absolute top-1/3 right-8 max-w-xs z-10 hidden lg:block">
+            <blockquote>
+              <p
+                className="font-display italic text-[color:var(--crema)]"
+                style={{ fontSize: "1rem", fontWeight: 300, lineHeight: 1.35 }}
+              >
+                “{QUOTES[0].text}”
+              </p>
+              <footer className="mt-2 font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.3em]">
+                — {QUOTES[0].from}
+              </footer>
+            </blockquote>
           </div>
         </div>
       </section>
 
-      {/* ────────────── MENÙ DELLA SERA ────────────── */}
+      {/* ══════════════════ MOV 2 · IL RITO (mobile stacked) ══════════════════ */}
       <section
-        ref={menuRef}
-        id="menu"
-        className="relative w-full bg-[color:var(--carbone)] px-6 py-24 md:py-36"
-        aria-label="Menù della sera"
+        className="relative md:hidden py-16 px-5"
+        aria-label="Il rito"
+        style={{ background: "var(--marrone)" }}
       >
-        <div className="mx-auto max-w-5xl">
-          {/* intestazione carta */}
-          <div className="mb-16 border-b border-[color:var(--oro)]/25 pb-6">
-            <div className="flex items-baseline justify-between">
-              <div>
-                <div className="font-eyebrow text-[11px] text-[color:var(--oro)]">
-                  III · la carta
+        <div className="font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.35em] mb-6">
+          IL RITO · TRE MOMENTI
+        </div>
+        <div className="space-y-8">
+          {BEATS.map((b) => (
+            <article
+              key={b.id}
+              data-beat-mobile={b.id}
+              className="relative"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden rounded-sm shadow-2xl">
+                <img
+                  src={b.img}
+                  alt={b.label}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                  style={{ filter: "brightness(0.75)" }}
+                />
+                {b.id === "03" && (
+                  <div
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at 50% 70%, color-mix(in oklab, var(--terracotta) 50%, transparent) 0%, transparent 60%)",
+                    }}
+                  />
+                )}
+              </div>
+              <div className="mt-3">
+                <div className="font-eyebrow text-[10px] text-[color:var(--oro)] tracking-[0.35em]">
+                  {b.id} · {b.label.toUpperCase()}
                 </div>
-                <h2 className="font-display mt-1 text-4xl italic md:text-6xl">
-                  Il menù della sera
-                </h2>
+                <p
+                  className="mt-1 font-display italic text-[color:var(--crema)]/90 leading-snug"
+                  style={{ fontSize: "1.05rem", fontWeight: 300 }}
+                >
+                  {b.line}
+                </p>
               </div>
-              <div className="font-eyebrow hidden text-right text-[10px] text-[color:var(--crema)]/60 md:block">
-                Noci · Puglia
-                <br />
-                mer – sab · cena
-                <br />
-                dom / festivi · pranzo
-              </div>
-            </div>
-            <p className="mt-4 max-w-2xl text-[color:var(--crema)]/70">
-              Cambia con la stagione, con la brace, con quello che è pronto. Quello
-              che leggi stasera è quello che troverai in tavola.
+            </article>
+          ))}
+          <blockquote className="pt-4 border-t border-[color:var(--oro)]/25">
+            <p
+              className="font-display italic text-[color:var(--crema)]"
+              style={{ fontSize: "1rem", fontWeight: 300 }}
+            >
+              “{QUOTES[0].text}”
             </p>
+            <footer className="mt-2 font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.3em]">
+              — {QUOTES[0].from}
+            </footer>
+          </blockquote>
+        </div>
+      </section>
+
+      {/* ══════════════════ MOV 3 · LA TAVOLA (menù editoriale) ══════════════════ */}
+      <section
+        className="relative py-24 md:py-32"
+        aria-label="La tavola"
+        style={{
+          background:
+            "linear-gradient(180deg, var(--marrone) 0%, color-mix(in oklab, var(--marrone) 80%, var(--carbone)) 100%)",
+        }}
+      >
+        <div className="mx-auto max-w-5xl px-6 md:px-12">
+          <div className="mb-16 md:mb-20">
+            <div className="font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.35em] mb-3">
+              LA TAVOLA · LA CENA
+            </div>
+            <h2
+              className="font-display text-[color:var(--crema)] leading-[1.05]"
+              style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)", fontWeight: 300 }}
+            >
+              Le portate arrivano.
+              <br />
+              Una dopo l'altra.
+            </h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-16 md:gap-20">
-            {MENU.map((cat) => (
-              <div key={cat.id}>
-                <div className="mb-6 flex items-baseline gap-4">
-                  <span className="font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]">
-                    {cat.label}
-                  </span>
-                  <span className="h-px flex-1 bg-[color:var(--oro)]/25" />
+          <div className="space-y-12 md:space-y-16">
+            {MENU.map((sec) => (
+              <div
+                key={sec.cat}
+                data-menu-cat
+                className="grid md:grid-cols-[220px_1fr] gap-4 md:gap-10 border-t border-[color:var(--oro)]/25 pt-8"
+              >
+                <div className="font-eyebrow text-[11px] md:text-[13px] text-[color:var(--oro)] tracking-[0.35em] pt-1">
+                  {sec.cat.toUpperCase()}
                 </div>
-                <p className="font-display mb-8 max-w-xl text-lg italic text-[color:var(--crema)]/70">
-                  {cat.intro}
-                </p>
-                <ul className="flex flex-col gap-5">
-                  {cat.items.map((it) => (
+                <ul className="space-y-3">
+                  {sec.items.map((it) => (
                     <li
-                      key={it.name}
-                      className="grid grid-cols-[1fr_auto] items-baseline gap-3"
+                      key={it}
+                      data-menu-item
+                      className="font-display text-[color:var(--crema)] leading-snug"
+                      style={{ fontSize: "clamp(1.2rem, 2vw, 1.7rem)", fontWeight: 300 }}
                     >
-                      <div className="flex items-baseline gap-3">
-                        <span className="font-display text-xl md:text-2xl">
-                          {it.name}
-                        </span>
-                        <span
-                          className="mx-2 hidden flex-1 self-end border-b border-dotted border-[color:var(--crema)]/25 md:block"
-                          style={{ transform: "translateY(-6px)" }}
-                        />
-                        <span className="hidden max-w-md text-sm text-[color:var(--crema)]/60 md:inline">
-                          {it.desc}
-                        </span>
-                      </div>
-                      {it.price ? (
-                        <span className="font-eyebrow text-[11px] text-[color:var(--oro)]">
-                          {it.price}
-                        </span>
-                      ) : (
-                        <span className="font-eyebrow text-[10px] text-[color:var(--crema)]/40">
-                          s.q.
-                        </span>
-                      )}
-                      <span className="col-span-2 -mt-3 max-w-md text-sm text-[color:var(--crema)]/60 md:hidden">
-                        {it.desc}
-                      </span>
+                      {it}
                     </li>
                   ))}
                 </ul>
@@ -647,31 +560,67 @@ export function BraceriaStory() {
             ))}
           </div>
 
-          <div className="font-eyebrow mt-16 border-t border-[color:var(--oro)]/25 pt-6 text-center text-[10px] text-[color:var(--crema)]/55">
-            i piatti cambiano a seconda della brace e della stagione · alcune
-            preparazioni richiedono attesa
+          {/* Recensioni fluttuanti */}
+          <div className="relative mt-24 md:mt-32 flex flex-col md:flex-row gap-8 md:gap-16">
+            <blockquote data-menu-item className="max-w-sm md:mt-0">
+              <p
+                className="font-display italic text-[color:var(--crema)] leading-snug"
+                style={{ fontSize: "clamp(1.25rem, 2vw, 1.7rem)", fontWeight: 300 }}
+              >
+                “L'antipasto non finisce mai.”
+              </p>
+              <footer className="mt-2 font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.3em]">
+                — Tripadvisor
+              </footer>
+            </blockquote>
+            <blockquote data-menu-item className="max-w-md md:mt-16">
+              <p
+                className="font-display italic text-[color:var(--crema)] leading-snug"
+                style={{ fontSize: "clamp(1.15rem, 1.8vw, 1.5rem)", fontWeight: 300 }}
+              >
+                “Gli orologi si fermano quando la trasportano dal forno alla cucina.”
+              </p>
+              <footer className="mt-2 font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.3em]">
+                — Luciano Pignataro Wine Blog
+              </footer>
+            </blockquote>
           </div>
         </div>
       </section>
 
-      {/* ────────────── CHIUSURA · TUTTO TORNA ────────────── */}
+      {/* ══════════════════ CHIUSURA · TUTTO TORNA (zoom-out aerea) ══════════════════ */}
       <section
-        ref={closeRef}
-        className="relative h-[220svh] w-full bg-[color:var(--carbone)]"
+        data-mov="close"
+        className="relative"
         aria-label="Il cerchio si chiude"
+        style={{
+          background:
+            "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 60%, var(--carbone)) 0%, var(--carbone) 100%)",
+          minHeight: "150vh",
+        }}
       >
-        <div className="sticky top-0 flex h-svh w-full items-center justify-center overflow-hidden">
-          {/* Aerial che risale */}
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+          {/* Attesa sul tavolo prima dello zoom-out */}
           <div
-            ref={aerialRef}
+            aria-hidden
             className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${tavolaAttesa})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "brightness(0.35) saturate(0.7)",
+              opacity: 0.5,
+            }}
+          />
+          {/* Mappa aerea (zoom-out) */}
+          <div
+            data-aerial-close
+            className="absolute inset-0 will-change-transform"
             style={{
               backgroundImage: `url(${aerialAsset.url})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              opacity: 0,
-              transform: "scale(2.4)",
-              filter: "brightness(0.75) contrast(1.05) saturate(0.9)",
+              filter: "brightness(0.5) saturate(0.8)",
             }}
           />
           <div
@@ -679,122 +628,73 @@ export function BraceriaStory() {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(26,18,16,0.35) 40%, rgba(26,18,16,0.85) 100%)",
+                "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(26,18,16,0.4) 50%, rgba(26,18,16,0.85) 100%)",
             }}
           />
 
-          {/* filo d'oro che chiude il giro sui 4 mestieri */}
+          {/* Filo che chiude il cerchio */}
           <svg
             aria-hidden
-            className="absolute inset-0 h-full w-full"
-            viewBox="0 0 100 100"
+            className="absolute inset-0 h-full w-full pointer-events-none"
             preserveAspectRatio="none"
+            viewBox="0 0 100 100"
           >
-            <defs>
-              <filter id="brc-glow">
-                <feGaussianBlur stdDeviation="0.6" result="b" />
-                <feMerge>
-                  <feMergeNode in="b" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-            {/* percorso: braceria → macelleria → caseificio → allevamento → braceria */}
             <path
-              ref={goldPathRef}
-              d="M 58 20 C 68 32, 72 48, 62 58 S 42 72, 34 62 S 26 40, 40 30 S 55 14, 58 20 Z"
+              data-close-thread
+              d="M 15 20 C 30 40, 70 20, 85 45 S 30 75, 50 90"
               fill="none"
               stroke="var(--oro)"
-              strokeWidth={0.35}
-              strokeLinecap="round"
-              filter="url(#brc-glow)"
+              strokeWidth="0.35"
+              opacity="0.75"
+              vectorEffect="non-scaling-stroke"
             />
-            {/* 4 pin */}
-            {[
-              { x: 58, y: 20, l: "Braceria" },
-              { x: 62, y: 58, l: "Macelleria" },
-              { x: 34, y: 62, l: "Caseificio" },
-              { x: 40, y: 30, l: "Allevamento" },
-            ].map((p) => (
-              <g key={p.l}>
-                <circle
-                  cx={p.x}
-                  cy={p.y}
-                  r={0.9}
-                  fill="var(--terracotta)"
-                  filter="url(#brc-glow)"
-                />
-                <circle
-                  cx={p.x}
-                  cy={p.y}
-                  r={1.8}
-                  fill="none"
-                  stroke="var(--oro)"
-                  strokeWidth={0.15}
-                  opacity={0.6}
-                />
-              </g>
-            ))}
           </svg>
 
-          {/* Frase finale + CTA */}
-          <div
-            ref={finalPhraseRef}
-            className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-8 px-6 text-center"
-            style={{ opacity: 1 }}
-          >
-            <div className="font-eyebrow text-[11px] text-[color:var(--oro)]">
-              il cerchio si chiude
+          {/* Testo finale + CTA */}
+          <div className="relative z-10 text-center px-6 max-w-3xl">
+            <div className="font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.4em] mb-5">
+              IL CERCHIO SI CHIUDE
             </div>
-            <h2 className="font-display text-3xl leading-tight md:text-6xl">
-              dalla terra alla brace —{" "}
-              <em className="italic text-[color:var(--terracotta)]">
-                ogni sera, a Noci.
-              </em>
+            <h2
+              className="font-display text-[color:var(--crema)] leading-[1]"
+              style={{ fontSize: "clamp(2.2rem, 6vw, 5rem)", fontWeight: 300, letterSpacing: "-0.02em" }}
+            >
+              Dalla terra alla tavola.
+              <br />
+              <span className="italic text-[color:var(--crema)]/85">Ogni sera, a Noci.</span>
             </h2>
 
-            <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row">
-              <a
-                href="tel:+393339395750"
-                className="bg-grad-brace font-eyebrow inline-flex items-center justify-center rounded-full px-8 py-4 text-xs text-[color:var(--crema)] shadow-[0_20px_50px_-20px_rgba(179,58,26,0.9)] ring-1 ring-[color:var(--oro)]/40 transition-transform hover:scale-[1.03]"
-              >
-                Prenota un tavolo
-              </a>
+            <div className="mt-10 flex flex-col items-center gap-4">
               <a
                 href="https://wa.me/393339395750"
                 target="_blank"
-                rel="noreferrer noopener"
-                className="font-eyebrow inline-flex items-center justify-center rounded-full border border-[color:var(--oro)]/40 px-8 py-4 text-xs text-[color:var(--crema)] transition-colors hover:bg-[color:var(--oro)]/10"
+                rel="noopener noreferrer"
+                className="group inline-block font-display text-[color:var(--crema)] hover:text-[color:var(--oro)] transition-colors"
+                style={{ fontSize: "clamp(1.4rem, 2.6vw, 2rem)", fontWeight: 300 }}
               >
-                WhatsApp · 333 939 5750
+                Prenota un tavolo →
+                <span
+                  aria-hidden
+                  className="block mx-auto mt-2 h-px transition-all duration-500 group-hover:w-full"
+                  style={{ width: "60%", background: "var(--oro)" }}
+                />
               </a>
+              <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/70 tracking-[0.3em] mt-2">
+                MER–SAB · CENA · DOMENICA E FESTIVI · PRANZO
+              </div>
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-[color:var(--crema)]/85 text-sm md:text-base">
+                <a href="tel:+393339395750" className="hover:text-[color:var(--oro)] transition-colors">
+                  333 939 5750
+                </a>
+                <span className="text-[color:var(--oro)]/50">·</span>
+                <a href="tel:+393333870292" className="hover:text-[color:var(--oro)] transition-colors">
+                  333 387 0292
+                </a>
+              </div>
             </div>
-
-            <div className="font-eyebrow text-[10px] text-[color:var(--crema)]/60">
-              mer – sab · cena · dom / festivi · pranzo
-            </div>
-
-            <Link
-              to="/"
-              className="mt-2 text-xs text-[color:var(--crema)]/50 underline underline-offset-4 hover:text-[color:var(--oro)]"
-            >
-              torna alla masseria
-            </Link>
           </div>
         </div>
       </section>
-
-      {/* keyframes locali (scintille) */}
-      <style>{`
-        @keyframes spark-rise {
-          0%   { transform: translateY(0) scale(1);   opacity: 0; }
-          10%  { opacity: 0.9; }
-          100% { transform: translateY(-70svh) scale(0.4); opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [style*="spark-rise"] { display: none !important; }
-        }
-      `}</style>
     </div>
   );
 }
