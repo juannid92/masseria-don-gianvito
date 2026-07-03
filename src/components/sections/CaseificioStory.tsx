@@ -399,7 +399,7 @@ export function CaseificioStory() {
           style={{
             background:
               "linear-gradient(180deg, var(--crema) 0%, color-mix(in oklab, var(--crema) 30%, var(--marrone)) 100%)",
-            minHeight: "150vh",
+            
           }}
         >
           <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 pt-32 pb-24 grid md:grid-cols-2 gap-10">
@@ -466,7 +466,7 @@ export function CaseificioStory() {
           style={{
             background:
               "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 90%, var(--crema)) 0%, var(--carbone) 100%)",
-            minHeight: "160vh",
+            
           }}
         >
           {/* Gesto in primo piano */}
@@ -518,7 +518,7 @@ export function CaseificioStory() {
           style={{
             background:
               "linear-gradient(180deg, var(--carbone) 0%, var(--marrone) 30%, var(--marrone) 100%)",
-            minHeight: "120vh",
+            
           }}
         >
           <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-12 pt-32 pb-24">

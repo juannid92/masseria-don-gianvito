@@ -420,17 +420,17 @@ export function MacelleriaStory() {
       {/* ══════════════════ SEZIONE A · IL DIAGRAMMA ══════════════════ */}
       <section
         data-mov="A"
+        data-diagram-section
         className="relative"
         aria-label="Il diagramma anatomico dei tagli"
         style={{
           background:
             "linear-gradient(180deg, var(--marrone) 0%, var(--carbone) 100%)",
-          minHeight: "260vh",
         }}
       >
         <div
           data-diagram-wrap
-          className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+          className="relative h-[100svh] md:h-screen w-full flex items-center justify-center overflow-hidden"
         >
           {/* Trama marmo/carboncino sottile */}
           <div
@@ -494,8 +494,8 @@ export function MacelleriaStory() {
               ))}
             </svg>
 
-            {/* Callout HTML (posizionati assoluto sopra la sagoma) */}
-            <div className="absolute inset-0 pointer-events-none">
+            {/* Callout HTML (posizionati assoluto sopra la sagoma · desktop only) */}
+            <div className="absolute inset-0 pointer-events-none hidden md:block">
               {CUTS.map((c) => {
                 const left = `${(c.cx / 200) * 100}%`;
                 const top = `${(c.cy / 120) * 100}%`;
@@ -541,6 +541,35 @@ export function MacelleriaStory() {
           </div>
         </div>
 
+        {/* Lista tagli MOBILE-ONLY (sotto il diagramma) */}
+        <div className="md:hidden relative z-10 px-5 pt-4 pb-10 space-y-4">
+          <div className="font-eyebrow text-[10px] text-[color:var(--oro)]/80 tracking-[0.35em] mb-2">
+            I TAGLI · {CUTS.length}
+          </div>
+          <ul className="divide-y divide-[color:var(--oro)]/20">
+            {CUTS.map((c, i) => (
+              <li key={c.id} className="py-4">
+                <div className="flex items-baseline gap-3">
+                  <span className="font-eyebrow text-[10px] text-[color:var(--oro)]/70 tracking-[0.28em] shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0">
+                    <div
+                      className="font-eyebrow text-[11px] tracking-[0.28em]"
+                      style={{ color: "var(--oro)" }}
+                    >
+                      {c.label.toUpperCase()}
+                    </div>
+                    <div className="mt-1 font-display italic text-[color:var(--crema)] text-[15px] leading-snug">
+                      {c.detail}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {/* Riga di chiusura sezione */}
         <div className="relative z-10 text-center pb-24 px-6">
           <p
@@ -553,6 +582,7 @@ export function MacelleriaStory() {
           </p>
         </div>
       </section>
+
 
       {/* ══════════════════ SEZIONE B · TRACCIABILITÀ ══════════════════ */}
       <section

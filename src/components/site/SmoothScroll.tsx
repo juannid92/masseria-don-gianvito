@@ -63,7 +63,10 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     const lenis = new Lenis({
       lerp: 0.1,
       smoothWheel: true,
-      wheelMultiplier: 1,
+      // Su touch usiamo lo scroll nativo: Lenis smoothTouch scattìna su iOS
+      // e disturba pinch/zoom accessibili. ScrollTrigger continua a funzionare
+      // via lo scroll nativo del window (scrollerProxy sotto).
+      syncTouch: false,
       touchMultiplier: 1.2,
     });
 
