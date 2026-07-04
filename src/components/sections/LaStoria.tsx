@@ -67,22 +67,18 @@ export function LaStoria() {
     const track = trackRef.current;
     if (!root || !track) return;
 
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
     const mm = gsap.matchMedia();
 
     mm.add(
       {
-        desktop: "(min-width: 900px) and (prefers-reduced-motion: no-preference)",
-        mobile: "(max-width: 899px)",
+        motion: "(prefers-reduced-motion: no-preference)",
         reduced: "(prefers-reduced-motion: reduce)",
       },
       (ctx) => {
-        const { desktop, reduced } = ctx.conditions as {
-          desktop: boolean;
-          mobile: boolean;
-          reduced: boolean;
-        };
-
-        if (!desktop || reduced) return;
+        const { motion } = ctx.conditions as { motion: boolean; reduced: boolean };
+        if (!motion) return;
 
         const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
         const getDistance = () => track.scrollWidth - window.innerWidth;
@@ -101,7 +97,6 @@ export function LaStoria() {
           },
         });
 
-        // Parallax ghost & photo inside each panel
         panels.forEach((p) => {
           const ghost = p.querySelector<HTMLElement>("[data-ghost]");
           const photo = p.querySelector<HTMLElement>("[data-photo]");
@@ -141,7 +136,6 @@ export function LaStoria() {
           }
         });
 
-        // Counter update
         panels.forEach((p, i) => {
           ScrollTrigger.create({
             trigger: p,
@@ -153,10 +147,6 @@ export function LaStoria() {
             },
           });
         });
-
-        return () => {
-          // gsap.matchMedia handles cleanup of ScrollTriggers registered inside
-        };
       },
       root
     );
