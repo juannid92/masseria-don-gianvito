@@ -67,22 +67,18 @@ export function LaStoria() {
     const track = trackRef.current;
     if (!root || !track) return;
 
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
     const mm = gsap.matchMedia();
 
     mm.add(
       {
-        desktop: "(min-width: 900px) and (prefers-reduced-motion: no-preference)",
-        mobile: "(max-width: 899px)",
+        motion: "(prefers-reduced-motion: no-preference)",
         reduced: "(prefers-reduced-motion: reduce)",
       },
       (ctx) => {
-        const { desktop, reduced } = ctx.conditions as {
-          desktop: boolean;
-          mobile: boolean;
-          reduced: boolean;
-        };
-
-        if (!desktop || reduced) return;
+        const { motion } = ctx.conditions as { motion: boolean; reduced: boolean };
+        if (!motion) return;
 
         const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
         const getDistance = () => track.scrollWidth - window.innerWidth;
@@ -101,7 +97,6 @@ export function LaStoria() {
           },
         });
 
-        // Parallax ghost & photo inside each panel
         panels.forEach((p) => {
           const ghost = p.querySelector<HTMLElement>("[data-ghost]");
           const photo = p.querySelector<HTMLElement>("[data-photo]");
@@ -141,7 +136,6 @@ export function LaStoria() {
           }
         });
 
-        // Counter update
         panels.forEach((p, i) => {
           ScrollTrigger.create({
             trigger: p,
@@ -153,10 +147,6 @@ export function LaStoria() {
             },
           });
         });
-
-        return () => {
-          // gsap.matchMedia handles cleanup of ScrollTriggers registered inside
-        };
       },
       root
     );
@@ -209,17 +199,17 @@ export function LaStoria() {
         </p>
       </div>
 
-      {/* Horizontal track (desktop) / vertical stack (mobile) */}
-      <div className="relative h-[100svh] w-full overflow-hidden max-md:h-auto max-md:overflow-visible">
+      {/* Horizontal pinned track (desktop + mobile) */}
+      <div className="relative h-[100dvh] w-full overflow-hidden">
         <div
           ref={trackRef}
-          className="flex h-full w-max will-change-transform max-md:h-auto max-md:w-full max-md:flex-col"
+          className="flex h-full w-max will-change-transform"
         >
           {PANELS.map((p, i) => (
             <article
               key={i}
               data-panel
-              className="relative flex h-[100svh] w-[100vw] shrink-0 items-center overflow-hidden max-md:h-[100svh] max-md:w-full"
+              className="relative flex h-[100dvh] w-[100vw] shrink-0 items-center overflow-hidden box-border"
               style={{ background: p.imgGradient }}
             >
               {/* Ghost year */}
@@ -230,11 +220,12 @@ export function LaStoria() {
                 style={{
                   fontFamily: "'Fraunces', serif",
                   fontWeight: 300,
-                  fontSize: "clamp(18rem, 42vw, 46rem)",
+                  fontSize: "clamp(9rem, 40vw, 46rem)",
                   lineHeight: 0.85,
                   letterSpacing: "-0.05em",
                   color: "color-mix(in oklab, var(--crema) 6%, transparent)",
                   whiteSpace: "nowrap",
+                  maxWidth: "100%",
                 }}
               >
                 {p.ghost}
@@ -262,9 +253,9 @@ export function LaStoria() {
               />
 
               {/* Content */}
-              <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col items-start px-6 md:px-16">
+              <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col items-start px-5 md:px-16">
                 <p
-                  className="mb-6 text-[0.7rem] uppercase"
+                  className="mb-4 md:mb-6 text-[0.7rem] uppercase"
                   style={{
                     fontFamily: "'Oswald', 'Inter', sans-serif",
                     letterSpacing: "0.34em",
@@ -278,20 +269,21 @@ export function LaStoria() {
                   style={{
                     fontFamily: "'Fraunces', serif",
                     fontWeight: 300,
-                    fontSize: "clamp(2.2rem, 5.4vw, 5.6rem)",
+                    fontSize: "clamp(1.8rem, 8vw, 5.6rem)",
                     lineHeight: 1.05,
                     letterSpacing: "-0.02em",
                     color: "var(--crema)",
+                    overflowWrap: "break-word",
                   }}
                 >
                   {p.title}
                 </h3>
                 <p
-                  className="mt-8 max-w-[46ch]"
+                  className="mt-5 md:mt-8 max-w-[46ch]"
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1rem, 1.15vw, 1.15rem)",
-                    lineHeight: 1.7,
+                    fontSize: "clamp(1rem, 4vw, 1.15rem)",
+                    lineHeight: 1.6,
                     color: "color-mix(in oklab, var(--crema) 82%, transparent)",
                   }}
                 >
@@ -315,9 +307,10 @@ export function LaStoria() {
           ))}
         </div>
 
-        {/* Counter (desktop only) */}
+        {/* Counter */}
         <div
-          className="pointer-events-none absolute bottom-[6svh] left-6 z-20 hidden md:left-12 md:block"
+          className="pointer-events-none absolute left-5 z-20 md:left-12"
+          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 3svh)" }}
           aria-hidden
         >
           <p
@@ -341,7 +334,8 @@ export function LaStoria() {
 
         {/* scroll cue */}
         <div
-          className="pointer-events-none absolute bottom-[6svh] right-6 z-20 hidden md:right-12 md:block"
+          className="pointer-events-none absolute right-5 z-20 md:right-12"
+          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 3svh)" }}
           aria-hidden
         >
           <p
