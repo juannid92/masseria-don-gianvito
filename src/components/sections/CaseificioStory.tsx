@@ -65,7 +65,7 @@ export function CaseificioStory() {
           trigger: s1,
           start: "top top",
           end: "bottom top",
-          scrub: 1,
+          scrub: 0.6,
           onUpdate: (self) => {
             const p = self.progress;
             gsap.set(macro, {
@@ -93,7 +93,7 @@ export function CaseificioStory() {
                 trigger: s1,
                 start: "60% top",
                 end: "bottom top",
-                scrub: 1,
+                scrub: 0.6,
               },
             },
           );
@@ -130,7 +130,7 @@ export function CaseificioStory() {
             borderRadius: "18%",
             filter: "blur(2px) brightness(0.98)",
             ease: "none",
-            scrollTrigger: { trigger: s2, start: "top center", end: "bottom center", scrub: 1 },
+            scrollTrigger: { trigger: s2, start: "top center", end: "bottom center", scrub: 0.6 },
           },
         );
 
@@ -143,7 +143,7 @@ export function CaseificioStory() {
             scaleX: 0.35,
             borderRadius: "50%",
             ease: "power2.inOut",
-            scrollTrigger: { trigger: s3, start: "top center", end: "bottom center", scrub: 1 },
+            scrollTrigger: { trigger: s3, start: "top center", end: "bottom center", scrub: 0.6 },
           },
         );
 
@@ -158,7 +158,7 @@ export function CaseificioStory() {
             background:
               "linear-gradient(180deg, var(--crema) 0%, color-mix(in oklab, var(--crema) 60%, var(--oro)) 60%, var(--oro) 100%)",
             ease: "power2.out",
-            scrollTrigger: { trigger: s4, start: "top center", end: "center center", scrub: 1 },
+            scrollTrigger: { trigger: s4, start: "top center", end: "center center", scrub: 0.6 },
           },
         );
       });
@@ -189,7 +189,7 @@ export function CaseificioStory() {
             letterSpacing: "0.25em",
             autoAlpha: 1,
             ease: "none",
-            scrollTrigger: { trigger: s3el, start: "top center", end: "bottom center", scrub: 1 },
+            scrollTrigger: { trigger: s3el, start: "top center", end: "bottom center", scrub: 0.6 },
           },
         );
       }
@@ -248,7 +248,7 @@ export function CaseificioStory() {
               trigger: bridge,
               start: "top 90%",
               end: "bottom bottom",
-              scrub: 1,
+              scrub: 0.6,
             },
           },
         );

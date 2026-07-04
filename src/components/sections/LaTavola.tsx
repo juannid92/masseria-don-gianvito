@@ -59,7 +59,7 @@ export function LaTavola() {
             trigger: el.closest("[data-atto]") as Element,
             start: "top bottom",
             end: "bottom top",
-            scrub: 1,
+            scrub: 0.6,
           },
         });
       });
@@ -79,7 +79,7 @@ export function LaTavola() {
               trigger: atto0,
               start: "top bottom",
               end: "center center",
-              scrub: 1,
+              scrub: 0.6,
             },
           }
         );

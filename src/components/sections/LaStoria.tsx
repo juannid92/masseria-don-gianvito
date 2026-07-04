@@ -90,7 +90,7 @@ export function LaStoria() {
             trigger: root,
             start: "top top",
             end: () => `+=${getDistance()}`,
-            scrub: 1,
+            scrub: 0.6,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,

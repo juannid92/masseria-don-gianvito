@@ -135,7 +135,7 @@ export function MacelleriaStory() {
           trigger: ing,
           start: "top top",
           end: "bottom top",
-          scrub: 1,
+          scrub: 0.6,
           onUpdate: (self) => {
             const p = self.progress;
             gsap.set(banco, {
@@ -156,7 +156,7 @@ export function MacelleriaStory() {
               trigger: ing,
               start: "top top",
               end: "70% top",
-              scrub: 1,
+              scrub: 0.6,
             },
           });
         }
@@ -260,7 +260,7 @@ export function MacelleriaStory() {
             trigger: traceLine,
             start: "top 80%",
             end: "top 20%",
-            scrub: 1,
+            scrub: 0.6,
           },
         });
       }
@@ -290,7 +290,7 @@ export function MacelleriaStory() {
           {
             autoAlpha: 1,
             ease: "none",
-            scrollTrigger: { trigger: heat, start: "top 90%", end: "top 30%", scrub: 1 },
+            scrollTrigger: { trigger: heat, start: "top 90%", end: "top 30%", scrub: 0.6 },
           },
         );
       }

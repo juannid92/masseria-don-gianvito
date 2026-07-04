@@ -56,7 +56,7 @@ export function IlLuogo() {
                 trigger: stage,
                 start: "top bottom",
                 end: "bottom top",
-                scrub: 1,
+                scrub: 0.6,
                 invalidateOnRefresh: true,
               },
             }
@@ -168,7 +168,7 @@ export function IlLuogo() {
               trigger: mapEl,
               start: "top 85%",
               end: "bottom 55%",
-              scrub: 1,
+              scrub: 0.6,
             },
           });
         }
