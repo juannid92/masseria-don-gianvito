@@ -118,7 +118,7 @@ export function AllevamentoStory() {
           trigger: mov1,
           start: "top top",
           end: "bottom top",
-          scrub: 1,
+          scrub: 0.6,
           onUpdate: (self) => {
             const p = self.progress;
             // aerial fades out first half, terra fades in second half
@@ -148,7 +148,7 @@ export function AllevamentoStory() {
                 trigger: mov1,
                 start: "70% top",
                 end: "bottom top",
-                scrub: 1,
+                scrub: 0.6,
               },
             },
           );
@@ -171,7 +171,7 @@ export function AllevamentoStory() {
             start: "top top",
             end: () => `+=${distance()}`,
             pin: true,
-            scrub: 1,
+            scrub: 0.6,
             invalidateOnRefresh: true,
           },
         });
@@ -250,7 +250,7 @@ export function AllevamentoStory() {
           start: "top top",
           end: "+=" + words.length * 60,
           pin: spotWrap,
-          scrub: 1,
+          scrub: 0.6,
           onUpdate: (self) => {
             const active = Math.floor(self.progress * words.length);
             words.forEach((w, i) => {
@@ -276,7 +276,7 @@ export function AllevamentoStory() {
             trigger: root,
             start: "top top",
             end: "bottom bottom",
-            scrub: 1,
+            scrub: 0.6,
           },
         });
       }

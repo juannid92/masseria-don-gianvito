@@ -167,7 +167,7 @@ export function LaFiliera() {
         end: `+=${scrollLen}%`,
         pin: true,
         pinSpacing: true,
-        scrub: 1,
+        scrub: 0.6,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const p = self.progress;
@@ -183,7 +183,7 @@ export function LaFiliera() {
           trigger: root,
           start: "top top",
           end: `+=${scrollLen}%`,
-          scrub: 1,
+          scrub: 0.6,
           invalidateOnRefresh: true,
         },
       });
@@ -220,7 +220,7 @@ export function LaFiliera() {
             trigger: root,
             start: "top top",
             end: `+=${scrollLen}%`,
-            scrub: 1,
+            scrub: 0.6,
           },
         });
         if (ct.scrollTrigger) triggers.push(ct.scrollTrigger);

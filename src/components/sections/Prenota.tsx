@@ -53,7 +53,7 @@ export function Prenota() {
         trigger: root,
         start: "top bottom",
         end: "center center",
-        scrub: 1,
+        scrub: 0.6,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           const p = self.progress;

@@ -115,7 +115,7 @@ export function LaVoce() {
           start: "top top",
           end: "+=4000", // pin lungo → più tempo per leggere ogni onda
           pin: true,
-          scrub: 2, // più lento, più controllo
+          scrub: 0.6, // più lento, più controllo
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const cam = self.progress * CAM_END; // camera Z avanza a 0.4x della lunghezza pin

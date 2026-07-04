@@ -103,7 +103,7 @@ export function BraceriaStory() {
           trigger: ing,
           start: "top top",
           end: "bottom top",
-          scrub: 1,
+          scrub: 0.6,
           onUpdate: (self) => {
             const p = self.progress;
             gsap.set(darkVeil, { autoAlpha: 1 - p * 0.85 });
@@ -124,7 +124,7 @@ export function BraceriaStory() {
                 trigger: ing,
                 start: "65% top",
                 end: "bottom top",
-                scrub: 1,
+                scrub: 0.6,
               },
             },
           );
@@ -142,7 +142,7 @@ export function BraceriaStory() {
           start: "top top",
           end: "+=" + BEATS.length * 100 + "%",
           pin: stage,
-          scrub: 1,
+          scrub: 0.6,
           onUpdate: (self) => {
             const p = self.progress;
             const activeIdx = Math.min(
@@ -233,7 +233,7 @@ export function BraceriaStory() {
               trigger: closeSec,
               start: "top bottom",
               end: "center center",
-              scrub: 1,
+              scrub: 0.6,
             },
           },
         );
@@ -251,7 +251,7 @@ export function BraceriaStory() {
             trigger: closeSec,
             start: "top 80%",
             end: "bottom bottom",
-            scrub: 1,
+            scrub: 0.6,
           },
         });
       }
