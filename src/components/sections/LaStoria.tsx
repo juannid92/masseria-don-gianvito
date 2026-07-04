@@ -220,11 +220,12 @@ export function LaStoria() {
                 style={{
                   fontFamily: "'Fraunces', serif",
                   fontWeight: 300,
-                  fontSize: "clamp(18rem, 42vw, 46rem)",
+                  fontSize: "clamp(9rem, 40vw, 46rem)",
                   lineHeight: 0.85,
                   letterSpacing: "-0.05em",
                   color: "color-mix(in oklab, var(--crema) 6%, transparent)",
                   whiteSpace: "nowrap",
+                  maxWidth: "100%",
                 }}
               >
                 {p.ghost}
