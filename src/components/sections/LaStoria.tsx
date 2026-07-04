@@ -307,9 +307,10 @@ export function LaStoria() {
           ))}
         </div>
 
-        {/* Counter (desktop only) */}
+        {/* Counter */}
         <div
-          className="pointer-events-none absolute bottom-[6svh] left-6 z-20 hidden md:left-12 md:block"
+          className="pointer-events-none absolute left-5 z-20 md:left-12"
+          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 3svh)" }}
           aria-hidden
         >
           <p
@@ -333,7 +334,8 @@ export function LaStoria() {
 
         {/* scroll cue */}
         <div
-          className="pointer-events-none absolute bottom-[6svh] right-6 z-20 hidden md:right-12 md:block"
+          className="pointer-events-none absolute right-5 z-20 md:right-12"
+          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 3svh)" }}
           aria-hidden
         >
           <p
