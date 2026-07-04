@@ -253,9 +253,9 @@ export function LaStoria() {
               />
 
               {/* Content */}
-              <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col items-start px-6 md:px-16">
+              <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col items-start px-5 md:px-16">
                 <p
-                  className="mb-6 text-[0.7rem] uppercase"
+                  className="mb-4 md:mb-6 text-[0.7rem] uppercase"
                   style={{
                     fontFamily: "'Oswald', 'Inter', sans-serif",
                     letterSpacing: "0.34em",
@@ -269,20 +269,21 @@ export function LaStoria() {
                   style={{
                     fontFamily: "'Fraunces', serif",
                     fontWeight: 300,
-                    fontSize: "clamp(2.2rem, 5.4vw, 5.6rem)",
+                    fontSize: "clamp(1.8rem, 8vw, 5.6rem)",
                     lineHeight: 1.05,
                     letterSpacing: "-0.02em",
                     color: "var(--crema)",
+                    overflowWrap: "break-word",
                   }}
                 >
                   {p.title}
                 </h3>
                 <p
-                  className="mt-8 max-w-[46ch]"
+                  className="mt-5 md:mt-8 max-w-[46ch]"
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1rem, 1.15vw, 1.15rem)",
-                    lineHeight: 1.7,
+                    fontSize: "clamp(1rem, 4vw, 1.15rem)",
+                    lineHeight: 1.6,
                     color: "color-mix(in oklab, var(--crema) 82%, transparent)",
                   }}
                 >
