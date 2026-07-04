@@ -199,17 +199,17 @@ export function LaStoria() {
         </p>
       </div>
 
-      {/* Horizontal track (desktop) / vertical stack (mobile) */}
-      <div className="relative h-[100svh] w-full overflow-hidden max-md:h-auto max-md:overflow-visible">
+      {/* Horizontal pinned track (desktop + mobile) */}
+      <div className="relative h-[100dvh] w-full overflow-hidden">
         <div
           ref={trackRef}
-          className="flex h-full w-max will-change-transform max-md:h-auto max-md:w-full max-md:flex-col"
+          className="flex h-full w-max will-change-transform"
         >
           {PANELS.map((p, i) => (
             <article
               key={i}
               data-panel
-              className="relative flex h-[100svh] w-[100vw] shrink-0 items-center overflow-hidden max-md:h-[100svh] max-md:w-full"
+              className="relative flex h-[100dvh] w-[100vw] shrink-0 items-center overflow-hidden box-border"
               style={{ background: p.imgGradient }}
             >
               {/* Ghost year */}
