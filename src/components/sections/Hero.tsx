@@ -265,7 +265,7 @@ export function Hero() {
         transformOrigin: "50% 50%",
       });
       gsap.set("[data-wordmark-rule]", { scaleX: 0 });
-      gsap.set(viewfinderRef.current, { opacity: 0 });
+      if (viewfinderRef.current) gsap.set(viewfinderRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
