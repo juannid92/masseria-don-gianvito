@@ -352,7 +352,7 @@ export function Hero() {
       );
 
       // 10. Cue + viewfinder
-      tl.to([viewfinderRef.current, "[data-cue]"], { opacity: 1, duration: 0.6 }, 2.3);
+      tl.to([viewfinderRef.current, "[data-cue]"].filter(Boolean) as gsap.TweenTarget[], { opacity: 1, duration: 0.6 }, 2.3);
 
       // Skip se l'utente scrolla durante l'intro
       const onScroll = () => {
