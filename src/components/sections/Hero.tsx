@@ -522,7 +522,7 @@ export function Hero() {
         );
       }
       tl.to(
-        [copyRef.current, pinLayerRef.current, viewfinderRef.current, ghostRef.current],
+        [copyRef.current, pinLayerRef.current, viewfinderRef.current, ghostRef.current].filter(Boolean) as gsap.TweenTarget[],
         { opacity: 0, duration: 0.5, ease: "power2.out" },
         0,
       );
