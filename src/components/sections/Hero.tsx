@@ -265,7 +265,7 @@ export function Hero() {
         transformOrigin: "50% 50%",
       });
       gsap.set("[data-wordmark-rule]", { scaleX: 0 });
-      gsap.set(viewfinderRef.current, { opacity: 0 });
+      if (viewfinderRef.current) gsap.set(viewfinderRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -352,7 +352,7 @@ export function Hero() {
       );
 
       // 10. Cue + viewfinder
-      tl.to([viewfinderRef.current, "[data-cue]"], { opacity: 1, duration: 0.6 }, 2.3);
+      tl.to([viewfinderRef.current, "[data-cue]"].filter(Boolean) as gsap.TweenTarget[], { opacity: 1, duration: 0.6 }, 2.3);
 
       // Skip se l'utente scrolla durante l'intro
       const onScroll = () => {
@@ -522,7 +522,7 @@ export function Hero() {
         );
       }
       tl.to(
-        [copyRef.current, pinLayerRef.current, viewfinderRef.current, ghostRef.current],
+        [copyRef.current, pinLayerRef.current, viewfinderRef.current, ghostRef.current].filter(Boolean) as gsap.TweenTarget[],
         { opacity: 0, duration: 0.5, ease: "power2.out" },
         0,
       );
