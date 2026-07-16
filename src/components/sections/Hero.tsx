@@ -37,6 +37,8 @@ const PINS: Pin[] = [
     to: "/caseificio",
     x: 52,
     y: 43,
+    mx: 34,
+    my: 34,
   },
   {
     id: "macelleria",
@@ -46,6 +48,8 @@ const PINS: Pin[] = [
     to: "/macelleria",
     x: 43,
     y: 61,
+    mx: 12,
+    my: 48,
   },
   {
     id: "allevamento",
@@ -55,6 +59,8 @@ const PINS: Pin[] = [
     to: "/allevamento",
     x: 80,
     y: 40,
+    mx: 88,
+    my: 32,
   },
   {
     id: "braceria",
@@ -64,8 +70,11 @@ const PINS: Pin[] = [
     to: "/braceria",
     x: 51,
     y: 74,
+    mx: 30,
+    my: 56,
   },
 ];
+
 
 
 const heroAerial = heroAerialAsset.url;
