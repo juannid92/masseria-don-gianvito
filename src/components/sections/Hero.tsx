@@ -561,8 +561,9 @@ export function Hero() {
             dentro alla foto senza deformazione né bande nere (bg carbone). */}
         <div
           ref={photoRef}
-          className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-full aspect-[720/579] max-h-[100svh] md:inset-0 md:top-0 md:translate-y-0 md:aspect-auto md:h-full md:-m-[6%]"
+          className="absolute inset-x-0 top-[72px] mx-auto w-full aspect-[720/579] max-h-[52svh] md:inset-0 md:top-0 md:mx-0 md:aspect-auto md:max-h-none md:h-full md:-m-[6%]"
         >
+
           <img
             src={heroAerial}
             alt="Veduta aerea di Masseria Don Gianvito nelle campagne di Noci"
