@@ -872,12 +872,13 @@ export function Hero() {
       {/* L4b — LOGOTIPO (pointer-events:none, CTA riattivano) */}
       <div
         ref={copyRef}
-        className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center"
+        className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-end px-6 pb-20 text-center md:justify-center md:pb-0"
         style={{
           opacity: activePin ? 0.22 : 1,
           transition: "opacity .35s",
         }}
       >
+
         <div className="relative flex max-w-3xl flex-col items-center">
           {/* Velo locale per leggibilità AA sopra alla mappa */}
           <div
