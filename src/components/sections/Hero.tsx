@@ -383,7 +383,7 @@ export function Hero() {
           width={1920}
           height={1544}
           className="h-full w-full object-cover"
-          style={{ objectPosition: "50% 55%" }}
+          style={{ objectPosition: isMobile ? "60% 55%" : "50% 55%" }}
           draggable={false}
           fetchPriority="high"
         />
