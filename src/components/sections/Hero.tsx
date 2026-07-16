@@ -555,37 +555,36 @@ export function Hero() {
     >
       {/* STAGE: tutto ciò che riceve desat/zoom su hover/click */}
       <div ref={stageRef} className="absolute inset-0">
-        {/* L0 — Mappa (foto aerea) */}
-        <div ref={photoRef} className="absolute inset-0 -m-[6%]">
+        {/* L0 — Mappa (foto aerea).
+            Desktop: cover a tutto viewport, leggero over-crop per parallax.
+            Mobile: contain con aspect nativo, così i 4 pin restano tutti
+            dentro alla foto senza deformazione né bande nere (bg carbone). */}
+        <div
+          ref={photoRef}
+          className="absolute inset-x-0 top-1/2 -translate-y-1/2 mx-auto w-full aspect-[720/579] max-h-[100svh] md:inset-0 md:top-0 md:translate-y-0 md:aspect-auto md:h-full md:-m-[6%]"
+        >
           <img
             src={heroAerial}
-            alt="Vista aerea della Masseria Don Gianvito a Noci con allevamento, caseificio, macelleria e braceria"
+            alt="Veduta aerea di Masseria Don Gianvito nelle campagne di Noci"
             width={1920}
             height={1280}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain md:object-cover"
+            style={{ objectPosition: "50% 50%" }}
             draggable={false}
             fetchPriority="high"
           />
         </div>
 
-        {/* L1 — Grading caldo + vignetta */}
+        {/* L1 — Overlay leggero per leggibilità (niente red grading forte) */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 85% 70% at 50% 62%, rgba(179,58,26,0.20) 0%, transparent 60%)",
-            mixBlendMode: "soft-light",
+              "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 40%, rgba(26,18,16,0.35) 80%, rgba(26,18,16,0.72) 100%)",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 30%, rgba(26,18,16,0.55) 75%, rgba(26,18,16,0.88) 100%)",
-          }}
-        />
+
 
         {/* L2 — Grana */}
         <FilmGrain />
