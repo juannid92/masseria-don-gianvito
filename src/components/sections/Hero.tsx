@@ -783,21 +783,22 @@ export function Hero() {
                 >
                   <span
                     aria-hidden
-                    className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    className="absolute left-1/2 top-1/2 h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full"
                     style={{
                       background:
-                        "radial-gradient(circle, rgba(196,154,74,0.55) 0%, rgba(179,58,26,0.32) 35%, transparent 70%)",
-                      filter: "blur(2px)",
+                        "radial-gradient(circle, rgba(196,154,74,0.45) 0%, rgba(196,154,74,0.12) 45%, transparent 72%)",
+                      filter: "blur(1.5px)",
                     }}
                   />
                   <span
                     data-pin-core
                     aria-hidden
-                    className="relative block h-7 w-7 rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_8px_24px_-4px_rgba(179,58,26,0.7),inset_0_0_8px_rgba(0,0,0,0.4)]"
-                    style={{ background: "var(--grad-ember)" }}
+                    className="relative block h-6 w-6 rounded-full border border-[color:var(--oro)]/85 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.6)]"
+                    style={{ background: "color-mix(in oklab, var(--carbone) 55%, transparent)", backdropFilter: "blur(2px)" }}
                   >
-                    <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]/95 shadow-[0_0_8px_rgba(242,232,213,0.9)]" />
+                    <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--oro)] shadow-[0_0_6px_rgba(196,154,74,0.75)]" />
                   </span>
+
                 </motion.button>
 
                 {/* Preview card su hover/focus */}
