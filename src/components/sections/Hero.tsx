@@ -414,11 +414,13 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 z-30"
       >
         {PINS.map((p) => {
+          const px = isMobile && p.mx !== undefined ? p.mx : p.x;
+          const py = isMobile && p.my !== undefined ? p.my : p.y;
           // Cartouche side: se il pin è a sinistra del centro, apri a destra.
-          const cartoucheSide: "left" | "right" = p.x < 55 ? "right" : "left";
+          const cartoucheSide: "left" | "right" = px < 55 ? "right" : "left";
           // Cartouche direction: pin bassi → cartiglio verso l'alto,
           // pin alti → verso il basso.
-          const cartoucheDir: "up" | "down" = p.y > 55 ? "up" : "down";
+          const cartoucheDir: "up" | "down" = py > 55 ? "up" : "down";
           const isActive = activePin === p.id;
           const isDimmed = !!activePin && !isActive;
           return (
@@ -426,8 +428,9 @@ export function Hero() {
               key={p.id}
               className="absolute"
               style={{
-                top: `${p.y}%`,
-                left: `${p.x}%`,
+                top: `${py}%`,
+                left: `${px}%`,
+
                 opacity: isDimmed ? 0.55 : 1,
                 transition: "opacity .28s",
               }}
