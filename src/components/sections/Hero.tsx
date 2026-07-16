@@ -35,8 +35,8 @@ const PINS: Pin[] = [
     label: "Caseificio",
     caption: "Il latte, ogni mattina.",
     to: "/caseificio",
-    x: 46,
-    y: 40,
+    x: 52,
+    y: 43,
   },
   {
     id: "macelleria",
@@ -44,8 +44,8 @@ const PINS: Pin[] = [
     label: "Macelleria",
     caption: "La scelta, a vista.",
     to: "/macelleria",
-    x: 37,
-    y: 63,
+    x: 43,
+    y: 61,
   },
   {
     id: "allevamento",
@@ -53,8 +53,8 @@ const PINS: Pin[] = [
     label: "Stalla",
     caption: "Da qui nasce la filiera.",
     to: "/allevamento",
-    x: 79,
-    y: 43,
+    x: 80,
+    y: 40,
   },
   {
     id: "braceria",
@@ -62,10 +62,11 @@ const PINS: Pin[] = [
     label: "Agriturismo",
     caption: "L’ospitalità della Masseria.",
     to: "/braceria",
-    x: 33,
-    y: 71,
+    x: 51,
+    y: 74,
   },
 ];
+
 
 const heroAerial = heroAerialAsset.url;
 
