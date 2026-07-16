@@ -215,14 +215,21 @@ export function Hero() {
   const [sheetPin, setSheetPin] = useState<PinId | null>(null);
   const [ready, setReady] = useState(false);
   const [touch, setTouch] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const activePin = hoverPin ?? focusPin;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     setTouch(window.matchMedia("(pointer: coarse)").matches);
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
     setReady(true);
+    return () => mq.removeEventListener("change", sync);
   }, []);
+
 
   /* ─── INTRO GSAP: image scale + content stagger + pin stagger ─── */
   useEffect(() => {
