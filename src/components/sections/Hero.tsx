@@ -23,71 +23,82 @@ type PinId = "allevamento" | "caseificio" | "macelleria" | "braceria";
 type Pin = {
   id: PinId;
   label: string;
+  eyebrow?: string;
   caption: string;
   description: string;
   thumb: string;
   coords: string;
   to: "/allevamento" | "/caseificio" | "/macelleria" | "/braceria";
-  /** Posizione % sulla mappa */
+  /** Posizione % sulla mappa (desktop) */
   top: number;
   left: number;
+  /** Posizione % adattata al ritaglio mobile (contain, centrato) */
+  mTop?: number;
+  mLeft?: number;
   /** Etichetta editoriale: posizione del leader-line */
   labelSide: "left" | "right";
   labelDy: number; // offset verticale dell'etichetta in % rispetto al pin
 };
 
+// Coordinate desktop = % sul contenitore foto (cover, centrato).
+// Coordinate mobile = % sul contenitore foto (contain, aspect 720/579,
+// quindi identiche all'originale — nessuna deformazione).
 const PINS: Pin[] = [
-  {
-    id: "allevamento",
-    label: "Allevamento",
-    caption: "Dove tutto comincia.",
-    description: "I nostri capi, sulla nostra terra. Murgia, aria aperta, tempo lento.",
-    thumb: pinAllevamentoImg,
-    coords: "40.6428°N · 17.0421°E",
-    to: "/allevamento",
-    top: 58,
-    left: 16,
-    labelSide: "right",
-    labelDy: 6,
-  },
   {
     id: "caseificio",
     label: "Caseificio",
+    eyebrow: "Il latte",
     caption: "Il latte di ogni mattina.",
     description: "Latte appena munto, lavorato a mano prima che il giorno cominci.",
     thumb: pinCaseificioImg,
     coords: "40.6427°N · 17.0418°E",
     to: "/caseificio",
-    top: 24,
-    left: 40,
-    labelSide: "left",
-    labelDy: -8,
+    top: 48,
+    left: 46,
+    labelSide: "right",
+    labelDy: -10,
   },
   {
     id: "macelleria",
     label: "Macelleria",
+    eyebrow: "La carne",
     caption: "La carne, a vista.",
     description: "Banco a vista, tagli del giorno, frollature curate dal macellaio.",
     thumb: pinMacelleriaImg,
     coords: "40.6425°N · 17.0415°E",
     to: "/macelleria",
-    top: 30,
-    left: 82,
+    top: 63,
+    left: 38,
     labelSide: "left",
-    labelDy: -6,
+    labelDy: -10,
+  },
+  {
+    id: "allevamento",
+    label: "Stalla",
+    eyebrow: "Allevamento",
+    caption: "Dove tutto comincia.",
+    description: "I nostri capi, sulla nostra terra. Murgia, aria aperta, tempo lento.",
+    thumb: pinAllevamentoImg,
+    coords: "40.6428°N · 17.0421°E",
+    to: "/allevamento",
+    top: 43,
+    left: 79,
+    labelSide: "left",
+    labelDy: -8,
   },
   {
     id: "braceria",
-    label: "Braceria",
+    label: "Agriturismo",
+    eyebrow: "La tavola",
     caption: "La brace, ogni sera.",
     description: "Cottura su brace viva, taglio e servizio al tavolo. Il rito.",
     thumb: pinBraceriaImg,
     coords: "40.6424°N · 17.0419°E",
     to: "/braceria",
-    top: 14,
-    left: 64,
+    top: 69,
+    left: 34,
     labelSide: "right",
-    labelDy: -4,
+    labelDy: 10,
   },
 ];
 
@@ -544,37 +555,37 @@ export function Hero() {
     >
       {/* STAGE: tutto ciò che riceve desat/zoom su hover/click */}
       <div ref={stageRef} className="absolute inset-0">
-        {/* L0 — Mappa (foto aerea) */}
-        <div ref={photoRef} className="absolute inset-0 -m-[6%]">
+        {/* L0 — Mappa (foto aerea).
+            Desktop: cover a tutto viewport, leggero over-crop per parallax.
+            Mobile: contain con aspect nativo, così i 4 pin restano tutti
+            dentro alla foto senza deformazione né bande nere (bg carbone). */}
+        <div
+          ref={photoRef}
+          className="absolute inset-x-0 top-[72px] mx-auto w-full aspect-[720/579] max-h-[52svh] md:inset-0 md:top-0 md:mx-0 md:aspect-auto md:max-h-none md:h-full md:-m-[6%]"
+        >
+
           <img
             src={heroAerial}
-            alt="Vista aerea della Masseria Don Gianvito a Noci con allevamento, caseificio, macelleria e braceria"
+            alt="Veduta aerea di Masseria Don Gianvito nelle campagne di Noci"
             width={1920}
             height={1280}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain md:object-cover"
+            style={{ objectPosition: "50% 50%" }}
             draggable={false}
             fetchPriority="high"
           />
         </div>
 
-        {/* L1 — Grading caldo + vignetta */}
+        {/* L1 — Overlay leggero per leggibilità (niente red grading forte) */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 85% 70% at 50% 62%, rgba(179,58,26,0.20) 0%, transparent 60%)",
-            mixBlendMode: "soft-light",
+              "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 40%, rgba(26,18,16,0.35) 80%, rgba(26,18,16,0.72) 100%)",
           }}
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 110% 90% at 50% 50%, transparent 30%, rgba(26,18,16,0.55) 75%, rgba(26,18,16,0.88) 100%)",
-          }}
-        />
+
 
         {/* L2 — Grana */}
         <FilmGrain />
@@ -773,21 +784,22 @@ export function Hero() {
                 >
                   <span
                     aria-hidden
-                    className="absolute left-1/2 top-1/2 h-14 w-14 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                    className="absolute left-1/2 top-1/2 h-11 w-11 -translate-x-1/2 -translate-y-1/2 rounded-full"
                     style={{
                       background:
-                        "radial-gradient(circle, rgba(196,154,74,0.55) 0%, rgba(179,58,26,0.32) 35%, transparent 70%)",
-                      filter: "blur(2px)",
+                        "radial-gradient(circle, rgba(196,154,74,0.45) 0%, rgba(196,154,74,0.12) 45%, transparent 72%)",
+                      filter: "blur(1.5px)",
                     }}
                   />
                   <span
                     data-pin-core
                     aria-hidden
-                    className="relative block h-7 w-7 rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_8px_24px_-4px_rgba(179,58,26,0.7),inset_0_0_8px_rgba(0,0,0,0.4)]"
-                    style={{ background: "var(--grad-ember)" }}
+                    className="relative block h-6 w-6 rounded-full border border-[color:var(--oro)]/85 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.6)]"
+                    style={{ background: "color-mix(in oklab, var(--carbone) 55%, transparent)", backdropFilter: "blur(2px)" }}
                   >
-                    <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]/95 shadow-[0_0_8px_rgba(242,232,213,0.9)]" />
+                    <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--oro)] shadow-[0_0_6px_rgba(196,154,74,0.75)]" />
                   </span>
+
                 </motion.button>
 
                 {/* Preview card su hover/focus */}
@@ -861,12 +873,13 @@ export function Hero() {
       {/* L4b — LOGOTIPO (pointer-events:none, CTA riattivano) */}
       <div
         ref={copyRef}
-        className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-center px-6 text-center"
+        className="pointer-events-none relative z-20 flex h-full flex-col items-center justify-end px-6 pb-20 text-center md:justify-center md:pb-0"
         style={{
           opacity: activePin ? 0.22 : 1,
           transition: "opacity .35s",
         }}
       >
+
         <div className="relative flex max-w-3xl flex-col items-center">
           {/* Velo locale per leggibilità AA sopra alla mappa */}
           <div
@@ -1038,25 +1051,62 @@ export function Hero() {
         />
       </div>
 
-      {/* MOBILE — Sigilli sulla mappa + bottom-sheet */}
-      <div className="absolute inset-0 z-40 md:hidden">
+      {/* MOBILE — Sigilli oro sulla foto (contenitore == photoRef): stessi
+          coords % del desktop, allineati alla foto reale. Un solo sheet
+          aperto per volta (setSheetPin sostituisce il precedente). */}
+      <div className="pointer-events-none absolute inset-x-0 top-[72px] z-40 mx-auto w-full aspect-[720/579] max-h-[52svh] md:hidden">
         {PINS.map((p) => (
-          <button
+          <div
             key={p.id}
-            type="button"
-            onClick={() => setSheetPin(p.id)}
-            aria-label={`Apri ${p.label}`}
-            className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_8px_24px_-4px_rgba(179,58,26,0.7)]"
-            style={{
-              top: `${p.top}%`,
-              left: `${p.left}%`,
-              background: "var(--grad-ember)",
-            }}
+            className="absolute"
+            style={{ top: `${p.top}%`, left: `${p.left}%` }}
           >
-            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]" />
-          </button>
+            <button
+              type="button"
+              onClick={() => setSheetPin(p.id)}
+              aria-label={`Apri ${p.label} — ${p.description}`}
+              className="pointer-events-auto relative -translate-x-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)]"
+            >
+              <span
+                aria-hidden
+                className="absolute h-9 w-9 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(196,154,74,0.5) 0%, rgba(196,154,74,0.1) 45%, transparent 72%)",
+                  filter: "blur(1.5px)",
+                }}
+              />
+              <span
+                aria-hidden
+                className="relative block h-5 w-5 rounded-full border border-[color:var(--oro)]/85 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.6)]"
+                style={{ background: "color-mix(in oklab, var(--carbone) 55%, transparent)" }}
+              >
+                <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--oro)] shadow-[0_0_5px_rgba(196,154,74,0.8)]" />
+              </span>
+              {/* Piccolo tag direzionale: Agriturismo verso l'alto,
+                  Macelleria a sinistra, Stalla a sinistra, Caseificio in alto.
+                  Evita sovrapposizioni tra Macelleria e Agriturismo. */}
+              <span
+                aria-hidden
+                className={[
+                  "pointer-events-none absolute whitespace-nowrap rounded-full border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/85 px-1.5 py-0.5 font-eyebrow text-[8px] tracking-[0.24em] text-[color:var(--crema)]",
+                  p.id === "braceria"
+                    ? "bottom-full left-1/2 mb-1 -translate-x-1/2"
+                    : p.id === "macelleria"
+                      ? "right-full top-1/2 mr-1 -translate-y-1/2"
+                      : p.id === "allevamento"
+                        ? "right-full top-1/2 mr-1 -translate-y-1/2"
+                        : "left-1/2 top-full mt-1 -translate-x-1/2",
+                ].join(" ")}
+              >
+                {p.label.toUpperCase()}
+              </span>
+
+            </button>
+          </div>
         ))}
       </div>
+
 
       {/* MOBILE BOTTOM-SHEET */}
       <AnimatePresence>
