@@ -23,71 +23,82 @@ type PinId = "allevamento" | "caseificio" | "macelleria" | "braceria";
 type Pin = {
   id: PinId;
   label: string;
+  eyebrow?: string;
   caption: string;
   description: string;
   thumb: string;
   coords: string;
   to: "/allevamento" | "/caseificio" | "/macelleria" | "/braceria";
-  /** Posizione % sulla mappa */
+  /** Posizione % sulla mappa (desktop) */
   top: number;
   left: number;
+  /** Posizione % adattata al ritaglio mobile (contain, centrato) */
+  mTop?: number;
+  mLeft?: number;
   /** Etichetta editoriale: posizione del leader-line */
   labelSide: "left" | "right";
   labelDy: number; // offset verticale dell'etichetta in % rispetto al pin
 };
 
+// Coordinate desktop = % sul contenitore foto (cover, centrato).
+// Coordinate mobile = % sul contenitore foto (contain, aspect 720/579,
+// quindi identiche all'originale — nessuna deformazione).
 const PINS: Pin[] = [
-  {
-    id: "allevamento",
-    label: "Allevamento",
-    caption: "Dove tutto comincia.",
-    description: "I nostri capi, sulla nostra terra. Murgia, aria aperta, tempo lento.",
-    thumb: pinAllevamentoImg,
-    coords: "40.6428°N · 17.0421°E",
-    to: "/allevamento",
-    top: 58,
-    left: 16,
-    labelSide: "right",
-    labelDy: 6,
-  },
   {
     id: "caseificio",
     label: "Caseificio",
+    eyebrow: "Il latte",
     caption: "Il latte di ogni mattina.",
     description: "Latte appena munto, lavorato a mano prima che il giorno cominci.",
     thumb: pinCaseificioImg,
     coords: "40.6427°N · 17.0418°E",
     to: "/caseificio",
-    top: 24,
-    left: 40,
-    labelSide: "left",
-    labelDy: -8,
+    top: 48,
+    left: 46,
+    labelSide: "right",
+    labelDy: -10,
   },
   {
     id: "macelleria",
     label: "Macelleria",
+    eyebrow: "La carne",
     caption: "La carne, a vista.",
     description: "Banco a vista, tagli del giorno, frollature curate dal macellaio.",
     thumb: pinMacelleriaImg,
     coords: "40.6425°N · 17.0415°E",
     to: "/macelleria",
-    top: 30,
-    left: 82,
+    top: 63,
+    left: 38,
     labelSide: "left",
-    labelDy: -6,
+    labelDy: -10,
+  },
+  {
+    id: "allevamento",
+    label: "Stalla",
+    eyebrow: "Allevamento",
+    caption: "Dove tutto comincia.",
+    description: "I nostri capi, sulla nostra terra. Murgia, aria aperta, tempo lento.",
+    thumb: pinAllevamentoImg,
+    coords: "40.6428°N · 17.0421°E",
+    to: "/allevamento",
+    top: 43,
+    left: 79,
+    labelSide: "left",
+    labelDy: -8,
   },
   {
     id: "braceria",
-    label: "Braceria",
+    label: "Agriturismo",
+    eyebrow: "La tavola",
     caption: "La brace, ogni sera.",
     description: "Cottura su brace viva, taglio e servizio al tavolo. Il rito.",
     thumb: pinBraceriaImg,
     coords: "40.6424°N · 17.0419°E",
     to: "/braceria",
-    top: 14,
-    left: 64,
+    top: 69,
+    left: 34,
     labelSide: "right",
-    labelDy: -4,
+    labelDy: 10,
   },
 ];
 
