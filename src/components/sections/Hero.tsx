@@ -1054,7 +1054,7 @@ export function Hero() {
       {/* MOBILE — Sigilli oro sulla foto (contenitore == photoRef): stessi
           coords % del desktop, allineati alla foto reale. Un solo sheet
           aperto per volta (setSheetPin sostituisce il precedente). */}
-      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-40 mx-auto w-full aspect-[720/579] max-h-[100svh] -translate-y-1/2 md:hidden">
+      <div className="pointer-events-none absolute inset-x-0 top-[72px] z-40 mx-auto w-full aspect-[720/579] max-h-[52svh] md:hidden">
         {PINS.map((p) => (
           <div
             key={p.id}
