@@ -1083,12 +1083,25 @@ export function Hero() {
               >
                 <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--oro)] shadow-[0_0_5px_rgba(196,154,74,0.8)]" />
               </span>
+              {/* Piccolo tag direzionale: Agriturismo verso l'alto,
+                  Macelleria a sinistra, Stalla a sinistra, Caseificio in alto.
+                  Evita sovrapposizioni tra Macelleria e Agriturismo. */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/85 px-2 py-0.5 font-eyebrow text-[9px] tracking-[0.24em] text-[color:var(--crema)]"
+                className={[
+                  "pointer-events-none absolute whitespace-nowrap rounded-full border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/85 px-1.5 py-0.5 font-eyebrow text-[8px] tracking-[0.24em] text-[color:var(--crema)]",
+                  p.id === "braceria"
+                    ? "bottom-full left-1/2 mb-1 -translate-x-1/2"
+                    : p.id === "macelleria"
+                      ? "right-full top-1/2 mr-1 -translate-y-1/2"
+                      : p.id === "allevamento"
+                        ? "right-full top-1/2 mr-1 -translate-y-1/2"
+                        : "left-1/2 top-full mt-1 -translate-x-1/2",
+                ].join(" ")}
               >
                 {p.label.toUpperCase()}
               </span>
+
             </button>
           </div>
         ))}
