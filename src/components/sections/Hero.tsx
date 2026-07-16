@@ -1049,25 +1049,49 @@ export function Hero() {
         />
       </div>
 
-      {/* MOBILE — Sigilli sulla mappa + bottom-sheet */}
-      <div className="absolute inset-0 z-40 md:hidden">
+      {/* MOBILE — Sigilli oro sulla foto (contenitore == photoRef): stessi
+          coords % del desktop, allineati alla foto reale. Un solo sheet
+          aperto per volta (setSheetPin sostituisce il precedente). */}
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 z-40 mx-auto w-full aspect-[720/579] max-h-[100svh] -translate-y-1/2 md:hidden">
         {PINS.map((p) => (
-          <button
+          <div
             key={p.id}
-            type="button"
-            onClick={() => setSheetPin(p.id)}
-            aria-label={`Apri ${p.label}`}
-            className="absolute h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border-[1.5px] border-[color:var(--oro)] shadow-[0_8px_24px_-4px_rgba(179,58,26,0.7)]"
-            style={{
-              top: `${p.top}%`,
-              left: `${p.left}%`,
-              background: "var(--grad-ember)",
-            }}
+            className="absolute"
+            style={{ top: `${p.top}%`, left: `${p.left}%` }}
           >
-            <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--crema)]" />
-          </button>
+            <button
+              type="button"
+              onClick={() => setSheetPin(p.id)}
+              aria-label={`Apri ${p.label} — ${p.description}`}
+              className="pointer-events-auto relative -translate-x-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)]"
+            >
+              <span
+                aria-hidden
+                className="absolute h-9 w-9 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(196,154,74,0.5) 0%, rgba(196,154,74,0.1) 45%, transparent 72%)",
+                  filter: "blur(1.5px)",
+                }}
+              />
+              <span
+                aria-hidden
+                className="relative block h-5 w-5 rounded-full border border-[color:var(--oro)]/85 shadow-[0_6px_18px_-6px_rgba(0,0,0,0.6)]"
+                style={{ background: "color-mix(in oklab, var(--carbone) 55%, transparent)" }}
+              >
+                <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[color:var(--oro)] shadow-[0_0_5px_rgba(196,154,74,0.8)]" />
+              </span>
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-full mt-1 -translate-x-1/2 whitespace-nowrap rounded-full border border-[color:var(--oro)]/40 bg-[color:var(--carbone)]/85 px-2 py-0.5 font-eyebrow text-[9px] tracking-[0.24em] text-[color:var(--crema)]"
+              >
+                {p.label.toUpperCase()}
+              </span>
+            </button>
+          </div>
         ))}
       </div>
+
 
       {/* MOBILE BOTTOM-SHEET */}
       <AnimatePresence>
