@@ -425,7 +425,7 @@ export function CaseificioStory() {
         style={{ background: "linear-gradient(180deg, #f4ecd8 0%, #efe6ce 100%)" }}
       >
         {/* Desktop stage pinned */}
-        <div data-column-stage className="hidden md:block relative h-[100dvh] w-full overflow-hidden">
+        <div data-column-stage className={`${reduced ? "hidden" : "hidden md:block"} relative h-[100dvh] w-full overflow-hidden`}>
           {/* Vapore molto leggero (4 forme) */}
           {[0,1,2,3].map((i) => (
             <div
@@ -445,15 +445,16 @@ export function CaseificioStory() {
             />
           ))}
 
-          {/* Header */}
-          <div className="absolute top-8 left-8 z-20 flex flex-col gap-2">
+          {/* Header (staccato dalla Navbar) */}
+          <div className="absolute top-24 left-8 z-20 flex flex-col gap-2 pr-6 max-w-[42%]">
             <div className="font-eyebrow text-[11px] text-[color:var(--marrone)]/70 tracking-[0.3em]">
               LA COLONNA BIANCA
             </div>
-            <div className="font-display text-2xl text-[color:var(--marrone)]" style={{ fontWeight: 300 }}>
+            <div className="font-display text-xl lg:text-2xl text-[color:var(--marrone)]" style={{ fontWeight: 300 }}>
               Quattro stati della stessa materia
             </div>
           </div>
+
           {/* Contatore */}
           <div data-counter className="absolute bottom-8 right-8 z-20 font-eyebrow text-[13px] text-[color:var(--marrone)]/75 tracking-[0.2em]">
             01 / 04
@@ -519,7 +520,8 @@ export function CaseificioStory() {
           </div>
 
           {/* Copy sovrapposte (dx) */}
-          <div className="absolute right-24 top-1/2 -translate-y-1/2 z-10 max-w-md">
+          <div className="absolute right-24 top-1/2 -translate-y-1/2 z-10 w-[min(28rem,32vw)] min-h-[280px]">
+
             {STATI.map((s, i) => (
               <div
                 key={s.id}
@@ -551,8 +553,9 @@ export function CaseificioStory() {
           `}</style>
         </div>
 
-        {/* Mobile — quattro stati verticali statici */}
-        <div className="md:hidden px-5 py-20 space-y-16">
+        {/* Mobile — quattro stati verticali statici (anche desktop in reduced motion) */}
+        <div className={`${reduced ? "block" : "md:hidden"} px-5 py-20 space-y-16`}>
+
           <div className="font-eyebrow text-[10px] text-[color:var(--marrone)]/70 tracking-[0.35em]">
             LA COLONNA BIANCA — QUATTRO STATI
           </div>
