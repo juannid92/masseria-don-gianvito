@@ -153,7 +153,7 @@ export function LaVoce() {
         });
 
         gsap.set(themes, { autoAlpha: 0 });
-        gsap.set(outroRef.current, { autoAlpha: 0, y: 20 });
+        gsap.set(outroRef.current, { opacity: 0, y: 20 });
 
         ScrollTrigger.create({
           trigger: root,
