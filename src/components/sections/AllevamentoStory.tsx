@@ -186,10 +186,11 @@ export function AllevamentoStory() {
         });
       });
 
-      /* ═══ ACT 5 · SPOTLIGHT COLTURE ═══ */
-      const act5 = root.querySelector<HTMLElement>("[data-act='5']");
-      const spot = root.querySelector<HTMLElement>("[data-spot]");
-      if (act5 && spot) {
+      /* ═══ ACT 5 · SPOTLIGHT COLTURE (solo desktop — su mobile è verticale) ═══ */
+      mm.add("(min-width: 900px)", () => {
+        const act5 = root.querySelector<HTMLElement>("[data-act='5']");
+        const spot = root.querySelector<HTMLElement>("[data-spot]");
+        if (!act5 || !spot) return;
         const items = spot.querySelectorAll<HTMLElement>("[data-coltura]");
         gsap.set(items, { autoAlpha: 0.15 });
 
@@ -212,7 +213,8 @@ export function AllevamentoStory() {
             });
           },
         });
-      }
+      });
+
 
       /* ═══ Refresh dopo font ═══ */
       const doRefresh = () => { if (mounted) ScrollTrigger.refresh(); };
