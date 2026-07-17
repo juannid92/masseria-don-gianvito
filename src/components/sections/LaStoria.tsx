@@ -196,6 +196,46 @@ export function LaStoria() {
         }
       );
 
+      // ── HANDOFF Storia → Luogo (bridge in uscita, additivo)
+      // OGGI perde opacità, la linea nasce e sopravvive oltre il rilascio del pin.
+      const exit = wrapper.querySelector<HTMLElement>("[data-storia-exit]");
+      if (exit) {
+        const echo = exit.querySelector<HTMLElement>("[data-oggi-echo]");
+        const line = exit.querySelector<HTMLElement>("[data-horizon-birth]");
+        if (echo) {
+          gsap.fromTo(
+            echo,
+            { autoAlpha: 0.16 },
+            {
+              autoAlpha: 0,
+              ease: "none",
+              scrollTrigger: {
+                trigger: exit,
+                start: "top 90%",
+                end: "bottom 60%",
+                scrub: 0.6,
+              },
+            }
+          );
+        }
+        if (line) {
+          gsap.fromTo(
+            line,
+            { scaleX: 0 },
+            {
+              scaleX: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: exit,
+                start: "top 95%",
+                end: "center 65%",
+                scrub: 0.6,
+              },
+            }
+          );
+        }
+      }
+
       // Safe refresh after fonts
       (async () => {
         try {
