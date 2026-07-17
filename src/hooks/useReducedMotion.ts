@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 
 /** Restituisce true se l'utente preferisce ridurre le animazioni. SSR-safe. */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return false;
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  });
+  // Il primo render (SSR + client-first) DEVE restituire sempre `false`
+  // per evitare hydration mismatch quando l'utente ha prefers-reduced-motion.
+  // La preferenza reale viene applicata nel primo useEffect post-mount.
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
