@@ -112,6 +112,18 @@ export function IlManifesto() {
           //  0.50 - 0.64  02 esce, entra 03 (materia crema attraversa)
           //  0.64 - 0.82  03 esce, entra 04 (fondo crema)
           //  0.82 - 1.00  Chiusura crema + marquee visibile
+          const onStUpdate = (self: ScrollTrigger) => {
+            const p = self.progress;
+            if (progressBarRef.current) {
+              progressBarRef.current.style.transform = `scaleY(${p})`;
+            }
+            if (p < 0.22)      setPhase("00", "ORIGINE");
+            else if (p < 0.38) setPhase("01", "TERRA");
+            else if (p < 0.52) setPhase("02", "CURA");
+            else if (p < 0.66) setPhase("03", "MATERIA");
+            else               setPhase("04", "TAVOLA");
+          };
+
           const trigger = isDesktop
             ? {
                 trigger: root,
@@ -122,6 +134,7 @@ export function IlManifesto() {
                 pinSpacing: true,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
+                onUpdate: onStUpdate,
               }
             : {
                 trigger: root,
@@ -129,24 +142,14 @@ export function IlManifesto() {
                 end: "bottom bottom",
                 scrub: 0.6,
                 invalidateOnRefresh: true,
+                onUpdate: onStUpdate,
               };
 
           const tl = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: trigger,
-            onUpdate: (self) => {
-              const p = self.progress;
-              if (progressBarRef.current) {
-                progressBarRef.current.style.transform = `scaleY(${p})`;
-              }
-              // Fase attiva
-              if (p < 0.22)      setPhase("00", "ORIGINE");
-              else if (p < 0.38) setPhase("01", "TERRA");
-              else if (p < 0.52) setPhase("02", "CURA");
-              else if (p < 0.66) setPhase("03", "MATERIA");
-              else               setPhase("04", "TAVOLA");
-            },
           });
+
 
           // --- 0.00 → 0.20 : Spotlight reading dell'intro
           words.forEach((w, i) => {
