@@ -5,214 +5,267 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 type Panel = {
+  id: string;
   ghost: string;
   chapter: string;
   title: React.ReactNode;
-  text: string;
-  cue?: string;
-  imgGradient: string;
+  text: React.ReactNode;
+  note?: string;
+  accent: string; // css color for progress bar
+  surface: string; // background gradient
 };
 
 const PANELS: Panel[] = [
   {
+    id: "p1",
     ghost: "1500",
-    chapter: "I — Le origini",
+    chapter: "LE ORIGINI",
     title: (
       <>
-        Una masseria del <em style={{ fontStyle: "italic" }}>Cinquecento</em>
+        Cinque secoli
+        <br />
+        di pietra.
       </>
     ),
-    text:
-      "Pietra su pietra, tra gli ulivi secolari della Murgia. La masseria nasce come presidio rurale: un tetto per raccolti, bestie e famiglie.",
-    imgGradient:
-      "radial-gradient(ellipse at 30% 40%, #3d2a1e 0%, #1a1210 60%, #0d0806 100%)",
+    text: (
+      <>
+        La Masseria nasce in un complesso rurale del Cinquecento, tra le
+        campagne di Noci e la strada per Mottola.
+      </>
+    ),
+    note: "Muri, corti e volumi agricoli custodiscono ancora la forma originaria del luogo.",
+    accent: "#6b4a2a",
+    surface:
+      "linear-gradient(115deg, #d9c9a8 0%, #c9b48b 45%, #a8916a 100%)",
   },
   {
+    id: "p2",
     ghost: "2002",
-    chapter: "II — Il mestiere",
-    title: <>Tutto comincia qui</>,
-    text:
-      "La famiglia iscrive l'azienda agricola nel 2002. Bovini Pezzata Rossa × Frisona, ovini, suini, equini, avicoli. Foraggio, ortaggi e grano tenero coltivati in masseria.",
-    imgGradient:
-      "radial-gradient(ellipse at 60% 55%, #6b7340 0%, #3d2a1e 55%, #1a1210 100%)",
+    chapter: "UN DATO CERTO",
+    title: (
+      <>
+        Una storia
+        <br />
+        registrata.
+      </>
+    ),
+    text: <>Dal 2002 Masseria Don Gianvito risulta iscritta alla Camera di Commercio.</>,
+    note: "È un riferimento documentale, non necessariamente l'inizio della storia familiare.",
+    accent: "#7a1d2a",
+    surface:
+      "linear-gradient(180deg, #ece3d0 0%, #e2d6bc 60%, #d4c39f 100%)",
   },
   {
-    ghost: "4",
-    chapter: "III — La filiera",
-    title: <>Quattro mestieri, una sola masseria</>,
-    text:
-      "Allevamento. Caseificio. Macelleria. Braceria. Ogni anello nasce qui dentro. Il latte di oggi è la mozzarella di domani. Il vitello di primavera è la tavola di settembre.",
-    imgGradient:
-      "radial-gradient(ellipse at 50% 50%, #6b7340 0%, #3d2a1e 55%, #1a1210 100%)",
+    id: "p3",
+    ghost: "QUATTRO",
+    chapter: "UNA SOLA FILIERA",
+    title: (
+      <>
+        Quattro mestieri.
+        <br />
+        Un solo luogo.
+      </>
+    ),
+    text: (
+      <>
+        Ogni attività continua nella successiva, senza interrompere il rapporto
+        tra ciò che nasce qui e ciò che arriva a tavola.
+      </>
+    ),
+    accent: "#8a7a2c",
+    surface:
+      "linear-gradient(90deg, #3d2a1e 0%, #6b7340 50%, #c49a4a 100%)",
   },
   {
+    id: "p4",
     ghost: "OGGI",
-    chapter: "IV — La tavola",
-    title: <>Ogni sera</>,
-    text:
-      "Scegli la carne al banco. Ti siedi. Te la portano cotta sulla brace a carboni. Niente arriva da fuori. Dalla terra alla tavola, ogni sera, a Noci.",
-    cue: "scorri →",
-    imgGradient:
-      "radial-gradient(ellipse at 45% 60%, #c49a4a 0%, #6b4a2a 40%, #1a1210 100%)",
+    chapter: "LA MASSERIA VIVA",
+    title: (
+      <>
+        Non un ricordo.
+        <br />
+        Un luogo che lavora.
+      </>
+    ),
+    text: (
+      <>
+        Ogni giorno la Masseria coltiva, alleva e trasforma. La sera accoglie
+        gli ospiti; la domenica e nei giorni festivi apre la tavola per il
+        pranzo.
+      </>
+    ),
+    note: "La storia continua nel lavoro quotidiano.",
+    accent: "#6b7340",
+    surface:
+      "linear-gradient(135deg, #ece3d0 0%, #b8b088 55%, #6b7340 100%)",
   },
 ];
 
+const CRAFTS = ["ALLEVAMENTO", "CASEIFICIO", "MACELLERIA", "CUCINA"];
+const RHYTHM = ["COLTIVA", "ALLEVA", "TRASFORMA", "ACCOGLIE"];
+
 export function LaStoria() {
-  const rootRef = useRef<HTMLElement>(null);
+  const wrapperRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const root = rootRef.current;
+    const wrapper = wrapperRef.current;
+    const stage = stageRef.current;
     const track = trackRef.current;
-    if (!root || !track) return;
+    if (!wrapper || !stage || !track) return;
+    if (typeof window === "undefined") return;
 
-    ScrollTrigger.config({ ignoreMobileResize: true });
+    let cancelled = false;
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-    const mm = gsap.matchMedia();
+      mm.add(
+        {
+          isDesktop: "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+          isMobile: "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+          reduced: "(prefers-reduced-motion: reduce)",
+        },
+        (context) => {
+          const c = context.conditions as {
+            isDesktop: boolean;
+            isMobile: boolean;
+            reduced: boolean;
+          };
+          if (c.reduced) return;
 
-    mm.add(
-      {
-        motion: "(prefers-reduced-motion: no-preference)",
-        reduced: "(prefers-reduced-motion: reduce)",
-      },
-      (ctx) => {
-        const { motion } = ctx.conditions as { motion: boolean; reduced: boolean };
-        if (!motion) return;
+          const getDistance = () =>
+            Math.max(0, track.scrollWidth - window.innerWidth);
+          if (getDistance() <= 0) return;
 
-        const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
-        const getDistance = () => track.scrollWidth - window.innerWidth;
+          const scrub = c.isMobile ? 0.5 : 0.6;
+          const pinTarget = c.isMobile ? wrapper : stage;
 
-        const tween = gsap.to(track, {
-          x: () => -getDistance(),
-          ease: "none",
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: () => `+=${getDistance()}`,
-            scrub: 0.6,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        panels.forEach((p) => {
-          const ghost = p.querySelector<HTMLElement>("[data-ghost]");
-          const photo = p.querySelector<HTMLElement>("[data-photo]");
-          if (ghost) {
-            gsap.fromTo(
-              ghost,
-              { xPercent: 15 },
-              {
-                xPercent: -15,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: p,
-                  containerAnimation: tween,
-                  start: "left right",
-                  end: "right left",
-                  scrub: true,
-                },
-              }
-            );
-          }
-          if (photo) {
-            gsap.fromTo(
-              photo,
-              { xPercent: 6 },
-              {
-                xPercent: -6,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: p,
-                  containerAnimation: tween,
-                  start: "left right",
-                  end: "right left",
-                  scrub: true,
-                },
-              }
-            );
-          }
-        });
-
-        panels.forEach((p, i) => {
-          ScrollTrigger.create({
-            trigger: p,
-            containerAnimation: tween,
-            start: "left center",
-            end: "right center",
-            onToggle: (self) => {
-              if (self.isActive) setActive(i);
+          const tween = gsap.to(track, {
+            x: () => -getDistance(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: wrapper,
+              start: "top top",
+              end: () => `+=${getDistance()}`,
+              pin: pinTarget,
+              pinSpacing: true,
+              scrub,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                if (progressRef.current) {
+                  progressRef.current.style.transform = `scaleX(${self.progress})`;
+                }
+              },
             },
           });
-        });
-      },
-      root
-    );
+
+          const panels = gsap.utils.toArray<HTMLElement>("[data-panel]", track);
+          panels.forEach((p, i) => {
+            const ghost = p.querySelector<HTMLElement>("[data-ghost]");
+            if (ghost) {
+              gsap.fromTo(
+                ghost,
+                { xPercent: 12 },
+                {
+                  xPercent: -12,
+                  ease: "none",
+                  scrollTrigger: {
+                    trigger: p,
+                    containerAnimation: tween,
+                    start: "left right",
+                    end: "right left",
+                    scrub: true,
+                  },
+                }
+              );
+            }
+            ScrollTrigger.create({
+              trigger: p,
+              containerAnimation: tween,
+              start: "left center",
+              end: "right center",
+              onToggle: (self) => {
+                if (self.isActive) setActive(i);
+              },
+            });
+          });
+        }
+      );
+
+      // Safe refresh after fonts
+      (async () => {
+        try {
+          if (document.fonts?.ready) await document.fonts.ready;
+        } finally {
+          if (!cancelled) ScrollTrigger.refresh();
+        }
+      })();
+    }, wrapper);
 
     return () => {
-      mm.revert();
+      cancelled = true;
+      ctx.revert();
     };
   }, []);
 
+  const current = PANELS[active];
+
   return (
     <section
-      ref={rootRef}
+      ref={wrapperRef}
       aria-labelledby="storia-title"
-      className="relative overflow-hidden text-crema"
-      style={{ backgroundColor: "var(--carbone)" }}
+      className="history-wrapper relative text-crema"
+      style={{
+        backgroundColor: "var(--carbone)",
+        overflow: "clip",
+      }}
     >
-      {/* Marker + intro (visible before pin engages) */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 mx-auto max-w-[1400px] px-6 pt-[6svh] md:px-12">
-        <p
-          className="text-[0.7rem] uppercase"
-          style={{
-            fontFamily: "'Oswald', 'Inter', sans-serif",
-            letterSpacing: "0.32em",
-            color: "color-mix(in oklab, var(--crema) 40%, transparent)",
-          }}
-        >
-          02 — La Storia
-        </p>
-        <h2
-          id="storia-title"
-          className="mt-4 max-w-[18ch]"
-          style={{
-            fontFamily: "'Fraunces', serif",
-            fontWeight: 300,
-            fontSize: "clamp(1.75rem, 3.6vw, 3.6rem)",
-            lineHeight: 1.1,
-            letterSpacing: "-0.015em",
-          }}
-        >
-          Dal <em style={{ fontStyle: "italic", color: "var(--oro)" }}>Cinquecento</em> a oggi
-        </h2>
-        <p
-          className="mt-3 max-w-[38ch] text-sm md:text-base"
-          style={{
-            fontFamily: "'Inter', sans-serif",
-            color: "color-mix(in oklab, var(--crema) 65%, transparent)",
-          }}
-        >
-          Dove la terra nutre la bestia, la bestia nutre la tavola.
-        </p>
-      </div>
-
-      {/* Horizontal pinned track (desktop + mobile) */}
-      <div className="relative h-[100dvh] w-full overflow-hidden">
+      <div ref={stageRef} className="history-stage relative h-[100dvh] w-full overflow-hidden">
+        {/* Track */}
         <div
           ref={trackRef}
-          className="flex h-full w-max will-change-transform"
+          className="history-track flex h-full w-max will-change-transform"
         >
           {PANELS.map((p, i) => (
             <article
-              key={i}
+              key={p.id}
               data-panel
-              className="relative flex h-[100dvh] w-[100vw] shrink-0 items-center overflow-hidden box-border"
-              style={{ background: p.imgGradient }}
+              data-panel-id={p.id}
+              className="relative flex h-[100dvh] w-[100vw] shrink-0 overflow-hidden box-border"
+              style={{ background: p.surface }}
             >
-              {/* Ghost year */}
+              {/* Calcareous texture layer (SVG) */}
+              <svg
+                aria-hidden
+                className="pointer-events-none absolute inset-0 h-full w-full"
+                style={{ mixBlendMode: "multiply", opacity: 0.18 }}
+              >
+                <filter id={`grain-${p.id}`}>
+                  <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={i + 1} />
+                  <feColorMatrix values="0 0 0 0 0.15  0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0.35 0" />
+                </filter>
+                <rect width="100%" height="100%" filter={`url(#grain-${p.id})`} />
+              </svg>
+
+              {/* Architectural line (only on p1 & p4) */}
+              {(i === 0 || i === 3) && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0"
+                  style={{
+                    top: i === 0 ? "58%" : "42%",
+                    height: "1px",
+                    background:
+                      "linear-gradient(90deg, transparent 0%, rgba(60,40,25,0.55) 20%, rgba(60,40,25,0.55) 80%, transparent 100%)",
+                  }}
+                />
+              )}
+
+              {/* Ghost year/word */}
               <span
                 data-ghost
                 aria-hidden
@@ -220,46 +273,116 @@ export function LaStoria() {
                 style={{
                   fontFamily: "'Fraunces', serif",
                   fontWeight: 300,
-                  fontSize: "clamp(9rem, 40vw, 46rem)",
+                  fontSize: i === 2 ? "clamp(4rem, 18vw, 20rem)" : "clamp(7rem, 38vw, 42rem)",
                   lineHeight: 0.85,
                   letterSpacing: "-0.05em",
-                  color: "color-mix(in oklab, var(--crema) 6%, transparent)",
+                  color:
+                    i === 2
+                      ? "color-mix(in oklab, var(--crema) 10%, transparent)"
+                      : "color-mix(in oklab, #2a1a10 9%, transparent)",
                   whiteSpace: "nowrap",
-                  maxWidth: "100%",
                 }}
               >
                 {p.ghost}
               </span>
 
-              {/* Photo placeholder */}
-              <div
-                data-photo
-                className="absolute inset-0 will-change-transform"
-                style={{
-                  backgroundImage:
-                    "radial-gradient(circle at 30% 20%, rgba(196,154,74,0.08), transparent 60%), radial-gradient(circle at 70% 80%, rgba(0,0,0,0.35), transparent 55%)",
-                  mixBlendMode: "overlay",
-                  opacity: 0.7,
-                }}
-              />
-              {/* Vignette */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(26,18,16,0.55) 0%, rgba(26,18,16,0) 30%, rgba(26,18,16,0) 70%, rgba(26,18,16,0.75) 100%)",
-                }}
-              />
+              {/* Panel 02 stamp */}
+              {i === 1 && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute"
+                  style={{
+                    right: "8%",
+                    top: "18%",
+                    transform: "rotate(-3deg)",
+                    border: "2px solid #7a1d2a",
+                    color: "#7a1d2a",
+                    padding: "10px 16px",
+                    fontFamily: "'Oswald', 'Inter', sans-serif",
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.28em",
+                    lineHeight: 1.4,
+                    textAlign: "center",
+                    opacity: 0.82,
+                    background: "rgba(236,227,208,0.35)",
+                  }}
+                >
+                  ISCRIZIONE CCIAA
+                  <br />
+                  <span style={{ fontFamily: "'Fraunces', serif", fontSize: "1.1rem", letterSpacing: "0.1em" }}>
+                    2002
+                  </span>
+                </div>
+              )}
+
+              {/* Panel 03 crafts stack */}
+              {i === 2 && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 z-[1] flex flex-col items-end justify-center gap-2 md:gap-4 pr-6 md:pr-24"
+                >
+                  {CRAFTS.map((w, idx) => (
+                    <span
+                      key={w}
+                      style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontWeight: 300,
+                        fontStyle: "italic",
+                        fontSize: `clamp(1.4rem, ${4 + idx * 0.4}vw, ${2.8 + idx * 0.4}rem)`,
+                        letterSpacing: "0.02em",
+                        color: `color-mix(in oklab, var(--crema) ${55 + idx * 12}%, transparent)`,
+                        textShadow: "0 2px 12px rgba(0,0,0,0.25)",
+                      }}
+                    >
+                      {w}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Panel 04 rhythm words */}
+              {i === 3 && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute z-[1]"
+                  style={{ right: "6%", top: "22%" }}
+                >
+                  <div className="flex flex-col gap-2">
+                    {RHYTHM.map((w) => (
+                      <span
+                        key={w}
+                        style={{
+                          fontFamily: "'Oswald', sans-serif",
+                          fontSize: "clamp(0.75rem, 1.2vw, 0.95rem)",
+                          letterSpacing: "0.4em",
+                          color: "color-mix(in oklab, #2a1a10 65%, transparent)",
+                        }}
+                      >
+                        {w}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Content */}
-              <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col items-start px-5 md:px-16">
+              <div
+                className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col justify-end"
+                style={{
+                  padding: "clamp(20px, 4vw, 64px)",
+                  paddingTop: "calc(env(safe-area-inset-top, 0px) + clamp(80px, 12vh, 140px))",
+                  paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + clamp(80px, 14vh, 140px))",
+                }}
+              >
                 <p
-                  className="mb-4 md:mb-6 text-[0.7rem] uppercase"
+                  className="mb-4 md:mb-6"
                   style={{
                     fontFamily: "'Oswald', 'Inter', sans-serif",
-                    letterSpacing: "0.34em",
-                    color: "color-mix(in oklab, var(--crema) 55%, transparent)",
+                    fontSize: "0.72rem",
+                    letterSpacing: "0.36em",
+                    color: i === 2
+                      ? "color-mix(in oklab, var(--crema) 65%, transparent)"
+                      : "color-mix(in oklab, #2a1a10 65%, transparent)",
                   }}
                 >
                   {p.chapter}
@@ -269,88 +392,138 @@ export function LaStoria() {
                   style={{
                     fontFamily: "'Fraunces', serif",
                     fontWeight: 300,
-                    fontSize: "clamp(1.8rem, 8vw, 5.6rem)",
-                    lineHeight: 1.05,
+                    fontSize: "clamp(2.3rem, 7vw, 5.4rem)",
+                    lineHeight: 0.98,
                     letterSpacing: "-0.02em",
-                    color: "var(--crema)",
-                    overflowWrap: "break-word",
+                    color: i === 2 ? "var(--crema)" : "#1e130c",
                   }}
                 >
-                  {p.title}
+                  {i === 0 && (
+                    <>
+                      Cinque secoli
+                      <br />
+                      di <em style={{ fontStyle: "italic", color: "#6b4a2a" }}>pietra</em>.
+                    </>
+                  )}
+                  {i !== 0 && p.title}
                 </h3>
                 <p
-                  className="mt-5 md:mt-8 max-w-[46ch]"
+                  className="mt-5 md:mt-7 max-w-[42ch]"
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "clamp(1rem, 4vw, 1.15rem)",
-                    lineHeight: 1.6,
-                    color: "color-mix(in oklab, var(--crema) 82%, transparent)",
+                    fontSize: "clamp(1rem, 1.3vw, 1.1rem)",
+                    lineHeight: 1.55,
+                    color: i === 2
+                      ? "color-mix(in oklab, var(--crema) 85%, transparent)"
+                      : "color-mix(in oklab, #1e130c 80%, transparent)",
                   }}
                 >
                   {p.text}
                 </p>
-                {p.cue && (
+                {p.note && (
                   <p
-                    className="mt-10 uppercase"
+                    className="mt-4 max-w-[40ch]"
                     style={{
-                      fontFamily: "'Oswald', 'Inter', sans-serif",
-                      fontSize: "0.85rem",
-                      letterSpacing: "0.3em",
-                      color: "var(--oro)",
+                      fontFamily: "'Fraunces', serif",
+                      fontStyle: "italic",
+                      fontSize: "clamp(0.85rem, 1vw, 0.95rem)",
+                      lineHeight: 1.5,
+                      color: i === 2
+                        ? "color-mix(in oklab, var(--crema) 60%, transparent)"
+                        : "color-mix(in oklab, #1e130c 60%, transparent)",
                     }}
                   >
-                    {p.cue}
+                    {p.note}
                   </p>
                 )}
               </div>
+
+              {/* Vignette */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(30,19,12,0.15) 0%, rgba(30,19,12,0) 25%, rgba(30,19,12,0) 75%, rgba(30,19,12,0.25) 100%)",
+                }}
+              />
             </article>
           ))}
         </div>
 
+        {/* Fixed intro overlay (visible in first panel only, layered above track's first panel) */}
+        <div
+          className="pointer-events-none absolute left-0 top-0 z-20"
+          style={{
+            padding: "clamp(20px, 3vw, 48px)",
+            paddingTop: "calc(env(safe-area-inset-top, 0px) + clamp(24px, 4vh, 56px))",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Oswald', 'Inter', sans-serif",
+              fontSize: "0.72rem",
+              letterSpacing: "0.36em",
+              color: "color-mix(in oklab, #1e130c 70%, transparent)",
+            }}
+          >
+            02 — LA STORIA
+          </p>
+        </div>
+
         {/* Counter */}
         <div
-          className="pointer-events-none absolute left-5 z-20 md:left-12"
-          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 3svh)" }}
+          className="pointer-events-none absolute z-20"
+          style={{
+            right: "clamp(20px, 3vw, 48px)",
+            bottom: "calc(env(safe-area-inset-bottom, 0px) + clamp(24px, 4vh, 48px))",
+          }}
           aria-hidden
         >
           <p
-            className="uppercase"
             style={{
               fontFamily: "'Oswald', 'Inter', sans-serif",
-              fontSize: "0.85rem",
+              fontSize: "0.8rem",
               letterSpacing: "0.32em",
-              color: "color-mix(in oklab, var(--crema) 55%, transparent)",
+              color: active === 2
+                ? "color-mix(in oklab, var(--crema) 80%, transparent)"
+                : "color-mix(in oklab, #1e130c 75%, transparent)",
             }}
           >
-            <span style={{ color: "var(--crema)" }}>
+            <span style={{ color: active === 2 ? "var(--crema)" : "#1e130c" }}>
               {String(active + 1).padStart(2, "0")}
             </span>
-            <span className="mx-2" style={{ color: "color-mix(in oklab, var(--crema) 25%, transparent)" }}>
-              /
-            </span>
+            <span className="mx-2" style={{ opacity: 0.4 }}>/</span>
             {String(PANELS.length).padStart(2, "0")}
           </p>
         </div>
 
-        {/* scroll cue */}
+        {/* Progress line */}
         <div
-          className="pointer-events-none absolute right-5 z-20 md:right-12"
-          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 3svh)" }}
+          className="pointer-events-none absolute bottom-0 left-0 right-0 z-20"
+          style={{ height: "2px", background: "rgba(30,19,12,0.08)" }}
           aria-hidden
         >
-          <p
-            className="uppercase"
+          <div
+            ref={progressRef}
+            className="h-full origin-left will-change-transform"
             style={{
-              fontFamily: "'Oswald', 'Inter', sans-serif",
-              fontSize: "0.75rem",
-              letterSpacing: "0.4em",
-              color: "color-mix(in oklab, var(--crema) 40%, transparent)",
+              transform: "scaleX(0)",
+              background: current.accent,
+              transition: "background-color 400ms ease",
             }}
-          >
-            scorri →
-          </p>
+          />
         </div>
       </div>
+
+      {/* Reduced-motion fallback: hidden by default, shown via CSS if needed */}
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          .history-track { flex-direction: column; width: 100% !important; transform: none !important; }
+          .history-track [data-panel] { width: 100% !important; height: auto !important; min-height: 80dvh; }
+          .history-stage { height: auto !important; }
+        }
+      `}</style>
     </section>
   );
 }
