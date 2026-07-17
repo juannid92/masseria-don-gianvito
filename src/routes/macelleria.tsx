@@ -8,18 +8,20 @@ import { MacelleriaStory } from "@/components/sections/MacelleriaStory";
 export const Route = createFileRoute("/macelleria")({
   head: () => ({
     meta: [
-      { title: "Macelleria — Capitolo 03 · Masseria Don Gianvito" },
+      { title: "Macelleria — Masseria Don Gianvito · Noci" },
       {
         name: "description",
         content:
-          "La carne, a vista: diagramma anatomico dei tagli, tracciabilità all'animale del pascolo, armadio di frollatura. Terzo capitolo del racconto dalla terra alla brace.",
+          "A vista: la scelta avviene al banco della Macelleria di Masseria Don Gianvito. Filetto, bombette, salsiccia, altri tagli. Frollatura indicativa di circa quindici giorni.",
       },
-      { property: "og:title", content: "Macelleria · La carne, a vista" },
+      { property: "og:title", content: "Macelleria · La scelta avviene a vista" },
       {
         property: "og:description",
         content:
-          "Capitolo 03 della filiera Masseria Don Gianvito: tagli tracciati fino agli animali del pascolo, frollatura a vista.",
+          "Il banco, l'atlante a vista, il filo della tracciabilità e i salumi propri della Masseria.",
       },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: MacelleriaPage,
