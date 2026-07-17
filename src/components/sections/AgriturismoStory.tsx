@@ -59,7 +59,7 @@ const ARROSTO = ["FILETTO", "BOMBETTE", "SALSICCIA", "SCELTA DEL BANCO"];
 
 /* ─────────────────────────────────────────────────────────── */
 
-export function BraceriaStory() {
+export function AgriturismoStory() {
   const reduced = useReducedMotion();
 
   return (
@@ -108,7 +108,7 @@ function Apertura() {
       />
       <div className="relative z-10 w-full px-6 md:px-14 pb-14 md:pb-20 max-w-6xl mx-auto">
         <div className="font-eyebrow text-[11px] md:text-[12px] tracking-[0.35em] opacity-75 mb-6">
-          BRACERIA — MASSERIA DON GIANVITO
+          AGRITURISMO — MASSERIA DON GIANVITO
         </div>
         <h1
           className="font-display leading-[1.02] text-[clamp(2.6rem,7vw,6rem)]"
@@ -1248,4 +1248,4 @@ function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macell
 
 /* ─────────────────── Cleanup ScrollTrigger su unmount ─────────────────── */
 // (gsap.context in ogni scena gestisce già il cleanup locale)
-export default BraceriaStory;
+export default AgriturismoStory;

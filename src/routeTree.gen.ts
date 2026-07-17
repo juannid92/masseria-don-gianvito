@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MacelleriaRouteImport } from './routes/macelleria'
 import { Route as CaseificioRouteImport } from './routes/caseificio'
-import { Route as BraceriaRouteImport } from './routes/braceria'
 import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BraceriaLegacyRouteImport } from './routes/braceria.legacy'
 
 const MacelleriaRoute = MacelleriaRouteImport.update({
   id: '/macelleria',
@@ -23,11 +23,6 @@ const MacelleriaRoute = MacelleriaRouteImport.update({
 const CaseificioRoute = CaseificioRouteImport.update({
   id: '/caseificio',
   path: '/caseificio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BraceriaRoute = BraceriaRouteImport.update({
-  id: '/braceria',
-  path: '/braceria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AllevamentoRoute = AllevamentoRouteImport.update({
@@ -40,49 +35,59 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BraceriaLegacyRoute = BraceriaLegacyRouteImport.update({
+  id: '/braceria/legacy',
+  path: '/braceria/legacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/allevamento': typeof AllevamentoRoute
-  '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/braceria/legacy': typeof BraceriaLegacyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/allevamento': typeof AllevamentoRoute
-  '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/braceria/legacy': typeof BraceriaLegacyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/allevamento': typeof AllevamentoRoute
-  '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/braceria/legacy': typeof BraceriaLegacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/allevamento' | '/braceria' | '/caseificio' | '/macelleria'
+  fullPaths:
+    | '/'
+    | '/allevamento'
+    | '/caseificio'
+    | '/macelleria'
+    | '/braceria/legacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/allevamento' | '/braceria' | '/caseificio' | '/macelleria'
+  to: '/' | '/allevamento' | '/caseificio' | '/macelleria' | '/braceria/legacy'
   id:
     | '__root__'
     | '/'
     | '/allevamento'
-    | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/braceria/legacy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AllevamentoRoute: typeof AllevamentoRoute
-  BraceriaRoute: typeof BraceriaRoute
   CaseificioRoute: typeof CaseificioRoute
   MacelleriaRoute: typeof MacelleriaRoute
+  BraceriaLegacyRoute: typeof BraceriaLegacyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -101,13 +106,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CaseificioRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/braceria': {
-      id: '/braceria'
-      path: '/braceria'
-      fullPath: '/braceria'
-      preLoaderRoute: typeof BraceriaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/allevamento': {
       id: '/allevamento'
       path: '/allevamento'
@@ -122,26 +120,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/braceria/legacy': {
+      id: '/braceria/legacy'
+      path: '/braceria/legacy'
+      fullPath: '/braceria/legacy'
+      preLoaderRoute: typeof BraceriaLegacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AllevamentoRoute: AllevamentoRoute,
-  BraceriaRoute: BraceriaRoute,
   CaseificioRoute: CaseificioRoute,
   MacelleriaRoute: MacelleriaRoute,
+  BraceriaLegacyRoute: BraceriaLegacyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
