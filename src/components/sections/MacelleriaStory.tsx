@@ -604,7 +604,7 @@ export function MacelleriaStory() {
       >
         <div className="max-w-6xl mx-auto">
           <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/80 tracking-[0.35em] mb-6">
-            04 — I SALUMI
+            05 — I SALUMI
           </div>
           <h2
             data-bigword
@@ -687,7 +687,7 @@ export function MacelleriaStory() {
 
         <div className="relative max-w-6xl mx-auto">
           <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75 tracking-[0.35em] mb-6">
-            05 — DAL GRANO
+            06 — DAL GRANO
           </div>
           <h2
             data-bigword
@@ -759,7 +759,7 @@ export function MacelleriaStory() {
 
         <div className="relative max-w-5xl mx-auto text-center">
           <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.35em] mb-6" style={{ color: "color-mix(in oklab, var(--crema) 90%, transparent)" }}>
-            06 — DOPO LA SCELTA
+            07 — DOPO LA SCELTA
           </div>
           <h2
             data-bigword
