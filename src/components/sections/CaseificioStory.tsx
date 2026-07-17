@@ -445,15 +445,16 @@ export function CaseificioStory() {
             />
           ))}
 
-          {/* Header */}
-          <div className="absolute top-8 left-8 z-20 flex flex-col gap-2">
+          {/* Header (staccato dalla Navbar) */}
+          <div className="absolute top-24 left-8 z-20 flex flex-col gap-2 pr-6 max-w-[42%]">
             <div className="font-eyebrow text-[11px] text-[color:var(--marrone)]/70 tracking-[0.3em]">
               LA COLONNA BIANCA
             </div>
-            <div className="font-display text-2xl text-[color:var(--marrone)]" style={{ fontWeight: 300 }}>
+            <div className="font-display text-xl lg:text-2xl text-[color:var(--marrone)]" style={{ fontWeight: 300 }}>
               Quattro stati della stessa materia
             </div>
           </div>
+
           {/* Contatore */}
           <div data-counter className="absolute bottom-8 right-8 z-20 font-eyebrow text-[13px] text-[color:var(--marrone)]/75 tracking-[0.2em]">
             01 / 04
