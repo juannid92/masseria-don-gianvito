@@ -17,21 +17,21 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Masseria Don Gianvito — Allevamento, caseificio, macelleria e braceria a Noci",
+          "Masseria Don Gianvito — Allevamento, caseificio, macelleria e agriturismo a Noci",
       },
       {
         name: "description",
         content:
-          "Qui non arriva niente da fuori. Sorvola Masseria Don Gianvito: allevamento, caseificio, macelleria e braceria nella Murgia, a Noci (BA).",
+          "Qui non arriva niente da fuori. Sorvola Masseria Don Gianvito: allevamento, caseificio, macelleria e agriturismo nella Murgia, a Noci (BA).",
       },
       {
         property: "og:title",
-        content: "Masseria Don Gianvito — Dalla stalla alla brace",
+        content: "Masseria Don Gianvito — Dalla terra alla tavola",
       },
       {
         property: "og:description",
         content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria.",
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo.",
       },
       { property: "og:type", content: "website" },
     ],

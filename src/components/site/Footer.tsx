@@ -23,7 +23,7 @@ const INTERNE = [
   { href: "/allevamento", label: "Allevamento" },
   { href: "/caseificio", label: "Caseificio" },
   { href: "/macelleria", label: "Macelleria" },
-  { href: "/braceria", label: "Braceria" },
+  { href: "/agriturismo", label: "Agriturismo" },
 ] as const;
 
 export function Footer() {
@@ -144,7 +144,7 @@ export function Footer() {
               className="mt-4 font-eyebrow text-[10px] uppercase tracking-[0.32em] text-[color:var(--marrone)]/55"
             >
               Allevamento · Caseificio<br />
-              Macelleria · Braceria
+              Macelleria · Agriturismo
             </p>
           </div>
         </div>

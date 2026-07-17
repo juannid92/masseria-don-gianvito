@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria della Murgia.",
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
       },
       { name: "author", content: "Masseria Don Gianvito" },
       { name: "theme-color", content: "#1a1210" },
@@ -91,12 +91,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria della Murgia.",
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
       },
       {
         name: "twitter:description",
         content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria della Murgia.",
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:type", content: "website" },

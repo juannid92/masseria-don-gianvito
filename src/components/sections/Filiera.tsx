@@ -13,7 +13,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 type Ring = {
   n: string;
   title: string;
-  to: "/allevamento" | "/caseificio" | "/macelleria" | "/braceria";
+  to: "/allevamento" | "/caseificio" | "/macelleria" | "/agriturismo";
   lede: string;
   fact: string;
   alt: string;
@@ -50,11 +50,11 @@ const RINGS: Ring[] = [
   },
   {
     n: "04",
-    title: "Braceria",
-    to: "/braceria",
-    lede: "Scegli la carne al banco. La porti al fornello. Te la cuociono sulla brace a carboni.",
+    title: "Agriturismo",
+    to: "/agriturismo",
+    lede: "Cucina, tavola e braceria: la filiera diventa ospitalità. Scegli al banco, siedi, il pasto comincia.",
     fact: "mer–sab cena · domenica pranzo",
-    alt: "Braci ardenti nella braceria della masseria",
+    alt: "Sala dell’Agriturismo Masseria Don Gianvito",
     tone: "linear-gradient(135deg, #B33A1A 0%, #6E1A14 55%, #1A1210 100%)",
   },
 ];
