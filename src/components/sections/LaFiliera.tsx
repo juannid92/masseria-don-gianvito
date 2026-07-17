@@ -831,10 +831,18 @@ export function LaFiliera() {
             top: 0;
             min-height: 62dvh !important;
             height: 62dvh;
+            overflow: hidden;
           }
-          .filiera-stage > div.grid { display: none !important; }
-          .filiera-stage .filiera-material-wrap { display: flex !important; }
-          .filiera-material-wrap { min-height: 40dvh; }
+          .filiera-copy { display: none !important; }
+          .filiera-material-wrap {
+            grid-column: 1 / -1;
+            min-height: 40dvh;
+          }
+          .filiera-stage .grid {
+            grid-template-columns: 1fr !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+          }
           .filiera-matter {
             width: min(70vw, 340px) !important;
             height: min(38dvh, 300px) !important;
