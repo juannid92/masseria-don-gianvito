@@ -163,8 +163,9 @@ export function IlLuogo() {
     // ── HANDOFF Luogo → Filiera (bridge in uscita, additivo)
     // Il tratto cartografico esce dalla mappa, diventa solco marrone,
     // il fondo transita al carbone della Filiera. Nessun pin nuovo.
-    const bridge = root.querySelector<HTMLElement>("[data-luogo-exit]");
-    if (bridge) {
+    ctx.add(() => {
+      const bridge = root.querySelector<HTMLElement>("[data-luogo-exit]");
+      if (!bridge) return;
       const furrow = bridge.querySelector<SVGPathElement>("[data-furrow]");
       const bridgeBg = bridge.querySelector<HTMLElement>("[data-furrow-bg]");
       const notebook = root.querySelector<HTMLElement>("[data-l-notebook]");
@@ -213,7 +214,8 @@ export function IlLuogo() {
           },
         });
       }
-    }
+    });
+
 
     // Refresh sicuro dopo font + immagine
     const safeRefresh = () => {
