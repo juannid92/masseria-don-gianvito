@@ -13,7 +13,6 @@ import { Route as MacelleriaRouteImport } from './routes/macelleria'
 import { Route as CaseificioRouteImport } from './routes/caseificio'
 import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BraceriaLegacyRouteImport } from './routes/braceria.legacy'
 
 const MacelleriaRoute = MacelleriaRouteImport.update({
   id: '/macelleria',
@@ -35,25 +34,18 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BraceriaLegacyRoute = BraceriaLegacyRouteImport.update({
-  id: '/braceria/legacy',
-  path: '/braceria/legacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/allevamento': typeof AllevamentoRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
-  '/braceria/legacy': typeof BraceriaLegacyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/allevamento': typeof AllevamentoRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
-  '/braceria/legacy': typeof BraceriaLegacyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,25 +53,13 @@ export interface FileRoutesById {
   '/allevamento': typeof AllevamentoRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
-  '/braceria/legacy': typeof BraceriaLegacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/allevamento'
-    | '/caseificio'
-    | '/macelleria'
-    | '/braceria/legacy'
+  fullPaths: '/' | '/allevamento' | '/caseificio' | '/macelleria'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/allevamento' | '/caseificio' | '/macelleria' | '/braceria/legacy'
-  id:
-    | '__root__'
-    | '/'
-    | '/allevamento'
-    | '/caseificio'
-    | '/macelleria'
-    | '/braceria/legacy'
+  to: '/' | '/allevamento' | '/caseificio' | '/macelleria'
+  id: '__root__' | '/' | '/allevamento' | '/caseificio' | '/macelleria'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -87,7 +67,6 @@ export interface RootRouteChildren {
   AllevamentoRoute: typeof AllevamentoRoute
   CaseificioRoute: typeof CaseificioRoute
   MacelleriaRoute: typeof MacelleriaRoute
-  BraceriaLegacyRoute: typeof BraceriaLegacyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -120,13 +99,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/braceria/legacy': {
-      id: '/braceria/legacy'
-      path: '/braceria/legacy'
-      fullPath: '/braceria/legacy'
-      preLoaderRoute: typeof BraceriaLegacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -135,7 +107,6 @@ const rootRouteChildren: RootRouteChildren = {
   AllevamentoRoute: AllevamentoRoute,
   CaseificioRoute: CaseificioRoute,
   MacelleriaRoute: MacelleriaRoute,
-  BraceriaLegacyRoute: BraceriaLegacyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
