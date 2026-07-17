@@ -285,10 +285,10 @@ function Rito({ reduced }: { reduced: boolean }) {
       className="relative"
       style={{ background: "var(--carbone)" }}
     >
-      {/* DESKTOP STAGE */}
+      {/* DESKTOP STAGE — nasconde in reduced motion per evitare overlap dei 3 beat */}
       <div
         ref={stageRef}
-        className="hidden md:flex relative h-[100dvh] w-full overflow-hidden items-stretch"
+        className={`${reduced ? "hidden" : "hidden md:flex"} relative h-[100dvh] w-full overflow-hidden items-stretch`}
       >
         <div
           ref={bgRef}
