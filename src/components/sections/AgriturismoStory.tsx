@@ -10,7 +10,7 @@ import cotturaImg from "@/assets/brace-cottura.jpg";
 import aerialAsset from "@/assets/masseria-aerial.asset.json";
 
 /* ─────────────────────────────────────────────────────────────
- * /braceria — LA SERA
+ * /agriturismo — LA SERA
  * Una sala vuota che si accende.
  * ───────────────────────────────────────────────────────────── */
 
@@ -89,7 +89,7 @@ function Apertura() {
     >
       <img
         src={salaImg}
-        alt="Sala della Braceria Masseria Don Gianvito, prima del servizio"
+        alt="Sala dell’Agriturismo Masseria Don Gianvito, prima del servizio"
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           filter: "brightness(0.42) saturate(0.75) contrast(1.05)",
