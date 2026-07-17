@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MacelleriaRouteImport } from './routes/macelleria'
 import { Route as CaseificioRouteImport } from './routes/caseificio'
+import { Route as BraceriaRouteImport } from './routes/braceria'
 import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as AgriturismoRouteImport } from './routes/agriturismo'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ const MacelleriaRoute = MacelleriaRouteImport.update({
 const CaseificioRoute = CaseificioRouteImport.update({
   id: '/caseificio',
   path: '/caseificio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BraceriaRoute = BraceriaRouteImport.update({
+  id: '/braceria',
+  path: '/braceria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AllevamentoRoute = AllevamentoRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/agriturismo': typeof AgriturismoRoute
   '/allevamento': typeof AllevamentoRoute
+  '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/agriturismo': typeof AgriturismoRoute
   '/allevamento': typeof AllevamentoRoute
+  '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
 }
@@ -60,6 +68,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/agriturismo': typeof AgriturismoRoute
   '/allevamento': typeof AllevamentoRoute
+  '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
 }
@@ -69,15 +78,23 @@ export interface FileRouteTypes {
     | '/'
     | '/agriturismo'
     | '/allevamento'
+    | '/braceria'
     | '/caseificio'
     | '/macelleria'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/agriturismo' | '/allevamento' | '/caseificio' | '/macelleria'
+  to:
+    | '/'
+    | '/agriturismo'
+    | '/allevamento'
+    | '/braceria'
+    | '/caseificio'
+    | '/macelleria'
   id:
     | '__root__'
     | '/'
     | '/agriturismo'
     | '/allevamento'
+    | '/braceria'
     | '/caseificio'
     | '/macelleria'
   fileRoutesById: FileRoutesById
@@ -86,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AgriturismoRoute: typeof AgriturismoRoute
   AllevamentoRoute: typeof AllevamentoRoute
+  BraceriaRoute: typeof BraceriaRoute
   CaseificioRoute: typeof CaseificioRoute
   MacelleriaRoute: typeof MacelleriaRoute
 }
@@ -104,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/caseificio'
       fullPath: '/caseificio'
       preLoaderRoute: typeof CaseificioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/braceria': {
+      id: '/braceria'
+      path: '/braceria'
+      fullPath: '/braceria'
+      preLoaderRoute: typeof BraceriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/allevamento': {
@@ -134,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AgriturismoRoute: AgriturismoRoute,
   AllevamentoRoute: AllevamentoRoute,
+  BraceriaRoute: BraceriaRoute,
   CaseificioRoute: CaseificioRoute,
   MacelleriaRoute: MacelleriaRoute,
 }
