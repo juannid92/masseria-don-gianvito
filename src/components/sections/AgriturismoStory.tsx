@@ -1137,7 +1137,7 @@ function ZoomOut({ reduced }: { reduced: boolean }) {
             { n: "01", nome: "ALLEVAMENTO" },
             { n: "02", nome: "CASEIFICIO" },
             { n: "03", nome: "MACELLERIA" },
-            { n: "04", nome: "BRACERIA" },
+            { n: "04", nome: "AGRITURISMO" },
           ].map((l) => (
             <div
               key={l.nome}
