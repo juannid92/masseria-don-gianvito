@@ -694,6 +694,16 @@ export function IlLuogo() {
             vectorEffect="non-scaling-stroke"
           />
         </svg>
+        <style>{`
+          @media (prefers-reduced-motion: reduce) {
+            [data-luogo-exit] [data-furrow-bg] { opacity: 1 !important; }
+            [data-luogo-exit] [data-furrow] {
+              stroke: #2a1a10 !important;
+              stroke-width: 5 !important;
+              stroke-dashoffset: 0 !important;
+            }
+          }
+        `}</style>
       </div>
     </section>
   );
