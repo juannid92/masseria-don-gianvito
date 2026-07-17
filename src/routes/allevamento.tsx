@@ -8,21 +8,20 @@ import { AllevamentoStory } from "@/components/sections/AllevamentoStory";
 export const Route = createFileRoute("/allevamento")({
   head: () => ({
     meta: [
-      { title: "Allevamento — Capitolo 01 · Masseria Don Gianvito" },
+      { title: "Allevamento — Masseria Don Gianvito · Noci" },
       {
         name: "description",
         content:
-          "Dove tutto comincia: la terra di Noci, gli animali della Masseria Don Gianvito, il foraggio coltivato in casa. Il primo capitolo del racconto dalla terra alla brace.",
+          "La Discesa: dal cielo alla terra di Noci. Bovini, ovini, suini, equini e avicoli della Masseria Don Gianvito, con foraggio, ortaggi, frutta e grano tenero coltivati nei terreni.",
       },
-      {
-        property: "og:title",
-        content: "Allevamento · Dove tutto comincia",
-      },
+      { property: "og:title", content: "Allevamento · Dove il cielo tocca la terra" },
       {
         property: "og:description",
         content:
-          "Capitolo 01 della filiera Masseria Don Gianvito: terra, animali, foraggio, tempo.",
+          "Dall'aereo alla terra: cinque presenze animali, quattro colture, un unico paesaggio agricolo a Noci.",
       },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AllevamentoPage,
