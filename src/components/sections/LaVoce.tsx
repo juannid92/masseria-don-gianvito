@@ -324,17 +324,17 @@ export function LaVoce() {
         {/* Titolo generale (fuori dalla prospettiva) */}
         <div
           ref={headingRef}
-          className="voce-heading absolute left-8 top-8 z-40 max-w-[46ch] lg:left-14 lg:top-12"
+          className="voce-heading absolute left-8 top-8 z-40 max-w-[30ch] lg:left-14 lg:top-12"
           style={{ willChange: "transform, opacity" }}
         >
           <p className="font-eyebrow text-[11px] uppercase tracking-[0.32em] text-[color:var(--crema)]/50">
             06 — La Voce
           </p>
-          <h2 className="mt-3 font-display text-4xl leading-[1.02] text-[color:var(--crema)] lg:text-6xl">
+          <h2 className="mt-3 font-display text-3xl leading-[1.02] text-[color:var(--crema)] lg:text-5xl">
             Quello che resta<br />
             <span className="italic text-[color:var(--oro)]">dopo la tavola.</span>
           </h2>
-          <p className="mt-4 max-w-[32ch] font-display text-sm italic leading-relaxed text-[color:var(--crema)]/60 lg:text-base">
+          <p className="mt-4 max-w-[28ch] font-display text-xs italic leading-relaxed text-[color:var(--crema)]/60 lg:text-sm">
             Frammenti lasciati da chi ha scelto, assaggiato e condiviso la Masseria.
           </p>
         </div>
