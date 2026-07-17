@@ -531,7 +531,7 @@ export function MacelleriaStory() {
       >
         <div className="max-w-6xl mx-auto">
           <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/80 tracking-[0.35em] mb-6">
-            03 — IL TEMPO
+            04 — IL TEMPO
           </div>
           <h2
             data-bigword
@@ -545,19 +545,21 @@ export function MacelleriaStory() {
             {/* 15 grande + parola CIRCA */}
             <div className="md:col-span-7 relative">
               <div
-                className="font-eyebrow text-[color:var(--crema)]/75 tracking-[0.4em] text-sm md:text-base mb-2"
+                className="font-eyebrow text-[color:var(--crema)] tracking-[0.4em] mb-3"
+                style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)", fontWeight: 500 }}
                 aria-hidden
               >
                 CIRCA
               </div>
               <div
                 className="font-display leading-[0.8] text-[color:var(--crema)]"
-                style={{ fontSize: "clamp(8rem, 22vw, 20rem)", fontWeight: 300, letterSpacing: "-0.03em" }}
+                style={{ fontSize: "clamp(7rem, 19vw, 17rem)", fontWeight: 300, letterSpacing: "-0.03em" }}
               >
                 15
               </div>
               <div
-                className="font-eyebrow text-[color:var(--crema)]/85 tracking-[0.35em] text-sm md:text-base mt-2"
+                className="font-eyebrow text-[color:var(--crema)] tracking-[0.35em] mt-3"
+                style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)", fontWeight: 500 }}
                 aria-hidden
               >
                 GIORNI · INDICATIVO
@@ -602,7 +604,7 @@ export function MacelleriaStory() {
       >
         <div className="max-w-6xl mx-auto">
           <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/80 tracking-[0.35em] mb-6">
-            04 — I SALUMI
+            05 — I SALUMI
           </div>
           <h2
             data-bigword
@@ -685,7 +687,7 @@ export function MacelleriaStory() {
 
         <div className="relative max-w-6xl mx-auto">
           <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75 tracking-[0.35em] mb-6">
-            05 — DAL GRANO
+            06 — DAL GRANO
           </div>
           <h2
             data-bigword
@@ -757,7 +759,7 @@ export function MacelleriaStory() {
 
         <div className="relative max-w-5xl mx-auto text-center">
           <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.35em] mb-6" style={{ color: "color-mix(in oklab, var(--crema) 90%, transparent)" }}>
-            06 — DOPO LA SCELTA
+            07 — DOPO LA SCELTA
           </div>
           <h2
             data-bigword
