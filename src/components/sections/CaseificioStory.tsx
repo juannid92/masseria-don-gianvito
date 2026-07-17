@@ -520,7 +520,8 @@ export function CaseificioStory() {
           </div>
 
           {/* Copy sovrapposte (dx) */}
-          <div className="absolute right-24 top-1/2 -translate-y-1/2 z-10 max-w-md">
+          <div className="absolute right-24 top-1/2 -translate-y-1/2 z-10 w-[min(28rem,32vw)] min-h-[280px]">
+
             {STATI.map((s, i) => (
               <div
                 key={s.id}
