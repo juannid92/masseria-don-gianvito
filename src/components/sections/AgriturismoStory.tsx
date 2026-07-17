@@ -74,7 +74,7 @@ export function AgriturismoStory() {
       <UltimoGesto />
       <Prenota />
       <ZoomOut reduced={reduced} />
-      <NavAnime current="braceria" />
+      <NavAnime current="agriturismo" />
     </div>
   );
 }
