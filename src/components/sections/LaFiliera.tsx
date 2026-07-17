@@ -826,14 +826,19 @@ export function LaFiliera() {
           transition: background-color 400ms ease;
         }
         @media (max-width: 899px) {
-          .filiera-stage { position: sticky; top: 0; min-height: 100dvh; }
-          .filiera-material-wrap { min-height: 34dvh; }
-          .filiera-matter {
-            width: min(60vw, 320px) !important;
-            height: min(34dvh, 260px) !important;
+          .filiera-stage {
+            position: sticky;
+            top: 0;
+            min-height: 62dvh !important;
+            height: 62dvh;
           }
-          .filiera-copy { min-height: 0 !important; }
-          .filiera-mobile-blocks { margin-top: -100dvh; }
+          .filiera-stage > div.grid { display: none !important; }
+          .filiera-stage .filiera-material-wrap { display: flex !important; }
+          .filiera-material-wrap { min-height: 40dvh; }
+          .filiera-matter {
+            width: min(70vw, 340px) !important;
+            height: min(38dvh, 300px) !important;
+          }
         }
       `}</style>
     </section>
