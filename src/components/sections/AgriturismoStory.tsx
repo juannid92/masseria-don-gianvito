@@ -121,8 +121,9 @@ function Apertura() {
           </em>
         </h1>
         <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-lg leading-relaxed opacity-85">
-          La sera comincia in silenzio. Il banco è pronto, i tavoli sono vuoti e la cucina prepara il
-          servizio.
+          L’Agriturismo è il luogo in cui la filiera diventa ospitalità: cucina, tavola e braceria
+          si incontrano nella stessa esperienza. La sera comincia in silenzio, il banco è pronto e
+          la cucina prepara il servizio.
         </p>
         <div className="mt-10 md:mt-14 flex items-center gap-4">
           <span className="h-px w-10 bg-[color:var(--oro)]/60" />
