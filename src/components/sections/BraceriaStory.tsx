@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { forwardRef, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
