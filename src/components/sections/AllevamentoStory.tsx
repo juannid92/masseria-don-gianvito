@@ -98,17 +98,20 @@ export function AllevamentoStory() {
         });
 
         if (horizonTitle) {
+          // Titolo visibile di default (SSR / no-GSAP safe): la reveal parte da "già visibile"
+          // e aggiunge solo un movimento leggero durante la discesa.
           gsap.fromTo(
             horizonTitle,
-            { clipPath: "inset(0 100% 0 0)", y: 20 },
+            { y: 24, autoAlpha: 0.85 },
             {
-              clipPath: "inset(0 0% 0 0)",
               y: 0,
+              autoAlpha: 1,
               ease: "power2.out",
-              scrollTrigger: { trigger: act1, start: "55% top", end: "bottom top", scrub: 0.6 },
+              scrollTrigger: { trigger: act1, start: "top top", end: "40% top", scrub: 0.6 },
             },
           );
         }
+
       }
 
       /* ═══ ACT 2 · IL PRINCIPIO — parole grandi ═══ */
