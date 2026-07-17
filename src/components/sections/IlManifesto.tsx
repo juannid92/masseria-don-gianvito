@@ -592,13 +592,15 @@ export function IlManifesto() {
 
         /* Mobile: campo materico sticky, dichiarazioni in verticale */
         @media (max-width: 767px) {
-          .mf-material { position: sticky; top: 0; height: 100dvh; }
-          .mf-inner { grid-template-columns: 1fr; gap: 0; padding-top: 12vh; padding-bottom: 8vh; }
-          .mf-decls { display: flex; flex-direction: column; gap: 14vh; margin-top: 8vh; position: relative; }
-          .mf-decl { position: relative !important; opacity: 1 !important; transform: none !important; }
+          .mf-stage { overflow: visible !important; min-height: auto !important; }
+          .mf-material { position: sticky !important; top: 0; height: 100dvh; inset: auto !important; }
+          .mf-inner { grid-template-columns: 1fr !important; gap: 0; padding: 12vh 20px 8vh !important; min-height: auto !important; margin-top: -100dvh; }
+          .mf-decls { display: flex !important; flex-direction: column; gap: 12vh; margin-top: 6vh; position: relative; }
+          .mf-decl { position: relative !important; opacity: 1 !important; transform: none !important; inset: auto !important; }
           .mf-title { font-size: clamp(3rem, 14vw, 5.2rem) !important; }
-          .mf-closure { position: relative !important; opacity: 1 !important; padding: 18vh 24px 12vh; background: var(--crema); }
+          .mf-closure { position: relative !important; opacity: 1 !important; padding: 14vh 24px 10vh !important; background: var(--crema); inset: auto !important; }
         }
+
 
         /* Marquee */
         @keyframes mf-marquee-l {
