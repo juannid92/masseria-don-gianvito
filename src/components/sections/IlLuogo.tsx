@@ -651,6 +651,50 @@ export function IlLuogo() {
       <div className="mx-auto max-w-[600px] px-6 py-10 md:hidden" data-mobile-reveal>
         <MapEditorial />
       </div>
+
+      {/* ── HANDOFF: Luogo → Filiera ─────────────────────────────
+          Bridge decorativo in flusso normale, fuori dal pin.
+          La traccia della mappa esce dal margine e diventa un solco
+          verticale marrone che si ispessisce mentre il fondo transita
+          verso il carbone della Filiera. Puramente presentazionale. */}
+      <div
+        data-luogo-exit
+        aria-hidden="true"
+        className="pointer-events-none relative w-full overflow-hidden"
+        style={{
+          height: "clamp(280px, 45vh, 520px)",
+          background: "var(--marrone, #2a1f1a)",
+        }}
+      >
+        {/* Fondo che vira al carbone della Filiera */}
+        <div
+          data-furrow-bg
+          className="absolute inset-0"
+          style={{
+            opacity: 0,
+            background:
+              "linear-gradient(180deg, #2a1f1a 0%, #241812 55%, #1a1210 100%)",
+          }}
+        />
+        {/* Solco verticale: parte in alto (continuazione ideale della
+            traccia cartografica), scende centrata e "sfocia" nel punto
+            da cui emergerà la materia della Filiera (asse x = 50%). */}
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <path
+            data-furrow
+            d="M 62 0 C 60 22, 54 42, 52 62 C 51 80, 50 92, 50 100"
+            fill="none"
+            stroke="#6b7d3a"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+      </div>
     </section>
   );
 }
