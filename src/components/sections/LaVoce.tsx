@@ -58,11 +58,11 @@ const TRANSITION_WORDS = ["TENERISSIMA", "KM ZERO", "CORDIALE", "SPETTACOLARE"];
  * Card larga ~ min(430px, 30vw). Distanza tra centri sempre > 18vw.
  * Nessuna card entra nella zona del titolo (top ~10-20%) o del contatore (bottom ~85-95%). */
 const POSITIONS: Array<{ lx: number; ly: number; rx: number; ry: number }> = [
-  { lx: 10, ly: 30, rx: 62, ry: 66 }, // W1 · sx alta, dx bassa
-  { lx: 9,  ly: 66, rx: 64, ry: 30 }, // W2 · sx bassa, dx alta
-  { lx: 11, ly: 44, rx: 63, ry: 56 }, // W3 · quasi centrali, distanziate
-  { lx: 10, ly: 28, rx: 64, ry: 52 }, // W4 · sx alta, dx centrale
-  { lx: 8,  ly: 40, rx: 66, ry: 60 }, // W5 · apertura finale
+  { lx: 10, ly: 48, rx: 62, ry: 68 }, // W1 · sx (rispetto a dx) alta, dx bassa
+  { lx: 9,  ly: 68, rx: 64, ry: 32 }, // W2 · sx bassa, dx alta
+  { lx: 11, ly: 52, rx: 63, ry: 46 }, // W3 · quasi centrali, distanziate
+  { lx: 10, ly: 46, rx: 64, ry: 56 }, // W4 · sx alta, dx centrale
+  { lx: 8,  ly: 58, rx: 66, ry: 40 }, // W5 · apertura finale
 ];
 
 /* Z iniziali (spec §8) — valori controllati, no clipping. */
