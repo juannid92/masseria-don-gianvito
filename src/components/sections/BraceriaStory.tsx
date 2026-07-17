@@ -442,18 +442,17 @@ function Rito({ reduced }: { reduced: boolean }) {
   );
 }
 
-const BeatBox = (function () {
-  const Comp = (
-    props: {
-      kicker: string;
-      title: string;
-      titleAlt: string;
-      body: string;
-      tag: string;
-      tagAccent?: boolean;
-    },
-    ref: React.Ref<HTMLDivElement>,
-  ) => (
+type BeatBoxProps = {
+  kicker: string;
+  title: string;
+  titleAlt: string;
+  body: string;
+  tag: string;
+  tagAccent?: boolean;
+};
+
+const BeatBox = forwardRef<HTMLDivElement, BeatBoxProps>(function BeatBox(props, ref) {
+  return (
     <div
       ref={ref}
       className="absolute inset-0 flex flex-col justify-center pl-6"
@@ -487,17 +486,8 @@ const BeatBox = (function () {
       </div>
     </div>
   );
-  return require("react").forwardRef(Comp) as React.ForwardRefExoticComponent<
-    {
-      kicker: string;
-      title: string;
-      titleAlt: string;
-      body: string;
-      tag: string;
-      tagAccent?: boolean;
-    } & React.RefAttributes<HTMLDivElement>
-  >;
-})();
+});
+
 
 /* ─────────────────── 03. IL SERVIZIO ─────────────────── */
 function Servizio({ reduced }: { reduced: boolean }) {
