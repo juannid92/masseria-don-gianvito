@@ -77,21 +77,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Masseria Don Gianvito — Dalla terra alla brace" },
+      { title: "Masseria Don Gianvito — Dalla terra alla tavola" },
       {
         name: "description",
         content:
-          "Braceria, macelleria e azienda agricola a filiera propria a Noci (BA), Puglia.",
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria della Murgia.",
       },
       { name: "author", content: "Masseria Don Gianvito" },
       { name: "theme-color", content: "#1a1210" },
-      { property: "og:title", content: "Masseria Don Gianvito — Dalla terra alla brace" },
-      { name: "twitter:title", content: "Masseria Don Gianvito — Dalla terra alla brace" },
-      { name: "description", content: "Masseria Don Gianvito is a web application for managing and displaying information about a property." },
-      { property: "og:description", content: "Masseria Don Gianvito is a web application for managing and displaying information about a property." },
-      { name: "twitter:description", content: "Masseria Don Gianvito is a web application for managing and displaying information about a property." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c3ebbd95-47a1-48ca-a814-6f95ac52c1e4/id-preview-ac6dd061--e2280e40-83d2-4fe1-b2d5-2ef13ad332a3.lovable.app-1783181912724.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c3ebbd95-47a1-48ca-a814-6f95ac52c1e4/id-preview-ac6dd061--e2280e40-83d2-4fe1-b2d5-2ef13ad332a3.lovable.app-1783181912724.png" },
+      { property: "og:site_name", content: "Masseria Don Gianvito" },
+      { property: "og:title", content: "Masseria Don Gianvito — Dalla terra alla tavola" },
+      { name: "twitter:title", content: "Masseria Don Gianvito — Dalla terra alla tavola" },
+      {
+        property: "og:description",
+        content:
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria della Murgia.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e braceria della Murgia.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:type", content: "website" },
     ],
