@@ -160,6 +160,63 @@ export function IlLuogo() {
         .forEach((el) => (el.style.visibility = "visible"));
     }
 
+    // ── HANDOFF Luogo → Filiera (bridge in uscita, additivo)
+    // Il tratto cartografico esce dalla mappa, diventa solco marrone,
+    // il fondo transita al carbone della Filiera. Nessun pin nuovo.
+    ctx.add(() => {
+      const bridge = root.querySelector<HTMLElement>("[data-luogo-exit]");
+      if (!bridge) return;
+      const furrow = bridge.querySelector<SVGPathElement>("[data-furrow]");
+      const bridgeBg = bridge.querySelector<HTMLElement>("[data-furrow-bg]");
+      const notebook = root.querySelector<HTMLElement>("[data-l-notebook]");
+      if (furrow) {
+        const len = furrow.getTotalLength();
+        furrow.style.strokeDasharray = `${len}`;
+        furrow.style.strokeDashoffset = `${len}`;
+        gsap.to(furrow, {
+          strokeDashoffset: 0,
+          strokeWidth: 6,
+          stroke: "#2a1a10",
+          ease: "none",
+          scrollTrigger: {
+            trigger: bridge,
+            start: "top 92%",
+            end: "bottom bottom",
+            scrub: 0.65,
+          },
+        });
+      }
+      if (bridgeBg) {
+        gsap.fromTo(
+          bridgeBg,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: bridge,
+              start: "top 80%",
+              end: "bottom bottom",
+              scrub: 0.65,
+            },
+          }
+        );
+      }
+      if (notebook) {
+        gsap.to(notebook, {
+          autoAlpha: 0.35,
+          ease: "none",
+          scrollTrigger: {
+            trigger: bridge,
+            start: "top 88%",
+            end: "top 40%",
+            scrub: 0.5,
+          },
+        });
+      }
+    });
+
+
     // Refresh sicuro dopo font + immagine
     const safeRefresh = () => {
       if (!mounted) return;
@@ -593,6 +650,60 @@ export function IlLuogo() {
       {/* Mappa mobile sotto il visual */}
       <div className="mx-auto max-w-[600px] px-6 py-10 md:hidden" data-mobile-reveal>
         <MapEditorial />
+      </div>
+
+      {/* ── HANDOFF: Luogo → Filiera ─────────────────────────────
+          Bridge decorativo in flusso normale, fuori dal pin.
+          La traccia della mappa esce dal margine e diventa un solco
+          verticale marrone che si ispessisce mentre il fondo transita
+          verso il carbone della Filiera. Puramente presentazionale. */}
+      <div
+        data-luogo-exit
+        aria-hidden="true"
+        className="pointer-events-none relative w-full overflow-hidden"
+        style={{
+          height: "clamp(280px, 45vh, 520px)",
+          background: "var(--marrone, #2a1f1a)",
+        }}
+      >
+        {/* Fondo che vira al carbone della Filiera */}
+        <div
+          data-furrow-bg
+          className="absolute inset-0"
+          style={{
+            opacity: 0,
+            background:
+              "linear-gradient(180deg, #2a1f1a 0%, #241812 55%, #1a1210 100%)",
+          }}
+        />
+        {/* Solco verticale: parte in alto (continuazione ideale della
+            traccia cartografica), scende centrata e "sfocia" nel punto
+            da cui emergerà la materia della Filiera (asse x = 50%). */}
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <path
+            data-furrow
+            d="M 62 0 C 60 22, 54 42, 52 62 C 51 80, 50 92, 50 100"
+            fill="none"
+            stroke="#6b7d3a"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+        <style>{`
+          @media (prefers-reduced-motion: reduce) {
+            [data-luogo-exit] [data-furrow-bg] { opacity: 1 !important; }
+            [data-luogo-exit] [data-furrow] {
+              stroke: #2a1a10 !important;
+              stroke-width: 5 !important;
+              stroke-dashoffset: 0 !important;
+            }
+          }
+        `}</style>
       </div>
     </section>
   );

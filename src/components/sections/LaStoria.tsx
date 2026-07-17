@@ -196,6 +196,46 @@ export function LaStoria() {
         }
       );
 
+      // ── HANDOFF Storia → Luogo (bridge in uscita, additivo)
+      // OGGI perde opacità, la linea nasce e sopravvive oltre il rilascio del pin.
+      const exit = wrapper.querySelector<HTMLElement>("[data-storia-exit]");
+      if (exit) {
+        const echo = exit.querySelector<HTMLElement>("[data-oggi-echo]");
+        const line = exit.querySelector<HTMLElement>("[data-horizon-birth]");
+        if (echo) {
+          gsap.fromTo(
+            echo,
+            { autoAlpha: 0.16 },
+            {
+              autoAlpha: 0,
+              ease: "none",
+              scrollTrigger: {
+                trigger: exit,
+                start: "top 90%",
+                end: "bottom 60%",
+                scrub: 0.6,
+              },
+            }
+          );
+        }
+        if (line) {
+          gsap.fromTo(
+            line,
+            { scaleX: 0 },
+            {
+              scaleX: 1,
+              ease: "none",
+              scrollTrigger: {
+                trigger: exit,
+                start: "top 95%",
+                end: "center 65%",
+                scrub: 0.6,
+              },
+            }
+          );
+        }
+      }
+
       // Safe refresh after fonts
       (async () => {
         try {
@@ -516,12 +556,58 @@ export function LaStoria() {
         </div>
       </div>
 
+      {/* ── HANDOFF: Storia → Luogo ─────────────────────────────
+          Bridge decorativo in flusso normale, fuori dal pin.
+          Traghetta il gradiente finale del p4 (cream/oliva) verso
+          il marrone del Luogo, mentre "OGGI" si spegne e la linea
+          d'orizzonte prende vita. Puramente presentazionale. */}
+      <div
+        data-storia-exit
+        aria-hidden="true"
+        className="pointer-events-none relative w-full overflow-hidden"
+        style={{
+          height: "clamp(220px, 32vh, 360px)",
+          background:
+            "linear-gradient(180deg, #6b7340 0%, #4a4530 45%, #3a2e22 78%, #2a1f1a 100%)",
+        }}
+      >
+        <span
+          data-oggi-echo
+          className="pointer-events-none absolute inset-x-0 top-[8%] flex select-none justify-center will-change-transform"
+          style={{
+            fontFamily: "'Fraunces', serif",
+            fontWeight: 300,
+            fontSize: "clamp(5rem, 20vw, 18rem)",
+            lineHeight: 0.85,
+            letterSpacing: "-0.05em",
+            color: "color-mix(in oklab, #1e130c 12%, transparent)",
+            whiteSpace: "nowrap",
+            opacity: 0,
+          }}
+        >
+          OGGI
+        </span>
+        <div
+          data-horizon-birth
+          className="pointer-events-none absolute left-0 right-0 origin-center will-change-transform"
+          style={{
+            bottom: "38%",
+            height: "1px",
+            transform: "scaleX(0)",
+            background:
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro, #c9a961) 55%, transparent) 18%, color-mix(in oklab, var(--oro, #c9a961) 55%, transparent) 82%, transparent 100%)",
+          }}
+        />
+      </div>
+
       {/* Reduced-motion fallback: hidden by default, shown via CSS if needed */}
       <style>{`
         @media (prefers-reduced-motion: reduce) {
           .history-track { flex-direction: column; width: 100% !important; transform: none !important; }
           .history-track [data-panel] { width: 100% !important; height: auto !important; min-height: 80dvh; }
           .history-stage { height: auto !important; }
+          [data-storia-exit] [data-oggi-echo] { opacity: 0.10 !important; visibility: visible !important; }
+          [data-storia-exit] [data-horizon-birth] { transform: scaleX(1) !important; }
         }
       `}</style>
     </section>
