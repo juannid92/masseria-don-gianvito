@@ -1194,12 +1194,12 @@ function ZoomOut({ reduced }: { reduced: boolean }) {
 }
 
 /* ─────────────────── NAV ANIME ─────────────────── */
-function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "braceria" }) {
+function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "agriturismo" }) {
   const items = [
     { key: "allevamento", n: "01", nome: "ALLEVAMENTO", sub: "La terra e gli animali", to: "/allevamento" as const },
     { key: "caseificio", n: "02", nome: "CASEIFICIO", sub: "Il bianco prende forma", to: "/caseificio" as const },
     { key: "macelleria", n: "03", nome: "MACELLERIA", sub: "La scelta avviene a vista", to: "/macelleria" as const },
-    { key: "braceria", n: "04", nome: "BRACERIA", sub: "Pagina corrente", to: "/braceria" as const },
+    { key: "agriturismo", n: "04", nome: "AGRITURISMO", sub: "Pagina corrente", to: "/agriturismo" as const },
   ];
 
   return (
