@@ -160,6 +160,61 @@ export function IlLuogo() {
         .forEach((el) => (el.style.visibility = "visible"));
     }
 
+    // ── HANDOFF Luogo → Filiera (bridge in uscita, additivo)
+    // Il tratto cartografico esce dalla mappa, diventa solco marrone,
+    // il fondo transita al carbone della Filiera. Nessun pin nuovo.
+    const bridge = root.querySelector<HTMLElement>("[data-luogo-exit]");
+    if (bridge) {
+      const furrow = bridge.querySelector<SVGPathElement>("[data-furrow]");
+      const bridgeBg = bridge.querySelector<HTMLElement>("[data-furrow-bg]");
+      const notebook = root.querySelector<HTMLElement>("[data-l-notebook]");
+      if (furrow) {
+        const len = furrow.getTotalLength();
+        furrow.style.strokeDasharray = `${len}`;
+        furrow.style.strokeDashoffset = `${len}`;
+        gsap.to(furrow, {
+          strokeDashoffset: 0,
+          strokeWidth: 6,
+          stroke: "#2a1a10",
+          ease: "none",
+          scrollTrigger: {
+            trigger: bridge,
+            start: "top 92%",
+            end: "bottom bottom",
+            scrub: 0.65,
+          },
+        });
+      }
+      if (bridgeBg) {
+        gsap.fromTo(
+          bridgeBg,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: bridge,
+              start: "top 80%",
+              end: "bottom bottom",
+              scrub: 0.65,
+            },
+          }
+        );
+      }
+      if (notebook) {
+        gsap.to(notebook, {
+          autoAlpha: 0.35,
+          ease: "none",
+          scrollTrigger: {
+            trigger: bridge,
+            start: "top 88%",
+            end: "top 40%",
+            scrub: 0.5,
+          },
+        });
+      }
+    }
+
     // Refresh sicuro dopo font + immagine
     const safeRefresh = () => {
       if (!mounted) return;
