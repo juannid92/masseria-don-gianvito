@@ -425,7 +425,7 @@ export function CaseificioStory() {
         style={{ background: "linear-gradient(180deg, #f4ecd8 0%, #efe6ce 100%)" }}
       >
         {/* Desktop stage pinned */}
-        <div data-column-stage className="hidden md:block relative h-[100dvh] w-full overflow-hidden">
+        <div data-column-stage className={`${reduced ? "hidden" : "hidden md:block"} relative h-[100dvh] w-full overflow-hidden`}>
           {/* Vapore molto leggero (4 forme) */}
           {[0,1,2,3].map((i) => (
             <div
