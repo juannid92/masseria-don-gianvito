@@ -994,7 +994,7 @@ function Prenota() {
       <div className="max-w-4xl mx-auto grid md:grid-cols-12 gap-10 items-end">
         <div className="md:col-span-7">
           <div className="font-eyebrow text-[11px] tracking-[0.35em] opacity-75 mb-6">
-            07 — PRENOTA
+            08 — PRENOTA
           </div>
           <h2
             className="font-display leading-[1.02] text-[clamp(2.2rem,5vw,4.5rem)]"
