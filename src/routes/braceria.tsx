@@ -8,20 +8,22 @@ import { BraceriaStory } from "@/components/sections/BraceriaStory";
 export const Route = createFileRoute("/braceria")({
   head: () => ({
     meta: [
-      { title: "Braceria — Capitolo 04 · Masseria Don Gianvito" },
+      { title: "Braceria — La sera · Masseria Don Gianvito" },
       {
         name: "description",
         content:
-          "La brace, ogni sera: buio, fuoco, cottura a vista e menù della sera a Noci. Il capitolo finale del racconto dalla terra alla brace — Masseria Don Gianvito.",
+          "La sala si accende. Scegli al banco, siedi, la carne cuoce sui carboni. Menu della sera, pranzo domenicale e Pecora in Pignata alla Masseria Don Gianvito a Noci.",
       },
-      { property: "og:title", content: "Braceria · La brace, ogni sera" },
+      { property: "og:title", content: "Braceria · La sera prende posto" },
       {
         property: "og:description",
         content:
-          "Capitolo 04 della filiera Masseria Don Gianvito: brace di quercia, cottura a vista, menù della sera, prenotazione tavolo.",
+          "La quarta anima della Masseria: scegli, siedi, cottura. Antipasti, formaggi, cucina e arrosto sui carboni.",
       },
       { property: "og:type", content: "restaurant" },
+      { property: "og:url", content: "https://masseriadongianvito.lovable.app/braceria" },
     ],
+    links: [{ rel: "canonical", href: "https://masseriadongianvito.lovable.app/braceria" }],
   }),
   component: BraceriaPage,
 });
