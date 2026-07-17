@@ -285,10 +285,10 @@ function Rito({ reduced }: { reduced: boolean }) {
       className="relative"
       style={{ background: "var(--carbone)" }}
     >
-      {/* DESKTOP STAGE */}
+      {/* DESKTOP STAGE — nasconde in reduced motion per evitare overlap dei 3 beat */}
       <div
         ref={stageRef}
-        className="hidden md:flex relative h-[100dvh] w-full overflow-hidden items-stretch"
+        className={`${reduced ? "hidden" : "hidden md:flex"} relative h-[100dvh] w-full overflow-hidden items-stretch`}
       >
         <div
           ref={bgRef}
@@ -390,8 +390,9 @@ function Rito({ reduced }: { reduced: boolean }) {
         </div>
       </div>
 
-      {/* MOBILE / reduced: verticale */}
-      <div className="md:hidden px-6 py-16 space-y-14">
+      {/* MOBILE / reduced: verticale (mostrato anche su desktop se reduced-motion) */}
+      <div className={`${reduced ? "block" : "md:hidden"} px-6 py-16 space-y-14 max-w-2xl mx-auto`}>
+
         <div className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70">02 — IL RITO</div>
         <h2 className="font-display text-4xl leading-[1.05]" style={{ fontWeight: 300 }}>
           Tre gesti. <em className="italic">Una sola sera.</em>
