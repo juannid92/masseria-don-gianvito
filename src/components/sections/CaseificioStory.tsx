@@ -553,8 +553,9 @@ export function CaseificioStory() {
           `}</style>
         </div>
 
-        {/* Mobile — quattro stati verticali statici */}
-        <div className="md:hidden px-5 py-20 space-y-16">
+        {/* Mobile — quattro stati verticali statici (anche desktop in reduced motion) */}
+        <div className={`${reduced ? "block" : "md:hidden"} px-5 py-20 space-y-16`}>
+
           <div className="font-eyebrow text-[10px] text-[color:var(--marrone)]/70 tracking-[0.35em]">
             LA COLONNA BIANCA — QUATTRO STATI
           </div>
