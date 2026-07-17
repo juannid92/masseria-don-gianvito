@@ -1,484 +1,697 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /* ──────────────────────────────────────────────────────────────
- * LA FILIERA — "Morph di materia"
- * Palcoscenico pinnato al centro: 8 stadi che si trasformano
- * l'uno nell'altro (Terra → Pascolo → Bestie → Latte → Formaggio
- * → Carne → Brace → Tavola). Testo laterale che cambia, barra
- * verticale di progresso, scintille solo sullo stadio brace,
- * filo d'oro che chiude il cerchio.
+ * LA FILIERA — "Una materia che cambia forma"
+ * Un unico palco centrale. 8 stati (Terra → Pascolo → Allevamento
+ * → Latte → Formaggio → Carne → Cottura → Tavola). La stessa
+ * materia si trasforma: bordo organico + colore + traccia continua.
+ * Terracotta appare SOLO nello stato 07 (Cottura).
  * ───────────────────────────────────────────────────────────── */
 
-type Stage = {
+type State = {
   n: string;
   key: string;
-  label: string;
-  headline: string; // parola in italic accento
-  headPre: string;
-  headPost: string;
-  sub?: string;
-  bg: string; // gradient del palcoscenico
-  overlay?: string; // texture aggiuntiva (radial/svg)
-  tint: string; // colore accento per la barra
+  cat: string;
+  title: [string, string];
+  body: string;
+  detail?: string;
+  // materia
+  radius: string;
+  scaleX: number;
+  scaleY: number;
+  rotate: number;
+  skewX: number;
+  bg: string; // gradient interno materia
+  core: string; // colore nucleo interno
+  coreOpacity: number;
+  ring: string; // colore contorno
+  stageBg: string; // colore fondo palco
+  textOnLight?: boolean;
+  products?: string[]; // annotazioni intorno alla materia
 };
 
-const STAGES: Stage[] = [
+const STATES: State[] = [
   {
     n: "01",
     key: "terra",
-    label: "TERRA",
-    headPre: "Dalla ",
-    headline: "terra",
-    headPost: ".",
-    sub: "Foraggio, ortaggi, grano tenero. Tutto coltivato in masseria.",
-    bg: "radial-gradient(120% 90% at 50% 60%, #5a3a25 0%, #3D2A1E 45%, #1A1210 100%)",
-    overlay:
-      "radial-gradient(2px 2px at 20% 30%, rgba(255,220,180,.08) 0, transparent 60%), radial-gradient(3px 3px at 70% 60%, rgba(255,220,180,.06) 0, transparent 60%)",
-    tint: "#B78B5A",
+    cat: "01 — TERRA",
+    title: ["Tutto comincia", "da ciò che coltiviamo."],
+    body: "Foraggio, ortaggi, frutta e grano tenero nascono nei terreni della Masseria.",
+    detail: "La nostra farina viene utilizzata anche per focaccia e frittelle.",
+    radius: "58% 42% 62% 38% / 38% 55% 45% 62%",
+    scaleX: 1.15,
+    scaleY: 0.62,
+    rotate: -3,
+    skewX: -2,
+    bg: "radial-gradient(70% 60% at 50% 55%, #6b4a2f 0%, #3D2A1E 55%, #1a1210 100%)",
+    core: "#8a6a45",
+    coreOpacity: 0.35,
+    ring: "rgba(196,154,74,0.20)",
+    stageBg: "linear-gradient(180deg, #241812 0%, #1A1210 100%)",
   },
   {
     n: "02",
     key: "pascolo",
-    label: "PASCOLO",
-    headPre: "Che nutre il ",
-    headline: "pascolo",
-    headPost: ".",
-    bg: "radial-gradient(120% 90% at 50% 55%, #8a9a4c 0%, #6B7340 45%, #2a2a1a 100%)",
-    overlay:
-      "repeating-linear-gradient(92deg, rgba(0,0,0,.08) 0 2px, transparent 2px 6px)",
-    tint: "#9DA85A",
+    cat: "02 — PASCOLO",
+    title: ["La terra", "diventa nutrimento."],
+    body: "Ciò che viene coltivato continua nel lavoro quotidiano dell’allevamento.",
+    radius: "55% 45% 55% 45% / 42% 50% 50% 58%",
+    scaleX: 1.25,
+    scaleY: 0.68,
+    rotate: -1,
+    skewX: -1,
+    bg: "radial-gradient(72% 60% at 50% 55%, #7a7a3e 0%, #4a4a24 45%, #211a10 100%)",
+    core: "#9DA85A",
+    coreOpacity: 0.38,
+    ring: "rgba(157,168,90,0.28)",
+    stageBg: "linear-gradient(180deg, #2a2618 0%, #1c1810 100%)",
   },
   {
     n: "03",
-    key: "bestie",
-    label: "BESTIE",
-    headPre: "Che nutre le ",
-    headline: "bestie",
-    headPost: ".",
-    sub: "Bovini Pezzata Rossa × Frisona. Ovini, suini, equini, avicoli. Centinaia di capi.",
-    bg: "radial-gradient(120% 90% at 50% 60%, #6a6a3a 0%, #3D2A1E 60%, #1A1210 100%)",
-    overlay:
-      "radial-gradient(60% 22% at 30% 78%, rgba(20,10,5,.7) 0, transparent 70%), radial-gradient(50% 20% at 70% 82%, rgba(20,10,5,.7) 0, transparent 70%)",
-    tint: "#C49A4A",
+    key: "allevamento",
+    cat: "03 — ALLEVAMENTO",
+    title: ["Animali cresciuti", "nel luogo che conosciamo."],
+    body: "Bovini, ovini, suini, equini e avicoli fanno parte della vita agricola della Masseria.",
+    detail: "I bovini sono un incrocio tra Pezzata Rossa e Frisona, destinati alla produzione di latte e carne.",
+    radius: "50% 50% 55% 45% / 55% 50% 50% 45%",
+    scaleX: 1.05,
+    scaleY: 0.85,
+    rotate: 1,
+    skewX: 0,
+    bg: "radial-gradient(60% 55% at 50% 45%, #7a5c3a 0%, #4a2f1e 55%, #1a1210 100%)",
+    core: "#C49A4A",
+    coreOpacity: 0.32,
+    ring: "rgba(196,154,74,0.30)",
+    stageBg: "linear-gradient(180deg, #2b1e15 0%, #1A1210 100%)",
   },
   {
     n: "04",
     key: "latte",
-    label: "LATTE",
-    headPre: "Che dà il ",
-    headline: "latte",
-    headPost: ".",
-    bg: "radial-gradient(120% 90% at 50% 50%, #f5efe0 0%, #e8dcc4 55%, #b7a888 100%)",
-    overlay:
-      "radial-gradient(60% 40% at 50% 40%, rgba(255,255,255,.35) 0, transparent 70%)",
-    tint: "#F2E8D5",
+    cat: "04 — LATTE",
+    title: ["Ogni mattina,", "il primo gesto."],
+    body: "Il latte viene munto ogni mattina e passa direttamente al lavoro del caseificio.",
+    radius: "50% 50% 50% 50% / 60% 60% 40% 40%",
+    scaleX: 0.78,
+    scaleY: 1.05,
+    rotate: 0,
+    skewX: 0,
+    bg: "radial-gradient(60% 70% at 50% 45%, #f7efdd 0%, #e6d7b8 55%, #a89778 100%)",
+    core: "#ffffff",
+    coreOpacity: 0.55,
+    ring: "rgba(196,154,74,0.22)",
+    stageBg: "linear-gradient(180deg, #33261b 0%, #1c130f 100%)",
   },
   {
     n: "05",
     key: "formaggio",
-    label: "FORMAGGIO",
-    headPre: "Che diventa ",
-    headline: "formaggio",
-    headPost: ".",
-    sub: "Mozzarelle km0. Nodini. Primo sale. Ricotta.",
-    bg: "radial-gradient(120% 90% at 50% 55%, #fbf6e8 0%, #efe4c8 50%, #8a7a54 100%)",
-    overlay:
-      "radial-gradient(circle at 35% 45%, rgba(255,255,255,.5) 0 8%, transparent 12%), radial-gradient(circle at 65% 60%, rgba(255,255,255,.4) 0 6%, transparent 10%), radial-gradient(circle at 50% 70%, rgba(255,255,255,.35) 0 5%, transparent 9%)",
-    tint: "#E8D9A8",
+    cat: "05 — CASEIFICIO",
+    title: ["Il bianco", "prende forma."],
+    body: "Mozzarelle, nodini, primo sale e ricotta nascono dal latte lavorato nella Masseria.",
+    radius: "48% 52% 46% 54% / 50% 48% 52% 50%",
+    scaleX: 0.92,
+    scaleY: 0.92,
+    rotate: 2,
+    skewX: 1,
+    bg: "radial-gradient(55% 55% at 50% 50%, #fbf6e8 0%, #efe4c8 55%, #b09a72 100%)",
+    core: "#fff8e6",
+    coreOpacity: 0.5,
+    ring: "rgba(196,154,74,0.25)",
+    stageBg: "linear-gradient(180deg, #2e2318 0%, #1A1210 100%)",
+    products: ["MOZZARELLA", "NODINI", "PRIMO SALE", "RICOTTA"],
   },
   {
     n: "06",
     key: "carne",
-    label: "CARNE",
-    headPre: "Che si sceglie ",
-    headline: "al banco",
-    headPost: ".",
-    sub: "Frollatura 15 giorni. Ogni taglio si traccia al pascolo.",
-    bg: "radial-gradient(120% 90% at 50% 55%, #8a2a20 0%, #6E1A14 50%, #2a0f0c 100%)",
-    overlay:
-      "repeating-linear-gradient(115deg, rgba(255,240,220,.08) 0 3px, transparent 3px 12px), radial-gradient(40% 30% at 50% 50%, rgba(255,220,200,.12) 0, transparent 70%)",
-    tint: "#C05040",
+    cat: "06 — MACELLERIA",
+    title: ["La scelta", "avviene a vista."],
+    body: "La carne viene esposta al banco e scelta prima di sedersi a tavola.",
+    detail: "Frollatura indicativa di circa quindici giorni — variabile secondo il taglio.",
+    radius: "45% 55% 50% 50% / 55% 45% 55% 45%",
+    scaleX: 1.0,
+    scaleY: 0.82,
+    rotate: -2,
+    skewX: -1,
+    bg: "radial-gradient(60% 60% at 50% 50%, #7a2018 0%, #4a120e 55%, #1a0a08 100%)",
+    core: "#a83028",
+    coreOpacity: 0.55,
+    ring: "rgba(110,26,20,0.55)",
+    stageBg: "linear-gradient(180deg, #2a1512 0%, #1A1210 100%)",
   },
   {
     n: "07",
-    key: "brace",
-    label: "BRACE",
-    headPre: "Che cuoce ",
-    headline: "sulla brace",
-    headPost: ".",
-    sub: "A carboni. Ogni sera.",
-    bg: "radial-gradient(120% 90% at 50% 60%, #E24B10 0%, #B33A1A 35%, #6E1A14 70%, #1A1210 100%)",
-    overlay:
-      "radial-gradient(30% 22% at 40% 65%, rgba(255,200,80,.55) 0, transparent 70%), radial-gradient(25% 18% at 65% 55%, rgba(255,180,60,.5) 0, transparent 70%)",
-    tint: "#F5A02A",
+    key: "cottura",
+    cat: "07 — COTTURA",
+    title: ["Il calore", "completa il passaggio."],
+    body: "Dopo la scelta al banco, la carne viene cotta arrosto sui carboni e servita durante il pasto.",
+    radius: "50% 50% 48% 52% / 48% 52% 48% 52%",
+    scaleX: 1.05,
+    scaleY: 0.78,
+    rotate: 3,
+    skewX: 2,
+    // unica scena in cui appare il terracotta
+    bg: "radial-gradient(58% 60% at 50% 55%, #d05a20 0%, #B33A1A 45%, #4a1a10 100%)",
+    core: "#f2a04a",
+    coreOpacity: 0.6,
+    ring: "rgba(179,58,26,0.60)",
+    stageBg: "linear-gradient(180deg, #2a1610 0%, #1A1210 100%)",
   },
   {
     n: "08",
     key: "tavola",
-    label: "TAVOLA",
-    headPre: "Che arriva ",
-    headline: "in tavola",
-    headPost: ".",
-    sub: "Dalla terra alla tavola. Qui non arriva niente da fuori.",
-    bg: "radial-gradient(120% 90% at 50% 55%, #6a3a1e 0%, #3D2A1E 50%, #1A1210 100%)",
-    overlay:
-      "radial-gradient(18% 12% at 50% 40%, rgba(255,210,120,.55) 0, transparent 70%), radial-gradient(60% 20% at 50% 78%, rgba(0,0,0,.5) 0, transparent 70%)",
-    tint: "#C49A4A",
+    cat: "08 — TAVOLA",
+    title: ["La filiera", "diventa ospitalità."],
+    body: "Antipasti, primi, carne e dolci artigianali compongono un’esperienza completa.",
+    radius: "40% 60% 40% 60% / 45% 45% 55% 55%",
+    scaleX: 1.55,
+    scaleY: 0.42,
+    rotate: 0,
+    skewX: 0,
+    bg: "radial-gradient(70% 55% at 50% 55%, #f2e8d5 0%, #d9c8a4 55%, #8a7458 100%)",
+    core: "#f7efdd",
+    coreOpacity: 0.45,
+    ring: "rgba(107,115,64,0.35)",
+    stageBg: "linear-gradient(180deg, #2a2015 0%, #1c150f 100%)",
+    textOnLight: false,
+    products: ["ANTIPASTI", "PRIMI", "CARNE", "DOLCI"],
   },
+];
+
+const INDEX_LABELS = [
+  "Terra",
+  "Pascolo",
+  "Allevamento",
+  "Latte",
+  "Caseificio",
+  "Macelleria",
+  "Cottura",
+  "Tavola",
 ];
 
 export function LaFiliera() {
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const circleRef = useRef<SVGPathElement>(null);
-  // sparks canvas rimosso — niente scintille "brace" in Filiera
+  const matterRef = useRef<HTMLDivElement>(null);
+  const matterInnerRef = useRef<HTMLDivElement>(null);
+  const matterCoreRef = useRef<HTMLDivElement>(null);
+  const shadowRef = useRef<HTMLDivElement>(null);
+  const traceRef = useRef<SVGPathElement>(null);
+  const stageBgRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const reduced = useReducedMotion();
 
+  // Desktop timeline
   useEffect(() => {
     if (typeof window === "undefined" || reduced) return;
     const root = rootRef.current;
     const stage = stageRef.current;
-    const bg = bgRef.current;
-    const overlay = overlayRef.current;
-    if (!root || !stage || !bg || !overlay) return;
+    const matter = matterRef.current;
+    const inner = matterInnerRef.current;
+    const core = matterCoreRef.current;
+    const shadow = shadowRef.current;
+    const trace = traceRef.current;
+    const stageBg = stageBgRef.current;
+    const progressBar = progressBarRef.current;
+    if (!root || !stage || !matter || !inner || !core || !shadow) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
     const mm = gsap.matchMedia();
-    const triggers: ScrollTrigger[] = [];
-
-    // Set iniziale
-    gsap.set(bg, { backgroundImage: STAGES[0].bg });
-    gsap.set(overlay, { backgroundImage: STAGES[0].overlay || "none", opacity: 1 });
+    let cancelled = false;
 
     mm.add("(min-width: 900px)", () => {
-      const total = STAGES.length; // 8
-      // Ogni stadio = 100vh di scroll → totale 8 * 100vh (compreso stadio finale)
-      const scrollLen = total * 100; // vh
-      const st = ScrollTrigger.create({
-        trigger: root,
-        start: "top top",
-        end: `+=${scrollLen}%`,
-        pin: true,
-        pinSpacing: true,
-        scrub: 0.6,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const p = self.progress;
-          const idx = Math.min(total - 1, Math.floor(p * total));
-          setActive((prev) => (prev !== idx ? idx : prev));
-        },
-      });
-      triggers.push(st);
+      const N = STATES.length; // 8
+      const perState = 68; // vh per stato (~544vh totali)
+      const scrollLen = N * perState;
 
-      // Timeline scrub per background & overlay
+      // Set iniziale = stato 0
+      const s0 = STATES[0];
+      gsap.set(matter, {
+        scaleX: s0.scaleX,
+        scaleY: s0.scaleY,
+        rotate: s0.rotate,
+        skewX: s0.skewX,
+        borderRadius: s0.radius,
+        borderColor: s0.ring,
+        backgroundImage: s0.bg,
+      });
+      gsap.set(core, { backgroundColor: s0.core, opacity: s0.coreOpacity });
+      gsap.set(stageBg, { backgroundImage: s0.stageBg });
+
+      // Timeline scrubbata: label per stato, tween tra stati
       const tl = gsap.timeline({
+        defaults: { ease: "none" },
         scrollTrigger: {
           trigger: root,
           start: "top top",
           end: `+=${scrollLen}%`,
-          scrub: 0.6,
+          pin: stage,
+          pinSpacing: true,
+          scrub: 0.7,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const p = self.progress;
+            const idx = Math.min(N - 1, Math.floor(p * N));
+            setActive((prev) => (prev !== idx ? idx : prev));
+            if (progressBar) progressBar.style.transform = `scaleX(${p})`;
+          },
         },
       });
-      STAGES.forEach((s, i) => {
+
+      STATES.forEach((s, i) => {
+        tl.addLabel(s.key, i);
         if (i === 0) return;
         tl.to(
-          bg,
-          { backgroundImage: s.bg, duration: 1, ease: "power1.inOut" },
-          i - 1,
-        );
-        tl.to(
-          overlay,
+          matter,
           {
-            backgroundImage: s.overlay || "none",
-            opacity: s.overlay ? 1 : 0,
+            scaleX: s.scaleX,
+            scaleY: s.scaleY,
+            rotate: s.rotate,
+            skewX: s.skewX,
+            borderRadius: s.radius,
+            borderColor: s.ring,
+            backgroundImage: s.bg,
             duration: 1,
-            ease: "power1.inOut",
           },
           i - 1,
         );
+        tl.to(
+          core,
+          { backgroundColor: s.core, opacity: s.coreOpacity, duration: 1 },
+          i - 1,
+        );
+        tl.to(
+          stageBg,
+          { backgroundImage: s.stageBg, duration: 1 },
+          i - 1,
+        );
       });
-      if (tl.scrollTrigger) triggers.push(tl.scrollTrigger);
 
-      // Filo d'oro (cerchio) — draw sull'intero range
-      const circle = circleRef.current;
-      if (circle) {
-        const len = circle.getTotalLength();
-        circle.style.strokeDasharray = String(len);
-        circle.style.strokeDashoffset = String(len);
-        const ct = gsap.to(circle, {
+      // trace continua (arc oro-oliva che cresce lungo tutta la sezione)
+      if (trace) {
+        const len = trace.getTotalLength();
+        trace.style.strokeDasharray = String(len);
+        trace.style.strokeDashoffset = String(len);
+        gsap.to(trace, {
           strokeDashoffset: 0,
           ease: "none",
           scrollTrigger: {
             trigger: root,
             start: "top top",
             end: `+=${scrollLen}%`,
-            scrub: 0.6,
+            scrub: 0.7,
           },
         });
-        if (ct.scrollTrigger) triggers.push(ct.scrollTrigger);
       }
 
       return () => {
-        // matchMedia cleanup gestito da mm.revert()
+        tl.kill();
       };
     });
 
-    mm.add("(max-width: 899px)", () => {
-      // Mobile: no pin. Attivo lo stadio in base allo scroll del root
-      const st = ScrollTrigger.create({
-        trigger: root,
-        start: "top 60%",
-        end: "bottom 40%",
-        scrub: 0.5,
-        onUpdate: (self) => {
-          const idx = Math.min(STAGES.length - 1, Math.floor(self.progress * STAGES.length));
-          setActive((prev) => (prev !== idx ? idx : prev));
-          gsap.to(bg, { backgroundImage: STAGES[idx].bg, duration: 0.4, overwrite: "auto" });
-          gsap.to(overlay, {
-            backgroundImage: STAGES[idx].overlay || "none",
-            opacity: STAGES[idx].overlay ? 1 : 0,
-            duration: 0.4,
-            overwrite: "auto",
-          });
-        },
-      });
-      triggers.push(st);
-    });
-
-    // refresh dopo fonts
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => ScrollTrigger.refresh());
+    // Refresh dopo fonts
+    const onReady = () => {
+      if (!cancelled) ScrollTrigger.refresh();
+    };
+    if (document.fonts && (document.fonts as unknown as { ready?: Promise<unknown> }).ready) {
+      (document.fonts as unknown as { ready: Promise<unknown> }).ready.then(onReady);
     }
 
-    // fallback anti-invisibilità
-    const fb = window.setTimeout(() => {
-      const nodes = root.querySelectorAll<HTMLElement>("[data-safe]");
-      nodes.forEach((n) => {
-        if (parseFloat(getComputedStyle(n).opacity) < 0.05) n.style.opacity = "1";
-      });
-    }, 3000);
-
     return () => {
-      window.clearTimeout(fb);
-      triggers.forEach((t) => t.kill());
+      cancelled = true;
       mm.revert();
     };
   }, [reduced]);
 
-  // Scintille rimosse: la Filiera non è "brace", è morph di materia.
+  // Mobile: sticky matter + IntersectionObserver su blocchi verticali
+  useEffect(() => {
+    if (typeof window === "undefined" || reduced) return;
+    if (window.matchMedia("(min-width: 900px)").matches) return;
+    const root = rootRef.current;
+    const matter = matterRef.current;
+    const core = matterCoreRef.current;
+    const stageBg = stageBgRef.current;
+    if (!root || !matter || !core || !stageBg) return;
 
+    const applyState = (i: number) => {
+      const s = STATES[i];
+      gsap.to(matter, {
+        scaleX: s.scaleX,
+        scaleY: s.scaleY,
+        rotate: s.rotate,
+        skewX: s.skewX,
+        borderRadius: s.radius,
+        borderColor: s.ring,
+        backgroundImage: s.bg,
+        duration: 0.7,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+      gsap.to(core, {
+        backgroundColor: s.core,
+        opacity: s.coreOpacity,
+        duration: 0.7,
+        overwrite: "auto",
+      });
+      gsap.to(stageBg, {
+        backgroundImage: s.stageBg,
+        duration: 0.7,
+        overwrite: "auto",
+      });
+    };
+    applyState(0);
 
-  // Reduced motion: mostra galleria verticale statica
+    const blocks = root.querySelectorAll<HTMLElement>("[data-mobile-block]");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const i = Number((e.target as HTMLElement).dataset.mobileBlock);
+            if (!Number.isNaN(i)) {
+              setActive(i);
+              applyState(i);
+            }
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 },
+    );
+    blocks.forEach((b) => io.observe(b));
+    return () => io.disconnect();
+  }, [reduced]);
+
+  /* ============================ REDUCED MOTION ============================ */
   if (reduced) {
     return (
       <section
-        aria-label="La Filiera — morph di materia"
+        aria-label="La Filiera — una materia che cambia forma"
         className="relative w-full bg-[color:var(--carbone)] px-6 py-24 text-[color:var(--crema)] md:px-10"
       >
-        <div className="mx-auto max-w-5xl">
-          <p className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/40">
+        <div className="mx-auto max-w-4xl">
+          <p className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro)]/70">
             04 — LA FILIERA
           </p>
           <h2
             className="font-display italic mt-6"
-            style={{ fontSize: "clamp(1.75rem,4vw,3rem)", fontWeight: 300 }}
+            style={{ fontSize: "clamp(2rem,4.5vw,3.4rem)", lineHeight: 1.02, fontWeight: 300 }}
           >
-            Qui non arriva niente da <span className="text-[color:var(--oro)]">fuori</span>.
+            Una materia
+            <br />
+            che cambia forma.
           </h2>
-          <ul className="mt-12 grid gap-10">
-            {STAGES.map((s) => (
-              <li key={s.key} className="grid gap-4 md:grid-cols-[1fr_1.2fr] md:items-center">
+          <p className="mt-6 max-w-xl text-[color:var(--crema)]/70">
+            Dalla terra alla tavola, ogni passaggio continua nel successivo.
+          </p>
+          <ol className="mt-14 space-y-14">
+            {STATES.map((s) => (
+              <li key={s.key} className="grid gap-5 md:grid-cols-[220px_1fr] md:gap-10">
                 <div
-                  className="aspect-[16/10] w-full rounded-sm"
-                  style={{ backgroundImage: s.bg, backgroundSize: "cover" }}
+                  aria-hidden
+                  className="relative h-40 w-full overflow-hidden border border-[color:var(--oro)]/20"
+                  style={{
+                    backgroundImage: s.bg,
+                    borderRadius: s.radius,
+                  }}
                 />
                 <div>
                   <p className="font-eyebrow text-[10px] tracking-[0.35em] text-[color:var(--oro)]/80">
-                    {s.n} · {s.label}
+                    {s.cat}
                   </p>
-                  <p className="font-display italic mt-3 text-2xl" style={{ fontWeight: 300 }}>
-                    {s.headPre}
-                    <span className="text-[color:var(--oro)]">{s.headline}</span>
-                    {s.headPost}
+                  <p
+                    className="font-display italic mt-3"
+                    style={{ fontSize: "clamp(1.4rem,2.4vw,2rem)", fontWeight: 300, lineHeight: 1.1 }}
+                  >
+                    {s.title[0]}
+                    <br />
+                    {s.title[1]}
                   </p>
-                  {s.sub && <p className="mt-3 text-[color:var(--crema)]/70">{s.sub}</p>}
+                  <p className="mt-3 text-[color:var(--crema)]/75">{s.body}</p>
+                  {s.detail && (
+                    <p className="mt-2 text-[13px] text-[color:var(--crema)]/55">— {s.detail}</p>
+                  )}
                 </div>
               </li>
             ))}
-          </ul>
+          </ol>
+          <p
+            className="font-display italic mt-16"
+            style={{ fontSize: "clamp(1.2rem,2vw,1.6rem)", fontWeight: 300 }}
+          >
+            Non è soltanto ciò che serviamo.
+            <br />È il percorso che lo porta fin qui.
+          </p>
         </div>
       </section>
     );
   }
 
-  const s = STAGES[active];
+  const s = STATES[active];
+  const isCottura = active === 6;
 
+  /* ============================ DESKTOP + MOBILE ============================ */
   return (
     <section
       ref={rootRef}
-      aria-label="La Filiera — morph di materia"
-      className="relative isolate w-full overflow-hidden bg-[color:var(--carbone)] text-[color:var(--crema)]"
-      style={{ minHeight: "100svh" }}
+      aria-label="La Filiera — una materia che cambia forma"
+      className="filiera-root relative isolate w-full overflow-hidden text-[color:var(--crema)]"
+      style={{ backgroundColor: "var(--carbone)" }}
     >
-      {/* HEADER FISSO SOPRA IL PALCOSCENICO */}
-      <div className="relative z-20 mx-auto flex h-svh w-full max-w-[1400px] flex-col px-6 pt-8 md:px-10 md:pt-10">
-        <div className="flex items-center justify-between">
-          <p className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/40">
-            04 — LA FILIERA
-          </p>
-          <p className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/40">
-            NOCI · MURGIA
-          </p>
-        </div>
-        <h2
-          data-safe
-          className="font-display italic mx-auto mt-6 max-w-3xl text-center"
-          style={{
-            fontSize: "clamp(1.5rem, 3.2vw, 2.5rem)",
-            lineHeight: 1.1,
-            fontWeight: 300,
-          }}
-        >
-          Qui non arriva niente da{" "}
-          <span
-            className="text-[color:var(--oro)]"
-            style={{ filter: "drop-shadow(0 0 12px rgba(196,154,74,0.25))" }}
-          >
-            fuori
-          </span>
-          .
-        </h2>
+      {/* PALCO (pinned su desktop, sticky-ish su mobile via layout) */}
+      <div
+        ref={stageRef}
+        className="filiera-stage relative flex w-full flex-col overflow-hidden"
+        style={{ minHeight: "100dvh" }}
+      >
+        {/* Sfondo palco (cambia per stato) */}
+        <div
+          ref={stageBgRef}
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{ backgroundImage: STATES[0].stageBg }}
+        />
+        {/* grana */}
+        <div aria-hidden className="grain pointer-events-none absolute inset-0 -z-[5] opacity-[0.06]" />
 
-        {/* CORPO: testo sx · palco centrale · barra dx */}
-        <div className="relative mt-6 flex flex-1 items-center gap-8 md:gap-12">
-          {/* TESTO LATERALE */}
-          <aside className="hidden w-[24%] shrink-0 md:block">
-            <div className="min-h-[180px]">
-              <p
-                key={"lbl-" + s.key}
-                className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro)]/85"
-                style={{ animation: "fdIn .6s ease both" }}
-              >
-                {s.n} · {s.label}
+        {/* HEADER */}
+        <header className="filiera-heading relative z-10 flex flex-col gap-2 px-6 pt-8 md:px-12 md:pt-10">
+          <div className="flex items-center justify-between">
+            <p className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro)]/75">
+              04 — LA FILIERA
+            </p>
+            <p className="font-eyebrow hidden text-[10px] tracking-[0.4em] text-[color:var(--crema)]/40 md:block">
+              UNA MATERIA · OTTO STATI
+            </p>
+          </div>
+        </header>
+
+        {/* CORPO: sx=testo · centro=materia · dx=indice */}
+        <div className="relative z-10 grid flex-1 grid-cols-1 gap-6 px-6 pt-6 pb-10 md:grid-cols-[minmax(280px,420px)_1fr_180px] md:gap-10 md:px-12 md:pt-4 md:pb-14">
+          {/* TESTO SX */}
+          <div className="filiera-copy relative flex flex-col justify-center md:min-h-[60dvh]">
+            <div key={"cat-" + s.key} className="filiera-fade">
+              <p className="font-eyebrow text-[11px] tracking-[0.42em] text-[color:var(--oro)]/85">
+                {s.cat}
               </p>
-              <p
-                key={"hd-" + s.key}
-                data-safe
-                className="font-display italic mt-4 text-[color:var(--crema)]"
-                style={{
-                  fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
-                  lineHeight: 1.15,
-                  fontWeight: 300,
-                  animation: "fdInUp .7s ease both",
-                }}
-              >
-                {s.headPre}
-                <span className="text-[color:var(--oro)]">{s.headline}</span>
-                {s.headPost}
-              </p>
-              {s.sub && (
-                <p
-                  key={"sub-" + s.key}
-                  data-safe
-                  className="mt-5 text-[color:var(--crema)]/70"
-                  style={{ lineHeight: 1.55, animation: "fdInUp .8s .05s ease both" }}
-                >
-                  {s.sub}
-                </p>
-              )}
             </div>
-          </aside>
-
-          {/* PALCOSCENICO */}
-          <div
-            ref={stageRef}
-            className="relative mx-auto aspect-[16/10] w-full max-w-[720px] flex-1 overflow-hidden rounded-sm border border-[color:var(--oro)]/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] md:aspect-[4/3]"
-          >
-            <div
-              ref={bgRef}
-              className="absolute inset-0 will-change-[background-image]"
-              style={{ backgroundSize: "cover", transition: "background-image 200ms linear" }}
-            />
-            <div
-              ref={overlayRef}
-              className="absolute inset-0 mix-blend-screen"
-              style={{ backgroundSize: "cover" }}
-            />
-            {/* grana */}
-            <div aria-hidden className="grain pointer-events-none absolute inset-0 opacity-[0.08]" />
-            {/* vignetta */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
+            <h2
+              key={"ttl-" + s.key}
+              className="filiera-fade font-display italic mt-4 text-[color:var(--crema)]"
               style={{
-                background:
-                  "radial-gradient(100% 80% at 50% 55%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)",
+                fontSize: "clamp(2.2rem, 5.2vw, 5.8rem)",
+                lineHeight: 0.98,
+                fontWeight: 300,
+                letterSpacing: "-0.01em",
               }}
-            />
-            {/* scintille rimosse: niente "brace" come mood */}
+            >
+              {s.title[0]}
+              <br />
+              {s.title[1]}
+            </h2>
+            <p
+              key={"bd-" + s.key}
+              className="filiera-fade mt-6 max-w-[420px] text-[color:var(--crema)]/75"
+              style={{ fontSize: "clamp(15px, 1.05vw, 17px)", lineHeight: 1.55 }}
+            >
+              {s.body}
+            </p>
+            {s.detail && (
+              <p
+                key={"dt-" + s.key}
+                className="filiera-fade mt-3 max-w-[420px] text-[13px] text-[color:var(--crema)]/50"
+                style={{ lineHeight: 1.5 }}
+              >
+                — {s.detail}
+              </p>
+            )}
+          </div>
 
-            {/* filo d'oro che chiude il cerchio */}
+          {/* MATERIA CENTRALE */}
+          <div className="filiera-material-wrap relative flex items-center justify-center">
+            {/* trace continua (arco oliva→oro attraverso tutta la sezione) */}
             <svg
               aria-hidden
               className="pointer-events-none absolute inset-0 h-full w-full"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
             >
-              <path
-                ref={circleRef}
-                d="M 50 8 A 42 42 0 1 1 49.99 8"
-                fill="none"
-                stroke="url(#filoOroFil)"
-                strokeWidth="0.35"
-                vectorEffect="non-scaling-stroke"
-                style={{ mixBlendMode: "screen", opacity: 0.75 }}
-              />
               <defs>
-                <linearGradient id="filoOroFil" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#C49A4A" stopOpacity="0.95" />
-                  <stop offset="50%" stopColor="#F5D07A" stopOpacity="0.9" />
-                  <stop offset="100%" stopColor="#B33A1A" stopOpacity="0.85" />
+                <linearGradient id="filiera-trace" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#6B7340" stopOpacity="0.5" />
+                  <stop offset="60%" stopColor="#C49A4A" stopOpacity="0.85" />
+                  <stop offset="100%" stopColor="#C49A4A" stopOpacity="0.3" />
                 </linearGradient>
               </defs>
+              <path
+                ref={traceRef}
+                d="M 8 82 C 22 68, 30 42, 50 40 C 72 38, 82 60, 92 30"
+                fill="none"
+                stroke="url(#filiera-trace)"
+                strokeWidth="0.35"
+                vectorEffect="non-scaling-stroke"
+                style={{ mixBlendMode: "screen", opacity: 0.85 }}
+              />
             </svg>
-            {/* etichetta stadio in overlay */}
-            <div className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 rounded-sm border border-[color:var(--oro)]/30 bg-black/40 px-2 py-1">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: s.tint }} />
-              <span className="font-eyebrow text-[9px] tracking-[0.35em] text-[color:var(--crema)]/85">
-                {s.n} · {s.label}
-              </span>
+
+            {/* ombra costante (continuità tra stati) */}
+            <div
+              ref={shadowRef}
+              aria-hidden
+              className="absolute left-1/2 top-[68%] h-[24px] w-[46%] -translate-x-1/2 rounded-[50%]"
+              style={{
+                background:
+                  "radial-gradient(60% 100% at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 70%)",
+                filter: "blur(6px)",
+              }}
+            />
+
+            {/* MATERIA (unica) */}
+            <div
+              ref={matterRef}
+              aria-hidden
+              className="filiera-matter relative border will-change-transform"
+              style={{
+                width: "min(38vw, 480px)",
+                height: "min(50vh, 460px)",
+                borderRadius: STATES[0].radius,
+                backgroundImage: STATES[0].bg,
+                borderColor: STATES[0].ring,
+                borderWidth: "1px",
+                boxShadow: "0 40px 90px rgba(0,0,0,0.55)",
+                transformOrigin: "50% 62%",
+              }}
+            >
+              {/* nucleo interno (traccia continua di colore) */}
+              <div
+                ref={matterCoreRef}
+                aria-hidden
+                className="absolute left-1/2 top-1/2 h-[38%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-[50%]"
+                style={{
+                  backgroundColor: STATES[0].core,
+                  opacity: STATES[0].coreOpacity,
+                  filter: "blur(14px)",
+                }}
+              />
+              {/* inner mask per texture */}
+              <div
+                ref={matterInnerRef}
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  borderRadius: "inherit",
+                  background:
+                    "radial-gradient(120% 80% at 50% 30%, rgba(255,255,255,0.08) 0%, transparent 55%), radial-gradient(80% 80% at 50% 100%, rgba(0,0,0,0.35) 0%, transparent 70%)",
+                  mixBlendMode: "overlay",
+                }}
+              />
             </div>
+
+            {/* annotazioni prodotti (stato 05 e 08) */}
+            {s.products && (
+              <div className="pointer-events-none absolute inset-0">
+                {s.products.map((p, i) => {
+                  const pos = [
+                    { top: "12%", left: "10%" },
+                    { top: "16%", right: "8%" },
+                    { bottom: "18%", left: "6%" },
+                    { bottom: "12%", right: "12%" },
+                  ][i];
+                  return (
+                    <motion.span
+                      key={s.key + p}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15 + i * 0.12, duration: 0.5 }}
+                      className="font-eyebrow absolute text-[10px] tracking-[0.35em] text-[color:var(--crema)]/80"
+                      style={{ ...pos }}
+                    >
+                      <span
+                        aria-hidden
+                        className="mr-2 inline-block h-px w-4 align-middle"
+                        style={{ background: "var(--oro)", opacity: 0.6 }}
+                      />
+                      {p}
+                    </motion.span>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* targhetta pezzata rossa × frisona (stato 03) */}
+            {active === 2 && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+                className="pointer-events-none absolute bottom-[8%] right-[6%] rounded-sm border border-[color:var(--oro)]/40 bg-black/50 px-3 py-2 text-right"
+              >
+                <p className="font-eyebrow text-[9px] tracking-[0.32em] text-[color:var(--crema)]/85">
+                  PEZZATA ROSSA × FRISONA
+                </p>
+                <p className="font-eyebrow mt-1 text-[9px] tracking-[0.32em] text-[color:var(--oro)]/85">
+                  LATTE · CARNE
+                </p>
+              </motion.div>
+            )}
           </div>
 
-          {/* BARRA VERTICALE DI PROGRESSO */}
-          <aside className="hidden w-[14%] shrink-0 md:block">
-            <ol className="relative flex h-full flex-col justify-between border-l border-[color:var(--oro)]/20 pl-4">
-              {STAGES.map((st, i) => {
+          {/* INDICE DX */}
+          <aside className="filiera-index hidden md:flex md:flex-col md:justify-center">
+            <ol className="flex flex-col gap-[10px]">
+              {INDEX_LABELS.map((lbl, i) => {
                 const on = i === active;
+                const isThisCottura = i === 6;
                 return (
-                  <li key={st.key} className="relative">
+                  <li
+                    key={lbl}
+                    className="flex items-center gap-2 transition-all duration-300"
+                    style={{
+                      opacity: on ? 1 : 0.28,
+                      transform: on ? "translateX(4px)" : "translateX(0)",
+                    }}
+                  >
                     <span
-                      className="absolute -left-[7px] top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full transition-all duration-500"
+                      aria-hidden
+                      className="h-[6px] w-[6px] rounded-full transition-colors duration-300"
                       style={{
-                        background: on ? "var(--oro)" : "rgba(242,232,213,0.2)",
-                        boxShadow: on ? "0 0 10px rgba(196,154,74,0.7)" : "none",
+                        background: on
+                          ? isThisCottura
+                            ? "var(--terracotta)"
+                            : "var(--oliva)"
+                          : "rgba(242,232,213,0.25)",
                       }}
                     />
                     <span
-                      className="font-eyebrow block text-[9px] tracking-[0.28em] transition-colors duration-500"
+                      className="font-eyebrow text-[10px] tracking-[0.35em]"
                       style={{
-                        color: on ? "var(--oro)" : "rgba(242,232,213,0.35)",
+                        color: on ? "var(--crema)" : "rgba(242,232,213,0.7)",
                       }}
                     >
-                      {st.n} {st.label}
+                      {String(i + 1).padStart(2, "0")} {lbl}
                     </span>
                   </li>
                 );
@@ -487,44 +700,153 @@ export function LaFiliera() {
           </aside>
         </div>
 
-        {/* MOBILE: barra orizzontale + testo sotto */}
-        <div className="mt-6 md:hidden">
-          <div className="flex gap-1">
-            {STAGES.map((st, i) => (
-              <span
-                key={st.key}
-                className="h-[3px] flex-1 rounded-full transition-colors duration-500"
+        {/* PROGRESS BAR (basso) */}
+        <div className="relative z-10 px-6 pb-6 md:px-12 md:pb-8">
+          <div className="flex items-center gap-4">
+            <span
+              className="font-eyebrow text-[10px] tracking-[0.35em]"
+              style={{
+                color: isCottura ? "var(--terracotta)" : "var(--crema)",
+                opacity: 0.85,
+              }}
+            >
+              {String(active + 1).padStart(2, "0")} / 08
+            </span>
+            <div className="relative h-px flex-1 bg-[color:var(--crema)]/15">
+              <div
+                ref={progressBarRef}
+                className="absolute left-0 top-0 h-full origin-left"
                 style={{
-                  background: i <= active ? "var(--oro)" : "rgba(242,232,213,0.15)",
+                  width: "100%",
+                  transform: "scaleX(0)",
+                  background: isCottura ? "var(--terracotta)" : "var(--oro)",
+                  transition: "background-color 400ms ease",
                 }}
               />
-            ))}
+              {/* 8 punti */}
+              <div className="pointer-events-none absolute inset-0 flex justify-between">
+                {STATES.map((_, i) => (
+                  <span
+                    key={i}
+                    className="h-[6px] w-[6px] -translate-y-[2.5px] rounded-full"
+                    style={{
+                      background:
+                        i <= active
+                          ? i === 6
+                            ? "var(--terracotta)"
+                            : "var(--oro)"
+                          : "rgba(242,232,213,0.25)",
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+            <span className="font-eyebrow hidden text-[10px] tracking-[0.35em] text-[color:var(--crema)]/60 md:inline">
+              {INDEX_LABELS[active].toUpperCase()}
+            </span>
           </div>
-          <p className="font-eyebrow mt-3 text-[10px] tracking-[0.4em] text-[color:var(--oro)]/85">
-            {s.n} · {s.label}
-          </p>
-          <p
-            data-safe
-            className="font-display italic mt-2 text-xl text-[color:var(--crema)]"
-            style={{ fontWeight: 300, lineHeight: 1.2 }}
+        </div>
+      </div>
+
+      {/* MOBILE: blocchi verticali di lettura (invisibili su desktop) */}
+      <div className="filiera-mobile-blocks relative z-10 md:hidden">
+        {STATES.map((st, i) => (
+          <div
+            key={st.key}
+            data-mobile-block={i}
+            className="relative flex min-h-[70dvh] flex-col justify-center px-6 py-16"
           >
-            {s.headPre}
-            <span className="text-[color:var(--oro)]">{s.headline}</span>
-            {s.headPost}
-          </p>
-          {s.sub && (
-            <p data-safe className="mt-2 text-sm text-[color:var(--crema)]/70">
-              {s.sub}
+            <p className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro)]/85">
+              {st.cat}
             </p>
-          )}
+            <h3
+              className="font-display italic mt-3 text-[color:var(--crema)]"
+              style={{ fontSize: "clamp(1.9rem, 8vw, 2.6rem)", lineHeight: 1, fontWeight: 300 }}
+            >
+              {st.title[0]}
+              <br />
+              {st.title[1]}
+            </h3>
+            <p className="mt-4 max-w-[36ch] text-[color:var(--crema)]/75" style={{ fontSize: 16, lineHeight: 1.55 }}>
+              {st.body}
+            </p>
+            {st.detail && (
+              <p className="mt-2 max-w-[36ch] text-[13px] text-[color:var(--crema)]/55" style={{ lineHeight: 1.5 }}>
+                — {st.detail}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* CHIUSURA + CTA */}
+      <div className="relative z-10 bg-[color:var(--carbone)] px-6 pb-24 pt-10 md:px-12 md:pb-32">
+        <div className="mx-auto max-w-3xl text-center">
+          <p
+            className="font-display italic text-[color:var(--crema)]"
+            style={{
+              fontSize: "clamp(1.4rem, 2.4vw, 2rem)",
+              lineHeight: 1.25,
+              fontWeight: 300,
+            }}
+          >
+            Non è soltanto ciò che serviamo.
+            <br />
+            <span className="text-[color:var(--crema)]/70">
+              È il percorso che lo porta fin qui.
+            </span>
+          </p>
+          <motion.a
+            href="#tavola"
+            whileHover={{ y: -2 }}
+            transition={{ type: "spring", stiffness: 150, damping: 30, mass: 0.4 }}
+            className="font-eyebrow mt-10 inline-flex items-center gap-3 border-b border-[color:var(--oro)]/50 pb-1 text-[11px] tracking-[0.35em] text-[color:var(--crema)] hover:text-[color:var(--oro)]"
+            onClick={(e) => {
+              e.preventDefault();
+              const el =
+                document.querySelector("[data-section='la-tavola']") ||
+                document.querySelector("[aria-label*='Tavola']");
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          >
+            SCOPRI LA TAVOLA <span aria-hidden>→</span>
+          </motion.a>
         </div>
       </div>
 
       <style>{`
-        @keyframes fdIn { from { opacity: 0 } to { opacity: 1 } }
-        @keyframes fdInUp {
-          from { opacity: 0; transform: translateY(8px); }
+        .filiera-fade {
+          animation: filieraFade .55s ease both;
+        }
+        @keyframes filieraFade {
+          from { opacity: 0; transform: translateY(6px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        .filiera-matter {
+          transition: background-color 400ms ease;
+        }
+        @media (max-width: 899px) {
+          .filiera-stage {
+            position: sticky;
+            top: 0;
+            min-height: 62dvh !important;
+            height: 62dvh;
+            overflow: hidden;
+          }
+          .filiera-copy { display: none !important; }
+          .filiera-material-wrap {
+            grid-column: 1 / -1;
+            min-height: 40dvh;
+          }
+          .filiera-stage .grid {
+            grid-template-columns: 1fr !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+          }
+          .filiera-matter {
+            width: min(70vw, 340px) !important;
+            height: min(38dvh, 300px) !important;
+          }
         }
       `}</style>
     </section>
