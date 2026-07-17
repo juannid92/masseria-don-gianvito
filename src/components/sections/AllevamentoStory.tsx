@@ -738,7 +738,7 @@ function NavAnime() {
     { key: "allevamento", n: "01", nome: "ALLEVAMENTO", sub: "Pagina corrente", to: null },
     { key: "caseificio", n: "02", nome: "CASEIFICIO", sub: "Il bianco prende forma", to: "/caseificio" },
     { key: "macelleria", n: "03", nome: "MACELLERIA", sub: "La scelta avviene a vista", to: "/macelleria" },
-    { key: "braceria", n: "04", nome: "BRACERIA", sub: "La sera prende posto", to: "/braceria" },
+    { key: "agriturismo", n: "04", nome: "AGRITURISMO", sub: "La cucina e l’ospitalità", to: "/agriturismo" },
   ] as const;
 
   return (

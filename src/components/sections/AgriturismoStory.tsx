@@ -10,7 +10,7 @@ import cotturaImg from "@/assets/brace-cottura.jpg";
 import aerialAsset from "@/assets/masseria-aerial.asset.json";
 
 /* ─────────────────────────────────────────────────────────────
- * /braceria — LA SERA
+ * /agriturismo — LA SERA
  * Una sala vuota che si accende.
  * ───────────────────────────────────────────────────────────── */
 
@@ -59,7 +59,7 @@ const ARROSTO = ["FILETTO", "BOMBETTE", "SALSICCIA", "SCELTA DEL BANCO"];
 
 /* ─────────────────────────────────────────────────────────── */
 
-export function BraceriaStory() {
+export function AgriturismoStory() {
   const reduced = useReducedMotion();
 
   return (
@@ -74,7 +74,7 @@ export function BraceriaStory() {
       <UltimoGesto />
       <Prenota />
       <ZoomOut reduced={reduced} />
-      <NavAnime current="braceria" />
+      <NavAnime current="agriturismo" />
     </div>
   );
 }
@@ -89,7 +89,7 @@ function Apertura() {
     >
       <img
         src={salaImg}
-        alt="Sala della Braceria Masseria Don Gianvito, prima del servizio"
+        alt="Sala dell’Agriturismo Masseria Don Gianvito, prima del servizio"
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           filter: "brightness(0.42) saturate(0.75) contrast(1.05)",
@@ -108,7 +108,7 @@ function Apertura() {
       />
       <div className="relative z-10 w-full px-6 md:px-14 pb-14 md:pb-20 max-w-6xl mx-auto">
         <div className="font-eyebrow text-[11px] md:text-[12px] tracking-[0.35em] opacity-75 mb-6">
-          BRACERIA — MASSERIA DON GIANVITO
+          AGRITURISMO — MASSERIA DON GIANVITO
         </div>
         <h1
           className="font-display leading-[1.02] text-[clamp(2.6rem,7vw,6rem)]"
@@ -121,8 +121,9 @@ function Apertura() {
           </em>
         </h1>
         <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-lg leading-relaxed opacity-85">
-          La sera comincia in silenzio. Il banco è pronto, i tavoli sono vuoti e la cucina prepara il
-          servizio.
+          L’Agriturismo è il luogo in cui la filiera diventa ospitalità: cucina, tavola e braceria
+          si incontrano nella stessa esperienza. La sera comincia in silenzio, il banco è pronto e
+          la cucina prepara il servizio.
         </p>
         <div className="mt-10 md:mt-14 flex items-center gap-4">
           <span className="h-px w-10 bg-[color:var(--oro)]/60" />
@@ -1136,7 +1137,7 @@ function ZoomOut({ reduced }: { reduced: boolean }) {
             { n: "01", nome: "ALLEVAMENTO" },
             { n: "02", nome: "CASEIFICIO" },
             { n: "03", nome: "MACELLERIA" },
-            { n: "04", nome: "BRACERIA" },
+            { n: "04", nome: "AGRITURISMO" },
           ].map((l) => (
             <div
               key={l.nome}
@@ -1193,12 +1194,12 @@ function ZoomOut({ reduced }: { reduced: boolean }) {
 }
 
 /* ─────────────────── NAV ANIME ─────────────────── */
-function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "braceria" }) {
+function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "agriturismo" }) {
   const items = [
     { key: "allevamento", n: "01", nome: "ALLEVAMENTO", sub: "La terra e gli animali", to: "/allevamento" as const },
     { key: "caseificio", n: "02", nome: "CASEIFICIO", sub: "Il bianco prende forma", to: "/caseificio" as const },
     { key: "macelleria", n: "03", nome: "MACELLERIA", sub: "La scelta avviene a vista", to: "/macelleria" as const },
-    { key: "braceria", n: "04", nome: "BRACERIA", sub: "Pagina corrente", to: "/braceria" as const },
+    { key: "agriturismo", n: "04", nome: "AGRITURISMO", sub: "Pagina corrente", to: "/agriturismo" as const },
   ];
 
   return (
@@ -1248,4 +1249,4 @@ function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macell
 
 /* ─────────────────── Cleanup ScrollTrigger su unmount ─────────────────── */
 // (gsap.context in ogni scena gestisce già il cleanup locale)
-export default BraceriaStory;
+export default AgriturismoStory;

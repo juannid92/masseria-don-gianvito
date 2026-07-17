@@ -12,14 +12,14 @@ import heroAerialAsset from "@/assets/masseria-aerial.asset.json";
  * Zero linee catastali, zero coordinate, zero ornamenti.
  * ───────────────────────────────────────────────────────────── */
 
-type PinId = "caseificio" | "macelleria" | "allevamento" | "braceria";
+type PinId = "caseificio" | "macelleria" | "allevamento" | "agriturismo";
 
 type Pin = {
   id: PinId;
   number: string;
   label: string;
   caption: string;
-  to: "/caseificio" | "/macelleria" | "/allevamento" | "/braceria";
+  to: "/caseificio" | "/macelleria" | "/allevamento" | "/agriturismo";
   /** Coord % sul contenitore foto — desktop (cover, centrato) */
   x: number;
   y: number;
@@ -63,11 +63,11 @@ const PINS: Pin[] = [
     my: 32,
   },
   {
-    id: "braceria",
+    id: "agriturismo",
     number: "04",
     label: "Agriturismo",
     caption: "L’ospitalità della Masseria.",
-    to: "/braceria",
+    to: "/agriturismo",
     x: 51,
     y: 74,
     mx: 30,

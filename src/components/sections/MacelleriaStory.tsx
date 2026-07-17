@@ -736,10 +736,10 @@ export function MacelleriaStory() {
         </div>
       </section>
 
-      {/* ══════════ PONTE VERSO LA BRACERIA ══════════ */}
+      {/* ══════════ PONTE VERSO L'AGRITURISMO ══════════ */}
       <section
         className="relative py-28 md:py-40 px-6 md:px-14 overflow-hidden"
-        aria-label="Ponte verso la Braceria"
+        aria-label="Ponte verso l'Agriturismo"
         style={{
           background: "linear-gradient(180deg, #efe6ce 0%, #d8c299 25%, #a5715a 65%, #6b3d2e 100%)",
           color: "var(--crema)",
@@ -791,11 +791,11 @@ export function MacelleriaStory() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
             <Link
-              to="/braceria"
+              to="/agriturismo"
               className="group inline-flex items-center gap-3 px-8 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] transition-all"
               style={{ background: "var(--crema)", color: "var(--marrone)" }}
             >
-              ENTRA NELLA BRACERIA
+              ENTRA NELL’AGRITURISMO
               <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
             <Link
@@ -1058,12 +1058,12 @@ function Diagramma({
 }
 
 /* ─────────────────── Nav Anime ─────────────────── */
-function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "braceria" }) {
+function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "agriturismo" }) {
   const items = [
     { key: "allevamento", n: "01", nome: "ALLEVAMENTO", sub: "La terra e gli animali", to: "/allevamento" as const },
     { key: "caseificio", n: "02", nome: "CASEIFICIO", sub: "Il bianco prende forma", to: "/caseificio" as const },
     { key: "macelleria", n: "03", nome: "MACELLERIA", sub: "Pagina corrente", to: "/macelleria" as const },
-    { key: "braceria", n: "04", nome: "BRACERIA", sub: "La sera prende posto", to: "/braceria" as const },
+    { key: "agriturismo", n: "04", nome: "AGRITURISMO", sub: "La cucina e l’ospitalità", to: "/agriturismo" as const },
   ];
 
   return (

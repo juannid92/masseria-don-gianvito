@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { label: "Allevamento", to: "/allevamento" as const },
   { label: "Caseificio", to: "/caseificio" as const },
   { label: "Macelleria", to: "/macelleria" as const },
-  { label: "Braceria", to: "/braceria" as const },
+  { label: "Agriturismo", to: "/agriturismo" as const },
 ];
 
 export function Navbar() {
