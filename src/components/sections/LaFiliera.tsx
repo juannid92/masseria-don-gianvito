@@ -457,6 +457,7 @@ export function LaFiliera() {
   /* ============================ DESKTOP + MOBILE ============================ */
   return (
     <section
+      id="filiera"
       ref={rootRef}
       aria-label="La Filiera — una materia che cambia forma"
       className="filiera-root relative isolate w-full overflow-hidden text-[color:var(--crema)]"
