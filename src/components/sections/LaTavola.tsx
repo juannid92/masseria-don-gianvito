@@ -231,6 +231,7 @@ export function LaTavola() {
 
   return (
     <section
+      id="tavola"
       ref={rootRef}
       aria-label="La sera alla masseria — la tavola"
       className="relative isolate"
