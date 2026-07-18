@@ -79,31 +79,39 @@ export function AgriturismoStory() {
   );
 }
 
-/* ─────────────────── 00. APERTURA — LA SALA VUOTA ─────────────────── */
+/* ─────────────────── 00. APERTURA — LA CASA VUOTA ───────────────────
+ * NOTE INTERNA — Asset `brace-sala.jpg` è probabile stock/AI.
+ * Sostituire con fotografia autentica della sala dell'Agriturismo.
+ * Fino ad allora: crop architettonico stretto, brightness bassa, nessuna
+ * enfasi su elementi che sembrano generati.
+ * ─────────────────────────────────────────────────────────────────────── */
 function Apertura() {
   return (
     <section
-      aria-label="Apertura — la sala vuota"
+      aria-label="Apertura — la Masseria aspetta"
       className="relative min-h-[100dvh] flex items-end overflow-hidden"
       style={{ background: "var(--carbone)" }}
     >
+      {/* Crop architettonico: focus su pietra/tavoli/profondità, no dettagli artificiali */}
       <img
         src={salaImg}
-        alt="Sala dell’Agriturismo Masseria Don Gianvito, prima del servizio"
+        alt=""
+        aria-hidden
         className="absolute inset-0 w-full h-full object-cover"
         style={{
-          filter: "brightness(0.42) saturate(0.75) contrast(1.05)",
+          filter: "brightness(0.48) saturate(0.7) contrast(1.08)",
+          objectPosition: "center 62%",
         }}
         loading="eager"
         decoding="async"
       />
-      {/* Luce che entra dalla porta */}
+      {/* Una sola linea di luce, dal fondo verso l'ingresso */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(60% 55% at 78% 40%, color-mix(in oklab, var(--oro) 22%, transparent) 0%, transparent 65%), linear-gradient(to bottom, color-mix(in oklab, var(--carbone) 88%, transparent) 0%, transparent 30%, color-mix(in oklab, var(--carbone) 92%, transparent) 92%)",
+            "radial-gradient(55% 45% at 72% 42%, color-mix(in oklab, var(--oro) 20%, transparent) 0%, transparent 62%), linear-gradient(to bottom, color-mix(in oklab, var(--carbone) 92%, transparent) 0%, transparent 35%, color-mix(in oklab, var(--carbone) 94%, transparent) 95%)",
         }}
       />
       <div className="relative z-10 w-full px-6 md:px-14 pb-14 md:pb-20 max-w-6xl mx-auto">
@@ -113,17 +121,17 @@ function Apertura() {
         <h1
           className="font-display leading-[1.02] text-[clamp(2.6rem,7vw,6rem)]"
           style={{ fontWeight: 300, color: "var(--crema)" }}
+          aria-label="Prima degli ospiti, la Masseria aspetta."
         >
-          Prima degli ospiti,
+          <span>Prima degli ospiti,</span>
           <br />
           <em className="italic" style={{ color: "color-mix(in oklab, var(--oro) 90%, var(--crema))" }}>
-            la sala aspetta.
+            la Masseria aspetta.
           </em>
         </h1>
         <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-lg leading-relaxed opacity-85">
-          L’Agriturismo è il luogo in cui la filiera diventa ospitalità: cucina, tavola e braceria
-          si incontrano nella stessa esperienza. La sera comincia in silenzio, il banco è pronto e
-          la cucina prepara il servizio.
+          L'Agriturismo è il luogo in cui la filiera diventa ospitalità: cucina, tavola e braceria
+          si incontrano nella stessa esperienza.
         </p>
         <div className="mt-10 md:mt-14 flex items-center gap-4">
           <span className="h-px w-10 bg-[color:var(--oro)]/60" />
@@ -135,6 +143,7 @@ function Apertura() {
     </section>
   );
 }
+
 
 /* ─────────────────── 01. LA SALA SI ACCENDE ─────────────────── */
 function SalaAccende({ reduced }: { reduced: boolean }) {
@@ -194,8 +203,9 @@ function SalaAccende({ reduced }: { reduced: boolean }) {
           <h2
             className="font-display leading-[1.02] text-[clamp(2.2rem,6vw,5rem)]"
             style={{ fontWeight: 300 }}
+            aria-label="La sera prende posto."
           >
-            La sera
+            <span>La sera</span>
             <br />
             <em className="italic" style={{ color: "color-mix(in oklab, var(--oro) 85%, var(--crema))" }}>
               prende posto.
@@ -205,6 +215,7 @@ function SalaAccende({ reduced }: { reduced: boolean }) {
             Pietra, tavoli e cucina cambiano ritmo quando comincia il servizio.
           </p>
         </div>
+
       </div>
     </section>
   );
@@ -350,11 +361,13 @@ function Rito({ reduced }: { reduced: boolean }) {
               <h2
                 className="font-display leading-[1.02] text-[clamp(2.4rem,4.5vw,4.5rem)]"
                 style={{ fontWeight: 300 }}
+                aria-label="Tre gesti. Una sola esperienza."
               >
-                Tre gesti.
+                <span>Tre gesti.</span>
                 <br />
-                <em className="italic">Una sola sera.</em>
+                <em className="italic">Una sola esperienza.</em>
               </h2>
+
               <p className="mt-6 max-w-md opacity-85">
                 Il pasto comincia davanti al banco e continua nella sala.
               </p>
@@ -396,8 +409,9 @@ function Rito({ reduced }: { reduced: boolean }) {
 
         <div className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70">02 — IL RITO</div>
         <h2 className="font-display text-4xl leading-[1.05]" style={{ fontWeight: 300 }}>
-          Tre gesti. <em className="italic">Una sola sera.</em>
+          Tre gesti. <em className="italic">Una sola esperienza.</em>
         </h2>
+
         <p className="opacity-85 text-base">
           Il pasto comincia davanti al banco e continua nella sala.
         </p>
@@ -762,13 +776,19 @@ function Arrosto({ reduced }: { reduced: boolean }) {
       className="relative py-28 md:py-40 px-6 md:px-14 overflow-hidden"
       style={{ background: "var(--carbone)" }}
     >
+      {/*
+        NOTE INTERNA — Asset `brace-cottura.jpg` è probabile stock/AI.
+        Sostituire con fotografia autentica della cottura reale.
+        Fino ad allora: uso come texture scura al 22%, mai a piena leggibilità.
+      */}
       <img
         src={cotturaImg}
         alt=""
         aria-hidden
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
-        style={{ filter: "brightness(0.5) saturate(0.8)" }}
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.22]"
+        style={{ filter: "brightness(0.45) saturate(0.7) contrast(1.05)" }}
       />
+
       <div
         ref={glowRef}
         aria-hidden
