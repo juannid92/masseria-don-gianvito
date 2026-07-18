@@ -409,8 +409,9 @@ function Rito({ reduced }: { reduced: boolean }) {
 
         <div className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70">02 — IL RITO</div>
         <h2 className="font-display text-4xl leading-[1.05]" style={{ fontWeight: 300 }}>
-          Tre gesti. <em className="italic">Una sola sera.</em>
+          Tre gesti. <em className="italic">Una sola esperienza.</em>
         </h2>
+
         <p className="opacity-85 text-base">
           Il pasto comincia davanti al banco e continua nella sala.
         </p>
