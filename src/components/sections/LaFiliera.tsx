@@ -389,6 +389,7 @@ export function LaFiliera() {
   if (reduced) {
     return (
       <section
+        id="filiera"
         aria-label="La Filiera — una materia che cambia forma"
         className="relative w-full bg-[color:var(--carbone)] px-6 py-24 text-[color:var(--crema)] md:px-10"
       >
