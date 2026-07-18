@@ -776,13 +776,19 @@ function Arrosto({ reduced }: { reduced: boolean }) {
       className="relative py-28 md:py-40 px-6 md:px-14 overflow-hidden"
       style={{ background: "var(--carbone)" }}
     >
+      {/*
+        NOTE INTERNA — Asset `brace-cottura.jpg` è probabile stock/AI.
+        Sostituire con fotografia autentica della cottura reale.
+        Fino ad allora: uso come texture scura al 22%, mai a piena leggibilità.
+      */}
       <img
         src={cotturaImg}
         alt=""
         aria-hidden
-        className="absolute inset-0 w-full h-full object-cover opacity-30"
-        style={{ filter: "brightness(0.5) saturate(0.8)" }}
+        className="absolute inset-0 w-full h-full object-cover opacity-[0.22]"
+        style={{ filter: "brightness(0.45) saturate(0.7) contrast(1.05)" }}
       />
+
       <div
         ref={glowRef}
         aria-hidden
