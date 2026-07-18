@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,6 +10,8 @@ import terraImg from "@/assets/allev-a-terra.jpg";
 import panoramaImg from "@/assets/allev-panorama.jpg";
 import granoImg from "@/assets/allev-c-grano.jpg";
 import bridgeLatteImg from "@/assets/allev-bridge-latte.jpg";
+// NOTE INTERNA — Le fotografie animali sono materiali editoriali temporanei.
+// Sostituire con fotografie autentiche della Masseria prima della pubblicazione.
 import pBovino from "@/assets/allev-p-bovino.jpg";
 import pOvino from "@/assets/allev-p-ovino.jpg";
 import pSuino from "@/assets/allev-p-suino.jpg";
@@ -17,31 +19,33 @@ import pEquino from "@/assets/allev-p-equino.jpg";
 import pAvicolo from "@/assets/allev-p-avicolo.jpg";
 
 /* ─────────────────────────────────────────────────────────────
- * /allevamento — LA DISCESA
- * Cielo → Orizzonte → Terra → Mandria → Colture → Latte
+ * /allevamento — Un unico film sul paesaggio agricolo
+ *   I.   LA DISCESA        cielo → orizzonte → terra
+ *   II.  LA MANDRIA        carrellata continua, cinque presenze
+ *   III. CIÒ CHE NUTRE     colture come parole nella terra
+ *   IV.  IL BIANCO         la materia si schiarisce → Caseificio
  * ───────────────────────────────────────────────────────────── */
 
 type Specie = {
   id: string;
   nome: string;
-  tag: string;
-  sub: string;
-  micro: string;
-  img: string | null;
+  linea: string;      // riga narrativa unica
+  img: string;
+  focus: "wide" | "low" | "side" | "close";
 };
 
 const SPECIES: Specie[] = [
-  { id: "bovini", nome: "Bovini", tag: "BOVINI", sub: "LATTE · CARNE", micro: "Incrocio Pezzata Rossa × Frisona.", img: pBovino },
-  { id: "ovini", nome: "Ovini", tag: "OVINI", sub: "ALLEVAMENTO", micro: "Fra terra bassa e pietre.", img: pOvino },
-  { id: "suini", nome: "Suini", tag: "SUINI", sub: "ALLEVAMENTO", micro: "Nel lavoro della macelleria.", img: pSuino },
-  { id: "equini", nome: "Equini", tag: "EQUINI", sub: "PRESENZA AGRICOLA", micro: "Presenza quotidiana in Masseria.", img: pEquino },
-  { id: "avicoli", nome: "Avicoli", tag: "AVICOLI", sub: "ALLEVAMENTO", micro: "Alla luce dell'aia.", img: pAvicolo },
+  { id: "bovini",  nome: "Bovini",  linea: "Pezzata Rossa × Frisona · latte e carne", img: pBovino,  focus: "wide" },
+  { id: "ovini",   nome: "Ovini",   linea: "Fra terra bassa e pietre.",               img: pOvino,   focus: "wide" },
+  { id: "suini",   nome: "Suini",   linea: "Nel lavoro della macelleria.",            img: pSuino,   focus: "low"  },
+  { id: "equini",  nome: "Equini",  linea: "Presenza quotidiana in Masseria.",        img: pEquino,  focus: "side" },
+  { id: "avicoli", nome: "Avicoli", linea: "Alla luce dell'aia.",                     img: pAvicolo, focus: "close"},
 ];
 
 const COLTURE = [
-  { word: "FORAGGIO", note: "Per gli animali della Masseria." },
-  { word: "ORTAGGI", note: "Per la tavola quotidiana." },
-  { word: "FRUTTA", note: "Nei terreni intorno agli edifici." },
+  { word: "FORAGGIO",     note: "Per gli animali della Masseria." },
+  { word: "ORTAGGI",      note: "Per la tavola quotidiana." },
+  { word: "FRUTTA",       note: "Nei terreni intorno agli edifici." },
   { word: "GRANO TENERO", note: "La farina va anche in focaccia e frittelle." },
 ];
 
@@ -50,7 +54,6 @@ const COLTURE = [
 export function AllevamentoStory() {
   const reduced = useReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [quota, setQuota] = useState(120);
 
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
@@ -63,79 +66,92 @@ export function AllevamentoStory() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      /* ═══ ACT 1 · LA DISCESA ═══ */
-      const act1 = root.querySelector<HTMLElement>("[data-act='1']");
+      /* ═══ I · LA DISCESA ═══ */
+      const act1   = root.querySelector<HTMLElement>("[data-act='discesa']");
       const aerial = root.querySelector<HTMLElement>("[data-aerial]");
-      const terra = root.querySelector<HTMLElement>("[data-terra]");
-      const horizonTitle = root.querySelector<HTMLElement>("[data-horizon-title]");
+      const terra  = root.querySelector<HTMLElement>("[data-terra]");
+      const grain  = root.querySelector<HTMLElement>("[data-grain]");
+      const title  = root.querySelector<HTMLElement>("[data-horizon-title]");
+      const eye    = root.querySelector<HTMLElement>("[data-horizon-eye]");
+      const line   = root.querySelector<HTMLElement>("[data-horizon-line]");
 
       if (act1 && aerial && terra) {
-        gsap.set(terra, { autoAlpha: 0, scale: 1.14, filter: "blur(8px)" });
-        gsap.set(aerial, { autoAlpha: 1, scale: 1.0, filter: "blur(0px)" });
+        gsap.set(aerial, { autoAlpha: 1, scale: 1, y: 0, filter: "blur(0px)" });
+        gsap.set(terra,  { autoAlpha: 0, scale: 1.18, filter: "blur(10px)" });
+        gsap.set(grain,  { autoAlpha: 0 });
 
         ScrollTrigger.create({
           trigger: act1,
           start: "top top",
           end: "bottom top",
           scrub: 0.6,
-          pin: false,
           onUpdate: (self) => {
             if (!mounted) return;
             const p = self.progress;
+            // camera avanza, l'orizzonte scende
             gsap.set(aerial, {
-              autoAlpha: 1 - Math.min(1, p * 1.5),
-              scale: 1 + p * 0.10,
-              y: -p * 40,
+              autoAlpha: 1 - Math.min(1, Math.max(0, (p - 0.25) * 1.7)),
+              scale: 1 + p * 0.14,
+              y: -p * 60,
               filter: `blur(${p * 3}px)`,
             });
             gsap.set(terra, {
-              autoAlpha: Math.max(0, (p - 0.30) * 1.8),
-              scale: 1.14 - p * 0.10,
-              filter: `blur(${Math.max(0, 8 - p * 12)}px)`,
+              autoAlpha: Math.max(0, (p - 0.35) * 2.0),
+              scale: 1.18 - p * 0.14,
+              y: 20 - p * 20,
+              filter: `blur(${Math.max(0, 10 - p * 14)}px)`,
             });
-            setQuota(Math.max(0, Math.round(120 * (1 - p))));
+            gsap.set(grain, { autoAlpha: Math.min(0.55, p * 0.9) });
           },
         });
 
-        if (horizonTitle) {
-          // Titolo visibile di default (SSR / no-GSAP safe): la reveal parte da "già visibile"
-          // e aggiunge solo un movimento leggero durante la discesa.
+        if (title && eye && line) {
+          // il titolo emerge dalla terra, l'occhiello si dissolve
           gsap.fromTo(
-            horizonTitle,
-            { y: 24, autoAlpha: 0.85 },
+            title,
+            { y: 70, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
             {
-              y: 0,
-              autoAlpha: 1,
-              ease: "power2.out",
-              scrollTrigger: { trigger: act1, start: "top top", end: "40% top", scrub: 0.6 },
+              y: 0, autoAlpha: 1, clipPath: "inset(0 0 0% 0)",
+              ease: "power3.out",
+              scrollTrigger: { trigger: act1, start: "top top", end: "55% top", scrub: 0.7 },
+            },
+          );
+          gsap.to(eye, {
+            autoAlpha: 0, y: -20,
+            scrollTrigger: { trigger: act1, start: "top top", end: "25% top", scrub: 0.5 },
+          });
+          gsap.fromTo(
+            line,
+            { scaleX: 0.15, autoAlpha: 0 },
+            {
+              scaleX: 1, autoAlpha: 0.55,
+              scrollTrigger: { trigger: act1, start: "10% top", end: "60% top", scrub: 0.6 },
             },
           );
         }
-
       }
 
-      /* ═══ ACT 2 · IL PRINCIPIO — parole grandi ═══ */
-      const bigWords = root.querySelectorAll<HTMLElement>("[data-bigword]");
-      bigWords.forEach((el) => {
+      /* ═══ Transizione materiale cielo → mandria ═══ */
+      const bridge = root.querySelector<HTMLElement>("[data-earth-bridge]");
+      if (bridge) {
         gsap.fromTo(
-          el,
-          { y: 60, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
+          bridge,
+          { scaleY: 0.2, transformOrigin: "50% 100%" },
           {
-            y: 0,
-            autoAlpha: 1,
-            clipPath: "inset(0 0 0% 0)",
-            duration: 0.9,
-            ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 82%", once: true },
+            scaleY: 1,
+            ease: "none",
+            scrollTrigger: { trigger: bridge, start: "top bottom", end: "bottom center", scrub: 0.5 },
           },
         );
-      });
+      }
 
-      /* ═══ ACT 3 · LA MANDRIA — carrellata orizzontale (desktop) ═══ */
+      /* ═══ II · LA MANDRIA — carrellata continua (desktop) ═══ */
       mm.add("(min-width: 900px)", () => {
-        const act3 = root.querySelector<HTMLElement>("[data-act='3']");
+        const act2 = root.querySelector<HTMLElement>("[data-act='mandria']");
         const track = root.querySelector<HTMLElement>("[data-mandria-track]");
-        if (!act3 || !track) return;
+        const bg = root.querySelector<HTMLElement>("[data-mandria-bg]");
+        const fg = root.querySelector<HTMLElement>("[data-mandria-fg]");
+        if (!act2 || !track) return;
 
         const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
 
@@ -143,85 +159,130 @@ export function AllevamentoStory() {
           x: () => -distance(),
           ease: "none",
           scrollTrigger: {
-            trigger: act3,
+            trigger: act2,
             start: "top top",
-            end: () => `+=${distance()}`,
+            end: () => `+=${distance() * 1.15}`,
             pin: true,
             pinSpacing: true,
             anticipatePin: 1,
-            scrub: 0.6,
+            scrub: 0.65,
             invalidateOnRefresh: true,
           },
         });
 
-        root.querySelectorAll<HTMLElement>("[data-scene]").forEach((el, i) => {
-          gsap.fromTo(
-            el.querySelector("[data-scene-txt]"),
-            { y: 30, autoAlpha: 0 },
-            {
-              y: 0,
-              autoAlpha: 1,
-              duration: 0.5,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: el,
-                containerAnimation: tw,
-                start: "left 70%",
-                once: true,
-              },
+        // Parallax orizzonte + primo piano (fondo lento, primo piano ~1.12x)
+        if (bg) {
+          gsap.to(bg, {
+            xPercent: -12,
+            ease: "none",
+            scrollTrigger: {
+              trigger: act2, start: "top top",
+              end: () => `+=${distance() * 1.15}`, scrub: 0.65,
+              invalidateOnRefresh: true,
             },
-          );
-          const counter = root.querySelector<HTMLElement>("[data-counter]");
-          if (counter) {
-            ScrollTrigger.create({
-              trigger: el,
-              containerAnimation: tw,
-              start: "left center",
-              end: "right center",
-              onToggle: (self) => {
-                if (self.isActive) counter.textContent = `0${i + 1} / 0${SPECIES.length}`;
-              },
-            });
+          });
+        }
+        if (fg) {
+          gsap.to(fg, {
+            xPercent: -14,
+            ease: "none",
+            scrollTrigger: {
+              trigger: act2, start: "top top",
+              end: () => `+=${distance() * 1.15}`, scrub: 0.5,
+              invalidateOnRefresh: true,
+            },
+          });
+        }
+
+        // reveal per scena (nome grande, linea, targhetta)
+        root.querySelectorAll<HTMLElement>("[data-scene]").forEach((el) => {
+          const nome = el.querySelector<HTMLElement>("[data-scene-name]");
+          const meta = el.querySelector<HTMLElement>("[data-scene-meta]");
+          if (nome) {
+            gsap.fromTo(nome,
+              { y: 60, autoAlpha: 0 },
+              {
+                y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out",
+                scrollTrigger: { trigger: el, containerAnimation: tw, start: "left 75%", once: true },
+              });
+          }
+          if (meta) {
+            gsap.fromTo(meta,
+              { y: 20, autoAlpha: 0 },
+              {
+                y: 0, autoAlpha: 1, duration: 0.6, ease: "power2.out", delay: 0.1,
+                scrollTrigger: { trigger: el, containerAnimation: tw, start: "left 60%", once: true },
+              });
           }
         });
       });
 
-      /* ═══ ACT 5 · SPOTLIGHT COLTURE (solo desktop — su mobile è verticale) ═══ */
+      /* ═══ III · SPOTLIGHT COLTURE (desktop) ═══ */
       mm.add("(min-width: 900px)", () => {
-        const act5 = root.querySelector<HTMLElement>("[data-act='5']");
+        const act3 = root.querySelector<HTMLElement>("[data-act='colture']");
         const spot = root.querySelector<HTMLElement>("[data-spot]");
-        if (!act5 || !spot) return;
+        const beam = root.querySelector<HTMLElement>("[data-spot-beam]");
+        if (!act3 || !spot) return;
         const items = spot.querySelectorAll<HTMLElement>("[data-coltura]");
-        gsap.set(items, { autoAlpha: 0.15 });
+        gsap.set(items, { autoAlpha: 0.18 });
 
         ScrollTrigger.create({
-          trigger: act5,
+          trigger: act3,
           start: "top top",
-          end: "+=" + items.length * 400,
+          end: "+=" + items.length * 480,
           pin: spot,
           pinSpacing: true,
           scrub: 0.55,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
+            if (!mounted) return;
             const active = Math.min(items.length - 1, Math.floor(self.progress * items.length));
             items.forEach((it, i) => {
-              const dist = Math.abs(i - active);
+              const d = Math.abs(i - active);
               gsap.set(it, {
-                autoAlpha: dist === 0 ? 1 : dist === 1 ? 0.4 : 0.15,
-                scale: dist === 0 ? 1 : 0.95,
+                autoAlpha: d === 0 ? 1 : d === 1 ? 0.35 : 0.14,
               });
+              const note = it.querySelector<HTMLElement>("[data-coltura-note]");
+              if (note) gsap.set(note, { autoAlpha: d === 0 ? 1 : 0 });
             });
+            if (beam) {
+              // fascio di luce che scorre lentamente verso il basso
+              const y = 8 + self.progress * 76;
+              gsap.set(beam, { top: `${y}%` });
+            }
           },
         });
       });
 
-
-      /* ═══ Refresh dopo font ═══ */
-      const doRefresh = () => { if (mounted) ScrollTrigger.refresh(); };
-      if (document.fonts?.ready) {
-        document.fonts.ready.then(doRefresh).catch(() => {});
+      /* ═══ IV · IL BIANCO — chiusura scrubbata ═══ */
+      const bianco = root.querySelector<HTMLElement>("[data-act='bianco']");
+      const biancoBg = root.querySelector<HTMLElement>("[data-bianco-bg]");
+      const biancoStripe = root.querySelector<HTMLElement>("[data-bianco-stripe]");
+      if (bianco && biancoBg && biancoStripe) {
+        gsap.fromTo(
+          biancoBg,
+          { filter: "saturate(1) brightness(1)", background: "var(--marrone)" },
+          {
+            filter: "saturate(0.15) brightness(1.12)",
+            background: "var(--crema)",
+            ease: "none",
+            scrollTrigger: { trigger: bianco, start: "top bottom", end: "60% center", scrub: 0.7 },
+          },
+        );
+        gsap.fromTo(
+          biancoStripe,
+          { scaleX: 0.05, autoAlpha: 0.4, transformOrigin: "50% 50%" },
+          {
+            scaleX: 1, autoAlpha: 1,
+            scrollTrigger: { trigger: bianco, start: "top bottom", end: "70% center", scrub: 0.7 },
+          },
+        );
       }
-      setTimeout(doRefresh, 200);
+
+      /* refresh dopo font */
+      const doRefresh = () => { if (mounted) ScrollTrigger.refresh(); };
+      if (document.fonts?.ready) document.fonts.ready.then(doRefresh).catch(() => {});
+      setTimeout(doRefresh, 220);
     }, root);
 
     return () => {
@@ -231,284 +292,271 @@ export function AllevamentoStory() {
   }, [reduced]);
 
   return (
-    <div ref={rootRef} className="relative w-full text-[color:var(--crema)]" style={{ background: "var(--marrone)" }}>
-
-      {/* ══════════ ACT 1 · LA DISCESA ══════════ */}
-      <section data-act="1" className="relative h-[220vh]" aria-label="La Discesa">
+    <div
+      ref={rootRef}
+      className="relative w-full text-[color:var(--crema)]"
+      style={{ background: "var(--marrone)" }}
+    >
+      {/* ══════════════════════════ I · LA DISCESA ══════════════════════════ */}
+      <section
+        data-act="discesa"
+        className="relative h-[240vh]"
+        aria-label="Dove il cielo tocca la terra"
+      >
         <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+          {/* Cielo (aerea) */}
           <div
             data-aerial
             className="absolute inset-0 will-change-transform"
             style={{
               backgroundImage: `url(${aerialAsset.url})`,
               backgroundSize: "cover",
-              backgroundPosition: "center 40%",
+              backgroundPosition: "center 42%",
             }}
             role="img"
-            aria-label="Veduta aerea dell'area agricola di Masseria Don Gianvito nelle campagne di Noci"
+            aria-label="Veduta aerea di Masseria Don Gianvito nelle campagne di Noci"
           />
+          {/* Terra (avvicinamento) */}
           <div
             data-terra
             className="absolute inset-0 will-change-transform"
             style={{
               backgroundImage: `url(${terraImg})`,
               backgroundSize: "cover",
-              backgroundPosition: "center 60%",
+              backgroundPosition: "center 62%",
             }}
             aria-hidden
           />
+          {/* Grana progressiva */}
+          <div
+            data-grain
+            className="absolute inset-0 pointer-events-none mix-blend-overlay"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.04) 0, transparent 40%), radial-gradient(circle at 70% 80%, rgba(0,0,0,0.15) 0, transparent 45%)",
+            }}
+            aria-hidden
+          />
+          {/* Vignettatura */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(180deg, rgba(26,18,16,0.25) 0%, rgba(26,18,16,0.05) 50%, rgba(61,42,30,0.55) 100%)",
+                "radial-gradient(ellipse at center, transparent 40%, rgba(26,18,16,0.55) 100%), linear-gradient(180deg, rgba(26,18,16,0.15) 0%, transparent 45%, rgba(26,18,16,0.55) 100%)",
             }}
+            aria-hidden
           />
-          {/* Rail sx */}
-          <div className="absolute left-4 md:left-8 top-0 h-full flex items-center pointer-events-none z-10" aria-hidden>
-            <div
-              className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/75"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.3em" }}
-            >
-              ALLEVAMENTO — MASSERIA DON GIANVITO · QUOTA {String(quota).padStart(3, "0")}m
+
+          {/* Occhiello discreto (in alto, non compete con Navbar) */}
+          <div
+            data-horizon-eye
+            className="absolute inset-x-0 top-[calc(var(--header-offset,88px)+18px)] flex justify-center pointer-events-none"
+          >
+            <div className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/60">
+              ALLEVAMENTO
             </div>
           </div>
-          {/* Linea orizzonte */}
+
+          {/* Linea d'orizzonte */}
           <div
-            className="absolute inset-x-0 top-[60%] h-px opacity-60 pointer-events-none"
+            data-horizon-line
+            className="absolute inset-x-[6vw] top-[58%] h-px pointer-events-none origin-center"
             style={{ background: "linear-gradient(90deg, transparent, var(--oro), transparent)" }}
             aria-hidden
           />
-          {/* Titolo sull'orizzonte */}
-          <div className="absolute inset-x-0 top-[42%] flex flex-col items-center pointer-events-none px-6 text-center">
-            <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/70 tracking-[0.35em] mb-4">
-              ALLEVAMENTO — MASSERIA DON GIANVITO
-            </div>
+
+          {/* Titolo che emerge dalla terra */}
+          <div className="absolute inset-x-0 top-[60%] flex justify-center pointer-events-none px-6">
             <h1
               data-horizon-title
-              className="font-display text-[color:var(--crema)] leading-[0.9]"
+              className="font-display text-[color:var(--crema)] text-center leading-[0.9]"
               style={{
-                fontSize: "clamp(2.4rem, 8vw, 6.5rem)",
+                fontSize: "clamp(2.6rem, 9vw, 7.2rem)",
                 fontWeight: 300,
-                textShadow: "0 2px 30px rgba(26,18,16,0.6)",
+                letterSpacing: "-0.01em",
+                maxWidth: "22ch",
               }}
             >
-              Dove il cielo<br/>tocca la terra.
+              Dove il cielo<br />tocca la terra.
             </h1>
           </div>
-          {/* Indicatore */}
-          <div className="absolute inset-x-0 bottom-8 md:bottom-10 flex justify-center pointer-events-none">
-            <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/70 tracking-[0.4em]">
-              SCENDI A TERRA ↓
-            </div>
+
+          {/* Sotto-testo minimo, quasi al bordo inferiore */}
+          <div className="absolute inset-x-0 bottom-[10%] flex justify-center pointer-events-none px-6">
+            <p
+              className="text-[color:var(--crema)]/80 text-base md:text-lg italic text-center max-w-md"
+              style={{ letterSpacing: "0.005em" }}
+            >
+              L'allevamento comincia qui, nelle campagne di Noci.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ══════════ ACT 2 · IL PRINCIPIO ══════════ */}
-      <section
-        data-act="2"
-        className="relative py-24 md:py-40 px-6 md:px-14 overflow-hidden"
-        aria-label="Il principio"
+      {/* ═══════════ Raccordo materiale: la terra si espande ═══════════ */}
+      <div
+        data-earth-bridge
+        aria-hidden
+        className="relative h-[22vh] md:h-[26vh] w-full origin-bottom will-change-transform overflow-hidden"
         style={{
-          background:
-            "linear-gradient(180deg, var(--marrone) 0%, color-mix(in oklab, var(--marrone) 70%, var(--oliva)) 100%)",
+          background: "linear-gradient(180deg, transparent 0%, var(--marrone) 40%, color-mix(in oklab, var(--marrone) 60%, var(--oliva)) 100%)",
         }}
       >
-        {/* Solchi decorativi */}
-        <svg aria-hidden className="absolute inset-0 h-full w-full opacity-[0.12] pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <path d="M0 25 Q 50 20, 100 30" stroke="var(--oro)" strokeWidth="0.15" fill="none" vectorEffect="non-scaling-stroke"/>
-          <path d="M0 55 Q 50 60, 100 50" stroke="var(--oro)" strokeWidth="0.15" fill="none" vectorEffect="non-scaling-stroke"/>
-          <path d="M0 82 Q 50 78, 100 85" stroke="var(--oro)" strokeWidth="0.15" fill="none" vectorEffect="non-scaling-stroke"/>
-        </svg>
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            backgroundImage: `url(${terraImg})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center top",
+            maskImage: "linear-gradient(180deg, black 0%, transparent 90%)",
+            WebkitMaskImage: "linear-gradient(180deg, black 0%, transparent 90%)",
+          }}
+        />
+      </div>
 
-        <div className="relative max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--oro)]/85 tracking-[0.35em] mb-8">
-            01 — IL PRINCIPIO
-          </div>
-          <h2
-            data-bigword
-            className="font-display text-[color:var(--crema)] leading-[0.95] mb-10 md:mb-14"
-            style={{ fontSize: "clamp(2rem, 6vw, 5rem)", fontWeight: 300 }}
-          >
-            Prima degli animali,<br/>c'è ciò che li circonda.
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16 max-w-4xl">
-            <p data-bigword className="text-[color:var(--crema)]/90 text-lg md:text-xl leading-relaxed">
-              Terra, coltivazioni e lavoro agricolo formano il primo livello della Masseria.
-            </p>
-            <p data-bigword className="text-[color:var(--crema)]/65 text-base md:text-lg italic leading-relaxed">
-              L'allevamento non è un'immagine separata dal resto: continua nel caseificio, nella macelleria e nella cucina.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════ ACT 3 · LA MANDRIA ══════════ */}
+      {/* ══════════════════════════ II · LA MANDRIA ══════════════════════════ */}
       <section
-        data-act="3"
+        data-act="mandria"
         className="relative"
-        aria-label="La Mandria"
+        aria-label="La Mandria — cinque presenze del paesaggio agricolo"
         style={{
           background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 40%, var(--oliva)) 0%, var(--oliva) 100%)",
+            "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 55%, var(--oliva)) 0%, var(--oliva) 55%, color-mix(in oklab, var(--oliva) 70%, var(--marrone)) 100%)",
         }}
       >
-        {/* Desktop: carrellata orizzontale */}
+        {/* Desktop — carrellata cinematografica continua */}
         <div className="hidden md:block relative h-[100dvh] overflow-hidden">
-          {/* Panorama continuo di sfondo */}
+          {/* Fondo: panorama unico che scorre lento */}
           <div
-            className="absolute inset-0"
+            data-mandria-bg
+            className="absolute inset-0 will-change-transform"
             style={{
               backgroundImage: `url(${panoramaImg})`,
               backgroundSize: "auto 100%",
               backgroundRepeat: "repeat-x",
               backgroundPosition: "center",
-              opacity: 0.35,
-              filter: "sepia(0.15) saturate(0.85)",
+              opacity: 0.32,
+              filter: "sepia(0.18) saturate(0.8)",
+              width: "130%",
+              left: "-15%",
             }}
             aria-hidden
           />
+          {/* Cielo/oscuramento superiore, terra scura in basso */}
           <div
-            className="absolute inset-0"
+            className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(180deg, rgba(61,42,30,0.55) 0%, rgba(61,42,30,0.2) 40%, rgba(61,42,30,0.7) 100%)",
+                "linear-gradient(180deg, rgba(26,18,16,0.45) 0%, rgba(26,18,16,0.05) 30%, rgba(26,18,16,0.15) 65%, rgba(26,18,16,0.75) 100%)",
             }}
             aria-hidden
           />
 
-          {/* Header pin */}
-          <div className="absolute top-8 left-8 z-20 flex flex-col gap-2">
-            <div className="font-eyebrow text-[11px] text-[color:var(--crema)]/60 tracking-[0.3em]">
-              LA MANDRIA · CARRELLATA
-            </div>
-            <div className="font-display text-[color:var(--crema)]/90 text-2xl" style={{ fontWeight: 300 }}>
-              Cinque presenze diverse
-            </div>
-          </div>
-          <div data-counter className="absolute bottom-8 right-8 z-20 font-eyebrow text-[13px] text-[color:var(--crema)]/70 tracking-[0.2em]">
-            01 / 0{SPECIES.length}
-          </div>
-          {/* Linea di terreno */}
+          {/* Linea di terreno continua */}
           <div
-            className="absolute bottom-[15%] inset-x-0 h-px z-10 pointer-events-none"
-            style={{ background: "linear-gradient(90deg, transparent, var(--oro)/40, transparent)", opacity: 0.4 }}
+            className="absolute inset-x-0 bottom-[18%] h-px pointer-events-none"
+            style={{ background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 60%, transparent), transparent)", opacity: 0.5 }}
             aria-hidden
           />
 
+          {/* Primo piano (recinzione/erba stilizzata) */}
+          <svg
+            data-mandria-fg
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-[18%] w-[130%] -left-[15%] will-change-transform pointer-events-none"
+            preserveAspectRatio="none"
+            viewBox="0 0 1000 100"
+          >
+            <path
+              d="M0 60 Q 100 55 200 60 T 400 62 T 600 58 T 800 60 T 1000 62 L 1000 100 L 0 100 Z"
+              fill="rgba(26,18,16,0.85)"
+            />
+          </svg>
+
+          {/* Track continuo */}
           <div
             data-mandria-track
-            className="absolute top-0 left-0 h-full flex items-end gap-12 pl-[8vw] pr-[20vw] pb-[10vh] will-change-transform"
+            className="absolute top-0 left-0 h-full flex items-end gap-[10vw] pl-[10vw] pr-[22vw] pb-[22vh] will-change-transform"
             style={{ width: "max-content" }}
           >
             {SPECIES.map((s, i) => (
-              <SceneCard key={s.id} s={s} idx={i} />
+              <SceneShot key={s.id} s={s} idx={i} />
             ))}
           </div>
         </div>
 
-        {/* Mobile: sequenza verticale alternata */}
-        <div className="md:hidden px-5 py-16 space-y-14">
-          <div className="font-eyebrow text-[10px] text-[color:var(--crema)]/60 tracking-[0.3em]">
-            LA MANDRIA — CINQUE PRESENZE
-          </div>
+        {/* Mobile — montaggio verticale continuo */}
+        <div className="md:hidden relative">
           {SPECIES.map((s, i) => (
-            <article
-              key={s.id}
-              className={`relative ${i % 2 === 0 ? "pr-6 text-left" : "pl-6 text-right ml-auto"}`}
-              style={{ maxWidth: "92%" }}
-            >
-              {s.img && (
-                <div className="relative aspect-[4/5] overflow-hidden rounded-sm mb-4 shadow-xl">
-                  <img
-                    src={s.img}
-                    alt={`${s.nome} — Masseria Don Gianvito`}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover"
-                    style={{ filter: "saturate(0.85) contrast(1.05)" }}
-                  />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(26,18,16,0.7) 100%)" }} />
-                  <TagBadge tag={s.tag} sub={s.sub} className={i % 2 === 0 ? "left-3 top-3" : "right-3 top-3"} />
-                </div>
-              )}
-              <h3 className="font-display text-[color:var(--crema)] text-3xl leading-tight mb-2" style={{ fontWeight: 300 }}>
-                {s.nome}
-              </h3>
-              <p className="text-[color:var(--crema)]/75 text-sm italic">{s.micro}</p>
-            </article>
+            <SceneMobile key={s.id} s={s} idx={i} />
           ))}
         </div>
       </section>
 
-      {/* ══════════ ACT 4 · BOVINI — LATTE / CARNE ══════════ */}
+      {/* ══════════════════════════ Focus BOVINI ══════════════════════════ */}
       <section
-        className="relative py-24 md:py-36 px-6 md:px-14 overflow-hidden"
-        aria-label="Bovini · latte e carne"
+        className="relative py-28 md:py-40 px-6 md:px-14 overflow-hidden"
+        aria-label="Bovini · Pezzata Rossa × Frisona, latte e carne"
         style={{
           background:
-            "linear-gradient(180deg, var(--oliva) 0%, color-mix(in oklab, var(--marrone) 70%, var(--oliva)) 100%)",
+            "linear-gradient(180deg, color-mix(in oklab, var(--oliva) 60%, var(--marrone)) 0%, var(--marrone) 100%)",
         }}
       >
         <div className="relative max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--oro)]/85 tracking-[0.35em] mb-6">
-            02 — I BOVINI
-          </div>
           <h2
-            data-bigword
-            className="font-display text-[color:var(--crema)] leading-[0.95] mb-10 md:mb-16 max-w-4xl"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300 }}
+            className="font-display text-[color:var(--crema)] leading-[0.92] mb-10 md:mb-14 max-w-4xl"
+            style={{ fontSize: "clamp(2.2rem, 6vw, 5.2rem)", fontWeight: 300, letterSpacing: "-0.01em" }}
           >
-            Due direzioni<br/>nello stesso allevamento.
+            Un incrocio<br/>tra Pezzata Rossa<br/>e&nbsp;Frisona.
           </h2>
 
-          <p className="text-[color:var(--crema)]/85 text-lg md:text-xl max-w-3xl leading-relaxed mb-14 md:mb-20">
-            I bovini sono un <span className="text-[color:var(--oro)]">incrocio tra Pezzata Rossa e Frisona</span> e contribuiscono
-            alla produzione di latte e carne.
-          </p>
-
-          {/* Composizione divisa da una linea centrale */}
-          <div className="relative grid grid-cols-2 gap-0 min-h-[280px] md:min-h-[380px] items-stretch">
-            {/* Linea centrale */}
-            <div
-              className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 z-10"
-              style={{ background: "linear-gradient(180deg, transparent, var(--oro), transparent)" }}
-              aria-hidden
-            />
-            {/* Lato LATTE */}
-            <div
-              className="relative flex flex-col items-end justify-center pr-6 md:pr-14 py-10"
-              style={{
-                background: "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--crema) 30%, transparent) 100%)",
-              }}
-            >
-              <div className="font-eyebrow text-[10px] text-[color:var(--crema)]/60 tracking-[0.35em] mb-3">→ CASEIFICIO</div>
+          {/* Diagramma linea che si apre da un punto centrale */}
+          <div className="relative grid grid-cols-[1fr_auto_1fr] gap-4 md:gap-10 items-center min-h-[220px] md:min-h-[320px]">
+            {/* LATTE (crema) */}
+            <div className="flex flex-col items-end text-right">
               <div
-                className="font-display leading-none text-right"
-                style={{ fontSize: "clamp(3rem, 10vw, 8rem)", fontWeight: 300, color: "var(--crema)" }}
+                className="font-display leading-none"
+                style={{
+                  fontSize: "clamp(2.6rem, 8vw, 6rem)",
+                  fontWeight: 300,
+                  color: "var(--crema)",
+                  letterSpacing: "-0.01em",
+                }}
               >
                 LATTE
               </div>
-              <p className="mt-4 text-[color:var(--crema)]/75 text-sm md:text-base text-right max-w-xs italic">
+              <p className="mt-3 text-[color:var(--crema)]/70 text-sm md:text-base italic max-w-[22ch]">
                 Ogni mattina prende la via del caseificio.
               </p>
             </div>
-            {/* Lato CARNE */}
-            <div
-              className="relative flex flex-col items-start justify-center pl-6 md:pl-14 py-10"
-              style={{
-                background: "linear-gradient(270deg, transparent 0%, color-mix(in oklab, var(--bordeaux) 40%, transparent) 100%)",
-              }}
-            >
-              <div className="font-eyebrow text-[10px] text-[color:var(--crema)]/60 tracking-[0.35em] mb-3">→ MACELLERIA</div>
+
+            {/* Nodo con linea a Y */}
+            <svg aria-hidden viewBox="0 0 80 200" className="h-40 md:h-64 w-16 md:w-20" preserveAspectRatio="none">
+              <path
+                d="M40 0 L40 90 L4 200 M40 90 L76 200"
+                stroke="var(--oro)"
+                strokeWidth="0.6"
+                fill="none"
+                vectorEffect="non-scaling-stroke"
+                opacity="0.85"
+              />
+              <circle cx="40" cy="90" r="3" fill="var(--oro)" />
+            </svg>
+
+            {/* CARNE (bordeaux) */}
+            <div className="flex flex-col items-start text-left">
               <div
                 className="font-display leading-none"
-                style={{ fontSize: "clamp(3rem, 10vw, 8rem)", fontWeight: 300, color: "var(--crema)" }}
+                style={{
+                  fontSize: "clamp(2.6rem, 8vw, 6rem)",
+                  fontWeight: 300,
+                  color: "var(--bordeaux, #6b1f2a)",
+                  letterSpacing: "-0.01em",
+                }}
               >
                 CARNE
               </div>
-              <p className="mt-4 text-[color:var(--crema)]/75 text-sm md:text-base max-w-xs italic">
+              <p className="mt-3 text-[color:var(--crema)]/70 text-sm md:text-base italic max-w-[22ch]">
                 Passa al banco della macelleria.
               </p>
             </div>
@@ -516,75 +564,96 @@ export function AllevamentoStory() {
         </div>
       </section>
 
-      {/* ══════════ ACT 5 · LE COLTURE — SPOTLIGHT ══════════ */}
+      {/* ══════════════════════════ III · CIÒ CHE NUTRE ══════════════════════════ */}
       <section
-        data-act="5"
+        data-act="colture"
         className="relative"
-        aria-label="Le Colture"
+        aria-label="Ciò che nutre — foraggio, ortaggi, frutta, grano tenero"
         style={{
           background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 70%, var(--oliva)) 0%, #2a1c14 100%)",
+            "linear-gradient(180deg, var(--marrone) 0%, #2a1c14 100%)",
         }}
       >
-        {/* Desktop: pin spotlight */}
+        {/* Desktop — spotlight naturale */}
         <div className="hidden md:block h-[100dvh]">
-          <div data-spot className="relative h-[100dvh] w-full overflow-hidden flex flex-col items-center justify-center px-6">
+          <div
+            data-spot
+            className="relative h-[100dvh] w-full overflow-hidden flex flex-col items-center justify-center px-6"
+          >
+            {/* Terra dall'alto */}
             <div
-              className="absolute inset-0 opacity-25"
+              className="absolute inset-0 opacity-30"
               style={{
                 backgroundImage: `url(${granoImg})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                filter: "sepia(0.3) saturate(0.7)",
+                filter: "sepia(0.35) saturate(0.7) brightness(0.9)",
               }}
               aria-hidden
             />
-            {/* Solchi */}
-            <svg aria-hidden className="absolute inset-0 h-full w-full opacity-[0.15] pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-              <path d="M0 30 Q 50 25, 100 35" stroke="var(--oro)" strokeWidth="0.2" fill="none" vectorEffect="non-scaling-stroke"/>
-              <path d="M0 65 Q 50 70, 100 60" stroke="var(--oro)" strokeWidth="0.2" fill="none" vectorEffect="non-scaling-stroke"/>
-            </svg>
+            {/* Fascio di luce morbido che si muove */}
+            <div
+              data-spot-beam
+              className="absolute inset-x-0 pointer-events-none"
+              style={{
+                top: "8%",
+                height: "36%",
+                background:
+                  "linear-gradient(180deg, transparent 0%, rgba(245,232,204,0.18) 40%, rgba(245,232,204,0.28) 50%, rgba(245,232,204,0.18) 60%, transparent 100%)",
+                mixBlendMode: "screen",
+              }}
+              aria-hidden
+            />
 
-            <div className="relative z-10 font-eyebrow text-[10px] md:text-[11px] text-[color:var(--oro)]/85 tracking-[0.35em] mb-8">
-              03 — CIÒ CHE COLTIVIAMO
-            </div>
-            <h2
-              className="relative z-10 font-display text-[color:var(--crema)] text-center leading-[0.95] mb-10"
-              style={{ fontSize: "clamp(2rem, 5vw, 4rem)", fontWeight: 300 }}
-            >
-              La terra continua<br/>nel lavoro quotidiano.
-            </h2>
-
-            <div className="relative z-10 flex flex-col items-center gap-6 md:gap-8">
-              {COLTURE.map((c, i) => (
-                <div key={c.word} data-coltura className="flex flex-col items-center transition-all duration-300 will-change-transform">
+            <div className="relative z-10 flex flex-col items-center gap-4 md:gap-6">
+              <h2 className="sr-only">Ciò che nutre</h2>
+              {COLTURE.map((c) => (
+                <div
+                  key={c.word}
+                  data-coltura
+                  className="flex flex-col items-center will-change-[opacity]"
+                >
                   <div
-                    className="font-display text-[color:var(--crema)] leading-none tracking-wide"
-                    style={{ fontSize: "clamp(2rem, 4.5vw, 3.6rem)", fontWeight: 300 }}
+                    className="font-display text-[color:var(--crema)] leading-none text-center"
+                    style={{
+                      fontSize: "clamp(2.4rem, 5.4vw, 4.6rem)",
+                      fontWeight: 300,
+                      letterSpacing: "0.02em",
+                    }}
                   >
                     {c.word}
                   </div>
-                  <div className="mt-2 text-[color:var(--crema)]/70 text-sm md:text-base italic">
+                  <div
+                    data-coltura-note
+                    className="mt-2 text-[color:var(--crema)]/75 text-sm md:text-base italic text-center"
+                  >
                     {c.note}
                   </div>
                 </div>
               ))}
             </div>
+
+            <p className="absolute bottom-8 inset-x-0 text-center text-[color:var(--crema)]/50 text-xs md:text-sm italic px-6">
+              Foraggio, ortaggi, frutta e grano tenero crescono nei terreni della Masseria.
+            </p>
           </div>
         </div>
 
-        {/* Mobile: verticale */}
-        <div className="md:hidden px-5 py-20 space-y-10">
-          <div className="font-eyebrow text-[10px] text-[color:var(--oro)]/85 tracking-[0.35em]">
-            03 — CIÒ CHE COLTIVIAMO
-          </div>
-          <h2 className="font-display text-[color:var(--crema)] text-3xl leading-tight" style={{ fontWeight: 300 }}>
-            La terra continua<br/>nel lavoro quotidiano.
+        {/* Mobile — verticale essenziale */}
+        <div className="md:hidden px-5 py-24 space-y-12">
+          <h2
+            className="font-display text-[color:var(--crema)] leading-[0.95]"
+            style={{ fontSize: "clamp(2rem, 8vw, 2.8rem)", fontWeight: 300 }}
+          >
+            Prima degli animali,<br/>c'è ciò che li circonda.
           </h2>
-          <div className="space-y-8">
+          <div className="space-y-9">
             {COLTURE.map((c) => (
-              <div key={c.word} data-bigword className="border-t border-[color:var(--oro)]/25 pt-4">
-                <div className="font-display text-[color:var(--crema)] text-3xl leading-none" style={{ fontWeight: 300 }}>
+              <div key={c.word}>
+                <div
+                  className="font-display text-[color:var(--crema)] leading-none"
+                  style={{ fontSize: "clamp(2rem, 10vw, 3rem)", fontWeight: 300, letterSpacing: "0.02em" }}
+                >
                   {c.word}
                 </div>
                 <div className="mt-2 text-[color:var(--crema)]/70 text-sm italic">{c.note}</div>
@@ -597,52 +666,64 @@ export function AllevamentoStory() {
         </div>
       </section>
 
-      {/* ══════════ ACT 6 · PONTE VERSO IL CASEIFICIO ══════════ */}
+      {/* ══════════════════════════ IV · IL BIANCO ══════════════════════════ */}
       <section
-        className="relative py-28 md:py-40 px-6 md:px-14 overflow-hidden"
-        aria-label="Ponte verso il Caseificio"
-        style={{
-          background:
-            "linear-gradient(180deg, #2a1c14 0%, color-mix(in oklab, var(--marrone) 50%, var(--crema)) 60%, var(--crema) 100%)",
-        }}
+        data-act="bianco"
+        className="relative py-32 md:py-48 px-6 md:px-14 overflow-hidden"
+        aria-label="Il bianco — verso il Caseificio"
       >
-        {/* Immagine ponte, morbida */}
+        {/* Fondo che si schiarisce */}
         <div
-          className="absolute inset-0 opacity-40 pointer-events-none"
+          data-bianco-bg
+          aria-hidden
+          className="absolute inset-0 will-change-[filter,background]"
+          style={{ background: "var(--marrone)" }}
+        />
+        {/* Texture latte come velatura tenue */}
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-25 pointer-events-none"
           style={{
             backgroundImage: `url(${bridgeLatteImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "brightness(1.1) blur(1px)",
-            maskImage: "linear-gradient(180deg, transparent 0%, black 40%, black 70%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 40%, black 70%, transparent 100%)",
+            filter: "brightness(1.2) saturate(0.4)",
+            mixBlendMode: "screen",
+            maskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
           }}
-          aria-hidden
         />
-        {/* Linea crema che si allarga */}
-        <svg aria-hidden className="absolute inset-0 h-full w-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <path d="M 50 0 L 50 100" stroke="var(--crema)" strokeWidth="0.3" opacity="0.6" vectorEffect="non-scaling-stroke"/>
-        </svg>
+        {/* Striscia crema che si allarga */}
+        <div
+          data-bianco-stripe
+          aria-hidden
+          className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[3px] pointer-events-none origin-center"
+          style={{ background: "linear-gradient(90deg, transparent, var(--crema), transparent)" }}
+        />
 
         <div className="relative max-w-4xl mx-auto text-center">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/80 tracking-[0.35em] mb-6">
-            04 — IL PASSAGGIO
-          </div>
           <h2
-            data-bigword
-            className="font-display text-[color:var(--marrone)] leading-[0.95] mb-8"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300 }}
+            className="font-display leading-[0.92] mb-8"
+            style={{
+              fontSize: "clamp(2.2rem, 6vw, 5rem)",
+              fontWeight: 300,
+              color: "var(--marrone)",
+              letterSpacing: "-0.01em",
+            }}
           >
             Ogni mattina,<br/>il latte cambia luogo.
           </h2>
-          <p className="text-[color:var(--marrone)]/85 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Dall'allevamento il latte passa al caseificio, dove comincia una nuova trasformazione.
+          <p
+            className="text-lg md:text-xl max-w-xl mx-auto mb-12 leading-relaxed"
+            style={{ color: "color-mix(in oklab, var(--marrone) 82%, transparent)" }}
+          >
+            Dall'allevamento il latte passa al Caseificio e comincia una nuova trasformazione.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
             <Link
               to="/caseificio"
-              className="group inline-flex items-center gap-3 px-8 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] transition-all"
+              className="group inline-flex items-center gap-3 px-9 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] transition-all hover:gap-4"
               style={{ background: "var(--marrone)", color: "var(--crema)" }}
             >
               ENTRA NEL CASEIFICIO
@@ -650,8 +731,8 @@ export function AllevamentoStory() {
             </Link>
             <Link
               to="/macelleria"
-              className="group inline-flex items-center gap-3 px-6 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] border transition-all hover:bg-[color:var(--marrone)]/5"
-              style={{ borderColor: "color-mix(in oklab, var(--marrone) 60%, transparent)", color: "var(--marrone)" }}
+              className="group inline-flex items-center gap-3 px-6 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] border transition-colors hover:bg-[color:var(--marrone)]/5"
+              style={{ borderColor: "color-mix(in oklab, var(--marrone) 55%, transparent)", color: "var(--marrone)" }}
             >
               SCOPRI LA MACELLERIA
               <span className="transition-transform group-hover:translate-x-1">→</span>
@@ -659,130 +740,125 @@ export function AllevamentoStory() {
           </div>
         </div>
       </section>
-
-      {/* ══════════ NAV · LE QUATTRO ANIME ══════════ */}
-      <NavAnime />
     </div>
   );
 }
 
-/* ─────────────────── Scene Card (desktop track) ─────────────────── */
-function SceneCard({ s, idx }: { s: Specie; idx: number }) {
+/* ─────────────── Scena Mandria — desktop ─────────────── */
+function SceneShot({ s, idx }: { s: Specie; idx: number }) {
+  // ogni specie ha un'inquadratura e altezza diverse
+  // (composizione della "camera" senza cambiare layout)
+  const shot = {
+    wide:  { h: "78vh", w: "60vw", pos: "center 45%", scale: "1.00" },
+    low:   { h: "70vh", w: "54vw", pos: "center 62%", scale: "1.08" },
+    side:  { h: "76vh", w: "62vw", pos: "70% 50%",    scale: "1.02" },
+    close: { h: "66vh", w: "48vw", pos: "center 55%", scale: "1.12" },
+  }[s.focus];
+
   return (
     <article
       data-scene
-      className="relative shrink-0 h-[70vh] w-[50vw] max-w-[560px] flex items-end"
+      className="relative shrink-0 flex items-end"
+      style={{ height: shot.h, width: shot.w, maxWidth: "760px" }}
+      aria-label={`${s.nome} — ${s.linea}`}
     >
-      {s.img ? (
-        <div className="relative w-full h-full overflow-hidden rounded-sm shadow-2xl">
-          <img
-            src={s.img}
-            alt={`${s.nome} — Masseria Don Gianvito`}
-            loading={idx === 0 ? "eager" : "lazy"}
-            decoding="async"
-            className="h-full w-full object-cover"
-            style={{ filter: "saturate(0.85) contrast(1.05)" }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(180deg, rgba(26,18,16,0) 45%, rgba(26,18,16,0.85) 100%)" }}
-          />
-          <TagBadge tag={s.tag} sub={s.sub} className="left-4 top-4" />
-          <div data-scene-txt className="absolute bottom-0 left-0 right-0 p-6">
-            <div className="font-eyebrow text-[10px] text-[color:var(--oro)]/90 tracking-[0.3em] mb-2">
-              0{idx + 1} / 0{SPECIES.length}
-            </div>
-            <h3
-              className="font-display text-[color:var(--crema)] leading-[1.02] mb-2"
-              style={{ fontSize: "clamp(1.8rem, 2.6vw, 2.6rem)", fontWeight: 300 }}
-            >
-              {s.nome}
-            </h3>
-            <p className="text-[color:var(--crema)]/80 text-sm md:text-base italic max-w-sm">{s.micro}</p>
-          </div>
+      {/* fotografia in mask morbida (integrata nel paesaggio) */}
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={s.img}
+          alt=""
+          loading={idx === 0 ? "eager" : "lazy"}
+          decoding="async"
+          className="h-full w-full object-cover"
+          style={{
+            objectPosition: shot.pos,
+            transform: `scale(${shot.scale})`,
+            filter: "saturate(0.75) contrast(1.05) brightness(0.92)",
+            maskImage:
+              "linear-gradient(180deg, transparent 0%, black 18%, black 78%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(180deg, transparent 0%, black 18%, black 78%, transparent 100%)",
+          }}
+        />
+      </div>
+
+      {/* nome grande, integrato nel paesaggio */}
+      <div className="relative z-10 w-full pl-2 pr-6 pb-2">
+        <div
+          data-scene-meta
+          className="font-eyebrow text-[10px] tracking-[0.35em] text-[color:var(--oro)]/85 mb-3"
+        >
+          0{idx + 1} — {s.nome.toUpperCase()}
         </div>
-      ) : (
-        <div className="relative w-full h-full border border-[color:var(--oro)]/25 flex flex-col items-center justify-center p-8">
-          <TagBadge tag={s.tag} sub={s.sub} className="left-4 top-4" />
-          <div className="font-display text-[color:var(--crema)] text-5xl" style={{ fontWeight: 300 }}>
-            {s.nome}
-          </div>
-          <p className="mt-4 text-[color:var(--crema)]/60 text-sm text-center italic">{s.micro}</p>
-        </div>
-      )}
+        <h3
+          data-scene-name
+          className="font-display text-[color:var(--crema)] leading-[0.88] mb-3"
+          style={{
+            fontSize: "clamp(2.6rem, 5.5vw, 5.4rem)",
+            fontWeight: 300,
+            letterSpacing: "-0.01em",
+            textShadow: "0 2px 24px rgba(26,18,16,0.55)",
+          }}
+        >
+          {s.nome}
+        </h3>
+        <p
+          data-scene-meta
+          className="text-[color:var(--crema)]/85 text-sm md:text-base italic max-w-[38ch]"
+        >
+          {s.linea}
+        </p>
+      </div>
     </article>
   );
 }
 
-/* ─────────────────── Targhetta editoriale ─────────────────── */
-function TagBadge({ tag, sub, className = "" }: { tag: string; sub: string; className?: string }) {
+/* ─────────────── Scena Mandria — mobile ─────────────── */
+function SceneMobile({ s, idx }: { s: Specie; idx: number }) {
   return (
-    <div
-      className={`absolute ${className} inline-flex flex-col items-start px-3 py-2 rounded-sm shadow-md z-10`}
-      style={{
-        background: "var(--crema)",
-        color: "var(--carbone, #1a1210)",
-        borderLeft: "3px solid var(--oliva)",
-      }}
-      aria-label={`${tag} — ${sub}`}
+    <article
+      className="relative min-h-[92dvh] flex flex-col justify-end px-5 pb-14 pt-24"
+      aria-label={`${s.nome} — ${s.linea}`}
     >
-      <span className="font-eyebrow text-[10px] tracking-[0.28em] leading-none">{tag}</span>
-      <span className="mt-1 font-eyebrow text-[9px] tracking-[0.22em] leading-none opacity-70">{sub}</span>
-    </div>
-  );
-}
-
-/* ─────────────────── Nav Anime ─────────────────── */
-function NavAnime() {
-  const items = [
-    { key: "allevamento", n: "01", nome: "ALLEVAMENTO", sub: "Pagina corrente", to: null },
-    { key: "caseificio", n: "02", nome: "CASEIFICIO", sub: "Il bianco prende forma", to: "/caseificio" },
-    { key: "macelleria", n: "03", nome: "MACELLERIA", sub: "La scelta avviene a vista", to: "/macelleria" },
-    { key: "agriturismo", n: "04", nome: "AGRITURISMO", sub: "La cucina e l’ospitalità", to: "/agriturismo" },
-  ] as const;
-
-  return (
-    <nav
-      aria-label="Le quattro anime della Masseria"
-      className="relative px-6 md:px-14 py-20 md:py-28"
-      style={{ background: "var(--crema)", color: "var(--marrone)" }}
-    >
-      <div className="max-w-5xl mx-auto">
-        <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.35em] opacity-70 mb-4">
-          CONTINUA NELLA MASSERIA
-        </div>
-        <h2 className="font-display text-4xl md:text-5xl leading-tight mb-10 md:mb-14" style={{ fontWeight: 300 }}>
-          Continua nella Masseria
-        </h2>
-        <ul className="divide-y divide-[color:var(--marrone)]/20 border-y border-[color:var(--marrone)]/20">
-          {items.map((it) => {
-            const content = (
-              <div className="flex items-center gap-4 md:gap-8 py-5 md:py-6 group">
-                <span className="font-eyebrow text-xs md:text-sm opacity-60 tracking-[0.2em] w-10">{it.n}</span>
-                <span className="font-display text-2xl md:text-4xl flex-shrink-0" style={{ fontWeight: 300 }}>
-                  {it.nome}
-                </span>
-                <span className="hidden md:block flex-1 h-px bg-[color:var(--marrone)]/25 group-hover:bg-[color:var(--marrone)]/50 transition-colors" />
-                <span className="text-sm md:text-base italic opacity-70 flex-1 md:flex-none">{it.sub}</span>
-                {it.to && (
-                  <span className="font-eyebrow text-lg transition-transform group-hover:translate-x-1">→</span>
-                )}
-              </div>
-            );
-            return (
-              <li key={it.key}>
-                {it.to ? (
-                  <Link to={it.to} className="block hover:bg-[color:var(--marrone)]/5 transition-colors px-2">
-                    {content}
-                  </Link>
-                ) : (
-                  <div className="opacity-50 px-2" aria-current="page">{content}</div>
-                )}
-              </li>
-            );
-          })}
-        </ul>
+      {/* fondo fotografico full-bleed morbido */}
+      <div className="absolute inset-0 overflow-hidden -z-0">
+        <img
+          src={s.img}
+          alt=""
+          loading={idx === 0 ? "eager" : "lazy"}
+          decoding="async"
+          className="h-full w-full object-cover"
+          style={{
+            filter: "saturate(0.75) contrast(1.05) brightness(0.9)",
+            maskImage: "linear-gradient(180deg, transparent 0%, black 20%, black 80%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 20%, black 80%, transparent 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(26,18,16,0.5) 0%, transparent 40%, rgba(26,18,16,0.7) 100%)" }}
+        />
       </div>
-    </nav>
+
+      <div className="relative z-10">
+        <div className="font-eyebrow text-[10px] tracking-[0.35em] text-[color:var(--oro)]/85 mb-3">
+          0{idx + 1} — {s.nome.toUpperCase()}
+        </div>
+        <h3
+          className="font-display text-[color:var(--crema)] leading-[0.9] mb-3"
+          style={{
+            fontSize: "clamp(2.6rem, 12vw, 4rem)",
+            fontWeight: 300,
+            letterSpacing: "-0.01em",
+            textShadow: "0 2px 20px rgba(26,18,16,0.55)",
+          }}
+        >
+          {s.nome}
+        </h3>
+        <p className="text-[color:var(--crema)]/85 text-base italic max-w-[34ch]">
+          {s.linea}
+        </p>
+      </div>
+    </article>
   );
 }
