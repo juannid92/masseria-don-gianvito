@@ -306,6 +306,7 @@ export function LaVoce() {
 
   return (
     <section
+      id="la-voce"
       ref={rootRef}
       aria-label="La Voce — frammenti dalle recensioni"
       className="relative isolate bg-[color:var(--carbone)] text-[color:var(--crema)]"
