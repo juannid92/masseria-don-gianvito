@@ -361,11 +361,13 @@ function Rito({ reduced }: { reduced: boolean }) {
               <h2
                 className="font-display leading-[1.02] text-[clamp(2.4rem,4.5vw,4.5rem)]"
                 style={{ fontWeight: 300 }}
+                aria-label="Tre gesti. Una sola esperienza."
               >
-                Tre gesti.
+                <span>Tre gesti.</span>
                 <br />
-                <em className="italic">Una sola sera.</em>
+                <em className="italic">Una sola esperienza.</em>
               </h2>
+
               <p className="mt-6 max-w-md opacity-85">
                 Il pasto comincia davanti al banco e continua nella sala.
               </p>
