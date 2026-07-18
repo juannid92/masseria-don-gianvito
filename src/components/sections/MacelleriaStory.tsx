@@ -5,25 +5,31 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
+// Sostituire con fotografia autentica del banco della Macelleria.
 import bancoImg from "@/assets/macel-banco.jpg";
+// Sostituire con fotografia autentica del grano/farina della Masseria.
 import granoImg from "@/assets/allev-c-grano.jpg";
 
 /* ─────────────────────────────────────────────────────────────
  * /macelleria — A VISTA
- * Bianco → Oro → Pietra → Banco → Scelta → Cottura
+ * Un solo movimento in cinque momenti:
+ *   I   Il Vetro       — ingresso davanti al banco
+ *   II  La Scelta      — Guarda / Scegli / Siedi
+ *   III Il Taglio      — Atlante inciso + filo tracciabilità
+ *   IV  Il Tempo       — Frollatura, salumi, farina
+ *   V   Dopo il Banco  — passaggio verso /agriturismo
  * ───────────────────────────────────────────────────────────── */
 
 type Voce = {
   id: "filetto" | "bombette" | "salsiccia" | "altri";
   label: string;
-  cat: "TAGLIO" | "PREPARAZIONE DEL BANCO" | "BANCO";
+  cat: "TAGLIO" | "PREPARAZIONE" | "BANCO";
   titolo: string;
   testo: string;
   nota?: string;
-  // Coordinate SVG (viewBox 400x260) — spot informativo, non taglio anatomico specifico
-  x: number;
+  x: number; // viewBox 400×260
   y: number;
-  isCut: boolean; // true = collegato alla silhouette; false = area preparazioni/altri
+  side: "cut" | "prep" | "beyond"; // cut = silhouette, prep = piano laterale, beyond = oltre bordo
 };
 
 const VOCI: Voce[] = [
@@ -33,54 +39,55 @@ const VOCI: Voce[] = [
     cat: "TAGLIO",
     titolo: "Filetto di vitello",
     testo: "Tra i tagli emersi dal banco della Masseria.",
-    nota: "La frollatura indicativa è di circa quindici giorni.",
-    x: 245,
-    y: 120,
-    isCut: true,
+    nota: "Frollatura indicativa di circa quindici giorni.",
+    x: 240,
+    y: 118,
+    side: "cut",
   },
   {
     id: "bombette",
     label: "Bombette",
-    cat: "PREPARAZIONE DEL BANCO",
+    cat: "PREPARAZIONE",
     titolo: "Bombette",
     testo: "Tra le preparazioni scelte al banco e portate alla cottura.",
-    x: 360,
-    y: 60,
-    isCut: false,
+    x: 358,
+    y: 78,
+    side: "prep",
   },
   {
     id: "salsiccia",
     label: "Salsiccia",
-    cat: "PREPARAZIONE DEL BANCO",
+    cat: "PREPARAZIONE",
     titolo: "Salsiccia",
-    testo: "Una delle preparazioni ricordate più spesso insieme alle bombette.",
-    x: 360,
-    y: 130,
-    isCut: false,
+    testo: "Una delle preparazioni ricordate insieme alle bombette.",
+    x: 358,
+    y: 138,
+    side: "prep",
   },
   {
     id: "altri",
     label: "Altri tagli al banco",
     cat: "BANCO",
-    titolo: "La scelta cambia",
+    titolo: "La scelta cambia.",
     testo:
       "Gli altri tagli seguono la disponibilità del banco e devono essere confermati direttamente con la Masseria.",
-    x: 360,
+    x: 384,
     y: 210,
-    isCut: false,
+    side: "beyond",
   },
 ];
 
 const SALUMI = ["PROSCIUTTO CRUDO", "SOPPRESSATA", "SALSICCIA SECCA", "PANCETTA TESA"];
-
 const FILO = ["ALLEVAMENTO", "TEMPO", "BANCO"] as const;
 
-/* ─────────────────────────────────────────────────────────── */
+/* ═════════════════════════════════════════════════════════════ */
 
 export function MacelleriaStory() {
   const reduced = useReducedMotion();
   const rootRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<Voce["id"]>("filetto");
+  // aria-live parla solo dopo attivazione intenzionale (click / Enter / Space)
+  const [announce, setAnnounce] = useState<string>("");
 
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
@@ -91,76 +98,117 @@ export function MacelleriaStory() {
     let mounted = true;
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      /* ═══ I · IL VETRO — sequenza marmo → vetro → linea → titolo → timbro ═══ */
+      const open = root.querySelector<HTMLElement>("[data-act='vetro']");
+      const marmo = root.querySelector<HTMLElement>("[data-marmo]");
+      const vetro = root.querySelector<HTMLElement>("[data-vetro]");
+      const banco = root.querySelector<HTMLElement>("[data-banco-img]");
+      const bordoLine = root.querySelector<HTMLElement>("[data-bordo-oro]");
+      const titolo = root.querySelectorAll<HTMLElement>("[data-h1-line]");
+      const testoOpen = root.querySelector<HTMLElement>("[data-open-testo]");
+      const stamp = root.querySelector<HTMLElement>("[data-stamp]");
 
-      /* ═══ APERTURA · DENTRO IL BANCO ═══ */
-      const openImg = root.querySelector<HTMLElement>("[data-open-img]");
-      const openStamp = root.querySelector<HTMLElement>("[data-stamp]");
-      const openGlass = root.querySelector<HTMLElement>("[data-open-glass]");
-      const openLine = root.querySelector<HTMLElement>("[data-open-line]");
-      const open = root.querySelector<HTMLElement>("[data-act='1']");
-
-      if (open && openImg) {
-        gsap.set(openImg, { scale: 1.08 });
-        ScrollTrigger.create({
-          trigger: open,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.6,
-          onUpdate: (self) => {
-            if (!mounted) return;
-            const p = self.progress;
-            gsap.set(openImg, { scale: 1.08 - p * 0.06, y: -p * 30 });
-            if (openGlass) gsap.set(openGlass, { autoAlpha: 1 - p * 0.5 });
-          },
+      if (open) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: open, start: "top top", end: "bottom top", scrub: 0.6 },
         });
+        if (marmo) tl.fromTo(marmo, { autoAlpha: 0.4, scale: 1.05 }, { autoAlpha: 1, scale: 1 }, 0);
+        if (banco) tl.fromTo(banco, { autoAlpha: 0, scale: 1.15, filter: "blur(14px)" }, { autoAlpha: 0.9, scale: 1.04, filter: "blur(0px)" }, 0.15);
+        if (vetro) tl.fromTo(vetro, { autoAlpha: 1 }, { autoAlpha: 0.35 }, 0.35);
       }
-      if (openStamp) {
+
+      if (bordoLine) {
         gsap.fromTo(
-          openStamp,
-          { scale: 0.85, autoAlpha: 0, rotate: -3 },
-          {
-            scale: 1,
-            autoAlpha: 1,
-            rotate: -1.4,
-            ease: "power3.out",
-            duration: 0.9,
-            delay: 0.2,
-            scrollTrigger: { trigger: open, start: "top 90%", once: true },
-          },
-        );
-      }
-      if (openLine) {
-        gsap.fromTo(
-          openLine,
+          bordoLine,
           { scaleX: 0 },
           {
             scaleX: 1,
             ease: "power2.out",
-            duration: 1.2,
-            scrollTrigger: { trigger: open, start: "top 80%", once: true },
+            duration: 1.3,
+            scrollTrigger: { trigger: open, start: "top 70%", once: true },
           },
         );
       }
 
-      /* ═══ RITO — reveal sequenziale dei 3 verbi ═══ */
-      root.querySelectorAll<HTMLElement>("[data-verb]").forEach((el, i) => {
+      titolo.forEach((el, i) => {
         gsap.fromTo(
           el,
-          { autoAlpha: 0, y: 30, clipPath: "inset(0 0 100% 0)" },
+          { yPercent: 110 },
           {
-            autoAlpha: 1,
-            y: 0,
-            clipPath: "inset(0 0 0% 0)",
-            duration: 0.7,
-            delay: i * 0.15,
+            yPercent: 0,
             ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 85%", once: true },
+            duration: 1,
+            delay: 0.4 + i * 0.15,
+            scrollTrigger: { trigger: open, start: "top 70%", once: true },
           },
         );
       });
 
-      /* ═══ Big words generici ═══ */
+      if (testoOpen) {
+        gsap.fromTo(
+          testoOpen,
+          { autoAlpha: 0, y: 12 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 0.9,
+            ease: "power2.out",
+            scrollTrigger: { trigger: open, start: "top 70%", once: true },
+          },
+        );
+      }
+
+      if (stamp) {
+        gsap.fromTo(
+          stamp,
+          { autoAlpha: 0, scale: 1.15, rotate: -3 },
+          {
+            autoAlpha: 1,
+            scale: 1,
+            rotate: -1.4,
+            duration: 0.35,
+            ease: "power4.out",
+            delay: 1.3,
+            scrollTrigger: { trigger: open, start: "top 70%", once: true },
+          },
+        );
+      }
+
+      /* ═══ II · IL RITO — verbi in cascata + linea attraversante ═══ */
+      root.querySelectorAll<HTMLElement>("[data-verb]").forEach((el, i) => {
+        gsap.fromTo(
+          el,
+          { autoAlpha: 0, yPercent: 30, clipPath: "inset(0 0 100% 0)" },
+          {
+            autoAlpha: 1,
+            yPercent: 0,
+            clipPath: "inset(0 0 0% 0)",
+            duration: 0.9,
+            delay: i * 0.18,
+            ease: "power3.out",
+            scrollTrigger: { trigger: el, start: "top 82%", once: true },
+          },
+        );
+      });
+
+      const ritoLine = root.querySelector<SVGPathElement>("path[data-rito-line]");
+      if (ritoLine) {
+        const len = ritoLine.getTotalLength();
+        gsap.set(ritoLine, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(ritoLine, {
+          strokeDashoffset: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ritoLine.ownerSVGElement,
+            start: "top 80%",
+            end: "bottom 40%",
+            scrub: 0.6,
+          },
+        });
+      }
+
+      /* ═══ Big words ═══ */
       root.querySelectorAll<HTMLElement>("[data-bigword]").forEach((el) => {
         gsap.fromTo(
           el,
@@ -176,62 +224,92 @@ export function MacelleriaStory() {
         );
       });
 
-      /* ═══ FILO oro — 3 parole (Allevamento, Tempo, Banco) ═══ */
-      const filoSect = root.querySelector<HTMLElement>("[data-filo]");
-      if (filoSect) {
-        const line = filoSect.querySelector<SVGPathElement>("path[data-filo-line]");
-        if (line) {
-          const len = line.getTotalLength();
-          gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
-          gsap.to(line, {
-            strokeDashoffset: 0,
-            ease: "none",
-            scrollTrigger: { trigger: filoSect, start: "top 75%", end: "bottom 40%", scrub: 0.6 },
-          });
-        }
+      /* ═══ III · FILO tracciabilità ═══ */
+      const filoLine = root.querySelector<SVGPathElement>("path[data-filo-line]");
+      if (filoLine) {
+        const len = filoLine.getTotalLength();
+        gsap.set(filoLine, { strokeDasharray: len, strokeDashoffset: len });
+        gsap.to(filoLine, {
+          strokeDashoffset: 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: filoLine.ownerSVGElement,
+            start: "top 78%",
+            end: "bottom 45%",
+            scrub: 0.6,
+          },
+        });
       }
 
-      /* ═══ FROLLATURA — 15 segni progressivi con stagger, no pin lungo ═══ */
+      /* ═══ IV · FROLLATURA — 15 incisioni, unica timeline con stagger ═══ */
       const frollSect = root.querySelector<HTMLElement>("[data-frollatura]");
       if (frollSect) {
         const segni = frollSect.querySelectorAll<HTMLElement>("[data-segno]");
         gsap.fromTo(
           segni,
-          { scaleY: 0, autoAlpha: 0.2 },
+          { scaleY: 0, autoAlpha: 0 },
           {
             scaleY: 1,
             autoAlpha: 1,
             transformOrigin: "bottom center",
-            stagger: 0.03,
-            duration: 0.4,
+            stagger: 0.045,
+            duration: 0.55,
             ease: "power2.out",
-            scrollTrigger: { trigger: frollSect, start: "top 75%", once: true },
+            scrollTrigger: { trigger: frollSect, start: "top 72%", once: true },
           },
         );
+        const numero = frollSect.querySelector<HTMLElement>("[data-num15]");
+        if (numero) {
+          gsap.fromTo(
+            numero,
+            { autoAlpha: 0, scale: 1.08 },
+            {
+              autoAlpha: 1,
+              scale: 1,
+              duration: 1.4,
+              ease: "power2.out",
+              scrollTrigger: { trigger: frollSect, start: "top 72%", once: true },
+            },
+          );
+        }
       }
 
-      /* ═══ SALUMI — reveal verticale con ombre allungate ═══ */
+      /* ═══ IV · SALUMI — reveal singolo per riga ═══ */
       root.querySelectorAll<HTMLElement>("[data-salume]").forEach((el, i) => {
         gsap.fromTo(
           el,
-          { autoAlpha: 0, y: 20 },
+          { autoAlpha: 0, x: -20, clipPath: "inset(0 100% 0 0)" },
           {
             autoAlpha: 1,
-            y: 0,
-            duration: 0.7,
-            delay: (i % 4) * 0.08,
-            ease: "power2.out",
+            x: 0,
+            clipPath: "inset(0 0% 0 0)",
+            duration: 0.9,
+            delay: i * 0.12,
+            ease: "power3.out",
             scrollTrigger: { trigger: el, start: "top 85%", once: true },
           },
         );
       });
 
-      /* ═══ Filo diagramma — si ridisegna al cambio voce (React state) ═══ */
-      // Gestito nel componente Diagramma con useEffect locale
+      /* ═══ V · PASSAGGIO — COTTURA locale terracotta ═══ */
+      const cottura = root.querySelector<HTMLElement>("[data-parola-cottura]");
+      if (cottura) {
+        gsap.fromTo(
+          cottura,
+          { color: "var(--crema)" },
+          {
+            color: "#e88b5c",
+            duration: 0.5,
+            ease: "power2.out",
+            scrollTrigger: { trigger: cottura, start: "top 75%", once: true },
+          },
+        );
+      }
 
       const doRefresh = () => { if (mounted) ScrollTrigger.refresh(); };
       if (document.fonts?.ready) document.fonts.ready.then(doRefresh).catch(() => {});
-      setTimeout(doRefresh, 200);
+      const t = window.setTimeout(doRefresh, 200);
+      return () => window.clearTimeout(t);
     }, root);
 
     return () => {
@@ -242,232 +320,294 @@ export function MacelleriaStory() {
 
   const activeVoce = VOCI.find((v) => v.id === active) ?? VOCI[0];
 
+  const activate = (id: Voce["id"]) => {
+    setActive(id);
+    const v = VOCI.find((x) => x.id === id);
+    if (v) setAnnounce(`${v.titolo}. ${v.testo}`);
+  };
+
   return (
     <div
       ref={rootRef}
       className="relative w-full"
       style={{ background: "var(--crema)", color: "var(--marrone)" }}
     >
-
-      {/* ══════════ APERTURA · DENTRO IL BANCO ══════════ */}
-      <section data-act="1" className="relative h-[180vh]" aria-label="Dentro il banco">
-        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden" style={{ background: "#c5a159" }}>
-          {/* Foto reale del banco */}
+      {/* ══════════════════════════ I · IL VETRO ══════════════════════════ */}
+      <section
+        data-act="vetro"
+        className="relative h-[160vh] md:h-[180vh]"
+        aria-label="Davanti al banco"
+      >
+        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden" style={{ background: "#2a1e18" }}>
+          {/* Marmo/pietra: superficie di base */}
           <div
-            data-open-img
+            data-marmo
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(120% 80% at 30% 20%, #d9c9a8 0%, #b39a72 35%, #5c3e2c 75%, #2a1e18 100%)",
+            }}
+          />
+          {/* Foto del banco — usata come materia editoriale, non come prova del luogo reale */}
+          <div
+            data-banco-img
             className="absolute inset-0 will-change-transform"
             style={{
               backgroundImage: `url(${bancoImg})`,
               backgroundSize: "cover",
-              backgroundPosition: "center 55%",
-              filter: "brightness(0.85) contrast(1.05) saturate(0.85)",
-            }}
-            role="img"
-            aria-label="Il banco della Macelleria di Masseria Don Gianvito"
-          />
-          {/* Overlay vetro (crema + marrone) */}
-          <div
-            data-open-glass
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(197,161,89,0.35) 0%, rgba(61,42,30,0.15) 40%, rgba(26,18,16,0.55) 100%)",
+              backgroundPosition: "center 62%",
+              filter: "brightness(0.65) contrast(1.1) saturate(0.75) sepia(0.08)",
+              mixBlendMode: "multiply",
             }}
             aria-hidden
           />
-          {/* Linea oro (bordo banco) */}
-          <div className="absolute inset-x-6 md:inset-x-14 top-[62%] pointer-events-none z-10">
+          {/* Vetro: velo che perde opacità con lo scrub */}
+          <div
+            data-vetro
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(242,232,213,0.28) 0%, rgba(26,18,16,0.15) 45%, rgba(26,18,16,0.7) 100%)",
+            }}
+          />
+          {/* Luce radente laterale */}
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(60% 90% at 8% 40%, rgba(255,240,210,0.22) 0%, transparent 55%)",
+              mixBlendMode: "screen",
+            }}
+          />
+          {/* Bordo oro del banco */}
+          <div className="absolute inset-x-6 md:inset-x-24 top-[63%] pointer-events-none z-10">
             <div
-              data-open-line
+              data-bordo-oro
               className="h-px origin-left"
               style={{
-                background: "linear-gradient(90deg, transparent, var(--oro), var(--oro), transparent)",
-                boxShadow: "0 1px 0 rgba(197,161,89,0.4)",
+                background:
+                  "linear-gradient(90deg, transparent, var(--oro) 20%, var(--oro) 80%, transparent)",
+                boxShadow: "0 0 12px rgba(197,161,89,0.45)",
               }}
               aria-hidden
             />
           </div>
 
-          {/* Rail sx */}
-          <div className="absolute left-4 md:left-8 top-0 h-full flex items-center pointer-events-none z-10" aria-hidden>
+          {/* Marginalia sottile */}
+          <div
+            className="absolute left-4 md:left-8 top-0 h-full flex items-center pointer-events-none z-10"
+            aria-hidden
+          >
             <div
-              className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/85"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.3em" }}
+              className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/60"
+              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.35em" }}
             >
-              MACELLERIA — MASSERIA DON GIANVITO · A VISTA
+              MACELLERIA · A VISTA
             </div>
           </div>
 
-          {/* Timbro + titolo */}
-          <div className="absolute inset-x-0 top-[26%] flex flex-col items-center px-6 text-center pointer-events-none">
-            <div
-              data-stamp
-              className="inline-flex flex-col items-center justify-center px-6 py-3 mb-8"
-              style={{
-                border: "2px solid var(--bordeaux)",
-                borderRadius: "2px",
-                background: "color-mix(in oklab, var(--crema) 92%, transparent)",
-                boxShadow: "0 4px 20px rgba(26,18,16,0.35)",
-                transform: "rotate(-1.4deg)",
-              }}
-              aria-hidden
-            >
-              <span className="font-eyebrow text-[9px] tracking-[0.4em] text-[color:var(--bordeaux)]">
-                MASSERIA DON GIANVITO
-              </span>
-              <span className="mt-1 font-eyebrow text-[10px] tracking-[0.3em] text-[color:var(--marrone)]/70">
-                MACELLERIA · A VISTA
-              </span>
-            </div>
-            <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/85 tracking-[0.35em] mb-4">
-              MACELLERIA — MASSERIA DON GIANVITO
-            </div>
+          {/* Titolo — H1 con span per lettura semantica corretta */}
+          <div
+            className="absolute inset-x-0 top-[24%] md:top-[22%] flex flex-col items-center px-6 text-center pointer-events-none"
+            style={{ marginTop: "var(--header-offset, 0px)" }}
+          >
             <h1
-              className="font-display leading-[0.9] text-[color:var(--crema)]"
-              style={{ fontSize: "clamp(2.4rem, 8vw, 6.5rem)", fontWeight: 300, textShadow: "0 2px 30px rgba(26,18,16,0.7)" }}
+              className="font-display leading-[0.92] text-[color:var(--crema)]"
+              style={{
+                fontSize: "clamp(2.4rem, 8vw, 6.4rem)",
+                fontWeight: 300,
+                textShadow: "0 2px 40px rgba(26,18,16,0.7)",
+                letterSpacing: "-0.01em",
+              }}
             >
-              La scelta<br/>avviene a vista.
+              <span data-h1-line className="block overflow-hidden">
+                <span className="inline-block">La scelta</span>
+              </span>
+              {" "}
+              <span data-h1-line className="block overflow-hidden">
+                <span className="inline-block">avviene a vista.</span>
+              </span>
             </h1>
-          </div>
-
-          {/* Testo apertura + indicatore */}
-          <div className="absolute inset-x-0 bottom-16 md:bottom-20 flex flex-col items-center px-6 text-center pointer-events-none">
-            <p className="max-w-xl text-[color:var(--crema)]/85 text-base md:text-lg leading-relaxed mb-4">
+            <p
+              data-open-testo
+              className="mt-6 md:mt-8 max-w-xl text-[color:var(--crema)]/80 text-base md:text-lg leading-relaxed"
+            >
               Prima di sedersi, si passa dal banco. La carne viene osservata, scelta e preparata per il tavolo.
             </p>
-            <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/75 tracking-[0.4em]">
-              ENTRA NEL BANCO ↓
-            </div>
+          </div>
+
+          {/* Timbro — impresso una sola volta, sul foglio */}
+          <div
+            data-stamp
+            className="absolute right-6 md:right-14 bottom-14 md:bottom-20 inline-flex flex-col items-center justify-center px-5 py-3 pointer-events-none"
+            style={{
+              border: "1.5px solid var(--bordeaux)",
+              borderRadius: "2px",
+              background:
+                "linear-gradient(180deg, color-mix(in oklab, var(--crema) 94%, transparent) 0%, color-mix(in oklab, var(--crema) 88%, transparent) 100%)",
+              boxShadow: "0 6px 24px rgba(26,18,16,0.4), inset 0 0 8px rgba(110,26,20,0.08)",
+              transform: "rotate(-1.4deg)",
+            }}
+            aria-hidden
+          >
+            <span
+              className="font-eyebrow text-[9px] tracking-[0.4em]"
+              style={{ color: "var(--bordeaux)" }}
+            >
+              MASSERIA DON GIANVITO
+            </span>
+            <span
+              className="mt-1 font-eyebrow text-[10px] tracking-[0.32em]"
+              style={{ color: "color-mix(in oklab, var(--marrone) 85%, transparent)" }}
+            >
+              MACELLERIA · A VISTA
+            </span>
           </div>
         </div>
       </section>
 
-      {/* ══════════ IL RITO DELLA SCELTA ══════════ */}
+      {/* ══════════════════════════ II · IL RITO ══════════════════════════ */}
       <section
         className="relative overflow-hidden py-24 md:py-40 px-6 md:px-14"
-        aria-label="Il rito della scelta"
+        aria-label="Guarda, scegli, siedi"
         style={{
-          background: "linear-gradient(180deg, #e6d5a8 0%, #efe6ce 60%, #ddc8a3 100%)",
-          color: "var(--marrone)",
+          background:
+            "linear-gradient(180deg, #2a1e18 0%, #3d2a1e 30%, #5a4230 65%, #8a6a4a 100%)",
+          color: "var(--crema)",
         }}
       >
         <div className="relative max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/70 tracking-[0.35em] mb-6">
-            01 — IL RITO
-          </div>
-          <h2
-            data-bigword
-            className="font-display text-[color:var(--marrone)] leading-[0.95] mb-6"
-            style={{ fontSize: "clamp(2.2rem, 6vw, 5rem)", fontWeight: 300 }}
+          {/* Linea unica che attraversa i tre verbi */}
+          <svg
+            aria-hidden
+            className="absolute inset-x-0 top-8 md:top-14 h-[85%] w-full pointer-events-none"
+            preserveAspectRatio="none"
+            viewBox="0 0 1000 600"
           >
-            Guarda.<br/>Scegli.<br/>Siedi.
-          </h2>
-          <p data-bigword className="text-[color:var(--marrone)]/80 text-lg md:text-xl max-w-2xl leading-relaxed mb-16 md:mb-20">
-            La carne viene scelta direttamente al banco. Dopo la scelta, il pasto continua al tavolo e la cottura completa il passaggio.
-          </p>
+            <path
+              data-rito-line
+              d="M 20 80 Q 250 60, 480 260 T 980 500"
+              fill="none"
+              stroke="var(--oro)"
+              strokeWidth="1.4"
+              opacity="0.75"
+            />
+          </svg>
 
-          {/* Linea continua che attraversa i 3 verbi */}
-          <div className="relative">
-            <svg
-              aria-hidden
-              className="absolute inset-0 h-full w-full pointer-events-none"
-              preserveAspectRatio="none"
-              viewBox="0 0 1000 220"
-            >
-              <path
-                d="M 30 60 Q 250 30, 500 90 T 970 130"
-                fill="none"
-                stroke="var(--oro)"
-                strokeWidth="2"
-                opacity="0.7"
-              />
-            </svg>
-            <div className="relative grid md:grid-cols-3 gap-10 md:gap-6">
-              {[
-                { verb: "GUARDA", txt: "La carne è esposta a vista.", accent: false },
-                { verb: "SCEGLI", txt: "Il taglio viene scelto al banco.", accent: true },
-                { verb: "SIEDI", txt: "La scelta continua nella cucina e arriva al tavolo.", accent: false },
-              ].map((v, i) => (
+          <div className="relative grid md:grid-cols-3 gap-16 md:gap-10">
+            {[
+              { verb: "GUARDA", txt: "La carne è esposta a vista.", accent: false, offset: 0 },
+              { verb: "SCEGLI", txt: "Il taglio viene scelto al banco.", accent: true, offset: 6 },
+              { verb: "SIEDI", txt: "La scelta continua nella cucina e arriva al tavolo.", accent: false, offset: 12 },
+            ].map((v) => (
+              <div
+                key={v.verb}
+                data-verb
+                className="relative"
+                style={{ marginTop: `${v.offset}rem` }}
+              >
+                {v.accent && (
+                  <span
+                    aria-hidden
+                    className="absolute -left-5 top-4 h-2 w-2 rounded-full"
+                    style={{
+                      background: "var(--oro)",
+                      boxShadow: "0 0 12px rgba(197,161,89,0.9)",
+                    }}
+                  />
+                )}
                 <div
-                  key={v.verb}
-                  data-verb
-                  className="relative"
+                  className="font-display leading-none mb-4"
                   style={{
-                    marginTop: i === 1 ? "1.5rem" : i === 2 ? "3rem" : 0,
+                    fontSize: "clamp(2.6rem, 5.5vw, 5rem)",
+                    fontWeight: 300,
+                    letterSpacing: "-0.02em",
+                    color: "var(--crema)",
                   }}
                 >
-                  {v.accent && (
-                    <span
-                      aria-hidden
-                      className="absolute -left-4 top-3 h-2 w-2 rounded-full"
-                      style={{ background: "var(--oro)" }}
-                    />
-                  )}
-                  <div
-                    className="font-display leading-none text-[color:var(--marrone)] mb-3"
-                    style={{ fontSize: "clamp(2.2rem, 4vw, 3.4rem)", fontWeight: 300, letterSpacing: "-0.01em" }}
-                  >
-                    {v.verb}
-                  </div>
-                  <p className="text-[color:var(--marrone)]/75 text-sm md:text-base italic max-w-xs">{v.txt}</p>
+                  {v.verb}
                 </div>
-              ))}
-            </div>
+                <p
+                  className="text-base md:text-lg italic max-w-xs leading-relaxed"
+                  style={{ color: "color-mix(in oklab, var(--crema) 82%, transparent)" }}
+                >
+                  {v.txt}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════ ATLANTE A VISTA — DIAGRAMMA ══════════ */}
+      {/* ══════════════════════════ III · IL TAGLIO ══════════════════════════ */}
       <section
-        className="relative py-24 md:py-36 px-6 md:px-14"
+        className="relative py-24 md:py-36 px-6 md:px-14 overflow-hidden"
         aria-label="Atlante a vista"
-        style={{ background: "linear-gradient(180deg, #ddc8a3 0%, #d8c299 100%)" }}
+        style={{
+          background:
+            "linear-gradient(180deg, #8a6a4a 0%, #b39a72 25%, #d9c9a8 55%, #efe4c8 100%)",
+          color: "var(--marrone)",
+        }}
       >
-        <div className="max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75 tracking-[0.35em] mb-6">
-            02 — ATLANTE A VISTA
-          </div>
+        {/* Texture pietra / carta alimentare */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none opacity-[0.18] mix-blend-multiply"
+          style={{
+            backgroundImage:
+              "radial-gradient(2px 2px at 20% 30%, rgba(61,42,30,0.6) 0, transparent 60%), radial-gradient(1.5px 1.5px at 70% 60%, rgba(61,42,30,0.4) 0, transparent 60%), radial-gradient(2px 2px at 45% 85%, rgba(61,42,30,0.5) 0, transparent 60%)",
+            backgroundSize: "180px 180px, 240px 240px, 300px 300px",
+          }}
+        />
+
+        <div className="relative max-w-6xl mx-auto">
           <h2
             data-bigword
-            className="font-display text-[color:var(--marrone)] leading-[0.95] mb-6"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300 }}
+            className="font-display text-[color:var(--marrone)] leading-[0.95] mb-6 max-w-4xl"
+            style={{ fontSize: "clamp(2.2rem, 6vw, 5rem)", fontWeight: 300 }}
           >
-            Atlante a vista
+            <span className="block overflow-hidden"><span className="inline-block">Atlante</span></span>
+            <span className="block overflow-hidden"><span className="inline-block">a vista.</span></span>
           </h2>
           <p className="text-[color:var(--marrone)]/85 text-lg max-w-2xl leading-relaxed mb-3">
             Il banco mostra tagli e preparazioni diverse. La disponibilità segue il lavoro e il momento.
           </p>
           <p className="text-[color:var(--marrone)]/60 text-sm italic max-w-2xl mb-14">
-            Il diagramma è una rappresentazione narrativa e non costituisce il menu completo del giorno.
+            Il diagramma è una rappresentazione narrativa e non costituisce il menu del giorno.
           </p>
 
-          <Diagramma active={active} setActive={setActive} activeVoce={activeVoce} />
+          <Diagramma
+            active={active}
+            activate={activate}
+            activeVoce={activeVoce}
+            announce={announce}
+          />
         </div>
       </section>
 
-      {/* ══════════ IL FILO — TRACCIABILITÀ ══════════ */}
+      {/* ══════════════════════════ III · IL FILO ══════════════════════════ */}
       <section
-        data-filo
-        className="relative py-24 md:py-36 px-6 md:px-14"
+        className="relative py-24 md:py-32 px-6 md:px-14"
         aria-label="Il filo della tracciabilità"
-        style={{ background: "linear-gradient(180deg, #d8c299 0%, #c5a985 100%)" }}
+        style={{
+          background: "linear-gradient(180deg, #efe4c8 0%, #e0cfa6 100%)",
+          color: "var(--marrone)",
+        }}
       >
         <div className="max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75 tracking-[0.35em] mb-6">
-            03 — IL FILO
-          </div>
           <h2
             data-bigword
             className="font-display text-[color:var(--marrone)] leading-[0.95] mb-6 max-w-4xl"
             style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300 }}
           >
-            La scelta<br/>non comincia dal banco.
+            <span className="block overflow-hidden"><span className="inline-block">La scelta</span></span>
+            <span className="block overflow-hidden"><span className="inline-block">non comincia dal banco.</span></span>
           </h2>
-          <p className="text-[color:var(--marrone)]/85 text-lg max-w-2xl leading-relaxed mb-4">
-            Prima della Macelleria ci sono l'allevamento, il lavoro agricolo e il tempo necessario alla materia.
-          </p>
-          <p className="text-[color:var(--marrone)]/60 text-base italic max-w-2xl leading-relaxed mb-16 md:mb-20">
-            Il banco è un passaggio visibile di un percorso più lungo.
+          <p className="text-[color:var(--marrone)]/85 text-lg max-w-2xl leading-relaxed mb-16 md:mb-20">
+            Prima della Macelleria ci sono l&apos;allevamento, il lavoro agricolo e il tempo.
           </p>
 
           <div className="relative">
@@ -479,35 +619,46 @@ export function MacelleriaStory() {
             >
               <path
                 data-filo-line
-                d="M 40 90 Q 250 30, 500 100 T 960 70"
+                d="M 40 90 Q 300 30, 500 100 T 960 70"
                 fill="none"
                 stroke="var(--oro)"
-                strokeWidth="1.5"
-                opacity="0.85"
+                strokeWidth="1.4"
+                opacity="0.9"
               />
               {[
-                { cx: 80, cy: 82 },
+                { cx: 60, cy: 88 },
                 { cx: 500, cy: 100 },
-                { cx: 920, cy: 74 },
+                { cx: 940, cy: 74 },
               ].map((n, i) => (
-                <circle key={i} cx={n.cx} cy={n.cy} r="4" fill="var(--oro)" opacity="0.9" />
+                <circle key={i} cx={n.cx} cy={n.cy} r="3.5" fill="var(--oro)" opacity="0.95" />
               ))}
             </svg>
-            <div className="relative grid grid-cols-3 items-center py-10 md:py-14 gap-2">
+            <div className="relative grid grid-cols-3 items-center py-12 md:py-16">
               {FILO.map((word, i) => (
-                <div key={word} className={i === 1 ? "text-center" : i === 2 ? "text-right" : ""}>
+                <div
+                  key={word}
+                  className={i === 1 ? "text-center" : i === 2 ? "text-right" : ""}
+                >
                   {word === "ALLEVAMENTO" ? (
                     <Link
                       to="/allevamento"
-                      className="font-display text-[color:var(--marrone)] hover:text-[color:var(--bordeaux)] transition-colors leading-none inline-block"
-                      style={{ fontSize: "clamp(1.4rem, 2.6vw, 2.4rem)", fontWeight: 300 }}
+                      className="font-display leading-none inline-block transition-colors hover:text-[color:var(--bordeaux)]"
+                      style={{
+                        fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)",
+                        fontWeight: 300,
+                        color: "var(--marrone)",
+                      }}
                     >
                       {word}
                     </Link>
                   ) : (
                     <div
-                      className="font-display text-[color:var(--marrone)] leading-none"
-                      style={{ fontSize: "clamp(1.4rem, 2.6vw, 2.4rem)", fontWeight: 300 }}
+                      className="font-display leading-none"
+                      style={{
+                        fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)",
+                        fontWeight: 300,
+                        color: "var(--marrone)",
+                      }}
                     >
                       {word}
                     </div>
@@ -519,182 +670,221 @@ export function MacelleriaStory() {
         </div>
       </section>
 
-      {/* ══════════ IL TEMPO — FROLLATURA ══════════ */}
+      {/* ══════════════════════════ IV · IL TEMPO — FROLLATURA ══════════════════════════ */}
       <section
         data-frollatura
         className="relative py-24 md:py-36 px-6 md:px-14 overflow-hidden"
         aria-label="Il tempo prima del taglio"
         style={{
-          background: "linear-gradient(180deg, #c5a985 0%, #a08668 100%)",
+          background:
+            "linear-gradient(180deg, #e0cfa6 0%, #6b4a34 35%, #3d2a1e 100%)",
           color: "var(--crema)",
         }}
       >
-        <div className="max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/80 tracking-[0.35em] mb-6">
-            04 — IL TEMPO
-          </div>
-          <h2
-            data-bigword
-            className="font-display leading-[0.95] mb-6"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300, color: "var(--crema)" }}
-          >
-            Prima del taglio,<br/>l'attesa.
-          </h2>
+        {/* Luce laterale radente */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(70% 100% at 12% 55%, rgba(255,230,180,0.22) 0%, transparent 60%)",
+            mixBlendMode: "screen",
+          }}
+        />
 
-          <div className="grid md:grid-cols-12 gap-10 md:gap-8 items-end mt-14 md:mt-20">
-            {/* 15 grande + parola CIRCA */}
-            <div className="md:col-span-7 relative">
+        <div className="relative max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-12 gap-8 md:gap-10 items-end">
+            <div className="md:col-span-6">
               <div
-                className="font-eyebrow text-[color:var(--crema)] tracking-[0.4em] mb-3"
-                style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)", fontWeight: 500 }}
-                aria-hidden
+                className="font-eyebrow tracking-[0.42em] mb-2"
+                style={{
+                  fontSize: "clamp(0.9rem, 1.6vw, 1.2rem)",
+                  fontWeight: 500,
+                  color: "color-mix(in oklab, var(--crema) 85%, transparent)",
+                }}
               >
                 CIRCA
               </div>
               <div
-                className="font-display leading-[0.8] text-[color:var(--crema)]"
-                style={{ fontSize: "clamp(7rem, 19vw, 17rem)", fontWeight: 300, letterSpacing: "-0.03em" }}
+                data-num15
+                className="font-display leading-[0.8]"
+                style={{
+                  fontSize: "clamp(6rem, 15vw, 14rem)",
+                  fontWeight: 300,
+                  letterSpacing: "-0.04em",
+                  color: "var(--crema)",
+                  textShadow: "0 6px 40px rgba(0,0,0,0.35)",
+                }}
               >
                 15
               </div>
               <div
-                className="font-eyebrow text-[color:var(--crema)] tracking-[0.35em] mt-3"
-                style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)", fontWeight: 500 }}
-                aria-hidden
+                className="font-eyebrow tracking-[0.35em] mt-3"
+                style={{
+                  fontSize: "clamp(0.9rem, 1.6vw, 1.2rem)",
+                  fontWeight: 500,
+                  color: "color-mix(in oklab, var(--crema) 85%, transparent)",
+                }}
               >
                 GIORNI · INDICATIVO
               </div>
             </div>
-            {/* 15 segni sottili */}
-            <div className="md:col-span-5">
-              <div className="flex items-end gap-2 h-32 mb-6">
-                {Array.from({ length: 15 }).map((_, i) => (
-                  <div
-                    key={i}
-                    data-segno
-                    className="flex-1 origin-bottom"
-                    style={{
-                      height: `${40 + (i % 3) * 20}%`,
-                      background: i === 14 ? "var(--oro)" : "color-mix(in oklab, var(--crema) 90%, transparent)",
-                      opacity: 0.85,
-                    }}
-                    aria-hidden
-                  />
-                ))}
+            <div className="md:col-span-6">
+              {/* 15 incisioni sulla superficie */}
+              <div
+                className="relative h-40 md:h-56 mb-8 flex items-end gap-[6px] md:gap-2 px-1"
+                aria-hidden
+              >
+                {Array.from({ length: 15 }).map((_, i) => {
+                  const h = 45 + ((i * 7) % 30);
+                  const isLast = i === 14;
+                  return (
+                    <div
+                      key={i}
+                      data-segno
+                      className="flex-1"
+                      style={{
+                        height: `${h}%`,
+                        background: isLast
+                          ? "linear-gradient(180deg, var(--oro) 0%, color-mix(in oklab, var(--oro) 60%, transparent) 100%)"
+                          : "linear-gradient(180deg, color-mix(in oklab, var(--crema) 90%, transparent) 0%, color-mix(in oklab, var(--crema) 20%, transparent) 100%)",
+                        width: isLast ? "3px" : undefined,
+                        opacity: isLast ? 1 : 0.7,
+                        boxShadow: isLast ? "0 0 14px rgba(197,161,89,0.7)" : "none",
+                      }}
+                    />
+                  );
+                })}
               </div>
               <p className="text-[color:var(--crema)]/85 text-base md:text-lg leading-relaxed">
-                <span className="font-eyebrow tracking-[0.15em] text-[color:var(--crema)]">CIRCA 15 GIORNI</span> è la frollatura indicativa.
+                Il tempo lavora la materia. Ogni segno è un giorno di attesa.
               </p>
-              <p className="text-[color:var(--crema)]/70 text-sm italic mt-3 leading-relaxed">
-                Tempi e disponibilità possono cambiare in base al taglio.
+              <p className="text-[color:var(--crema)]/60 text-sm italic mt-3 leading-relaxed">
+                Tempi e disponibilità possono variare in base al taglio.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ══════════ SALUMI PROPRI ══════════ */}
+      {/* ══════════════════════════ IV · SALUMI PROPRI ══════════════════════════ */}
       <section
-        className="relative py-24 md:py-36 px-6 md:px-14 overflow-hidden"
+        className="relative py-24 md:py-40 px-6 md:px-14 overflow-hidden"
         aria-label="Salumi propri"
         style={{
-          background: "linear-gradient(180deg, #a08668 0%, #7a5a4a 60%, #5c3d3d 100%)",
+          background: "linear-gradient(180deg, #3d2a1e 0%, #2a1e18 100%)",
           color: "var(--crema)",
         }}
       >
-        <div className="max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--crema)]/80 tracking-[0.35em] mb-6">
-            05 — I SALUMI
-          </div>
+        {/* Luce di stagionatura, molto rada */}
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(50% 80% at 85% 20%, rgba(255,220,170,0.14) 0%, transparent 55%)",
+            mixBlendMode: "screen",
+          }}
+        />
+
+        <div className="relative max-w-6xl mx-auto">
           <h2
             data-bigword
             className="font-display leading-[0.95] mb-6 max-w-4xl"
             style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300, color: "var(--crema)" }}
           >
-            Il tempo<br/>continua nelle forme.
+            <span className="block overflow-hidden"><span className="inline-block">Il tempo</span></span>
+            <span className="block overflow-hidden"><span className="inline-block">continua nelle forme.</span></span>
           </h2>
-          <p className="text-[color:var(--crema)]/80 text-lg max-w-2xl leading-relaxed mb-16 md:mb-24">
-            La Masseria produce salumi propri che entrano negli antipasti e nella tavola.
+          <p className="text-[color:var(--crema)]/75 text-lg max-w-2xl leading-relaxed mb-20 md:mb-28">
+            La Masseria produce salumi propri.
           </p>
 
-          {/* Quattro nomi verticali con "sospensione" e ombra allungata */}
-          <ul className="relative grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-6">
+          {/* Nomi editoriali: una parola per riga, linea verticale, ombra lunga */}
+          <ul className="relative flex flex-col gap-10 md:gap-14 max-w-4xl">
             {SALUMI.map((nome, i) => (
-              <li key={nome} data-salume className="relative flex flex-col items-center">
-                {/* sottile linea dall'alto */}
-                <div
+              <li
+                key={nome}
+                data-salume
+                className="relative flex items-baseline gap-6 md:gap-10"
+              >
+                <span
                   aria-hidden
-                  className="h-16 md:h-24 w-px mb-6"
-                  style={{ background: "linear-gradient(180deg, transparent, color-mix(in oklab, var(--crema) 40%, transparent))" }}
-                />
-                {/* nodo / forma sospesa */}
-                <div
-                  aria-hidden
-                  className="mb-6 shrink-0"
+                  className="font-eyebrow tracking-[0.3em] shrink-0 w-8 md:w-12"
                   style={{
-                    width: i === 0 ? 110 : i === 1 ? 88 : i === 2 ? 70 : 96,
-                    height: i === 0 ? 140 : i === 1 ? 110 : i === 2 ? 130 : 90,
+                    color: "color-mix(in oklab, var(--crema) 45%, transparent)",
+                    fontSize: "clamp(0.7rem, 1vw, 0.85rem)",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div
+                  aria-hidden
+                  className="h-px w-6 md:w-12 shrink-0"
+                  style={{
                     background:
-                      i === 0
-                        ? "linear-gradient(180deg, #6b3d3d 0%, #4a2a2a 100%)"
-                        : i === 1
-                        ? "linear-gradient(180deg, #7c4a4a 0%, #4a2a2a 100%)"
-                        : i === 2
-                        ? "linear-gradient(180deg, #5c3d3d 0%, #3a2020 100%)"
-                        : "linear-gradient(180deg, #8a6a5a 0%, #5c3d3d 100%)",
-                    borderRadius:
-                      i === 0 ? "40% 40% 45% 45% / 30% 30% 60% 60%" :
-                      i === 1 ? "48% 48% 46% 46% / 45% 45% 55% 55%" :
-                      i === 2 ? "35% 35% 40% 40% / 15% 15% 45% 45%" :
-                      "30% 30% 8% 8% / 30% 30% 12% 12%",
-                    boxShadow: "inset -10px -8px 20px rgba(0,0,0,0.35), inset 8px 8px 18px rgba(255,220,180,0.15), 0 20px 40px rgba(0,0,0,0.35)",
+                      "linear-gradient(90deg, color-mix(in oklab, var(--crema) 45%, transparent), transparent)",
+                    transform: "translateY(-0.6em)",
                   }}
                 />
-                <div
-                  className="font-eyebrow text-[11px] md:text-[13px] tracking-[0.28em] text-center text-[color:var(--crema)]"
-                  style={{ fontWeight: 500 }}
+                <span
+                  className="font-display leading-none"
+                  style={{
+                    fontSize: "clamp(1.6rem, 4.5vw, 3.6rem)",
+                    fontWeight: 300,
+                    color: "var(--crema)",
+                    letterSpacing: "-0.01em",
+                    textShadow: "0 12px 40px rgba(0,0,0,0.45)",
+                    // ombra lunga tipografica
+                    // eslint-disable-next-line
+                  }}
                 >
                   {nome}
-                </div>
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* ══════════ LA FARINA E LA FOCACCIA ══════════ */}
+      {/* ══════════════════════════ IV · FARINA E FOCACCIA ══════════════════════════ */}
       <section
         className="relative py-24 md:py-36 px-6 md:px-14 overflow-hidden"
-        aria-label="La farina e la focaccia"
+        aria-label="La farina della Masseria"
         style={{
-          background: "linear-gradient(180deg, #5c3d3d 0%, #a08668 25%, #efe6ce 100%)",
+          background:
+            "linear-gradient(180deg, #2a1e18 0%, #6b4a34 15%, #d9c9a8 45%, #f4ecd8 100%)",
           color: "var(--marrone)",
         }}
       >
-        {/* Superficie grano (reale) sfumata */}
         <div
-          className="absolute inset-x-0 bottom-0 h-2/3 opacity-40 pointer-events-none"
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-2/3 pointer-events-none opacity-30"
           style={{
             backgroundImage: `url(${granoImg})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "brightness(1.1) saturate(0.7) sepia(0.15)",
-            maskImage: "linear-gradient(180deg, transparent 0%, black 40%, black 100%)",
-            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 40%, black 100%)",
+            filter: "brightness(1.15) saturate(0.55) sepia(0.2)",
+            maskImage: "linear-gradient(180deg, transparent 0%, black 35%, black 100%)",
+            WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 35%, black 100%)",
           }}
+        />
+        <div
           aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(60% 60% at 50% 30%, rgba(255,240,210,0.35) 0%, transparent 60%)",
+          }}
         />
 
         <div className="relative max-w-6xl mx-auto">
-          <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75 tracking-[0.35em] mb-6">
-            06 — DAL GRANO
-          </div>
           <h2
             data-bigword
             className="font-display text-[color:var(--marrone)] leading-[0.95] mb-8 max-w-4xl"
             style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300 }}
           >
-            Accanto al banco,<br/>la farina della Masseria.
+            <span className="block overflow-hidden"><span className="inline-block">Accanto al banco,</span></span>
+            <span className="block overflow-hidden"><span className="inline-block">la farina della Masseria.</span></span>
           </h2>
           <p className="text-[color:var(--marrone)]/85 text-lg md:text-xl max-w-3xl leading-relaxed mb-6">
             Il grano tenero coltivato nei terreni della Masseria diventa farina utilizzata anche per focaccia e frittelle.
@@ -703,88 +893,75 @@ export function MacelleriaStory() {
             La focaccia è stata segnalata nel fine settimana. La disponibilità va confermata direttamente.
           </p>
 
-          {/* Filo oro che diventa bordo della focaccia */}
-          <div className="relative mt-14 md:mt-20 flex justify-center">
-            <svg viewBox="0 0 400 200" className="w-full max-w-2xl" aria-hidden>
+          {/* Un solo segno oro sulla superficie chiara */}
+          <div className="relative mt-16 md:mt-20 flex justify-center">
+            <svg viewBox="0 0 600 120" className="w-full max-w-3xl" aria-hidden>
               <path
-                d="M 20 100 Q 100 40, 200 100 T 380 100"
+                d="M 20 60 Q 200 20, 300 60 T 580 60"
                 fill="none"
                 stroke="var(--oro)"
-                strokeWidth="1.5"
-                opacity="0.7"
+                strokeWidth="1.3"
+                opacity="0.75"
               />
-              <ellipse
-                cx="200"
-                cy="130"
-                rx="130"
-                ry="35"
-                fill="none"
-                stroke="var(--oro)"
-                strokeWidth="1"
-                opacity="0.55"
-              />
-              <ellipse
-                cx="200"
-                cy="130"
-                rx="110"
-                ry="25"
-                fill="color-mix(in oklab, #f4ecd8 80%, transparent)"
-                opacity="0.6"
-              />
+              <circle cx="300" cy="60" r="3" fill="var(--oro)" opacity="0.9" />
             </svg>
           </div>
         </div>
       </section>
 
-      {/* ══════════ PONTE VERSO L'AGRITURISMO ══════════ */}
+      {/* ══════════════════════════ V · DOPO IL BANCO ══════════════════════════ */}
       <section
         className="relative py-28 md:py-40 px-6 md:px-14 overflow-hidden"
-        aria-label="Ponte verso l'Agriturismo"
+        aria-label="Dopo il banco"
         style={{
-          background: "linear-gradient(180deg, #efe6ce 0%, #d8c299 25%, #a5715a 65%, #6b3d2e 100%)",
+          background:
+            "linear-gradient(180deg, #f4ecd8 0%, #d9c9a8 25%, #a5715a 60%, #6b3d2e 100%)",
           color: "var(--crema)",
         }}
       >
-        {/* Linea oro che passa a terracotta locale */}
-        <svg aria-hidden className="absolute inset-0 h-full w-full pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
+        {/* Linea oro attraversante */}
+        <svg
+          aria-hidden
+          className="absolute inset-0 h-full w-full pointer-events-none"
+          preserveAspectRatio="none"
+          viewBox="0 0 100 100"
+        >
           <path
-            d="M 8 15 Q 40 25, 55 55 T 92 88"
+            d="M 8 12 Q 42 28, 55 55 T 92 90"
             fill="none"
             stroke="var(--oro)"
-            strokeWidth="0.3"
-            opacity="0.75"
+            strokeWidth="0.35"
+            opacity="0.7"
             vectorEffect="non-scaling-stroke"
           />
         </svg>
 
         <div className="relative max-w-5xl mx-auto text-center">
-          <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.35em] mb-6" style={{ color: "color-mix(in oklab, var(--crema) 90%, transparent)" }}>
-            07 — DOPO LA SCELTA
-          </div>
           <h2
             data-bigword
-            className="font-display leading-[0.95] mb-8"
-            style={{ fontSize: "clamp(2rem, 5.5vw, 4.5rem)", fontWeight: 300, color: "var(--crema)" }}
+            className="font-display leading-[0.95] mb-10"
+            style={{ fontSize: "clamp(2.2rem, 6vw, 5rem)", fontWeight: 300, color: "var(--crema)" }}
           >
-            Hai scelto.<br/>Ora siediti.
+            <span className="block overflow-hidden"><span className="inline-block">Hai scelto.</span></span>
+            <span className="block overflow-hidden"><span className="inline-block">Ora siediti.</span></span>
           </h2>
-          <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" style={{ color: "color-mix(in oklab, var(--crema) 85%, transparent)" }}>
-            Dal banco la carne passa alla cottura. Intanto il pasto è già cominciato.
-          </p>
 
-          {/* Sequenza SCEGLI · SIEDI · COTTURA · TAVOLA */}
-          <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-14 font-eyebrow text-xs md:text-sm tracking-[0.3em]">
+          {/* Sequenza SCEGLI — SIEDI — COTTURA (terracotta locale) — TAVOLA */}
+          <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 mb-14 font-eyebrow text-xs md:text-sm tracking-[0.32em]">
             {["SCEGLI", "SIEDI", "COTTURA", "TAVOLA"].map((w, i) => (
-              <li key={w} className="flex items-center gap-3">
+              <li key={w} className="flex items-center gap-4">
                 <span
+                  data-parola-cottura={w === "COTTURA" ? "" : undefined}
                   style={{
-                    color: w === "COTTURA" ? "#e88b5c" : "color-mix(in oklab, var(--crema) 90%, transparent)",
+                    color: "color-mix(in oklab, var(--crema) 90%, transparent)",
                     fontWeight: w === "COTTURA" ? 600 : 400,
                   }}
                 >
                   {w}
                 </span>
-                {i < 3 && <span aria-hidden style={{ color: "var(--oro)", opacity: 0.7 }}>—</span>}
+                {i < 3 && (
+                  <span aria-hidden style={{ color: "var(--oro)", opacity: 0.7 }}>—</span>
+                )}
               </li>
             ))}
           </ul>
@@ -792,7 +969,7 @@ export function MacelleriaStory() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6">
             <Link
               to="/agriturismo"
-              className="group inline-flex items-center gap-3 px-8 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] transition-all"
+              className="group inline-flex items-center gap-3 px-8 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] transition-all hover:gap-4 w-full sm:w-auto justify-center"
               style={{ background: "var(--crema)", color: "var(--marrone)" }}
             >
               ENTRA NELL’AGRITURISMO
@@ -800,78 +977,88 @@ export function MacelleriaStory() {
             </Link>
             <Link
               to="/caseificio"
-              className="group inline-flex items-center gap-3 px-6 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] border transition-all hover:bg-[color:var(--crema)]/10"
-              style={{ borderColor: "color-mix(in oklab, var(--crema) 60%, transparent)", color: "var(--crema)" }}
+              className="group inline-flex items-center gap-3 px-6 py-4 min-h-[52px] font-eyebrow text-xs tracking-[0.35em] border transition-all hover:bg-[color:var(--crema)]/10 w-full sm:w-auto justify-center"
+              style={{
+                borderColor: "color-mix(in oklab, var(--crema) 55%, transparent)",
+                color: "var(--crema)",
+              }}
             >
-              TORNA AL CASEIFICIO
               <span className="transition-transform group-hover:-translate-x-1">←</span>
+              TORNA AL CASEIFICIO
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ══════════ NAV · LE QUATTRO ANIME ══════════ */}
       <NavAnime current="macelleria" />
     </div>
   );
 }
 
-/* ─────────────────── Diagramma (interattivo, accessibile) ─────────────────── */
+/* ═══════════════════ Diagramma (accessibile, inciso nel banco) ═══════════════════ */
 
 function Diagramma({
   active,
-  setActive,
+  activate,
   activeVoce,
+  announce,
 }: {
   active: Voce["id"];
-  setActive: (id: Voce["id"]) => void;
+  activate: (id: Voce["id"]) => void;
   activeVoce: Voce;
+  announce: string;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const lineRef = useRef<SVGPathElement>(null);
 
-  // Ridisegno filo oro dal nodo attivo verso il pannello dx (soltanto informativo)
+  // Filo oro: si ridisegna una sola volta al cambio voce attiva
   useEffect(() => {
-    if (!lineRef.current || !svgRef.current) return;
+    if (!lineRef.current) return;
     const line = lineRef.current;
     const len = line.getTotalLength();
     line.style.strokeDasharray = String(len);
     line.style.strokeDashoffset = String(len);
-    // trigger reflow
     void line.getBoundingClientRect();
-    line.style.transition = "stroke-dashoffset .8s ease";
+    line.style.transition = "stroke-dashoffset .9s cubic-bezier(.22,.61,.36,1)";
     line.style.strokeDashoffset = "0";
   }, [active]);
 
+  // Path del filo dal nodo attivo verso il pannello (dx)
+  const filoPath =
+    activeVoce.side === "prep"
+      ? `M ${activeVoce.x} ${activeVoce.y} C 380 ${activeVoce.y}, 395 ${activeVoce.y}, 400 ${activeVoce.y}`
+      : activeVoce.side === "beyond"
+      ? `M 250 ${activeVoce.y} Q 340 ${activeVoce.y - 10}, 400 ${activeVoce.y + 8}`
+      : `M ${activeVoce.x} ${activeVoce.y} L 400 ${activeVoce.y}`;
+
   return (
     <div className="grid md:grid-cols-12 gap-8 md:gap-12 items-start">
-      {/* SILHOUETTE + PUNTI */}
+      {/* SILHOUETTE incisa nella superficie */}
       <div className="md:col-span-7 relative">
         <div
-          className="relative rounded-sm p-6 md:p-10"
+          className="relative p-4 md:p-8"
           style={{
-            background: "color-mix(in oklab, var(--crema) 55%, transparent)",
-            border: "1px solid color-mix(in oklab, var(--marrone) 25%, transparent)",
+            background:
+              "linear-gradient(180deg, color-mix(in oklab, var(--crema) 55%, transparent) 0%, color-mix(in oklab, var(--crema) 30%, transparent) 100%)",
+            boxShadow:
+              "inset 0 1px 0 rgba(255,255,255,0.4), 0 20px 60px rgba(61,42,30,0.15)",
           }}
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/70 tracking-[0.3em]">
-              ESPLORA IL BANCO
-            </div>
-            <div className="font-eyebrow text-[10px] text-[color:var(--marrone)]/50 tracking-[0.3em] hidden md:block">
-              ANTERIORE · CENTRO · POSTERIORE
-            </div>
-          </div>
-
           <svg
             ref={svgRef}
             viewBox="0 0 400 260"
             className="w-full h-auto"
             role="img"
-            aria-label="Silhouette editoriale di un bovino con punti attivi sul banco"
+            aria-label="Silhouette editoriale di un bovino con piano laterale delle preparazioni"
           >
-            {/* Silhouette bovina editoriale — profilo semplice */}
-            <g stroke="var(--marrone)" strokeWidth="1.5" fill="color-mix(in oklab, var(--crema) 70%, transparent)" strokeLinejoin="round" strokeLinecap="round">
+            {/* Silhouette bovina — tratto sottile, riempimento quasi invisibile */}
+            <g
+              stroke="color-mix(in oklab, var(--marrone) 80%, transparent)"
+              strokeWidth="1"
+              fill="color-mix(in oklab, var(--crema) 20%, transparent)"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+            >
               <path d="M 60 150
                        Q 55 100, 90 90
                        L 110 80
@@ -894,65 +1081,57 @@ function Diagramma({
                        L 115 205
                        L 115 172
                        Q 78 175, 68 165 Z" />
-              {/* Occhio + orecchio */}
-              <circle cx="102" cy="100" r="2" fill="var(--marrone)" stroke="none" />
-              <path d="M 92 82 L 88 70 L 96 78 Z" fill="var(--marrone)" opacity="0.7" />
-              {/* Coda */}
+              <circle cx="102" cy="100" r="1.6" fill="var(--marrone)" stroke="none" />
+              <path d="M 92 82 L 88 70 L 96 78 Z" fill="var(--marrone)" opacity="0.5" />
               <path d="M 325 130 Q 340 130, 340 155 Q 340 170, 335 175" fill="none" />
             </g>
 
-            {/* Divisioni delicate: anteriore · centro · posteriore */}
-            <g stroke="var(--marrone)" strokeWidth="0.6" strokeDasharray="3 3" opacity="0.35">
-              <line x1="150" y1="80" x2="150" y2="175" />
-              <line x1="245" y1="80" x2="245" y2="175" />
-            </g>
-            <g fill="var(--marrone)" opacity="0.4" style={{ font: "8px sans-serif", letterSpacing: "0.15em" }}>
-              <text x="90" y="230" textAnchor="middle">ANTERIORE</text>
-              <text x="195" y="230" textAnchor="middle">CENTRO</text>
-              <text x="285" y="230" textAnchor="middle">POSTERIORE</text>
-            </g>
-
-            {/* Area separata: PREPARAZIONI DEL BANCO */}
+            {/* Piano laterale — PREPARAZIONI DEL BANCO */}
             <g>
-              <rect
-                x="335"
-                y="30"
-                width="60"
-                height="205"
-                rx="2"
-                fill="color-mix(in oklab, var(--crema) 90%, transparent)"
-                stroke="var(--marrone)"
-                strokeWidth="0.8"
-                opacity="0.6"
+              <line
+                x1="335"
+                y1="50"
+                x2="335"
+                y2="180"
+                stroke="color-mix(in oklab, var(--marrone) 45%, transparent)"
+                strokeWidth="0.6"
+                strokeDasharray="2 3"
               />
               <text
-                x="365"
-                y="24"
-                textAnchor="middle"
-                fill="var(--marrone)"
-                opacity="0.55"
-                style={{ font: "7px sans-serif", letterSpacing: "0.18em" }}
+                x="345"
+                y="42"
+                fill="color-mix(in oklab, var(--marrone) 75%, transparent)"
+                style={{ font: "600 7px sans-serif", letterSpacing: "0.22em" }}
               >
-                PREPARAZIONI DEL BANCO
+                PREPARAZIONI
+              </text>
+              <text
+                x="345"
+                y="52"
+                fill="color-mix(in oklab, var(--marrone) 55%, transparent)"
+                style={{ font: "7px sans-serif", letterSpacing: "0.22em" }}
+              >
+                DEL BANCO
               </text>
             </g>
 
-            {/* Filo oro dal punto attivo verso dx (uscente) */}
+            {/* Filo oro dal nodo attivo verso il pannello */}
             <path
               ref={lineRef}
-              d={`M ${activeVoce.x} ${activeVoce.y} L 400 ${activeVoce.y}`}
+              d={filoPath}
               stroke="var(--oro)"
-              strokeWidth="1.5"
+              strokeWidth="1.4"
               fill="none"
-              opacity="0.85"
+              opacity="0.9"
             />
 
-            {/* Nodi cliccabili */}
+            {/* Nodi */}
             {VOCI.map((v) => {
               const isActive = v.id === active;
+              const isCut = v.side === "cut";
               return (
                 <g key={v.id}>
-                  {/* touch target invisibile 44x44 */}
+                  {/* touch target 44×44 invisibile */}
                   <rect
                     x={v.x - 22}
                     y={v.y - 22}
@@ -960,9 +1139,7 @@ function Diagramma({
                     height="44"
                     fill="transparent"
                     style={{ cursor: "pointer" }}
-                    onMouseEnter={() => setActive(v.id)}
-                    onFocus={() => setActive(v.id)}
-                    onClick={() => setActive(v.id)}
+                    onClick={() => activate(v.id)}
                     tabIndex={0}
                     role="button"
                     aria-pressed={isActive}
@@ -970,22 +1147,51 @@ function Diagramma({
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
-                        setActive(v.id);
+                        activate(v.id);
                       }
                     }}
                   />
-                  {/* punto visibile */}
+                  {/* punto: stato inattivo crema/marrone, attivo terracotta + anello oro */}
                   <circle
                     cx={v.x}
                     cy={v.y}
-                    r={isActive ? 7 : 5}
-                    fill={isActive ? "#a5715a" : "color-mix(in oklab, var(--crema) 90%, transparent)"}
-                    stroke="var(--marrone)"
-                    strokeWidth="1.2"
-                    style={{ transition: "r .3s, fill .3s" }}
+                    r={isActive ? 6 : 3.5}
+                    fill={
+                      isActive
+                        ? "#c96f4a"
+                        : "color-mix(in oklab, var(--crema) 85%, transparent)"
+                    }
+                    stroke={
+                      isActive
+                        ? "var(--oro)"
+                        : "color-mix(in oklab, var(--marrone) 55%, transparent)"
+                    }
+                    strokeWidth={isActive ? 1.4 : 1}
+                    style={{
+                      transition: "r .3s, fill .3s, stroke .3s",
+                      opacity: isActive ? 1 : 0.75,
+                    }}
                   />
                   {isActive && (
-                    <circle cx={v.x} cy={v.y} r="12" fill="none" stroke="var(--oro)" strokeWidth="1" opacity="0.75" />
+                    <circle
+                      cx={v.x}
+                      cy={v.y}
+                      r="11"
+                      fill="none"
+                      stroke="var(--oro)"
+                      strokeWidth="0.8"
+                      opacity="0.75"
+                    />
+                  )}
+                  {isCut && !isActive && (
+                    <text
+                      x={v.x + 8}
+                      y={v.y + 3}
+                      fill="color-mix(in oklab, var(--marrone) 50%, transparent)"
+                      style={{ font: "6.5px sans-serif", letterSpacing: "0.15em" }}
+                    >
+                      {v.label.split(" ")[0].toUpperCase()}
+                    </text>
                   )}
                 </g>
               );
@@ -994,17 +1200,27 @@ function Diagramma({
         </div>
       </div>
 
-      {/* PANNELLO INFORMATIVO */}
+      {/* PANNELLO INFO — annuncio solo dopo attivazione intenzionale */}
       <div className="md:col-span-5">
         <div
-          className="p-6 md:p-8 rounded-sm"
+          className="relative p-6 md:p-8"
           style={{
-            background: "color-mix(in oklab, var(--crema) 85%, transparent)",
-            border: "1px solid color-mix(in oklab, var(--marrone) 20%, transparent)",
+            background: "color-mix(in oklab, var(--crema) 88%, transparent)",
+            borderLeft: "2px solid var(--oro)",
+            boxShadow: "0 12px 40px rgba(61,42,30,0.12)",
           }}
-          aria-live="polite"
         >
-          <div className="font-eyebrow text-[10px] tracking-[0.35em] mb-3" style={{ color: activeVoce.isCut ? "var(--oliva)" : "var(--bordeaux)" }}>
+          <div
+            className="font-eyebrow text-[10px] tracking-[0.35em] mb-3"
+            style={{
+              color:
+                activeVoce.side === "cut"
+                  ? "var(--bordeaux)"
+                  : activeVoce.side === "prep"
+                  ? "var(--oliva)"
+                  : "color-mix(in oklab, var(--marrone) 70%, transparent)",
+            }}
+          >
             {activeVoce.cat}
           </div>
           <h3
@@ -1017,13 +1233,21 @@ function Diagramma({
             {activeVoce.testo}
           </p>
           {activeVoce.nota && (
-            <p className="text-[color:var(--marrone)]/65 text-sm italic border-l-2 pl-3" style={{ borderColor: "var(--oro)" }}>
+            <p
+              className="text-[color:var(--marrone)]/65 text-sm italic pl-3"
+              style={{ borderLeft: "1px solid var(--oro)" }}
+            >
               {activeVoce.nota}
             </p>
           )}
         </div>
 
-        {/* Legenda tappabile (mobile + tastiera) */}
+        {/* aria-live: parla solo dopo click / Enter / Space */}
+        <div className="sr-only" aria-live="polite" aria-atomic="true">
+          {announce}
+        </div>
+
+        {/* Legenda tappabile */}
         <ul className="mt-6 grid grid-cols-2 md:grid-cols-1 gap-2">
           {VOCI.map((v) => {
             const isActive = v.id === active;
@@ -1031,20 +1255,27 @@ function Diagramma({
               <li key={v.id}>
                 <button
                   type="button"
-                  onClick={() => setActive(v.id)}
+                  onClick={() => activate(v.id)}
                   aria-pressed={isActive}
-                  className="w-full text-left flex items-center gap-3 px-3 py-3 min-h-[44px] rounded-sm transition-colors focus:outline-none focus-visible:ring-2"
+                  className="w-full text-left flex items-center gap-3 px-3 py-3 min-h-[44px] transition-colors focus:outline-none focus-visible:ring-2"
                   style={{
-                    background: isActive ? "color-mix(in oklab, var(--marrone) 12%, transparent)" : "transparent",
-                    border: "1px solid color-mix(in oklab, var(--marrone) 18%, transparent)",
+                    background: isActive
+                      ? "color-mix(in oklab, var(--marrone) 10%, transparent)"
+                      : "transparent",
+                    borderBottom: "1px solid color-mix(in oklab, var(--marrone) 18%, transparent)",
                   }}
                 >
                   <span
                     aria-hidden
-                    className="h-2.5 w-2.5 rounded-full shrink-0"
-                    style={{ background: isActive ? "#a5715a" : "color-mix(in oklab, var(--marrone) 40%, transparent)" }}
+                    className="h-2 w-2 rounded-full shrink-0"
+                    style={{
+                      background: isActive
+                        ? "#c96f4a"
+                        : "color-mix(in oklab, var(--marrone) 35%, transparent)",
+                      boxShadow: isActive ? "0 0 8px rgba(201,111,74,0.6)" : "none",
+                    }}
                   />
-                  <span className="font-eyebrow text-[11px] tracking-[0.2em] text-[color:var(--marrone)]/85">
+                  <span className="font-eyebrow text-[11px] tracking-[0.22em] text-[color:var(--marrone)]/85">
                     {v.label}
                   </span>
                 </button>
@@ -1058,7 +1289,11 @@ function Diagramma({
 }
 
 /* ─────────────────── Nav Anime ─────────────────── */
-function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macelleria" | "agriturismo" }) {
+function NavAnime({
+  current,
+}: {
+  current: "allevamento" | "caseificio" | "macelleria" | "agriturismo";
+}) {
   const items = [
     { key: "allevamento", n: "01", nome: "ALLEVAMENTO", sub: "La terra e gli animali", to: "/allevamento" as const },
     { key: "caseificio", n: "02", nome: "CASEIFICIO", sub: "Il bianco prende forma", to: "/caseificio" as const },
@@ -1073,10 +1308,10 @@ function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macell
       style={{ background: "var(--crema)", color: "var(--marrone)" }}
     >
       <div className="max-w-5xl mx-auto">
-        <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.35em] opacity-70 mb-4">
-          CONTINUA NELLA MASSERIA
-        </div>
-        <h2 className="font-display text-4xl md:text-5xl leading-tight mb-10 md:mb-14" style={{ fontWeight: 300 }}>
+        <h2
+          className="font-display text-4xl md:text-5xl leading-tight mb-10 md:mb-14"
+          style={{ fontWeight: 300 }}
+        >
           Continua nella Masseria
         </h2>
         <ul className="divide-y divide-[color:var(--marrone)]/20 border-y border-[color:var(--marrone)]/20">
@@ -1084,21 +1319,37 @@ function NavAnime({ current }: { current: "allevamento" | "caseificio" | "macell
             const isCurrent = it.key === current;
             const content = (
               <div className="flex items-center gap-4 md:gap-8 py-5 md:py-6 group">
-                <span className="font-eyebrow text-xs md:text-sm opacity-60 tracking-[0.2em] w-10">{it.n}</span>
-                <span className="font-display text-2xl md:text-4xl flex-shrink-0" style={{ fontWeight: 300 }}>
+                <span className="font-eyebrow text-xs md:text-sm opacity-60 tracking-[0.2em] w-10">
+                  {it.n}
+                </span>
+                <span
+                  className="font-display text-2xl md:text-4xl flex-shrink-0"
+                  style={{ fontWeight: 300 }}
+                >
                   {it.nome}
                 </span>
                 <span className="hidden md:block flex-1 h-px bg-[color:var(--marrone)]/25 group-hover:bg-[color:var(--marrone)]/50 transition-colors" />
-                <span className="text-sm md:text-base italic opacity-70 flex-1 md:flex-none">{it.sub}</span>
-                {!isCurrent && <span className="font-eyebrow text-lg transition-transform group-hover:translate-x-1">→</span>}
+                <span className="text-sm md:text-base italic opacity-70 flex-1 md:flex-none">
+                  {it.sub}
+                </span>
+                {!isCurrent && (
+                  <span className="font-eyebrow text-lg transition-transform group-hover:translate-x-1">
+                    →
+                  </span>
+                )}
               </div>
             );
             return (
               <li key={it.key}>
                 {isCurrent ? (
-                  <div className="opacity-50 px-2" aria-current="page">{content}</div>
+                  <div className="opacity-50 px-2" aria-current="page">
+                    {content}
+                  </div>
                 ) : (
-                  <Link to={it.to} className="block hover:bg-[color:var(--marrone)]/5 transition-colors px-2">
+                  <Link
+                    to={it.to}
+                    className="block hover:bg-[color:var(--marrone)]/5 transition-colors px-2"
+                  >
                     {content}
                   </Link>
                 )}
