@@ -203,8 +203,9 @@ function SalaAccende({ reduced }: { reduced: boolean }) {
           <h2
             className="font-display leading-[1.02] text-[clamp(2.2rem,6vw,5rem)]"
             style={{ fontWeight: 300 }}
+            aria-label="La sera prende posto."
           >
-            La sera
+            <span>La sera</span>
             <br />
             <em className="italic" style={{ color: "color-mix(in oklab, var(--oro) 85%, var(--crema))" }}>
               prende posto.
@@ -214,6 +215,7 @@ function SalaAccende({ reduced }: { reduced: boolean }) {
             Pietra, tavoli e cucina cambiano ritmo quando comincia il servizio.
           </p>
         </div>
+
       </div>
     </section>
   );
