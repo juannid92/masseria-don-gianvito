@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useHomeSectionNav, type HomeSectionId } from "@/lib/nav";
 
 /* ──────────────────────────────────────────────────────────────
  * FOOTER — Chiusura editoriale. Crema. Asimmetrico.
- * "Dalla terra alla tavola." + solco che collega indirizzo,
- * coordinate e contatti. Chiude il ciclo dall'Hero.
+ * Quattro gruppi: Esplora · Quattro Anime · Visita · Contatti.
  * ───────────────────────────────────────────────────────────── */
 
 const TEL_1 = "+393339395750";
@@ -19,7 +19,17 @@ const INSTAGRAM = "https://instagram.com/masseria_don_gianvito";
 const FACEBOOK = "https://facebook.com/masseriadongianvito";
 const MAPS_URL = "https://www.google.com/maps?q=40.642739,17.042600";
 
-const INTERNE = [
+const ESPLORA: { id: HomeSectionId; label: string }[] = [
+  { id: "manifesto", label: "Manifesto" },
+  { id: "storia", label: "Storia" },
+  { id: "luogo", label: "Il Luogo" },
+  { id: "filiera", label: "La Filiera" },
+  { id: "tavola", label: "La Tavola" },
+  { id: "la-voce", label: "La Voce" },
+  { id: "prenota", label: "Prenota" },
+];
+
+const ANIME = [
   { href: "/allevamento", label: "Allevamento" },
   { href: "/caseificio", label: "Caseificio" },
   { href: "/macelleria", label: "Macelleria" },
@@ -32,6 +42,9 @@ export function Footer() {
   const solcoRef = useRef<SVGPathElement>(null);
   const reduced = useReducedMotion();
   const year = new Date().getFullYear();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  const goSection = useHomeSectionNav();
 
   useEffect(() => {
     if (reduced) return;
@@ -57,7 +70,7 @@ export function Footer() {
             ease: "cubic-bezier(.16,1,.3,1)",
           });
           gsap.to(items, {
-            autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.05, delay: 0.2, ease: "power2.out",
+            autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.04, delay: 0.2, ease: "power2.out",
           });
           if (solcoRef.current) {
             gsap.to(solcoRef.current, { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" });
@@ -73,6 +86,11 @@ export function Footer() {
     }, root);
     return () => ctx.revert();
   }, [reduced]);
+
+  const onSection = (e: React.MouseEvent, id: HomeSectionId) => {
+    if (isHome) e.preventDefault();
+    void goSection(id);
+  };
 
   return (
     <footer
@@ -149,22 +167,76 @@ export function Footer() {
           </div>
         </div>
 
-        {/* aree pratiche */}
+        {/* Esplora + Anime — riga editoriale asimmetrica */}
         <div className="mt-20 grid grid-cols-1 gap-14 md:mt-28 md:grid-cols-12 md:gap-10">
-          {/* Visita */}
-          <div className="md:col-span-5">
+          <nav className="md:col-span-7" aria-labelledby="foot-esplora">
             <p
+              id="foot-esplora"
+              data-foot
+              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
+            >
+              Esplora la Home
+            </p>
+            <ul className="mt-5 flex flex-wrap gap-x-8 gap-y-3">
+              {ESPLORA.map((s) => (
+                <li key={s.id} data-foot>
+                  <a
+                    href={`/#${s.id}`}
+                    onClick={(e) => onSection(e, s.id)}
+                    className="foot-link font-display text-lg text-[color:var(--marrone)]"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav className="md:col-span-5" aria-labelledby="foot-anime">
+            <p
+              id="foot-anime"
+              data-foot
+              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
+            >
+              Le quattro anime
+            </p>
+            <ul className="mt-5 space-y-2.5">
+              {ANIME.map((a) => (
+                <li key={a.href} data-foot>
+                  <Link
+                    to={a.href}
+                    className="foot-link font-display text-lg text-[color:var(--marrone)]"
+                  >
+                    {a.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+
+        {/* Visita + Contatti */}
+        <div className="mt-20 grid grid-cols-1 gap-14 md:mt-24 md:grid-cols-12 md:gap-10">
+          <div className="md:col-span-6" aria-labelledby="foot-visita">
+            <p
+              id="foot-visita"
               data-foot
               className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
             >
               Visita
             </p>
-            <address data-foot className="mt-4 not-italic font-body text-[15px] leading-relaxed text-[color:var(--marrone)]/90">
+            <address
+              data-foot
+              className="mt-4 not-italic font-body text-[15px] leading-relaxed text-[color:var(--marrone)]/90"
+            >
               SP237 ex SS377 per Mottola, km 6,5<br />
               Zona C 76<br />
               70015 Noci BA
             </address>
-            <p data-foot className="mt-4 font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/60">
+            <p
+              data-foot
+              className="mt-4 font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/60"
+            >
               40.642739° N · 17.042600° E
             </p>
             <a
@@ -179,9 +251,9 @@ export function Footer() {
             </a>
           </div>
 
-          {/* Contatti */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-6" aria-labelledby="foot-contatti">
             <p
+              id="foot-contatti"
               data-foot
               className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
             >
@@ -235,28 +307,6 @@ export function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* Pagine interne */}
-          <nav className="md:col-span-3" aria-label="Le quattro anime">
-            <p
-              data-foot
-              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
-            >
-              Le quattro anime
-            </p>
-            <ul className="mt-4 space-y-2.5">
-              {INTERNE.map((v) => (
-                <li key={v.href} data-foot>
-                  <Link
-                    to={v.href}
-                    className="foot-link font-display text-lg text-[color:var(--marrone)]"
-                  >
-                    {v.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
         </div>
 
         {/* Note legali */}
