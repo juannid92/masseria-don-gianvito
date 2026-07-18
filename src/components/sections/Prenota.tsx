@@ -123,6 +123,7 @@ export function Prenota() {
 
   return (
     <section
+      id="prenota"
       ref={rootRef}
       aria-labelledby="prenota-title"
       className="prenota relative isolate overflow-hidden"
