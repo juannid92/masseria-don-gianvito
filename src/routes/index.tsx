@@ -11,6 +11,7 @@ import { LaFiliera } from "@/components/sections/LaFiliera";
 import { LaTavola } from "@/components/sections/LaTavola";
 import { LaVoce } from "@/components/sections/LaVoce";
 import { Prenota } from "@/components/sections/Prenota";
+import { useHomeHashScroll } from "@/lib/nav";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,11 +40,17 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
+function HomeHashHandler() {
+  useHomeHashScroll();
+  return null;
+}
+
 function HomePage() {
   return (
     <SmoothScroll>
       <ContinuousBackground />
       <Navbar />
+      <HomeHashHandler />
       <main className="relative">
         <Hero />
         <IlManifesto />

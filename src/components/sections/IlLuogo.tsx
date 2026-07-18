@@ -244,6 +244,7 @@ export function IlLuogo() {
 
   return (
     <section
+      id="luogo"
       ref={rootRef}
       aria-labelledby="luogo-title"
       className="relative text-crema"

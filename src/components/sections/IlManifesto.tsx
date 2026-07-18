@@ -236,6 +236,7 @@ export function IlManifesto() {
 
   return (
     <section
+      id="manifesto"
       ref={rootRef}
       aria-labelledby="manifesto-title"
       className="mf-root relative w-full"
