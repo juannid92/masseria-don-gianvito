@@ -57,6 +57,7 @@
 }
 
 :root {
+  --header-offset: 88px;
   --radius: 0.75rem;
 
   /* === Brand palette (HEX) === */
