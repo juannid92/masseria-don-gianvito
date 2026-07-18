@@ -256,6 +256,7 @@ export function LaStoria() {
 
   return (
     <section
+      id="storia"
       ref={wrapperRef}
       aria-labelledby="storia-title"
       className="history-wrapper relative text-crema"
