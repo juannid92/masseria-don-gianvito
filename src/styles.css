@@ -388,3 +388,6 @@ html.reduce-motion :is(.reveal, [data-reveal], [data-reveal-item], [data-product
 
 
 
+
+/* ─── Ancore sezioni: offset per header sticky ─── */
+section[id] { scroll-margin-top: var(--header-offset); }
