@@ -86,63 +86,122 @@ export function AgriturismoStory() {
  * enfasi su elementi che sembrano generati.
  * ─────────────────────────────────────────────────────────────────────── */
 function Apertura() {
+  /* Firma: LA MASSERIA SI ACCENDE — architettura in profondità, luce lontana, nessun fuoco al centro.
+     Asset attuale `brace-sala.jpg` è probabile AI/stock: usato solo come velo materico
+     con crop estremo a sinistra + doppia maschera per escludere il braciere dal quadro.
+     ASSET AUTENTICO NECESSARIO: interno reale della sala vuota. */
   return (
     <section
-      aria-label="Apertura — la Masseria aspetta"
-      className="relative min-h-[100dvh] flex items-end overflow-hidden"
+      aria-label="Apertura — la Masseria si accende"
+      className="relative min-h-[100dvh] w-full overflow-hidden"
       style={{ background: "var(--carbone)" }}
     >
-      {/* Crop architettonico spinto verso sinistra per far uscire il braciere dal frame;
-          il fuoco resta come riflesso marginale, non come soggetto. */}
+      {/* Base: pietra scura costruita in CSS, indipendente dalla foto */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background: [
+            "radial-gradient(120% 80% at 15% 100%, #2b1f18 0%, #1a1210 55%, #0d0906 100%)",
+            "repeating-linear-gradient(94deg, rgba(255,240,210,0.018) 0 1px, transparent 1px 6px)",
+          ].join(", "),
+        }}
+      />
+      {/* Foto come texture, ridotta e mascherata a destra per suggerire profondità di sala */}
       <img
         src={salaImg}
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover"
         style={{
-          filter: "brightness(0.38) saturate(0.55) contrast(1.12)",
-          objectPosition: "22% 62%",
+          filter: "brightness(0.32) saturate(0.45) contrast(1.05) hue-rotate(-6deg)",
+          objectPosition: "8% 68%",
+          opacity: 0.55,
+          maskImage:
+            "linear-gradient(90deg, transparent 0%, #000 22%, #000 62%, transparent 92%)",
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent 0%, #000 22%, #000 62%, transparent 92%)",
         }}
         loading="eager"
         decoding="async"
       />
-      {/* Una sola linea di luce, diffusa e centrale, che valorizza pietra e tavoli */}
+      {/* La luce lontana: piccola, in fondo a destra, come una porta socchiusa */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(60% 50% at 45% 45%, color-mix(in oklab, var(--oro) 18%, transparent) 0%, transparent 62%), linear-gradient(to bottom, color-mix(in oklab, var(--carbone) 88%, transparent) 0%, transparent 40%, color-mix(in oklab, var(--carbone) 92%, transparent) 95%)",
+            "radial-gradient(22% 30% at 78% 58%, color-mix(in oklab, var(--oro) 24%, transparent) 0%, transparent 70%)",
         }}
       />
-      <div className="relative z-10 w-full px-6 md:px-14 pb-14 md:pb-20 max-w-6xl mx-auto">
-        <div className="font-eyebrow text-[11px] md:text-[12px] tracking-[0.35em] opacity-75 mb-6">
-          AGRITURISMO — MASSERIA DON GIANVITO
+      {/* Vignettatura per proteggere il testo */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 70%, transparent) 0%, transparent 30%, transparent 55%, color-mix(in oklab, var(--carbone) 92%, transparent) 100%)",
+        }}
+      />
+      {/* Linea oro orizzontale — soglia della sala */}
+      <div
+        aria-hidden
+        className="absolute left-[6%] right-[6%] top-[64%] h-px pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 55%, transparent) 30%, color-mix(in oklab, var(--oro) 55%, transparent) 70%, transparent)",
+        }}
+      />
+
+      <div
+        className="relative z-10 min-h-[100dvh] w-full flex flex-col justify-between px-6 md:px-14 max-w-6xl mx-auto"
+        style={{ paddingTop: "calc(var(--page-header-safe-offset, 88px) + 16px)", paddingBottom: "clamp(2rem, 5vh, 4rem)" }}
+      >
+        <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.4em] text-[color:var(--crema)]/60">
+          AGRITURISMO · MASSERIA DON GIANVITO
         </div>
-        <h1
-          className="font-display leading-[1.02]"
-          style={{
-            fontSize: "clamp(2.2rem,7vw,6rem)",
-            fontWeight: 300,
-            color: "var(--crema)",
-          }}
-          aria-label="Prima degli ospiti, la Masseria aspetta."
-        >
-          <span>Prima degli ospiti,</span>
-          <span aria-hidden="true"> </span>
-          <em className="italic block" style={{ color: "color-mix(in oklab, var(--oro) 90%, var(--crema))" }}>
-            la Masseria aspetta.
-          </em>
-        </h1>
-        <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-lg leading-relaxed opacity-85">
-          L'Agriturismo è il luogo in cui la filiera diventa ospitalità: cucina, tavola e braceria
-          si incontrano nella stessa esperienza.
-        </p>
-        <div className="mt-8 md:mt-14 flex items-center gap-4">
-          <span className="h-px w-10 bg-[color:var(--oro)]/60" />
-          <span className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70">
-            ENTRA NELLA SALA
-          </span>
+
+        <div className="mt-auto pt-16 md:pt-24">
+          <h1
+            className="font-display leading-[0.98] text-[color:var(--crema)]"
+            style={{
+              fontSize: "clamp(2.4rem, 8.4vw, 6.6rem)",
+              fontWeight: 300,
+              letterSpacing: "-0.015em",
+              maxWidth: "18ch",
+            }}
+            aria-label="Prima degli ospiti, la Masseria aspetta."
+          >
+            <span className="block">Prima degli ospiti,</span>
+            <em
+              className="not-italic block"
+              style={{
+                color: "color-mix(in oklab, var(--oro) 88%, var(--crema))",
+                fontStyle: "italic",
+              }}
+            >
+              la Masseria aspetta.
+            </em>
+          </h1>
+          <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-[17px] leading-relaxed text-[color:var(--crema)]/80">
+            Cucina, tavola e braceria si incontrano nell'ospitalità della Masseria.
+          </p>
+          <div className="mt-8 md:mt-12 flex flex-wrap items-center gap-x-5 gap-y-4">
+            <a
+              href="#attesa"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("attesa")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="group inline-flex items-center gap-3 px-6 py-3 border border-[color:var(--oro)]/60 rounded-full text-[11px] font-eyebrow tracking-[0.32em] text-[color:var(--crema)] transition-colors hover:bg-[color:var(--oro)]/12 hover:border-[color:var(--oro)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--oro)]"
+            >
+              ENTRA NELL'AGRITURISMO
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            <span className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/45">
+              LA SALA · LA TAVOLA · LA BRACERIA
+            </span>
+          </div>
         </div>
       </div>
     </section>
