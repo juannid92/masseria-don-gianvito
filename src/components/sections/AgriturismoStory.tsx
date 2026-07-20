@@ -237,6 +237,7 @@ function SalaAccende({ reduced }: { reduced: boolean }) {
 
   return (
     <section
+      id="attesa"
       ref={rootRef}
       aria-label="La sera prende posto"
       className="relative min-h-[100dvh] overflow-hidden"
