@@ -58,6 +58,8 @@
 
 :root {
   --header-offset: 88px;
+  /* Spazio minimo di sicurezza tra Navbar sticky e primo contenuto (eyebrow, hint, rail orizzontale). */
+  --page-header-safe-offset: calc(var(--header-offset) + 24px);
   --radius: 0.75rem;
 
   /* === Brand palette (HEX) === */
