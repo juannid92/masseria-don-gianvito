@@ -354,52 +354,57 @@ export function AllevamentoStory() {
             aria-hidden
           />
 
-          {/* Occhiello discreto (in alto, non compete con Navbar) */}
+          {/* Occhiello singolo — allineato alla safe area, mai sotto la Navbar */}
           <div
             data-horizon-eye
-            className="absolute inset-x-0 top-[var(--page-header-safe-offset)] flex justify-center pointer-events-none"
+            className="absolute inset-x-0 flex justify-center pointer-events-none px-6"
+            style={{ top: "calc(var(--page-header-safe-offset, 88px) + 8px)" }}
           >
-            <div className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/60">
-              ALLEVAMENTO
+            <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.4em] text-[color:var(--crema)]/70">
+              ALLEVAMENTO · MASSERIA DON GIANVITO
             </div>
           </div>
 
-          {/* Linea d'orizzonte */}
+          {/* Linea d'orizzonte oro */}
           <div
             data-horizon-line
-            className="absolute inset-x-[6vw] top-[52%] md:top-[58%] h-px pointer-events-none origin-center"
-            style={{ background: "linear-gradient(90deg, transparent, var(--oro), transparent)" }}
+            className="absolute inset-x-[6vw] top-[54%] md:top-[58%] h-px pointer-events-none origin-center"
+            style={{ background: "linear-gradient(90deg, transparent, var(--oro), transparent)", boxShadow: "0 0 24px rgba(197,161,89,0.35)" }}
             aria-hidden
           />
 
-          {/* Titolo che emerge dalla terra — mobile spinto più in alto per rientrare nel primo viewport */}
-          <div className="absolute inset-x-0 top-[38%] md:top-[60%] flex justify-center pointer-events-none px-6">
-            <h1
-              data-horizon-title
-              className="font-display text-[color:var(--crema)] text-center leading-[0.9]"
-              style={{
-                fontSize: "clamp(2.4rem, 9vw, 7.2rem)",
-                fontWeight: 300,
-                letterSpacing: "-0.01em",
-                maxWidth: "22ch",
-              }}
-              aria-label="Dove il cielo tocca la terra."
-            >
-              <span>Dove il cielo</span>
-              <span aria-hidden="true"> </span>
-              <span className="block">tocca la terra.</span>
-            </h1>
+          {/* Titolo — asimmetrico basso-sinistra, attraversa l'orizzonte */}
+          <div
+            className="absolute inset-x-0 bottom-0 flex justify-start pointer-events-none px-6 md:px-14"
+            style={{ paddingBottom: "clamp(3rem, 8vh, 6rem)" }}
+          >
+            <div className="max-w-6xl mx-auto w-full">
+              <h1
+                data-horizon-title
+                className="font-display text-[color:var(--crema)] leading-[0.92]"
+                style={{
+                  fontSize: "clamp(2.6rem, 8.6vw, 7rem)",
+                  fontWeight: 300,
+                  letterSpacing: "-0.015em",
+                  maxWidth: "16ch",
+                  textShadow: "0 2px 40px rgba(26,18,16,0.55)",
+                }}
+                aria-label="Dove il cielo tocca la terra."
+              >
+                <span className="block">Dove il cielo</span>
+                <em
+                  className="not-italic block"
+                  style={{ fontStyle: "italic", color: "color-mix(in oklab, var(--oro) 88%, var(--crema))" }}
+                >
+                  tocca la terra.
+                </em>
+              </h1>
+              <p className="mt-6 md:mt-8 max-w-md text-[color:var(--crema)]/80 text-[15px] md:text-[17px] leading-relaxed">
+                L'allevamento comincia qui, nelle campagne di Noci.
+              </p>
+            </div>
           </div>
 
-          {/* Sotto-testo minimo, quasi al bordo inferiore */}
-          <div className="absolute inset-x-0 bottom-[8%] md:bottom-[10%] flex justify-center pointer-events-none px-6">
-            <p
-              className="text-[color:var(--crema)]/80 text-base md:text-lg italic text-center max-w-md"
-              style={{ letterSpacing: "0.005em" }}
-            >
-              L'allevamento comincia qui, nelle campagne di Noci.
-            </p>
-          </div>
         </div>
       </section>
 

@@ -402,106 +402,140 @@ export function CaseificioStory() {
   return (
     <div ref={rootRef} className="relative w-full" style={{ background: "var(--crema)", color: "var(--marrone)" }}>
 
-      {/* ══════════ MOV I · LA SUPERFICIE — DENTRO LA TINA ══════════ */}
-      <section data-act="1" className="relative h-[220vh]" aria-label="Dentro la tina">
+      {/* ══════════ MOV I · LA SUPERFICIE — DENTRO LA TINA ══════════
+          Firma: la geometria portante è l'ELLISSE del bordo della tina,
+          non la fotografia del latte. La foto macro è velo materico.
+          Acciaio, condensa e pietra chiara sono costruiti in CSS.
+          ASSET AUTENTICO NECESSARIO: bordo reale della tina/acciaio del caseificio. */}
+      <section data-act="1" className="relative h-[210vh]" aria-label="Dentro la tina">
         <div className="sticky top-0 h-[100dvh] w-full overflow-hidden" style={{ background: "#e8dfc4" }}>
-          {/* Superficie del latte — crop macro, mai per intero */}
+          {/* Base avorio con temperatura */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background: [
+                "radial-gradient(120% 90% at 30% 30%, #f7efd8 0%, #ead9b0 55%, #cbb587 100%)",
+                "repeating-linear-gradient(84deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 8px)",
+              ].join(", "),
+            }}
+          />
+          {/* Foto macro come texture sottile, mascherata dentro l'ellisse */}
           <div
             data-tina-surface
-            className="absolute inset-[-6%] will-change-transform"
+            className="absolute inset-0 will-change-transform"
             style={{
               backgroundImage: `url(${milkMacro})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
-              filter: "brightness(1.05) contrast(0.92) saturate(0.75)",
+              filter: "brightness(1.0) contrast(0.9) saturate(0.6)",
+              opacity: 0.7,
+              maskImage: "radial-gradient(ellipse 60% 46% at 50% 52%, #000 40%, transparent 92%)",
+              WebkitMaskImage: "radial-gradient(ellipse 60% 46% at 50% 52%, #000 40%, transparent 92%)",
             }}
             role="img"
             aria-label="Superficie del latte nel Caseificio di Masseria Don Gianvito"
           />
-          {/* Variazione avorio/crema — temperatura */}
-          <div
-            className="absolute inset-0 pointer-events-none mix-blend-multiply"
-            style={{
-              background:
-                "radial-gradient(ellipse 90% 60% at 30% 40%, rgba(249,241,220,0.55) 0%, transparent 60%), radial-gradient(ellipse 80% 60% at 75% 65%, rgba(61,42,30,0.18) 0%, transparent 55%)",
-            }}
-            aria-hidden
-          />
-          {/* Ombra interna profonda (bordo tina implicito) */}
-          <div
-            data-tina-mask
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, transparent 42%, rgba(61,42,30,0.30) 72%, rgba(26,18,16,0.72) 100%)",
-              clipPath: "ellipse(34% 26% at 50% 50%)",
-            }}
-            aria-hidden
-          />
-          {/* Bordo materico della tina — appare a metà */}
+          {/* Anello ACCIAIO — bordo della tina, geometria portante */}
           <div
             data-tina-border
             className="absolute inset-0 pointer-events-none flex items-center justify-center will-change-transform"
             aria-hidden
           >
             <div
-              className="rounded-full"
+              className="rounded-full relative"
               style={{
-                width: "78vmin",
-                height: "78vmin",
-                border: "1px solid rgba(61,42,30,0.35)",
-                boxShadow:
-                  "inset 0 0 60px rgba(26,18,16,0.35), inset 0 0 200px rgba(255,255,255,0.15), 0 0 80px rgba(26,18,16,0.35)",
+                width: "min(86vmin, 96vw)",
+                height: "min(64vmin, 72vh)",
+                borderRadius: "50%",
+                background: "transparent",
+                border: "2px solid transparent",
+                boxShadow: [
+                  "inset 0 0 0 1px rgba(120,95,60,0.35)",
+                  "inset 0 0 60px rgba(26,18,16,0.28)",
+                  "inset 0 0 220px rgba(255,247,232,0.20)",
+                  "0 30px 80px rgba(26,18,16,0.28)",
+                ].join(", "),
               }}
-            />
+            >
+              {/* Riflesso acciaio superiore */}
+              <div
+                className="absolute inset-x-[6%] top-[3%] h-[14%] rounded-full pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255,247,232,0.42) 0%, rgba(255,247,232,0.08) 60%, transparent 100%)",
+                  filter: "blur(6px)",
+                  mixBlendMode: "screen",
+                }}
+              />
+              {/* Condensa laterale */}
+              <div
+                className="absolute right-[8%] top-[35%] w-[16%] h-[30%] rounded-full pointer-events-none"
+                style={{
+                  background: "radial-gradient(closest-side, rgba(255,255,255,0.28), transparent 70%)",
+                  filter: "blur(4px)",
+                }}
+              />
+            </div>
           </div>
-          {/* Vignettatura finale */}
+          {/* Vignettatura basso per proteggere il titolo */}
           <div
-            className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse at center, transparent 55%, rgba(26,18,16,0.35) 100%)" }}
             aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 55%, rgba(61,42,30,0.35) 100%)",
+            }}
           />
 
-          {/* Rail sx */}
-          <div className="absolute left-4 md:left-8 top-0 h-full flex items-center pointer-events-none z-10" aria-hidden>
+          {/* Marginalia verticale sinistra */}
+          <div
+            className="absolute left-4 md:left-8 top-0 h-full flex items-center pointer-events-none z-10"
+            aria-hidden
+          >
             <div
               className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75"
               style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.32em" }}
             >
-              CASEIFICIO — MASSERIA DON GIANVITO
+              CASEIFICIO · MASSERIA DON GIANVITO
             </div>
           </div>
 
-          {/* Titolo lungo il bordo, in basso a sinistra */}
-          <div className="absolute inset-x-0 bottom-16 md:bottom-20 px-6 md:px-14 pointer-events-none">
-            <div className="max-w-6xl mx-auto">
+          {/* Titolo — ancorato al bordo inferiore dell'ellisse, non centrato */}
+          <div className="absolute inset-x-0 bottom-[9%] md:bottom-[11%] px-6 md:px-14 pointer-events-none">
+            <div className="max-w-5xl mx-auto text-center">
               <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/70 tracking-[0.35em] mb-4">
-                IL BIANCO — UNA MATERIA CHE CAMBIA
+                UNA MATERIA CHE CAMBIA STATO
               </div>
               <h1
                 data-tina-title
-                className="font-display leading-[0.88] text-[color:var(--marrone)]"
-                style={{ fontSize: "clamp(2.6rem, 9vw, 7rem)", fontWeight: 300, letterSpacing: "-0.01em" }}
+                className="font-display leading-[0.9] text-[color:var(--marrone)]"
+                style={{ fontSize: "clamp(2.8rem, 9vw, 7rem)", fontWeight: 300, letterSpacing: "-0.015em" }}
                 aria-label="Dentro il bianco."
               >
-                <span>Dentro</span>
-                <span aria-hidden="true"> </span>
-                <span className="block">il bianco.</span>
+                <span className="block">Dentro</span>
+                <em
+                  className="not-italic block"
+                  style={{ fontStyle: "italic", color: "color-mix(in oklab, var(--oro) 55%, var(--marrone))" }}
+                >
+                  il bianco.
+                </em>
               </h1>
-              <p className="mt-6 max-w-lg text-[color:var(--marrone)]/80 text-base md:text-lg leading-relaxed">
+              <p className="mt-5 md:mt-7 max-w-xl mx-auto text-[color:var(--marrone)]/80 text-[15px] md:text-[17px] leading-relaxed">
                 Ogni mattina il latte lascia l'allevamento e comincia una nuova trasformazione.
               </p>
             </div>
           </div>
 
           {/* Hint di scorrimento */}
-          <div data-tina-hint className="absolute inset-x-0 bottom-6 flex justify-center pointer-events-none">
+          <div data-tina-hint className="absolute inset-x-0 bottom-4 flex justify-center pointer-events-none">
             <div className="font-eyebrow text-[10px] text-[color:var(--marrone)]/55 tracking-[0.4em]">
               ATTRAVERSA LA SUPERFICIE ↓
             </div>
           </div>
         </div>
       </section>
+
 
       {/* ══════════ MOV I.b · IL MATTINO ══════════ */}
       <section
