@@ -92,26 +92,27 @@ function Apertura() {
       className="relative min-h-[100dvh] flex items-end overflow-hidden"
       style={{ background: "var(--carbone)" }}
     >
-      {/* Crop architettonico: focus su pietra/tavoli/profondità, no dettagli artificiali */}
+      {/* Crop architettonico spinto verso sinistra per far uscire il braciere dal frame;
+          il fuoco resta come riflesso marginale, non come soggetto. */}
       <img
         src={salaImg}
         alt=""
         aria-hidden
         className="absolute inset-0 w-full h-full object-cover"
         style={{
-          filter: "brightness(0.48) saturate(0.7) contrast(1.08)",
-          objectPosition: "center 62%",
+          filter: "brightness(0.38) saturate(0.55) contrast(1.12)",
+          objectPosition: "22% 62%",
         }}
         loading="eager"
         decoding="async"
       />
-      {/* Una sola linea di luce, dal fondo verso l'ingresso */}
+      {/* Una sola linea di luce, diffusa e centrale, che valorizza pietra e tavoli */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(55% 45% at 72% 42%, color-mix(in oklab, var(--oro) 20%, transparent) 0%, transparent 62%), linear-gradient(to bottom, color-mix(in oklab, var(--carbone) 92%, transparent) 0%, transparent 35%, color-mix(in oklab, var(--carbone) 94%, transparent) 95%)",
+            "radial-gradient(60% 50% at 45% 45%, color-mix(in oklab, var(--oro) 18%, transparent) 0%, transparent 62%), linear-gradient(to bottom, color-mix(in oklab, var(--carbone) 88%, transparent) 0%, transparent 40%, color-mix(in oklab, var(--carbone) 92%, transparent) 95%)",
         }}
       />
       <div className="relative z-10 w-full px-6 md:px-14 pb-14 md:pb-20 max-w-6xl mx-auto">
@@ -119,13 +120,17 @@ function Apertura() {
           AGRITURISMO — MASSERIA DON GIANVITO
         </div>
         <h1
-          className="font-display leading-[1.02] text-[clamp(2.6rem,7vw,6rem)]"
-          style={{ fontWeight: 300, color: "var(--crema)" }}
+          className="font-display leading-[1.02]"
+          style={{
+            fontSize: "clamp(2.2rem,7vw,6rem)",
+            fontWeight: 300,
+            color: "var(--crema)",
+          }}
           aria-label="Prima degli ospiti, la Masseria aspetta."
         >
           <span>Prima degli ospiti,</span>
-          <br />
-          <em className="italic" style={{ color: "color-mix(in oklab, var(--oro) 90%, var(--crema))" }}>
+          <span aria-hidden="true"> </span>
+          <em className="italic block" style={{ color: "color-mix(in oklab, var(--oro) 90%, var(--crema))" }}>
             la Masseria aspetta.
           </em>
         </h1>
@@ -133,7 +138,7 @@ function Apertura() {
           L'Agriturismo è il luogo in cui la filiera diventa ospitalità: cucina, tavola e braceria
           si incontrano nella stessa esperienza.
         </p>
-        <div className="mt-10 md:mt-14 flex items-center gap-4">
+        <div className="mt-8 md:mt-14 flex items-center gap-4">
           <span className="h-px w-10 bg-[color:var(--oro)]/60" />
           <span className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70">
             ENTRA NELLA SALA
