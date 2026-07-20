@@ -455,14 +455,13 @@ export function MacelleriaStory() {
             style={{
               paddingTop: "calc(var(--page-header-safe-offset, 88px) + 12px)",
               paddingBottom: "clamp(2.5rem, 7vh, 5rem)",
-              paddingRight: "clamp(1.5rem, 30vw, 30vw)",
             }}
           >
             <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.42em] text-[color:var(--marrone)]/80">
               MACELLERIA · A&nbsp;VISTA
             </div>
 
-            <div className="max-w-[15ch] md:max-w-[18ch]">
+            <div className="w-full md:max-w-[70%] lg:max-w-[68%] xl:max-w-[62%]">
               <h1
                 className="font-display leading-[0.9] text-[color:var(--marrone)]"
                 style={{
