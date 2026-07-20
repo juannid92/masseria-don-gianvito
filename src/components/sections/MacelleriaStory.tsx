@@ -332,73 +332,40 @@ export function MacelleriaStory() {
       className="relative w-full"
       style={{ background: "var(--crema)", color: "var(--marrone)" }}
     >
-      {/* ══════════════════════════ I · IL VETRO ══════════════════════════
-          Firma: SPLIT EDITORIALE — sinistra pietra/marmo con titolo inciso,
-          destra vetro con banco appena percepibile. Il timbro è la cerniera
-          tra i due lati. Asset `macel-banco.jpg` usato solo come materia
-          dietro al vetro (nessuna pretesa di documentare il vero banco).
-          ASSET AUTENTICO NECESSARIO: fotografia del banco reale della Masseria. */}
+      {/* ══════════════════════════ I · PIETRA → VETRO → BANCO ══════════════════════════
+          Palcoscenico di pietra continuo, colonna di vetro a destra come
+          feritoia sul banco. Nessuno split competitivo: il titolo respira,
+          il vetro suggerisce senza urlare. Il timbro sigilla in basso. */}
       <section
         data-act="vetro"
-        className="relative h-[170vh] md:h-[190vh]"
+        className="relative h-[150vh] md:h-[180vh]"
         aria-label="La scelta avviene a vista"
       >
-        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden" style={{ background: "#1a1210" }}>
-          {/* Marmo/pietra fondo (tutto il quadro) */}
+        <div
+          className="sticky top-0 h-[100dvh] w-full overflow-hidden"
+          style={{ background: "#1a1210" }}
+        >
+          {/* Fondo pietra caldo — tutta la superficie */}
           <div
             data-marmo
             aria-hidden
             className="absolute inset-0"
             style={{
               background: [
-                "radial-gradient(140% 100% at 20% 20%, #f2e8d5 0%, #d9c8a4 28%, #a48864 55%, #5a4230 82%, #2e2018 100%)",
-                "repeating-linear-gradient(106deg, rgba(255,247,232,0.045) 0 2px, transparent 2px 28px)",
-                "repeating-linear-gradient(74deg, rgba(48,32,22,0.05) 0 1px, transparent 1px 44px)",
+                "radial-gradient(120% 90% at 18% 22%, #f6ecd6 0%, #e2d0a8 32%, #b39770 58%, #6a4e36 84%, #2e2018 100%)",
+                "repeating-linear-gradient(104deg, rgba(255,247,232,0.05) 0 2px, transparent 2px 32px)",
+                "repeating-linear-gradient(72deg, rgba(48,32,22,0.06) 0 1px, transparent 1px 52px)",
               ].join(", "),
               backgroundBlendMode: "normal, overlay, overlay",
             }}
           />
-          {/* Split verticale: metà destra diventa "dietro il vetro" */}
-          <div
-            aria-hidden
-            className="absolute top-0 right-0 h-full w-[52%] md:w-[46%]"
-            style={{
-              backgroundImage: `url(${bancoImg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center 55%",
-              filter: "brightness(0.42) contrast(1.15) saturate(0.4) sepia(0.15)",
-            }}
-          />
-          {/* Velo vetro sopra la metà destra */}
-          <div
-            data-vetro
-            aria-hidden
-            className="absolute top-0 right-0 h-full w-[52%] md:w-[46%] pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(200deg, rgba(242,232,213,0.22) 0%, rgba(26,18,16,0.32) 55%, rgba(26,18,16,0.72) 100%)",
-              backdropFilter: "blur(1.5px)",
-              WebkitBackdropFilter: "blur(1.5px)",
-            }}
-          />
-          {/* Cerniera oro verticale tra i due lati */}
-          <div
-            aria-hidden
-            className="absolute top-[14%] bottom-[14%] w-px pointer-events-none"
-            style={{
-              left: "clamp(50%, 54%, 54%)",
-              background:
-                "linear-gradient(180deg, transparent, color-mix(in oklab, var(--oro) 70%, transparent) 20%, color-mix(in oklab, var(--oro) 70%, transparent) 80%, transparent)",
-              boxShadow: "0 0 14px rgba(197,161,89,0.35)",
-            }}
-          />
-          {/* Luce radente da sinistra sulla pietra */}
+          {/* Luce radente da sinistra */}
           <div
             aria-hidden
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(55% 90% at 0% 30%, rgba(255,240,210,0.22) 0%, transparent 55%)",
+                "radial-gradient(60% 100% at -5% 30%, rgba(255,240,210,0.28) 0%, transparent 55%)",
               mixBlendMode: "screen",
             }}
           />
@@ -408,85 +375,172 @@ export function MacelleriaStory() {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(180deg, transparent 0%, transparent 55%, rgba(26,18,16,0.55) 100%)",
+                "linear-gradient(180deg, transparent 0%, transparent 60%, rgba(26,18,16,0.42) 100%)",
             }}
           />
 
-          {/* LATO SINISTRO — titolo inciso nella pietra */}
+          {/* Colonna di vetro a destra — feritoia sul banco (desktop only) */}
           <div
-            className="absolute inset-y-0 left-0 w-[48%] md:w-[54%] flex flex-col justify-between px-6 md:px-14 pointer-events-none"
-            style={{ paddingTop: "calc(var(--page-header-safe-offset, 88px) + 12px)", paddingBottom: "clamp(2rem, 5vh, 4rem)" }}
+            aria-hidden
+            className="hidden md:block absolute top-0 right-0 h-full w-[26%] lg:w-[22%] overflow-hidden"
           >
-            <div className="font-eyebrow text-[10px] md:text-[11px] text-[color:var(--marrone)]/75 tracking-[0.4em]">
-              MACELLERIA · A VISTA
+            {/* Banco dietro il vetro */}
+            <div
+              data-banco-img
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url(${bancoImg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center 55%",
+                filter: "brightness(0.38) contrast(1.2) saturate(0.35) sepia(0.18)",
+              }}
+            />
+            {/* Velo vetro */}
+            <div
+              data-vetro
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(210deg, rgba(242,232,213,0.28) 0%, rgba(26,18,16,0.42) 50%, rgba(26,18,16,0.85) 100%)",
+                backdropFilter: "blur(2px)",
+                WebkitBackdropFilter: "blur(2px)",
+              }}
+            />
+            {/* Riflesso obliquo sul vetro */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(115deg, transparent 40%, rgba(255,247,232,0.10) 48%, transparent 56%)",
+              }}
+            />
+            {/* Cerniera oro sul bordo sinistro del vetro */}
+            <div
+              className="absolute top-[10%] bottom-[10%] left-0 w-px"
+              style={{
+                background:
+                  "linear-gradient(180deg, transparent, color-mix(in oklab, var(--oro) 80%, transparent) 18%, color-mix(in oklab, var(--oro) 80%, transparent) 82%, transparent)",
+                boxShadow: "0 0 16px rgba(197,161,89,0.4)",
+              }}
+            />
+            {/* Traccia verticale sul vetro */}
+            <div
+              className="absolute right-4 lg:right-6 top-0 h-full flex items-center"
+            >
+              <div
+                className="font-eyebrow text-[10px] lg:text-[11px] tracking-[0.42em] text-[color:var(--crema)]/50"
+                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+              >
+                GUARDA · SCEGLI · SIEDI
+              </div>
             </div>
-            <div>
+          </div>
+
+          {/* Bordo oro orizzontale — sotto l'eyebrow, sotto la navbar */}
+          <div
+            data-bordo-oro
+            aria-hidden
+            className="absolute left-6 md:left-14 h-px origin-left"
+            style={{
+              top: "calc(var(--page-header-safe-offset, 88px) + 40px)",
+              right: "min(30%, 30vw)",
+              background:
+                "linear-gradient(90deg, color-mix(in oklab, var(--oro) 75%, transparent), transparent)",
+            }}
+          />
+
+          {/* CONTENUTO EDITORIALE — colonna sinistra ampia, tutto in pietra */}
+          <div
+            className="absolute inset-0 z-10 flex flex-col justify-between px-6 md:px-14 pointer-events-none"
+            style={{
+              paddingTop: "calc(var(--page-header-safe-offset, 88px) + 12px)",
+              paddingBottom: "clamp(2.5rem, 7vh, 5rem)",
+            }}
+          >
+            <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.42em] text-[color:var(--marrone)]/80">
+              MACELLERIA · A&nbsp;VISTA
+            </div>
+
+            <div className="w-full md:max-w-[70%] lg:max-w-[68%] xl:max-w-[62%]">
               <h1
                 className="font-display leading-[0.9] text-[color:var(--marrone)]"
                 style={{
-                  fontSize: "clamp(2.6rem, 7.4vw, 6.4rem)",
+                  fontSize: "clamp(2.8rem, 8.4vw, 7.2rem)",
                   fontWeight: 300,
-                  letterSpacing: "-0.015em",
-                  textShadow: "0 1px 0 rgba(255,247,232,0.35), 0 6px 24px rgba(26,18,16,0.18)",
+                  letterSpacing: "-0.02em",
+                  textShadow:
+                    "0 1px 0 rgba(255,247,232,0.4), 0 6px 24px rgba(26,18,16,0.18)",
                 }}
                 aria-label="La scelta avviene a vista."
               >
                 <span data-h1-line className="block overflow-hidden">
-                  <span className="inline-block">La scelta</span>
+                  <span className="inline-block">La&nbsp;scelta</span>
                 </span>
                 <span data-h1-line className="block overflow-hidden">
-                  <em className="not-italic" style={{ fontStyle: "italic", color: "color-mix(in oklab, var(--bordeaux) 70%, var(--marrone))" }}>
-                    avviene a vista.
+                  <em
+                    className="inline-block"
+                    style={{
+                      fontStyle: "italic",
+                      color:
+                        "color-mix(in oklab, var(--bordeaux) 78%, var(--marrone))",
+                    }}
+                  >
+                    avviene
+                  </em>
+                </span>
+                <span data-h1-line className="block overflow-hidden">
+                  <em
+                    className="inline-block"
+                    style={{
+                      fontStyle: "italic",
+                      color:
+                        "color-mix(in oklab, var(--bordeaux) 78%, var(--marrone))",
+                    }}
+                  >
+                    a&nbsp;vista.
                   </em>
                 </span>
               </h1>
               <p
                 data-open-testo
-                className="mt-6 md:mt-8 max-w-md text-[color:var(--marrone)]/85 text-[15px] md:text-[17px] leading-relaxed"
+                className="mt-6 md:mt-8 max-w-[36ch] text-[color:var(--marrone)]/90 text-[15px] md:text-[17px] leading-relaxed"
               >
-                Prima di sedersi, si passa dal banco.
+                Prima di sedersi, si passa dal banco. Il taglio si sceglie
+                guardando.
               </p>
             </div>
-          </div>
 
-          {/* LATO DESTRO — traccia scritta sul vetro */}
-          <div
-            className="absolute right-6 md:right-14 top-0 h-full flex items-center pointer-events-none"
-            aria-hidden
-          >
+            {/* Timbro — sigillo in basso a sinistra, sulla pietra */}
             <div
-              className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.4em] text-[color:var(--crema)]/55"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+              data-stamp
+              className="inline-flex flex-col items-start px-4 py-2.5"
+              style={{
+                alignSelf: "flex-start",
+                transform: "rotate(-2deg)",
+                border: "1.5px solid var(--bordeaux)",
+                borderRadius: "2px",
+                background:
+                  "linear-gradient(180deg, color-mix(in oklab, var(--crema) 92%, transparent) 0%, color-mix(in oklab, var(--crema) 84%, transparent) 100%)",
+                boxShadow:
+                  "0 6px 22px rgba(26,18,16,0.28), inset 0 0 8px rgba(110,26,20,0.10)",
+              }}
+              aria-hidden
             >
-              GUARDA · SCEGLI · SIEDI
+              <span
+                className="font-eyebrow text-[9px] tracking-[0.42em]"
+                style={{ color: "var(--bordeaux)" }}
+              >
+                MASSERIA DON GIANVITO
+              </span>
+              <span
+                className="mt-1 font-eyebrow text-[9px] tracking-[0.36em]"
+                style={{
+                  color: "color-mix(in oklab, var(--marrone) 88%, transparent)",
+                }}
+              >
+                NOCI · DAL 2002
+              </span>
             </div>
-          </div>
-
-          {/* Timbro — impresso sulla giunzione, come sigillo */}
-          <div
-            data-stamp
-            className="absolute inline-flex flex-col items-center justify-center px-5 py-3 pointer-events-none"
-            style={{
-              left: "clamp(50%, 54%, 54%)",
-              bottom: "clamp(3rem, 8vh, 6rem)",
-              transform: "translateX(-50%) rotate(-2deg)",
-              border: "1.5px solid var(--bordeaux)",
-              borderRadius: "2px",
-              background:
-                "linear-gradient(180deg, color-mix(in oklab, var(--crema) 94%, transparent) 0%, color-mix(in oklab, var(--crema) 88%, transparent) 100%)",
-              boxShadow: "0 8px 28px rgba(26,18,16,0.5), inset 0 0 8px rgba(110,26,20,0.10)",
-            }}
-            aria-hidden
-          >
-            <span className="font-eyebrow text-[9px] tracking-[0.4em]" style={{ color: "var(--bordeaux)" }}>
-              MASSERIA DON GIANVITO
-            </span>
-            <span
-              className="mt-1 font-eyebrow text-[10px] tracking-[0.32em]"
-              style={{ color: "color-mix(in oklab, var(--marrone) 85%, transparent)" }}
-            >
-              MACELLERIA · A VISTA
-            </span>
           </div>
         </div>
       </section>
