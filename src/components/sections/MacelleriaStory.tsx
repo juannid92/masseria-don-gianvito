@@ -339,14 +339,18 @@ export function MacelleriaStory() {
         aria-label="Davanti al banco"
       >
         <div className="sticky top-0 h-[100dvh] w-full overflow-hidden" style={{ background: "#2a1e18" }}>
-          {/* Marmo/pietra: superficie di base */}
+          {/* Marmo/pietra: superficie di base con venature editoriali */}
           <div
             data-marmo
             aria-hidden
             className="absolute inset-0"
             style={{
-              background:
-                "radial-gradient(120% 80% at 30% 20%, #d9c9a8 0%, #b39a72 35%, #5c3e2c 75%, #2a1e18 100%)",
+              background: [
+                "radial-gradient(140% 90% at 30% 25%, #ece2cd 0%, #cdb995 32%, #8a6f52 62%, #3a2820 90%, #2a1e18 100%)",
+                "repeating-linear-gradient(112deg, rgba(255,247,232,0.05) 0 2px, transparent 2px 22px)",
+                "repeating-linear-gradient(78deg, rgba(48,32,22,0.06) 0 1px, transparent 1px 34px)",
+              ].join(", "),
+              backgroundBlendMode: "normal, overlay, overlay",
             }}
           />
           {/* Foto del banco — usata come materia editoriale, non come prova del luogo reale */}
@@ -357,11 +361,13 @@ export function MacelleriaStory() {
               backgroundImage: `url(${bancoImg})`,
               backgroundSize: "cover",
               backgroundPosition: "center 62%",
-              filter: "brightness(0.65) contrast(1.1) saturate(0.75) sepia(0.08)",
+              filter: "brightness(0.7) contrast(1.05) saturate(0.65) sepia(0.1)",
               mixBlendMode: "multiply",
+              opacity: 0.78,
             }}
             aria-hidden
           />
+
           {/* Vetro: velo che perde opacità con lo scrub */}
           <div
             data-vetro
