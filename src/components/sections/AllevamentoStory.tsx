@@ -106,28 +106,35 @@ export function AllevamentoStory() {
         });
 
         if (title && eye && line) {
-          // il titolo emerge dalla terra, l'occhiello si dissolve
-          gsap.fromTo(
-            title,
-            { y: 70, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
-            {
-              y: 0, autoAlpha: 1, clipPath: "inset(0 0 0% 0)",
-              ease: "power3.out",
-              scrollTrigger: { trigger: act1, start: "top top", end: "55% top", scrub: 0.7 },
-            },
-          );
-          gsap.to(eye, {
-            autoAlpha: 0, y: -20,
-            scrollTrigger: { trigger: act1, start: "top top", end: "25% top", scrub: 0.5 },
+          // Mobile/tablet: titolo sempre visibile a rest, la scrub esiste solo da 900px in su.
+          mm.add("(max-width: 899px)", () => {
+            gsap.set(title, { autoAlpha: 1, y: 0, clipPath: "inset(0 0 0% 0)" });
+            gsap.set(line, { autoAlpha: 0.55, scaleX: 1 });
           });
-          gsap.fromTo(
-            line,
-            { scaleX: 0.15, autoAlpha: 0 },
-            {
-              scaleX: 1, autoAlpha: 0.55,
-              scrollTrigger: { trigger: act1, start: "10% top", end: "60% top", scrub: 0.6 },
-            },
-          );
+          mm.add("(min-width: 900px)", () => {
+            // il titolo emerge dalla terra, l'occhiello si dissolve
+            gsap.fromTo(
+              title,
+              { y: 70, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
+              {
+                y: 0, autoAlpha: 1, clipPath: "inset(0 0 0% 0)",
+                ease: "power3.out",
+                scrollTrigger: { trigger: act1, start: "top top", end: "55% top", scrub: 0.7 },
+              },
+            );
+            gsap.to(eye, {
+              autoAlpha: 0, y: -20,
+              scrollTrigger: { trigger: act1, start: "top top", end: "25% top", scrub: 0.5 },
+            });
+            gsap.fromTo(
+              line,
+              { scaleX: 0.15, autoAlpha: 0 },
+              {
+                scaleX: 1, autoAlpha: 0.55,
+                scrollTrigger: { trigger: act1, start: "10% top", end: "60% top", scrub: 0.6 },
+              },
+            );
+          });
         }
       }
 
