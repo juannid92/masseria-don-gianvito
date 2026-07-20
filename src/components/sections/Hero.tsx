@@ -474,10 +474,11 @@ export function Hero() {
               letterSpacing: "-0.02em",
               fontWeight: 300,
             }}
+            aria-label="Dalla terra alla tavola."
           >
-            Dalla&nbsp;terra
-            <br />
-            <em className="italic">alla&nbsp;tavola.</em>
+            <span>Dalla&nbsp;terra</span>
+            <span aria-hidden="true"> </span>
+            <em className="italic block">alla&nbsp;tavola.</em>
           </h1>
 
           <p

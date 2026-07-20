@@ -106,28 +106,35 @@ export function AllevamentoStory() {
         });
 
         if (title && eye && line) {
-          // il titolo emerge dalla terra, l'occhiello si dissolve
-          gsap.fromTo(
-            title,
-            { y: 70, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
-            {
-              y: 0, autoAlpha: 1, clipPath: "inset(0 0 0% 0)",
-              ease: "power3.out",
-              scrollTrigger: { trigger: act1, start: "top top", end: "55% top", scrub: 0.7 },
-            },
-          );
-          gsap.to(eye, {
-            autoAlpha: 0, y: -20,
-            scrollTrigger: { trigger: act1, start: "top top", end: "25% top", scrub: 0.5 },
+          // Mobile/tablet: titolo sempre visibile a rest, la scrub esiste solo da 900px in su.
+          mm.add("(max-width: 899px)", () => {
+            gsap.set(title, { autoAlpha: 1, y: 0, clipPath: "inset(0 0 0% 0)" });
+            gsap.set(line, { autoAlpha: 0.55, scaleX: 1 });
           });
-          gsap.fromTo(
-            line,
-            { scaleX: 0.15, autoAlpha: 0 },
-            {
-              scaleX: 1, autoAlpha: 0.55,
-              scrollTrigger: { trigger: act1, start: "10% top", end: "60% top", scrub: 0.6 },
-            },
-          );
+          mm.add("(min-width: 900px)", () => {
+            // il titolo emerge dalla terra, l'occhiello si dissolve
+            gsap.fromTo(
+              title,
+              { y: 70, autoAlpha: 0, clipPath: "inset(0 0 100% 0)" },
+              {
+                y: 0, autoAlpha: 1, clipPath: "inset(0 0 0% 0)",
+                ease: "power3.out",
+                scrollTrigger: { trigger: act1, start: "top top", end: "55% top", scrub: 0.7 },
+              },
+            );
+            gsap.to(eye, {
+              autoAlpha: 0, y: -20,
+              scrollTrigger: { trigger: act1, start: "top top", end: "25% top", scrub: 0.5 },
+            });
+            gsap.fromTo(
+              line,
+              { scaleX: 0.15, autoAlpha: 0 },
+              {
+                scaleX: 1, autoAlpha: 0.55,
+                scrollTrigger: { trigger: act1, start: "10% top", end: "60% top", scrub: 0.6 },
+              },
+            );
+          });
         }
       }
 
@@ -350,7 +357,7 @@ export function AllevamentoStory() {
           {/* Occhiello discreto (in alto, non compete con Navbar) */}
           <div
             data-horizon-eye
-            className="absolute inset-x-0 top-[calc(var(--header-offset,88px)+18px)] flex justify-center pointer-events-none"
+            className="absolute inset-x-0 top-[var(--page-header-safe-offset)] flex justify-center pointer-events-none"
           >
             <div className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/60">
               ALLEVAMENTO
@@ -360,29 +367,32 @@ export function AllevamentoStory() {
           {/* Linea d'orizzonte */}
           <div
             data-horizon-line
-            className="absolute inset-x-[6vw] top-[58%] h-px pointer-events-none origin-center"
+            className="absolute inset-x-[6vw] top-[52%] md:top-[58%] h-px pointer-events-none origin-center"
             style={{ background: "linear-gradient(90deg, transparent, var(--oro), transparent)" }}
             aria-hidden
           />
 
-          {/* Titolo che emerge dalla terra */}
-          <div className="absolute inset-x-0 top-[60%] flex justify-center pointer-events-none px-6">
+          {/* Titolo che emerge dalla terra — mobile spinto più in alto per rientrare nel primo viewport */}
+          <div className="absolute inset-x-0 top-[38%] md:top-[60%] flex justify-center pointer-events-none px-6">
             <h1
               data-horizon-title
               className="font-display text-[color:var(--crema)] text-center leading-[0.9]"
               style={{
-                fontSize: "clamp(2.6rem, 9vw, 7.2rem)",
+                fontSize: "clamp(2.4rem, 9vw, 7.2rem)",
                 fontWeight: 300,
                 letterSpacing: "-0.01em",
                 maxWidth: "22ch",
               }}
+              aria-label="Dove il cielo tocca la terra."
             >
-              Dove il cielo<br />tocca la terra.
+              <span>Dove il cielo</span>
+              <span aria-hidden="true"> </span>
+              <span className="block">tocca la terra.</span>
             </h1>
           </div>
 
           {/* Sotto-testo minimo, quasi al bordo inferiore */}
-          <div className="absolute inset-x-0 bottom-[10%] flex justify-center pointer-events-none px-6">
+          <div className="absolute inset-x-0 bottom-[8%] md:bottom-[10%] flex justify-center pointer-events-none px-6">
             <p
               className="text-[color:var(--crema)]/80 text-base md:text-lg italic text-center max-w-md"
               style={{ letterSpacing: "0.005em" }}
@@ -392,6 +402,8 @@ export function AllevamentoStory() {
           </div>
         </div>
       </section>
+
+
 
       {/* ═══════════ Raccordo materiale: la terra si espande ═══════════ */}
       <div

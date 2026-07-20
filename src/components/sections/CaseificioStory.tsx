@@ -482,8 +482,11 @@ export function CaseificioStory() {
                 data-tina-title
                 className="font-display leading-[0.88] text-[color:var(--marrone)]"
                 style={{ fontSize: "clamp(2.6rem, 9vw, 7rem)", fontWeight: 300, letterSpacing: "-0.01em" }}
+                aria-label="Dentro il bianco."
               >
-                Dentro<br/>il bianco.
+                <span>Dentro</span>
+                <span aria-hidden="true"> </span>
+                <span className="block">il bianco.</span>
               </h1>
               <p className="mt-6 max-w-lg text-[color:var(--marrone)]/80 text-base md:text-lg leading-relaxed">
                 Ogni mattina il latte lascia l'allevamento e comincia una nuova trasformazione.

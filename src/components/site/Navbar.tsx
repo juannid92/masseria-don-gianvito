@@ -223,7 +223,8 @@ export function Navbar() {
         "fixed inset-x-0 top-0 z-50 transition-[background,border-color] duration-500",
         scrolled
           ? "border-b border-white/10 bg-[color:var(--carbone)]/90 backdrop-blur-sm"
-          : "border-b border-transparent bg-transparent",
+          // Scrim CSS statico: garantisce contrasto su aperture chiare (Allevamento) senza barra piena.
+          : "border-b border-transparent bg-gradient-to-b from-black/28 via-black/10 to-transparent",
       ].join(" ")}
     >
       <nav
