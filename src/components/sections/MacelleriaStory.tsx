@@ -469,6 +469,7 @@ export function MacelleriaStory() {
 
           {/* CONTENUTO EDITORIALE — colonna sinistra ampia, tutto in pietra */}
           <div
+            data-editorial
             className="absolute inset-0 z-10 flex flex-col justify-between px-6 md:px-14 pointer-events-none"
             style={{
               paddingTop: "calc(var(--page-header-safe-offset, 88px) + 12px)",
