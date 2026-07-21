@@ -391,8 +391,18 @@ function SalaAccende({ reduced }: { reduced: boolean }) {
         }}
       />
       <div className="absolute inset-0 bg-[color:var(--carbone)]/40" aria-hidden />
+      {/* Continuità dalla Hero: banda scura in alto che sfuma in luce calda */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 pointer-events-none z-[1]"
+        style={{
+          height: "26%",
+          background:
+            "linear-gradient(180deg, var(--carbone) 0%, color-mix(in oklab, var(--carbone) 85%, transparent) 45%, transparent 100%), radial-gradient(80% 100% at 78% 0%, color-mix(in oklab, var(--oro) 22%, transparent) 0%, transparent 70%)",
+        }}
+      />
       <div className="relative z-10 h-full min-h-[100dvh] px-6 md:px-14 py-24 md:py-28 max-w-6xl mx-auto flex flex-col justify-between">
-        <div className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70">01 — L'ATTESA</div>
+        <div className="font-eyebrow text-[11px] tracking-[0.35em] opacity-70" style={{ color: "color-mix(in oklab, var(--oro) 75%, var(--crema))" }}>01 — L'ATTESA</div>
         <div>
           <h2
             className="font-display leading-[1.02] text-[clamp(2.2rem,6vw,5rem)]"
