@@ -109,12 +109,29 @@ export function MacelleriaStory() {
       const stamp = root.querySelector<HTMLElement>("[data-stamp]");
 
       if (open) {
+        // Intro one-shot: marmo entra, banco emerge dietro il vetro, il vetro si vela.
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: open, start: "top top", end: "bottom top", scrub: 0.6 },
+          scrollTrigger: { trigger: open, start: "top 80%", once: true },
+          defaults: { ease: "power2.out" },
         });
-        if (marmo) tl.fromTo(marmo, { autoAlpha: 0.4, scale: 1.05 }, { autoAlpha: 1, scale: 1 }, 0);
-        if (banco) tl.fromTo(banco, { autoAlpha: 0, scale: 1.15, filter: "blur(14px)" }, { autoAlpha: 0.9, scale: 1.04, filter: "blur(0px)" }, 0.15);
-        if (vetro) tl.fromTo(vetro, { autoAlpha: 1 }, { autoAlpha: 0.35 }, 0.35);
+        if (marmo) tl.fromTo(marmo, { autoAlpha: 0.4, scale: 1.05 }, { autoAlpha: 1, scale: 1, duration: 1.6 }, 0);
+        if (banco) tl.fromTo(banco, { autoAlpha: 0, scale: 1.15, filter: "blur(14px)" }, { autoAlpha: 0.9, scale: 1.04, filter: "blur(0px)", duration: 1.8 }, 0.2);
+        if (vetro) tl.fromTo(vetro, { autoAlpha: 1 }, { autoAlpha: 0.4, duration: 1.4 }, 0.5);
+
+        // Handoff scrub: negli ultimi 30% dello scroll dell'hero, il fondo
+        // del banco si scurisce, i testi si alleggeriscono, e la banda di
+        // raccordo (linea oro + "GUARDA") entra a legare il Rito.
+        const handoff = root.querySelector<HTMLElement>("[data-handoff]");
+        const handoffContent = root.querySelector<HTMLElement>("[data-handoff-content]");
+        const scrim = root.querySelector<HTMLElement>("[data-hero-scrim]");
+        const editorial = root.querySelector<HTMLElement>("[data-editorial]");
+        gsap.timeline({
+          scrollTrigger: { trigger: open, start: "top top", end: "bottom bottom", scrub: 0.5 },
+        })
+          .fromTo(scrim, { autoAlpha: 0 }, { autoAlpha: 1 }, 0)
+          .fromTo(editorial, { autoAlpha: 1, y: 0 }, { autoAlpha: 0.35, y: -24 }, 0)
+          .fromTo(handoff, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.15)
+          .fromTo(handoffContent, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1 }, 0.35);
       }
 
       if (bordoLine) {
