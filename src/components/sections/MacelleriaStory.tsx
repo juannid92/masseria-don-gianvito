@@ -561,8 +561,61 @@ export function MacelleriaStory() {
               </span>
             </div>
           </div>
+
+          {/* SCRIM di handoff — pietra → carbone morbido: si accende con lo scrub */}
+          <div
+            data-hero-scrim
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-20"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 0%, transparent 45%, rgba(26,18,16,0.55) 78%, #2a1e18 100%)",
+            }}
+          />
+
+          {/* BANDA DI HANDOFF — la linea oro del banco continua verso il basso
+              e introduce la parola GUARDA del Rito. Vive dentro il sticky, quindi
+              nessun fondo crema è mai visibile tra le due sezioni. */}
+          <div
+            data-handoff
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-30 px-6 md:px-14 pb-8 md:pb-10"
+          >
+            <div className="mx-auto max-w-6xl">
+              <div
+                aria-hidden
+                className="h-px w-full origin-left"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 90%, transparent) 15%, color-mix(in oklab, var(--oro) 90%, transparent) 85%, transparent)",
+                  boxShadow: "0 0 18px rgba(197,161,89,0.35)",
+                }}
+              />
+              <div
+                data-handoff-content
+                className="mt-4 flex items-baseline justify-between gap-6"
+              >
+                <span
+                  className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.42em]"
+                  style={{ color: "color-mix(in oklab, var(--crema) 78%, transparent)" }}
+                >
+                  IL RITO
+                </span>
+                <span
+                  className="font-display italic text-[color:var(--crema)]"
+                  style={{
+                    fontSize: "clamp(1.2rem, 2.4vw, 2rem)",
+                    fontWeight: 300,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  guarda&nbsp;·&nbsp;scegli&nbsp;·&nbsp;siedi
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
+
 
 
       {/* ══════════════════════════ II · IL RITO ══════════════════════════ */}
