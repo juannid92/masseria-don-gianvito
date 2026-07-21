@@ -109,12 +109,29 @@ export function MacelleriaStory() {
       const stamp = root.querySelector<HTMLElement>("[data-stamp]");
 
       if (open) {
+        // Intro one-shot: marmo entra, banco emerge dietro il vetro, il vetro si vela.
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: open, start: "top top", end: "bottom top", scrub: 0.6 },
+          scrollTrigger: { trigger: open, start: "top 80%", once: true },
+          defaults: { ease: "power2.out" },
         });
-        if (marmo) tl.fromTo(marmo, { autoAlpha: 0.4, scale: 1.05 }, { autoAlpha: 1, scale: 1 }, 0);
-        if (banco) tl.fromTo(banco, { autoAlpha: 0, scale: 1.15, filter: "blur(14px)" }, { autoAlpha: 0.9, scale: 1.04, filter: "blur(0px)" }, 0.15);
-        if (vetro) tl.fromTo(vetro, { autoAlpha: 1 }, { autoAlpha: 0.35 }, 0.35);
+        if (marmo) tl.fromTo(marmo, { autoAlpha: 0.4, scale: 1.05 }, { autoAlpha: 1, scale: 1, duration: 1.6 }, 0);
+        if (banco) tl.fromTo(banco, { autoAlpha: 0, scale: 1.15, filter: "blur(14px)" }, { autoAlpha: 0.9, scale: 1.04, filter: "blur(0px)", duration: 1.8 }, 0.2);
+        if (vetro) tl.fromTo(vetro, { autoAlpha: 1 }, { autoAlpha: 0.4, duration: 1.4 }, 0.5);
+
+        // Handoff scrub: negli ultimi 30% dello scroll dell'hero, il fondo
+        // del banco si scurisce, i testi si alleggeriscono, e la banda di
+        // raccordo (linea oro + "GUARDA") entra a legare il Rito.
+        const handoff = root.querySelector<HTMLElement>("[data-handoff]");
+        const handoffContent = root.querySelector<HTMLElement>("[data-handoff-content]");
+        const scrim = root.querySelector<HTMLElement>("[data-hero-scrim]");
+        const editorial = root.querySelector<HTMLElement>("[data-editorial]");
+        gsap.timeline({
+          scrollTrigger: { trigger: open, start: "top top", end: "bottom bottom", scrub: 0.5 },
+        })
+          .fromTo(scrim, { autoAlpha: 0 }, { autoAlpha: 1 }, 0)
+          .fromTo(editorial, { autoAlpha: 1, y: 0 }, { autoAlpha: 0.35, y: -24 }, 0)
+          .fromTo(handoff, { autoAlpha: 0 }, { autoAlpha: 1 }, 0.15)
+          .fromTo(handoffContent, { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1 }, 0.35);
       }
 
       if (bordoLine) {
@@ -330,15 +347,16 @@ export function MacelleriaStory() {
     <div
       ref={rootRef}
       className="relative w-full"
-      style={{ background: "var(--crema)", color: "var(--marrone)" }}
+      style={{ background: "#1a1210", color: "var(--marrone)" }}
     >
       {/* ══════════════════════════ I · PIETRA → VETRO → BANCO ══════════════════════════
           Palcoscenico di pietra continuo, colonna di vetro a destra come
-          feritoia sul banco. Nessuno split competitivo: il titolo respira,
-          il vetro suggerisce senza urlare. Il timbro sigilla in basso. */}
+          feritoia sul banco. Wrapper 130dvh: 100dvh di scena + 30dvh di
+          handoff scrub che porta il visitatore direttamente dentro il Rito
+          (senza mostrare fondo crema nudo). */}
       <section
         data-act="vetro"
-        className="relative h-[150vh] md:h-[180vh]"
+        className="relative h-[130dvh]"
         aria-label="La scelta avviene a vista"
       >
         <div
@@ -451,6 +469,7 @@ export function MacelleriaStory() {
 
           {/* CONTENUTO EDITORIALE — colonna sinistra ampia, tutto in pietra */}
           <div
+            data-editorial
             className="absolute inset-0 z-10 flex flex-col justify-between px-6 md:px-14 pointer-events-none"
             style={{
               paddingTop: "calc(var(--page-header-safe-offset, 88px) + 12px)",
@@ -542,8 +561,61 @@ export function MacelleriaStory() {
               </span>
             </div>
           </div>
+
+          {/* SCRIM di handoff — pietra → carbone morbido: si accende con lo scrub */}
+          <div
+            data-hero-scrim
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-20"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 0%, transparent 45%, rgba(26,18,16,0.55) 78%, #2a1e18 100%)",
+            }}
+          />
+
+          {/* BANDA DI HANDOFF — la linea oro del banco continua verso il basso
+              e introduce la parola GUARDA del Rito. Vive dentro il sticky, quindi
+              nessun fondo crema è mai visibile tra le due sezioni. */}
+          <div
+            data-handoff
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-30 px-6 md:px-14 pb-8 md:pb-10"
+          >
+            <div className="mx-auto max-w-6xl">
+              <div
+                aria-hidden
+                className="h-px w-full origin-left"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 90%, transparent) 15%, color-mix(in oklab, var(--oro) 90%, transparent) 85%, transparent)",
+                  boxShadow: "0 0 18px rgba(197,161,89,0.35)",
+                }}
+              />
+              <div
+                data-handoff-content
+                className="mt-4 flex items-baseline justify-between gap-6"
+              >
+                <span
+                  className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.42em]"
+                  style={{ color: "color-mix(in oklab, var(--crema) 78%, transparent)" }}
+                >
+                  IL RITO
+                </span>
+                <span
+                  className="font-display italic text-[color:var(--crema)]"
+                  style={{
+                    fontSize: "clamp(1.2rem, 2.4vw, 2rem)",
+                    fontWeight: 300,
+                    letterSpacing: "-0.01em",
+                  }}
+                >
+                  guarda&nbsp;·&nbsp;scegli&nbsp;·&nbsp;siedi
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
+
 
 
       {/* ══════════════════════════ II · IL RITO ══════════════════════════ */}
