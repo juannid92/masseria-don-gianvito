@@ -347,15 +347,16 @@ export function MacelleriaStory() {
     <div
       ref={rootRef}
       className="relative w-full"
-      style={{ background: "var(--crema)", color: "var(--marrone)" }}
+      style={{ background: "#1a1210", color: "var(--marrone)" }}
     >
       {/* ══════════════════════════ I · PIETRA → VETRO → BANCO ══════════════════════════
           Palcoscenico di pietra continuo, colonna di vetro a destra come
-          feritoia sul banco. Nessuno split competitivo: il titolo respira,
-          il vetro suggerisce senza urlare. Il timbro sigilla in basso. */}
+          feritoia sul banco. Wrapper 130dvh: 100dvh di scena + 30dvh di
+          handoff scrub che porta il visitatore direttamente dentro il Rito
+          (senza mostrare fondo crema nudo). */}
       <section
         data-act="vetro"
-        className="relative h-[150vh] md:h-[180vh]"
+        className="relative h-[130dvh]"
         aria-label="La scelta avviene a vista"
       >
         <div
