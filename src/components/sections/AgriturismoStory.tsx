@@ -79,127 +79,230 @@ export function AgriturismoStory() {
   );
 }
 
-/* ─────────────────── 00. APERTURA — LA CASA VUOTA ───────────────────
- * NOTE INTERNA — Asset `brace-sala.jpg` è probabile stock/AI.
- * Sostituire con fotografia autentica della sala dell'Agriturismo.
- * Fino ad allora: crop architettonico stretto, brightness bassa, nessuna
- * enfasi su elementi che sembrano generati.
+/* ─────────────────── 00. APERTURA — BUIO → LUCE → OSPITALITÀ ───────────────────
+ * Nessuna fotografia della sala: atmosfera costruita in CSS.
+ * Pietra, tavola e profondità emergono progressivamente da un fascio di luce
+ * caldo che entra da destra. Il braciere non è mai il soggetto.
  * ─────────────────────────────────────────────────────────────────────── */
 function Apertura() {
-  /* Firma: LA MASSERIA SI ACCENDE — architettura in profondità, luce lontana, nessun fuoco al centro.
-     Asset attuale `brace-sala.jpg` è probabile AI/stock: usato solo come velo materico
-     con crop estremo a sinistra + doppia maschera per escludere il braciere dal quadro.
-     ASSET AUTENTICO NECESSARIO: interno reale della sala vuota. */
+  const rootRef = useRef<HTMLElement | null>(null);
+  const luceRef = useRef<HTMLDivElement | null>(null);
+  const pietraRef = useRef<HTMLDivElement | null>(null);
+  const tavoloRef = useRef<HTMLDivElement | null>(null);
+  const polvereRef = useRef<HTMLDivElement | null>(null);
+  const reduced = useReducedMotion();
+
+  useLayoutEffect(() => {
+    if (reduced || !rootRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const ctx = gsap.context(() => {
+      // Ingresso: buio → luce → tavola (una sola volta, all'apertura)
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      gsap.set(luceRef.current, { opacity: 0 });
+      gsap.set(pietraRef.current, { opacity: 0 });
+      gsap.set(tavoloRef.current, { opacity: 0, y: 24 });
+      gsap.set(polvereRef.current, { opacity: 0 });
+      tl.to(luceRef.current, { opacity: 1, duration: 2.4 }, 0.2)
+        .to(pietraRef.current, { opacity: 1, duration: 1.8 }, 0.9)
+        .to(tavoloRef.current, { opacity: 1, y: 0, duration: 1.6 }, 1.4)
+        .to(polvereRef.current, { opacity: 1, duration: 1.4 }, 1.8);
+
+      // Scrub sottile: appena scrolli, la luce si allarga e la sala respira
+      gsap.to(luceRef.current, {
+        scale: 1.08,
+        ease: "none",
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.8,
+        },
+      });
+    }, rootRef);
+    return () => ctx.revert();
+  }, [reduced]);
+
   return (
     <section
-      aria-label="Apertura — la Masseria si accende"
+      ref={rootRef}
+      aria-label="Apertura — la Masseria aspetta"
       className="relative min-h-[100dvh] w-full overflow-hidden"
-      style={{ background: "var(--carbone)" }}
+      style={{ background: "#0a0605" }}
     >
-      {/* Base: pietra scura costruita in CSS, indipendente dalla foto */}
+      {/* L0 — BUIO: pietra profondissima, con venature appena percettibili */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background: [
-            "radial-gradient(120% 80% at 15% 100%, #2b1f18 0%, #1a1210 55%, #0d0906 100%)",
-            "repeating-linear-gradient(94deg, rgba(255,240,210,0.018) 0 1px, transparent 1px 6px)",
+            "radial-gradient(140% 100% at 18% 100%, #1c130f 0%, #100a08 55%, #060302 100%)",
+            "repeating-linear-gradient(92deg, rgba(255,236,205,0.014) 0 1px, transparent 1px 7px)",
           ].join(", "),
         }}
       />
-      {/* Foto come texture, ridotta e mascherata a destra per suggerire profondità di sala */}
-      <img
-        src={salaImg}
-        alt=""
-        aria-hidden
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{
-          filter: "brightness(0.32) saturate(0.45) contrast(1.05) hue-rotate(-6deg)",
-          objectPosition: "8% 68%",
-          opacity: 0.55,
-          maskImage:
-            "linear-gradient(90deg, transparent 0%, #000 22%, #000 62%, transparent 92%)",
-          WebkitMaskImage:
-            "linear-gradient(90deg, transparent 0%, #000 22%, #000 62%, transparent 92%)",
-        }}
-        loading="eager"
-        decoding="async"
-      />
-      {/* La luce lontana: piccola, in fondo a destra, come una porta socchiusa */}
+
+      {/* L1 — LUCE: fascio caldo che entra da destra, dietro una soglia invisibile */}
       <div
+        ref={luceRef}
         aria-hidden
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none will-change-transform"
         style={{
-          background:
-            "radial-gradient(22% 30% at 78% 58%, color-mix(in oklab, var(--oro) 24%, transparent) 0%, transparent 70%)",
-        }}
-      />
-      {/* Vignettatura per proteggere il testo */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 70%, transparent) 0%, transparent 30%, transparent 55%, color-mix(in oklab, var(--carbone) 92%, transparent) 100%)",
-        }}
-      />
-      {/* Linea oro orizzontale — soglia della sala */}
-      <div
-        aria-hidden
-        className="absolute left-[6%] right-[6%] top-[64%] h-px pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 55%, transparent) 30%, color-mix(in oklab, var(--oro) 55%, transparent) 70%, transparent)",
+          opacity: reduced ? 1 : undefined,
+          background: [
+            // fascio principale (porta socchiusa in fondo a destra)
+            "radial-gradient(38% 55% at 82% 46%, color-mix(in oklab, var(--oro) 42%, transparent) 0%, color-mix(in oklab, var(--oro) 14%, transparent) 40%, transparent 72%)",
+            // rimbalzo caldo sulla parete
+            "radial-gradient(70% 60% at 60% 62%, color-mix(in oklab, var(--terracotta) 16%, transparent) 0%, transparent 68%)",
+            // ambient crema tenuissimo
+            "radial-gradient(90% 70% at 45% 40%, color-mix(in oklab, var(--crema) 5%, transparent) 0%, transparent 70%)",
+          ].join(", "),
+          transformOrigin: "82% 46%",
         }}
       />
 
+      {/* L2 — PIETRA: parete/pavimento suggeriti da una banda orizzontale */}
+      <div
+        ref={pietraRef}
+        aria-hidden
+        className="absolute inset-x-0 pointer-events-none"
+        style={{
+          opacity: reduced ? 1 : undefined,
+          top: "58%",
+          bottom: 0,
+          background: [
+            "linear-gradient(180deg, transparent 0%, rgba(58,38,26,0.28) 30%, rgba(38,24,16,0.55) 100%)",
+            "repeating-linear-gradient(90deg, rgba(0,0,0,0.10) 0 2px, transparent 2px 140px)",
+          ].join(", "),
+        }}
+      />
+
+      {/* Soglia di luce — sottile linea oro che separa il buio dalla sala */}
+      <div
+        aria-hidden
+        className="absolute left-0 right-0 pointer-events-none"
+        style={{
+          top: "58%",
+          height: "1px",
+          background:
+            "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro) 60%, transparent) 40%, color-mix(in oklab, var(--oro) 80%, transparent) 78%, transparent 100%)",
+          boxShadow:
+            "0 0 24px color-mix(in oklab, var(--oro) 35%, transparent)",
+        }}
+      />
+
+      {/* L3 — TAVOLO: bordo di un piano apparecchiato che affiora dal basso a destra */}
+      <div
+        ref={tavoloRef}
+        aria-hidden
+        className="absolute pointer-events-none hidden md:block"
+        style={{
+          opacity: reduced ? 1 : undefined,
+          right: "-6%",
+          bottom: "-4%",
+          width: "62%",
+          height: "34%",
+          transform: "perspective(900px) rotateX(58deg)",
+          transformOrigin: "50% 100%",
+          background: [
+            "linear-gradient(180deg, color-mix(in oklab, var(--crema) 22%, transparent) 0%, color-mix(in oklab, var(--crema) 6%, transparent) 45%, transparent 100%)",
+            "radial-gradient(60% 80% at 40% 0%, color-mix(in oklab, var(--oro) 20%, transparent) 0%, transparent 60%)",
+          ].join(", "),
+          borderTop: "1px solid color-mix(in oklab, var(--crema) 30%, transparent)",
+          filter: "blur(0.4px)",
+          maskImage:
+            "linear-gradient(180deg, #000 0%, #000 60%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(180deg, #000 0%, #000 60%, transparent 100%)",
+        }}
+      />
+
+      {/* L4 — POLVERE nella luce (statica, molto discreta) */}
+      <div
+        ref={polvereRef}
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: reduced ? 0.5 : undefined,
+          background:
+            "radial-gradient(1.5px 1.5px at 72% 38%, rgba(255,232,190,0.55), transparent 60%), radial-gradient(1px 1px at 78% 44%, rgba(255,232,190,0.4), transparent 60%), radial-gradient(1px 1px at 68% 52%, rgba(255,232,190,0.35), transparent 60%), radial-gradient(1.5px 1.5px at 84% 50%, rgba(255,232,190,0.4), transparent 60%), radial-gradient(1px 1px at 88% 40%, rgba(255,232,190,0.3), transparent 60%)",
+          mixBlendMode: "screen",
+        }}
+      />
+
+      {/* Vignettatura di protezione testo */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, color-mix(in oklab, #0a0605 78%, transparent) 0%, transparent 22%, transparent 55%, color-mix(in oklab, #0a0605 92%, transparent) 100%), linear-gradient(90deg, color-mix(in oklab, #0a0605 55%, transparent) 0%, transparent 42%)",
+        }}
+      />
+
+      {/* ── Contenuto editoriale ── */}
       <div
         className="relative z-10 min-h-[100dvh] w-full flex flex-col justify-between px-6 md:px-14 max-w-6xl mx-auto"
-        style={{ paddingTop: "calc(var(--page-header-safe-offset, 88px) + 16px)", paddingBottom: "clamp(2rem, 5vh, 4rem)" }}
+        style={{
+          paddingTop: "calc(var(--page-header-safe-offset, 88px) + 16px)",
+          paddingBottom: "clamp(2rem, 5vh, 4rem)",
+        }}
       >
-        <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.4em] text-[color:var(--crema)]/60">
+        <div className="font-eyebrow text-[10px] md:text-[11px] tracking-[0.4em] text-[color:var(--crema)]/65">
           AGRITURISMO · MASSERIA DON GIANVITO
         </div>
 
-        <div className="mt-auto pt-16 md:pt-24">
+        <div className="mt-auto pt-12 md:pt-20 max-w-[62ch]">
+          <p
+            className="font-eyebrow text-[9px] md:text-[10px] tracking-[0.5em]"
+            style={{ color: "color-mix(in oklab, var(--oro) 80%, var(--crema))" }}
+          >
+            BUIO · LUCE · OSPITALITÀ
+          </p>
           <h1
-            className="font-display leading-[0.98] text-[color:var(--crema)]"
+            className="font-display leading-[0.98] text-[color:var(--crema)] mt-4 md:mt-5"
             style={{
-              fontSize: "clamp(2.4rem, 8.4vw, 6.6rem)",
+              fontSize: "clamp(2.2rem, 7.4vw, 6.2rem)",
               fontWeight: 300,
               letterSpacing: "-0.015em",
-              maxWidth: "18ch",
             }}
             aria-label="Prima degli ospiti, la Masseria aspetta."
           >
             <span className="block">Prima degli ospiti,</span>
-            <em
-              className="not-italic block"
+            <span
+              className="block"
               style={{
                 color: "color-mix(in oklab, var(--oro) 88%, var(--crema))",
                 fontStyle: "italic",
               }}
             >
               la Masseria aspetta.
-            </em>
+            </span>
           </h1>
-          <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-[17px] leading-relaxed text-[color:var(--crema)]/80">
-            Cucina, tavola e braceria si incontrano nell'ospitalità della Masseria.
+          <p className="mt-6 md:mt-8 max-w-xl text-[15px] md:text-[17px] leading-relaxed text-[color:var(--crema)]/82">
+            Poi si accendono le lampade, si aprono le porte,
+            <span className="hidden md:inline"> </span>
+            <span className="block md:inline">
+              e la sala prende posto attorno alla tavola.
+            </span>
           </p>
           <div className="mt-8 md:mt-12 flex flex-wrap items-center gap-x-5 gap-y-4">
             <a
               href="#attesa"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("attesa")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                document
+                  .getElementById("attesa")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
               className="group inline-flex items-center gap-3 px-6 py-3 border border-[color:var(--oro)]/60 rounded-full text-[11px] font-eyebrow tracking-[0.32em] text-[color:var(--crema)] transition-colors hover:bg-[color:var(--oro)]/12 hover:border-[color:var(--oro)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[color:var(--oro)]"
             >
               ENTRA NELL'AGRITURISMO
-              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
             </a>
             <span className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--crema)]/45">
-              LA SALA · LA TAVOLA · LA BRACERIA
+              LA SALA · LA TAVOLA · IL SERVIZIO
             </span>
           </div>
         </div>
