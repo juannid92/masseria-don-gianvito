@@ -229,15 +229,41 @@ function Apertura() {
         }}
       />
 
-      {/* Vignettatura di protezione testo */}
+      {/* Vignettatura di protezione testo — bottom fonde in var(--carbone) (bg Attesa) */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, color-mix(in oklab, #0a0605 78%, transparent) 0%, transparent 22%, transparent 55%, color-mix(in oklab, #0a0605 92%, transparent) 100%), linear-gradient(90deg, color-mix(in oklab, #0a0605 55%, transparent) 0%, transparent 42%)",
+            "linear-gradient(180deg, color-mix(in oklab, #0a0605 78%, transparent) 0%, transparent 22%, transparent 48%, color-mix(in oklab, var(--carbone) 55%, transparent) 82%, var(--carbone) 100%), linear-gradient(90deg, color-mix(in oklab, #0a0605 55%, transparent) 0%, transparent 42%)",
         }}
       />
+
+      {/* HANDOFF — luce sul tavolo che si estende verso l'Attesa */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 pointer-events-none z-[5]"
+        style={{
+          height: "22%",
+          background:
+            "radial-gradient(120% 90% at 78% 100%, color-mix(in oklab, var(--oro) 20%, transparent) 0%, color-mix(in oklab, var(--oro) 6%, transparent) 40%, transparent 72%)",
+          mixBlendMode: "screen",
+        }}
+      />
+      {/* Cue "01 — L'ATTESA" — appare nell'ultimo tratto della Hero, a destra */}
+      <div
+        aria-hidden
+        className="absolute bottom-5 md:bottom-7 right-6 md:right-14 z-[6] pointer-events-none flex items-center gap-3"
+        style={{
+          color: "color-mix(in oklab, var(--oro) 75%, var(--crema))",
+        }}
+      >
+        <span className="font-eyebrow text-[9px] md:text-[10px] tracking-[0.5em] opacity-80">
+          01 — L'ATTESA
+        </span>
+        <span aria-hidden className="block h-px w-10 md:w-16" style={{ background: "currentColor", opacity: 0.55 }} />
+        <span aria-hidden className="text-[11px] opacity-70">↓</span>
+      </div>
 
       {/* ── Contenuto editoriale ── */}
       <div
