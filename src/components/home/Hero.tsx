@@ -19,7 +19,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  * reali della fotografia aerea. Nessun puntino, nessuna etichetta da hover.
  */
 
-type Tier = "desktop" | "tablet" | "mobile";
+type Tier = "desktop" | "tablet" | "mobile" | "short";
 
 /** Fascia di viewport: SSR-safe, un solo listener di resize. */
 function useTier(): Tier {
@@ -27,7 +27,9 @@ function useTier(): Tier {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      setTier(w < 768 ? "mobile" : w < 1100 ? "tablet" : "desktop");
+      const h = window.innerHeight;
+      if (h < 520 && w >= 640) setTier("short");
+      else setTier(w < 768 ? "mobile" : w < 1100 ? "tablet" : "desktop");
     };
     update();
     window.addEventListener("resize", update, { passive: true });
@@ -50,7 +52,7 @@ function useIsTouch(): boolean {
 }
 
 const coordOf = (pin: PinAnima, tier: Tier): PinCoord =>
-  tier === "mobile" ? pin.m : tier === "tablet" ? pin.t : pin.d;
+  tier === "mobile" ? pin.m : tier === "short" ? pin.s : tier === "tablet" ? pin.t : pin.d;
 
 export function Hero() {
   const reduced = useReducedMotion();
@@ -357,8 +359,8 @@ function PinTarga({
   const y = useTransform(sy, (v) => v * -5 * pin.profondita);
   const coord = coordOf(pin, tier);
   const { dx, dy } = coord.off;
-  const compatta = tier === "mobile";
-  const larghezza = tier === "desktop" ? 244 : tier === "tablet" ? 208 : 152;
+  const compatta = tier === "mobile" || tier === "short";
+  const larghezza = tier === "desktop" ? 244 : tier === "tablet" ? 208 : 156;
   const verso: "right" | "left" = dx >= 0 ? "right" : "left";
   // Stato del pin PRIMA del tocco: il focus da touch non vale come "già aperto".
   const eraAttivo = useRef(false);
