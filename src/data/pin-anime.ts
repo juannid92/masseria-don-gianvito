@@ -30,7 +30,7 @@ export const PIN_ANIME: PinAnima[] = [
     invito: "Scendi nei campi",
     to: "/allevamento",
     d: { x: 68, y: 30 },
-    m: { x: 66, y: 24 },
+    m: { x: 64, y: 31 },
     lato: "left",
     tinta: "var(--oliva)",
     profondita: 0.5,
