@@ -157,37 +157,16 @@ export function LaStoria() {
             if (inner) gsap.set(inner, { x: x * 0.08 });
           });
         });
-
-
-        // Parallasse multilivello, derivato dalla stessa distanza.
-        if (fondo)
-          tl.fromTo(
-            fondo,
-            { x: 0, scale: 1.05 },
-            { x: () => -dist * 0.84, scale: 1, duration: 1 },
-            0,
-          );
-        if (grana) tl.fromTo(grana, { x: 0 }, { x: () => -dist * 0.96, duration: 1 }, 0);
+        // Luce che ruota (opacità) e attenuazione del titolo dell'atto.
         if (luce)
-          tl.fromTo(
+          tl.fromTo(luce, { opacity: 0.3 }, { opacity: 0.6, duration: 0.4 }, 0.14).to(
             luce,
-            { x: 0, opacity: 0.3 },
-            { x: () => dist * 0.12, opacity: 0.35, duration: 1 },
-            0,
-          ).to(luce, { opacity: 0.6, duration: 0.4 }, 0.2);
-        if (titolo)
-          tl.fromTo(
-            titolo,
-            { x: 0, y: 0, opacity: 1 },
-            { x: () => -dist * 0.4, duration: 1 },
-            0,
-          ).to(titolo, { opacity: 0.25, y: -28, duration: 0.06 }, "attenua");
+            { opacity: 0.35, duration: 0.3 },
+            0.66,
+          );
+        if (titolo) tl.to(titolo, { opacity: 0.25, y: -28, duration: 0.06 }, "attenua");
 
-        // Testi interni: 108% del track (leggera profondità).
-        MOMENTI.forEach((m) => {
-          const testo = root.querySelector<HTMLElement>(`[data-moment='${m.id}'] [data-inner]`);
-          if (testo) tl.fromTo(testo, { x: 0 }, { x: () => -dist * 0.08, duration: 1 }, 0);
-        });
+
 
         // Indicatore di progresso.
         dots.forEach((dot, i) => {
