@@ -317,13 +317,13 @@ export function LaStoria() {
           className="relative z-10 flex w-full flex-col [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-max [@media(min-width:900px)]:flex-row [@media(min-width:900px)]:items-center [@media(min-width:900px)]:will-change-transform"
         >
           {/* Spazio d'apertura: il titolo dell'atto occupa la prima schermata */}
-          <div aria-hidden className="hidden [@media(min-width:900px)]:block [@media(min-width:900px)]:w-[92vw]" />
+          <div aria-hidden className="hidden [@media(min-width:900px)]:block [@media(min-width:900px)]:w-screen" />
 
           {MOMENTI.map((m) => (
             <article
               key={m.id}
               data-moment={m.id}
-              className="relative flex min-h-[100dvh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-[78vw]"
+              className="relative flex min-h-[100dvh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-screen"
             >
               {/* Luce propria del momento */}
               <div
@@ -359,7 +359,7 @@ export function LaStoria() {
           ))}
 
           {/* Chiusura dell'atto */}
-          <div className="relative flex min-h-[70dvh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-[62vw]">
+          <div className="relative flex min-h-[70dvh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-[80vw]">
             <div className="relative z-10 mx-auto w-full max-w-[1600px] px-10 md:px-20">
               <p
                 data-chiusura
