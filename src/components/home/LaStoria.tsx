@@ -86,9 +86,21 @@ export function LaStoria() {
         const occhiello03 = root.querySelector<HTMLElement>("[data-occhiello-03]");
         const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-dot]"));
 
-        // Distanza derivata dal DOM reale — mai hardcoded.
+        // Distanza e fermate derivate dal DOM reale — mai valori hardcoded.
         const distanza = () => Math.max(0, track.scrollWidth - stage.clientWidth);
         let dist = distanza();
+        const stop = (id: Momento["id"]) => {
+          const el = root.querySelector<HTMLElement>(`[data-moment='${id}']`);
+          if (!el) return 0;
+          return -Math.min(dist, Math.max(0, el.offsetLeft));
+        };
+
+        // L'altezza del wrapper deriva dalla distanza reale: nessuna coda vuota.
+        const misuraAltezza = () => {
+          dist = distanza();
+          root.style.height = `${stage.clientHeight + dist}px`;
+        };
+        misuraAltezza();
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -100,6 +112,7 @@ export function LaStoria() {
             pinSpacing: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
+            onRefreshInit: misuraAltezza,
             onRefresh: () => {
               dist = distanza();
             },
@@ -122,22 +135,29 @@ export function LaStoria() {
           .addLabel("handoff", 0.94)
           .addLabel("atto03", 1);
 
-        // Traveling a ritmo variabile: ingresso → osservazione (rallenta) → uscita.
-        // Tre segmenti con easing proprio, sommati fanno la distanza totale.
-        const seg = (from: number, to: number, at: number, dur: number, ease: string) =>
-          tl.fromTo(
-            track,
-            { x: () => -dist * from },
-            { x: () => -dist * to, duration: dur, ease },
-            at,
-          );
+        // Traveling a ritmo variabile: ingresso (accelera) → osservazione (fermo) → uscita.
+        const seg = (to: () => number, at: number, dur: number, ease: string) =>
+          tl.to(track, { x: to, duration: dur, ease }, at);
 
-        seg(0, 0.06, 0.1, 0.12, "power1.in"); // stacco dal titolo
-        seg(0.06, 0.14, 0.22, 0.12, "power2.out"); // pausa d'osservazione su pietra
-        seg(0.14, 0.5, 0.34, 0.16, "power1.inOut"); // verso lavoro
-        seg(0.5, 0.56, 0.5, 0.12, "power2.out"); // osservazione lavoro
-        seg(0.56, 0.94, 0.62, 0.16, "power1.inOut"); // verso famiglia
-        seg(0.94, 1, 0.78, 0.14, "power2.out"); // osservazione famiglia
+        tl.set(track, { x: 0 }, 0);
+        seg(() => stop("pietra"), 0.1, 0.12, "power2.inOut"); // ingresso pietra → osservazione 0.22
+        seg(() => stop("lavoro"), 0.34, 0.16, "power2.inOut"); // uscita → osservazione lavoro 0.50
+        seg(() => stop("famiglia"), 0.62, 0.16, "power2.inOut"); // → osservazione famiglia 0.78
+        seg(() => -dist, 0.88, 0.12, "power1.inOut"); // chiusura dell'atto
+
+        // Livelli agganciati alla x reale del track (rapporti costanti anche col ritmo variabile).
+        tl.eventCallback("onUpdate", () => {
+          const x = Number(gsap.getProperty(track, "x"));
+          if (fondo) gsap.set(fondo, { x: x * 0.84, scale: 1.05 + (x / (dist || 1)) * 0.05 });
+          if (grana) gsap.set(grana, { x: x * 0.96 });
+          if (luce) gsap.set(luce, { x: -x * 0.12 });
+          if (titolo) gsap.set(titolo, { x: x * 0.4 });
+          MOMENTI.forEach((m) => {
+            const inner = root.querySelector<HTMLElement>(`[data-moment='${m.id}'] [data-inner]`);
+            if (inner) gsap.set(inner, { x: x * 0.08 });
+          });
+        });
+
 
         // Parallasse multilivello, derivato dalla stessa distanza.
         if (fondo)
