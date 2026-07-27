@@ -152,11 +152,17 @@ export function LaStoria() {
           if (grana) gsap.set(grana, { x: x * 0.96 });
           if (luce) gsap.set(luce, { x: -x * 0.12 });
           if (titolo) gsap.set(titolo, { x: x * 0.4 });
+          const w = stage.clientWidth || 1;
           MOMENTI.forEach((m) => {
             const el = root.querySelector<HTMLElement>(`[data-moment='${m.id}']`);
             const inner = el?.querySelector<HTMLElement>("[data-inner]");
-            if (el && inner) gsap.set(inner, { x: (x + el.offsetLeft) * -0.08 });
+            if (!el || !inner) return;
+            const local = x + el.offsetLeft; // 0 in osservazione
+            // Fuoco: solo il momento osservato è pienamente leggibile.
+            const fuoco = Math.max(0, 1 - Math.abs(local) / (w * 0.62));
+            gsap.set(inner, { x: local * -0.08, opacity: 0.06 + fuoco * 0.94 });
           });
+
         });
 
         // Luce che ruota (opacità) e attenuazione del titolo dell'atto.
