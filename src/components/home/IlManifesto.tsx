@@ -74,7 +74,7 @@ export function IlManifesto() {
       className="relative isolate flex w-full flex-col"
       style={{
         // Altezza derivata dal contenuto reale della timeline: nessuna coda vuota.
-        minHeight: "130dvh",
+        minHeight: "108dvh",
         background:
           "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 88%, var(--carbone)) 0%, var(--marrone) 24%, color-mix(in oklab, var(--marrone) 84%, var(--carbone)) 72%, color-mix(in oklab, var(--carbone) 92%, var(--marrone)) 100%)",
       }}
