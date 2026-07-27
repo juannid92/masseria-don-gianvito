@@ -20,9 +20,23 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  * Nessun ScrollTrigger, nessuna istanza Lenis, nessun rAF proprio:
  * il parallasse usa i motion value di Framer con un singolo listener.
  */
+/** true quando il puntatore non supporta l'hover (touch). SSR-safe. */
+function useIsTouch(): boolean {
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: none)");
+    const update = () => setIsTouch(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return isTouch;
+}
+
 export function Hero() {
   const reduced = useReducedMotion();
   const isMobile = useIsMobile();
+  const touch = useIsTouch() || isMobile;
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hintVisible, setHintVisible] = useState(true);
   const mapRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +60,7 @@ export function Hero() {
 
   // Parallasse: un solo listener, disattivato su touch e reduced motion.
   useEffect(() => {
-    if (reduced || isMobile) {
+    if (reduced || touch) {
       px.set(0);
       py.set(0);
       return;
@@ -69,7 +83,7 @@ export function Hero() {
       el.removeEventListener("pointermove", onMove);
       el.removeEventListener("pointerleave", onLeave);
     };
-  }, [reduced, isMobile, px, py]);
+  }, [reduced, touch, px, py]);
 
   // Escape chiude l'anteprima aperta.
   useEffect(() => {
@@ -197,6 +211,7 @@ export function Hero() {
               pin={pin}
               index={i}
               isMobile={isMobile}
+              touch={touch}
               reduced={reduced}
               active={activeId === pin.id}
               dimmed={activeId !== null && activeId !== pin.id}
@@ -209,7 +224,7 @@ export function Hero() {
 
         {/* ===== Scheda mobile ===== */}
         <AnimatePresence>
-          {isMobile && active && (
+          {touch && active && (
             <motion.div
               key={`sheet-${active.id}`}
               initial={reduced ? false : { opacity: 0, y: 18 }}
@@ -248,7 +263,7 @@ export function Hero() {
               transition={{ duration: 0.4, delay: reduced ? 0 : 1.4 }}
               className="font-eyebrow pointer-events-none absolute inset-x-0 bottom-4 z-20 text-center text-[9px] tracking-[0.3em] text-[color:var(--crema)]/70"
             >
-              {isMobile ? "Tocca un luogo per entrare" : "Passa sui luoghi per esplorare"}
+              {touch ? "Tocca un luogo per entrare" : "Passa sui luoghi per esplorare"}
             </motion.p>
           )}
         </AnimatePresence>
@@ -313,6 +328,7 @@ function PinMarker({
   pin,
   index,
   isMobile,
+  touch,
   reduced,
   active,
   dimmed,
@@ -323,6 +339,7 @@ function PinMarker({
   pin: PinAnima;
   index: number;
   isMobile: boolean;
+  touch: boolean;
   reduced: boolean;
   active: boolean;
   dimmed: boolean;
@@ -346,7 +363,7 @@ function PinMarker({
       }}
       onClickCapture={(e) => {
         // Touch: il primo tocco apre la scheda, non naviga.
-        if (isMobile && !eraAttivo.current) {
+        if (touch && !eraAttivo.current) {
           e.preventDefault();
           e.stopPropagation();
           onHover(pin.id);
@@ -354,7 +371,7 @@ function PinMarker({
       }}
     >
       <motion.div
-        style={reduced || isMobile ? undefined : { x, y }}
+        style={reduced || touch ? undefined : { x, y }}
         animate={{ opacity: dimmed ? 0.45 : 1 }}
         transition={{ duration: reduced ? 0 : 0.25 }}
         className="relative"
@@ -417,7 +434,7 @@ function PinMarker({
 
         {/* Anteprima desktop, ancorata al lato scelto in base alla posizione */}
         <AnimatePresence>
-          {active && !isMobile && (
+          {active && !touch && (
             <motion.div
               initial={reduced ? false : { opacity: 0, x: apreASinistra ? 8 : -8 }}
               animate={{ opacity: 1, x: 0 }}
