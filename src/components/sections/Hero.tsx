@@ -68,10 +68,10 @@ const PINS: Pin[] = [
     label: "Agriturismo",
     caption: "L’ospitalità della Masseria.",
     to: "/agriturismo",
-    x: 51,
-    y: 74,
-    mx: 30,
-    my: 56,
+    x: 58,
+    y: 66,
+    mx: 42,
+    my: 48,
   },
 ];
 
