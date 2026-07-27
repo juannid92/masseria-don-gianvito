@@ -339,6 +339,14 @@ function PinMarker({
     <li
       className="absolute"
       style={{ left: `${coord.x}%`, top: `${coord.y}%`, transform: "translate(-50%,-50%)" }}
+      onClickCapture={(e) => {
+        // Touch: il primo tocco apre la scheda, non naviga.
+        if (isMobile && !active) {
+          e.preventDefault();
+          e.stopPropagation();
+          onHover(pin.id);
+        }
+      }}
     >
       <motion.div
         style={reduced || isMobile ? undefined : { x, y }}
