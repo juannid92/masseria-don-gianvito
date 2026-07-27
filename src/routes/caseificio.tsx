@@ -1,9 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { ContinuousBackground } from "@/components/site/ContinuousBackground";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
-import { CaseificioStory } from "@/components/sections/CaseificioStory";
+import { AnimaShell } from "@/components/site/AnimaShell";
 
 export const Route = createFileRoute("/caseificio")({
   head: () => ({
@@ -12,16 +8,14 @@ export const Route = createFileRoute("/caseificio")({
       {
         name: "description",
         content:
-          "Il Bianco: dal latte di ogni mattina alle forme del Caseificio di Masseria Don Gianvito. Mozzarella, nodini, primo sale e ricotta.",
+          "Il latte munto ogni mattina diventa mozzarelle km 0, nodini, primo sale e ricotta nel caseificio della Masseria Don Gianvito.",
       },
-      { property: "og:title", content: "Caseificio · Dentro il bianco" },
+      { property: "og:title", content: "Caseificio — Il bianco prende forma" },
       {
         property: "og:description",
-        content:
-          "Quattro stati della stessa materia: liquido, cagliata, filatura, forma. Le forme del Caseificio di Masseria Don Gianvito.",
+        content: "Mozzarelle km 0, nodini, primo sale e ricotta dal latte della Masseria.",
       },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: CaseificioPage,
@@ -29,13 +23,11 @@ export const Route = createFileRoute("/caseificio")({
 
 function CaseificioPage() {
   return (
-    <SmoothScroll>
-      <ContinuousBackground />
-      <Navbar />
-      <main className="relative">
-        <CaseificioStory />
-      </main>
-      <Footer />
-    </SmoothScroll>
+    <AnimaShell
+      numero="II"
+      claim="Il bianco prende forma"
+      titolo="Il latte del mattino non fa strada."
+      intro="Munto qui, lavorato qui. Mozzarelle km 0, nodini, primo sale, ricotta: quattro forme dello stesso bianco."
+    />
   );
 }
