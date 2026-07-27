@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/home/Hero";
 import { IlManifesto } from "@/components/home/IlManifesto";
+import { LaStoria } from "@/components/home/LaStoria";
 import { useHomeHashScroll } from "@/lib/nav";
 
 export const Route = createFileRoute("/")({
@@ -40,6 +41,8 @@ function HomePage() {
       <HomeHashHandler />
       <Hero />
       <IlManifesto />
+      <LaStoria />
+
     </>
   );
 }
