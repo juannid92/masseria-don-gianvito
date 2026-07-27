@@ -369,13 +369,7 @@ function PinMarker({
           onPointerLeave={(e) => {
             if (e.pointerType === "mouse") onHover(null);
           }}
-          onClick={(e) => {
-            // Su touch il primo tocco apre la scheda; il secondo (o il tap sulla scheda) naviga.
-            if (isMobile && !active) {
-              e.preventDefault();
-              onHover(pin.id);
-            }
-          }}
+          onClick={() => onHover(pin.id)}
           onFocus={() => onHover(pin.id)}
           onBlur={() => onHover(null)}
           className="relative flex size-11 items-center justify-center rounded-full"
