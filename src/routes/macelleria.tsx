@@ -1,9 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { ContinuousBackground } from "@/components/site/ContinuousBackground";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
-import { MacelleriaStory } from "@/components/sections/MacelleriaStory";
+import { AnimaShell } from "@/components/site/AnimaShell";
 
 export const Route = createFileRoute("/macelleria")({
   head: () => ({
@@ -12,16 +8,14 @@ export const Route = createFileRoute("/macelleria")({
       {
         name: "description",
         content:
-          "A vista: la scelta avviene al banco della Macelleria di Masseria Don Gianvito. Filetto, bombette, salsiccia, altri tagli. Frollatura indicativa di circa quindici giorni.",
+          "Carne esposta e scelta a vista al banco della Masseria Don Gianvito: filetto di vitello, bombette, salsiccia e salumi propri.",
       },
-      { property: "og:title", content: "Macelleria · La scelta avviene a vista" },
+      { property: "og:title", content: "Macelleria — La scelta avviene a vista" },
       {
         property: "og:description",
-        content:
-          "Il banco, l'atlante a vista, il filo della tracciabilità e i salumi propri della Masseria.",
+        content: "Il banco non nasconde: filetto, bombette, salsiccia e salumi della Masseria.",
       },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: MacelleriaPage,
@@ -29,13 +23,11 @@ export const Route = createFileRoute("/macelleria")({
 
 function MacelleriaPage() {
   return (
-    <SmoothScroll>
-      <ContinuousBackground />
-      <Navbar />
-      <main className="relative">
-        <MacelleriaStory />
-      </main>
-      <Footer />
-    </SmoothScroll>
+    <AnimaShell
+      numero="III"
+      claim="La scelta avviene a vista"
+      titolo="Guardi la carne. Poi decidi."
+      intro="Al banco la carne è esposta e si sceglie a vista. Filetto di vitello, bombette, salsiccia, e i salumi della Masseria: prosciutto crudo, soppressata, salsiccia secca, pancetta tesa."
+    />
   );
 }
