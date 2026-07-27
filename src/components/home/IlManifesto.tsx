@@ -115,8 +115,9 @@ export function IlManifesto() {
       {/* Contenuto in flusso, nessun pin. */}
       <div className="relative z-10 flex flex-1 items-center">
         <div
-          className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-10 pb-16 pl-10 pr-5 md:grid-cols-12 md:gap-8 md:pb-24 md:pl-20 md:pr-10"
+          className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-10 pb-16 pl-10 pr-5 md:grid-cols-12 md:gap-8 md:pb-24 md:pl-20 md:pr-10 [@media(max-height:520px)]:gap-6 [@media(max-height:520px)]:pb-10 md:[@media(max-height:520px)]:pb-10"
           style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
+          data-manifesto-grid
         >
           {/* Colonna della parola */}
           <div className="md:col-span-8 md:col-start-1">
@@ -127,7 +128,7 @@ export function IlManifesto() {
             >
               01 — IL MANIFESTO
             </p>
-            <h2 className="mt-8 font-display text-[clamp(2.5rem,7.2vw,6.2rem)] leading-[0.95] text-[color:var(--crema)] md:mt-12">
+            <h2 className="mt-8 font-display text-[clamp(2.5rem,7.2vw,6.2rem)] leading-[0.95] text-[color:var(--crema)] md:mt-12 [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:text-[clamp(1.9rem,4.4vw,2.8rem)]">
               <span data-riga className="block" style={{ opacity: statico ? 1 : undefined }}>
                 Non compriamo
               </span>
