@@ -1,9 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { ContinuousBackground } from "@/components/site/ContinuousBackground";
-import { Navbar } from "@/components/site/Navbar";
-import { Footer } from "@/components/site/Footer";
-import { AllevamentoStory } from "@/components/sections/AllevamentoStory";
+import { AnimaShell } from "@/components/site/AnimaShell";
 
 export const Route = createFileRoute("/allevamento")({
   head: () => ({
@@ -12,16 +8,14 @@ export const Route = createFileRoute("/allevamento")({
       {
         name: "description",
         content:
-          "La Discesa: dal cielo alla terra di Noci. Bovini, ovini, suini, equini e avicoli della Masseria Don Gianvito, con foraggio, ortaggi, frutta e grano tenero coltivati nei terreni.",
+          "La terra e gli animali della Masseria Don Gianvito a Noci: bovini, ovini, suini, equini, avicoli e le colture proprie.",
       },
-      { property: "og:title", content: "Allevamento · Dove il cielo tocca la terra" },
+      { property: "og:title", content: "Allevamento — La terra e gli animali" },
       {
         property: "og:description",
-        content:
-          "Dall'aereo alla terra: cinque presenze animali, quattro colture, un unico paesaggio agricolo a Noci.",
+        content: "Bovini, ovini, suini, equini, avicoli e colture proprie nella campagna di Noci.",
       },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AllevamentoPage,
@@ -29,13 +23,11 @@ export const Route = createFileRoute("/allevamento")({
 
 function AllevamentoPage() {
   return (
-    <SmoothScroll>
-      <ContinuousBackground />
-      <Navbar />
-      <main className="relative">
-        <AllevamentoStory />
-      </main>
-      <Footer />
-    </SmoothScroll>
+    <AnimaShell
+      numero="I"
+      claim="La terra e gli animali"
+      titolo="Prima della tavola, c'è la terra."
+      intro="Gli animali della Masseria vivono qui: bovini da latte e da carne, ovini, suini, equini, avicoli. La terra dà foraggio, ortaggi, frutta e grano tenero."
+    />
   );
 }

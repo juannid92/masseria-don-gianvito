@@ -1,349 +1,160 @@
-import { useEffect, useRef } from "react";
-import { Link, useLocation } from "@tanstack/react-router";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { useHomeSectionNav, type HomeSectionId } from "@/lib/nav";
+import { Link } from "@tanstack/react-router";
+import { ANIME, ATTI, MASSERIA } from "@/data/masseria";
+import { useHomeSectionNav } from "@/lib/nav";
 
-/* ──────────────────────────────────────────────────────────────
- * FOOTER — Chiusura editoriale. Crema. Asimmetrico.
- * Quattro gruppi: Esplora · Quattro Anime · Visita · Contatti.
- * ───────────────────────────────────────────────────────────── */
-
-const TEL_1 = "+393339395750";
-const TEL_1_DISPLAY = "333 939 5750";
-const TEL_2 = "+393333870292";
-const TEL_2_DISPLAY = "333 387 0292";
-const WA_URL = "https://wa.me/393339395750";
-const INSTAGRAM = "https://instagram.com/masseria_don_gianvito";
-const FACEBOOK = "https://facebook.com/masseriadongianvito";
-const MAPS_URL = "https://www.google.com/maps?q=40.642739,17.042600";
-
-const ESPLORA: { id: HomeSectionId; label: string }[] = [
-  { id: "manifesto", label: "Manifesto" },
-  { id: "storia", label: "Storia" },
-  { id: "luogo", label: "Il Luogo" },
-  { id: "filiera", label: "La Filiera" },
-  { id: "tavola", label: "La Tavola" },
-  { id: "la-voce", label: "La Voce" },
-  { id: "prenota", label: "Prenota" },
-];
-
-const ANIME = [
-  { href: "/allevamento", label: "Allevamento" },
-  { href: "/caseificio", label: "Caseificio" },
-  { href: "/macelleria", label: "Macelleria" },
-  { href: "/agriturismo", label: "Agriturismo" },
-] as const;
-
+/**
+ * FOOTER — fondo crema, composizione asimmetrica (non quattro colonne uguali).
+ * Contiene tutti i dati reali: indirizzo, coordinate, Maps, telefoni, social, P.IVA.
+ */
 export function Footer() {
-  const rootRef = useRef<HTMLElement>(null);
-  const claimRef = useRef<HTMLHeadingElement>(null);
-  const solcoRef = useRef<SVGPathElement>(null);
-  const reduced = useReducedMotion();
-  const year = new Date().getFullYear();
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-  const goSection = useHomeSectionNav();
-
-  useEffect(() => {
-    if (reduced) return;
-    const root = rootRef.current;
-    if (!root) return;
-    gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      if (claimRef.current) claimRef.current.style.clipPath = "inset(100% 0 0 0)";
-      const items = root.querySelectorAll<HTMLElement>("[data-foot]");
-      gsap.set(items, { autoAlpha: 0, y: 10 });
-      if (solcoRef.current) {
-        solcoRef.current.style.strokeDasharray = "1";
-        solcoRef.current.style.strokeDashoffset = "1";
-      }
-      ScrollTrigger.create({
-        trigger: root,
-        start: "top 78%",
-        once: true,
-        onEnter: () => {
-          gsap.to(claimRef.current, {
-            clipPath: "inset(0% 0 0 0)",
-            duration: 1.1,
-            ease: "cubic-bezier(.16,1,.3,1)",
-          });
-          gsap.to(items, {
-            autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.04, delay: 0.2, ease: "power2.out",
-          });
-          if (solcoRef.current) {
-            gsap.to(solcoRef.current, { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" });
-          }
-        },
-      });
-      const safety = window.setTimeout(() => {
-        if (claimRef.current) claimRef.current.style.clipPath = "inset(0 0 0 0)";
-        gsap.set(items, { autoAlpha: 1, y: 0 });
-        if (solcoRef.current) solcoRef.current.style.strokeDashoffset = "0";
-      }, 2500);
-      return () => window.clearTimeout(safety);
-    }, root);
-    return () => ctx.revert();
-  }, [reduced]);
-
-  const onSection = (e: React.MouseEvent, id: HomeSectionId) => {
-    if (isHome) e.preventDefault();
-    void goSection(id);
-  };
+  const goToSection = useHomeSectionNav();
+  const anno = new Date().getFullYear();
 
   return (
-    <footer
-      ref={rootRef}
-      className="relative overflow-hidden"
-      style={{
-        backgroundColor: "var(--crema)",
-        borderTop: "1px solid color-mix(in oklab, var(--marrone) 15%, transparent)",
-      }}
-    >
-      {/* solco */}
-      <svg
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-[58%] z-0 h-[1px] w-full"
-        viewBox="0 0 1000 1"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="foot-solco" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0%" stopColor="var(--marrone)" stopOpacity="0.05" />
-            <stop offset="50%" stopColor="var(--oro)" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="var(--marrone)" stopOpacity="0.15" />
-          </linearGradient>
-        </defs>
-        <path
-          ref={solcoRef}
-          d="M0 0.5 L1000 0.5"
-          stroke="url(#foot-solco)"
-          strokeWidth="1"
-          pathLength={1}
-          strokeDasharray={reduced ? undefined : 1}
-          strokeDashoffset={reduced ? undefined : 1}
-        />
-      </svg>
+    <footer className="relative bg-[color:var(--crema)] text-[color:var(--marrone)]">
+      {/* Continuità: filo oro al confine con la sezione precedente */}
+      <div aria-hidden className="hairline-oro" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1360px] px-6 pt-24 pb-10 md:px-12 md:pt-32 md:pb-14">
-        {/* CLAIM */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-10">
-          <div className="md:col-span-9">
-            <p
-              data-foot
-              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
-            >
-              Masseria Don Gianvito · Noci, Puglia
+      <div className="mx-auto max-w-[1600px] px-5 pb-14 pt-16 md:px-10 md:pb-16 md:pt-24">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
+          {/* Claim — colonna larga */}
+          <div className="lg:col-span-5">
+            <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oliva)]">
+              {MASSERIA.sopratitolo}
             </p>
-            <h2
-              ref={claimRef}
-              className="mt-4 font-display leading-[0.88] text-[color:var(--marrone)]"
-              style={{
-                fontSize: "clamp(3.6rem, 8vw, 9rem)",
-                clipPath: reduced ? "inset(0 0 0 0)" : "inset(100% 0 0 0)",
-              }}
-            >
-              Dalla terra<br />
-              <span className="italic text-[color:var(--oro)]">alla tavola.</span>
-            </h2>
-          </div>
-          <div className="md:col-span-3 md:pt-8">
-            <div
-              data-foot
-              className="inline-flex h-14 w-14 items-center justify-center rounded-full border font-display text-[15px] text-[color:var(--marrone)]"
-              style={{ borderColor: "color-mix(in oklab, var(--marrone) 55%, transparent)" }}
-              aria-label="Monogramma Don Gianvito"
-            >
-              DG
-            </div>
-            <p
-              data-foot
-              className="mt-4 font-eyebrow text-[10px] uppercase tracking-[0.32em] text-[color:var(--marrone)]/55"
-            >
-              Allevamento · Caseificio<br />
-              Macelleria · Agriturismo
+            <p className="mt-6 font-display text-[clamp(2.4rem,6vw,4.2rem)] leading-[0.95]">
+              Dalla terra
+              <br />
+              <em className="not-italic text-[color:var(--bordeaux)]">alla tavola.</em>
+            </p>
+            <p className="mt-6 max-w-sm text-[16px] leading-relaxed text-[color:var(--marrone)]/75">
+              {MASSERIA.nome} — masseria del Cinquecento a Noci, sulla strada verso Mottola.
+              Allevamento, caseificio, macelleria e agriturismo in un'unica filiera.
             </p>
           </div>
-        </div>
 
-        {/* Esplora + Anime — riga editoriale asimmetrica */}
-        <div className="mt-20 grid grid-cols-1 gap-14 md:mt-28 md:grid-cols-12 md:gap-10">
-          <nav className="md:col-span-7" aria-labelledby="foot-esplora">
-            <p
-              id="foot-esplora"
-              data-foot
-              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
-            >
-              Esplora la Home
+          {/* Esplora */}
+          <nav className="lg:col-span-2" aria-label="Esplora">
+            <p className="font-eyebrow mb-5 text-[9px] tracking-[0.34em] text-[color:var(--oliva)]">
+              Esplora
             </p>
-            <ul className="mt-5 flex flex-wrap gap-x-8 gap-y-3">
-              {ESPLORA.map((s) => (
-                <li key={s.id} data-foot>
-                  <a
-                    href={`/#${s.id}`}
-                    onClick={(e) => onSection(e, s.id)}
-                    className="foot-link font-display text-lg text-[color:var(--marrone)]"
+            <ul className="space-y-2">
+              {ATTI.map((a) => (
+                <li key={a.id}>
+                  <button
+                    type="button"
+                    onClick={() => goToSection(a.id)}
+                    className="group flex items-baseline gap-2 text-left text-[15px] text-[color:var(--marrone)]/80 transition-colors hover:text-[color:var(--bordeaux)]"
                   >
-                    {s.label}
-                  </a>
+                    <span className="font-eyebrow text-[9px] tracking-[0.2em] text-[color:var(--oro)]">
+                      {a.numero}
+                    </span>
+                    {a.nome}
+                  </button>
                 </li>
               ))}
             </ul>
           </nav>
 
-          <nav className="md:col-span-5" aria-labelledby="foot-anime">
-            <p
-              id="foot-anime"
-              data-foot
-              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
-            >
+          {/* Le quattro anime */}
+          <nav className="lg:col-span-2" aria-label="Le quattro anime">
+            <p className="font-eyebrow mb-5 text-[9px] tracking-[0.34em] text-[color:var(--oliva)]">
               Le quattro anime
             </p>
-            <ul className="mt-5 space-y-2.5">
+            <ul className="space-y-3">
               {ANIME.map((a) => (
-                <li key={a.href} data-foot>
+                <li key={a.id}>
                   <Link
-                    to={a.href}
-                    className="foot-link font-display text-lg text-[color:var(--marrone)]"
+                    to={a.to}
+                    className="block font-display text-[19px] leading-tight transition-colors hover:text-[color:var(--bordeaux)]"
                   >
-                    {a.label}
+                    {a.nome}
                   </Link>
+                  <span className="text-[13px] text-[color:var(--marrone)]/55">{a.claim}</span>
                 </li>
               ))}
             </ul>
           </nav>
-        </div>
 
-        {/* Visita + Contatti */}
-        <div className="mt-20 grid grid-cols-1 gap-14 md:mt-24 md:grid-cols-12 md:gap-10">
-          <div className="md:col-span-6" aria-labelledby="foot-visita">
-            <p
-              id="foot-visita"
-              data-foot
-              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
-            >
-              Visita
-            </p>
-            <address
-              data-foot
-              className="mt-4 not-italic font-body text-[15px] leading-relaxed text-[color:var(--marrone)]/90"
-            >
-              SP237 ex SS377 per Mottola, km 6,5<br />
-              Zona C 76<br />
-              70015 Noci BA
-            </address>
-            <p
-              data-foot
-              className="mt-4 font-eyebrow text-[11px] uppercase tracking-[0.3em] text-[color:var(--marrone)]/60"
-            >
-              40.642739° N · 17.042600° E
-            </p>
-            <a
-              data-foot
-              href={MAPS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="foot-link mt-5 inline-flex items-baseline gap-2 font-eyebrow text-[12px] uppercase tracking-[0.28em] text-[color:var(--marrone)]"
-            >
-              <span>Apri su Google Maps</span>
-              <span aria-hidden className="foot-arrow">→</span>
-            </a>
-          </div>
+          {/* Visita + Contatti */}
+          <div className="grid gap-10 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-1">
+            <div>
+              <p className="font-eyebrow mb-5 text-[9px] tracking-[0.34em] text-[color:var(--oliva)]">
+                Visita
+              </p>
+              <address className="not-italic text-[15px] leading-relaxed text-[color:var(--marrone)]/80">
+                {MASSERIA.indirizzo}
+              </address>
+              <p className="mt-2 text-[13px] tabular-nums text-[color:var(--marrone)]/55">
+                {MASSERIA.coordinateLabel}
+              </p>
+              <a
+                href={MASSERIA.maps}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-block border-b border-[color:var(--oro)] pb-px font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bordeaux)]"
+              >
+                Apri in Maps
+              </a>
+            </div>
 
-          <div className="md:col-span-6" aria-labelledby="foot-contatti">
-            <p
-              id="foot-contatti"
-              data-foot
-              className="font-eyebrow text-[11px] uppercase tracking-[0.34em] text-[color:var(--marrone)]/55"
-            >
-              Contatti
-            </p>
-            <ul className="mt-4 space-y-2">
-              <li data-foot>
-                <a href={`tel:${TEL_1}`} className="foot-link font-display text-xl text-[color:var(--marrone)]">
-                  {TEL_1_DISPLAY}
-                </a>
-              </li>
-              <li data-foot>
-                <a href={`tel:${TEL_2}`} className="foot-link font-display text-base text-[color:var(--marrone)]/75">
-                  {TEL_2_DISPLAY}
-                </a>
-              </li>
-            </ul>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
-              <li data-foot>
-                <a
-                  href={WA_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Scrivici su WhatsApp"
-                  className="foot-link font-eyebrow text-[11px] uppercase tracking-[0.28em] text-[color:var(--marrone)]"
-                >
-                  WhatsApp ↗
-                </a>
-              </li>
-              <li data-foot>
-                <a
-                  href={INSTAGRAM}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram @masseria_don_gianvito"
-                  className="foot-link font-eyebrow text-[11px] uppercase tracking-[0.28em] text-[color:var(--marrone)]"
-                >
-                  Instagram ↗
-                </a>
-              </li>
-              <li data-foot>
-                <a
-                  href={FACEBOOK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook Masseria Don Gianvito"
-                  className="foot-link font-eyebrow text-[11px] uppercase tracking-[0.28em] text-[color:var(--marrone)]"
-                >
-                  Facebook ↗
-                </a>
-              </li>
-            </ul>
+            <div>
+              <p className="font-eyebrow mb-5 text-[9px] tracking-[0.34em] text-[color:var(--oliva)]">
+                Contatti
+              </p>
+              <ul className="space-y-2 text-[15px] text-[color:var(--marrone)]/80">
+                <li>
+                  <a href={MASSERIA.telefonoHref} className="hover:text-[color:var(--bordeaux)]">
+                    {MASSERIA.telefono}
+                  </a>
+                </li>
+                <li>
+                  <a href={MASSERIA.telefono2Href} className="hover:text-[color:var(--bordeaux)]">
+                    {MASSERIA.telefono2}
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={MASSERIA.whatsapp}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-[color:var(--bordeaux)]"
+                  >
+                    WhatsApp
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={MASSERIA.instagram}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-[color:var(--bordeaux)]"
+                  >
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={MASSERIA.facebook}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-[color:var(--bordeaux)]"
+                  >
+                    Facebook
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Note legali */}
-        <div
-          className="mt-20 flex flex-col gap-3 pt-6 md:mt-24 md:flex-row md:items-baseline md:justify-between"
-          style={{ borderTop: "1px solid color-mix(in oklab, var(--marrone) 15%, transparent)" }}
-        >
-          <p
-            data-foot
-            className="font-eyebrow text-[10px] uppercase tracking-[0.32em] text-[color:var(--marrone)]/50"
-          >
-            P.IVA / CF 05839280723
-          </p>
-          <p
-            data-foot
-            className="font-eyebrow text-[10px] uppercase tracking-[0.32em] text-[color:var(--marrone)]/40"
-          >
-            © {year} Masseria Don Gianvito · Noci (BA)
-          </p>
+        <div className="mt-16 flex flex-col gap-2 border-t border-[color:var(--marrone)]/15 pt-6 text-[12px] text-[color:var(--marrone)]/55 md:flex-row md:items-center md:justify-between">
+          <span>
+            © {anno} {MASSERIA.nome} — Società agricola semplice
+          </span>
+          <span className="tabular-nums">P.IVA / CF {MASSERIA.piva}</span>
         </div>
       </div>
-
-      <style>{`
-        footer .foot-link { position: relative; padding-bottom: 3px; }
-        footer .foot-link::after {
-          content: ""; position: absolute; left: 0; bottom: 0; height: 1px;
-          width: 0; background: var(--oro);
-          transition: width .5s cubic-bezier(.16,1,.3,1);
-        }
-        footer .foot-link:hover::after,
-        footer .foot-link:focus-visible::after { width: 100%; }
-        footer .foot-arrow { transition: transform .35s cubic-bezier(.16,1,.3,1); display: inline-block; }
-        footer .foot-link:hover .foot-arrow { transform: translateX(4px); }
-        @media (prefers-reduced-motion: reduce) {
-          footer .foot-link::after { width: 100%; }
-        }
-      `}</style>
     </footer>
   );
 }
