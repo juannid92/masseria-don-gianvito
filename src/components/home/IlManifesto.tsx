@@ -41,8 +41,8 @@ export function IlManifesto() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: root,
-            start: "top top",
-            end: "bottom bottom",
+            start: pin ? "top top" : "top bottom",
+            end: pin ? "+=120%" : "bottom bottom",
             scrub: 0.6,
             invalidateOnRefresh: true,
             ...(pin ? { pin: stage, pinSpacing: true, anticipatePin: 1 } : {}),
@@ -160,7 +160,7 @@ export function IlManifesto() {
       data-act="manifesto"
       ref={rootRef}
       aria-label="Il Manifesto"
-      className="relative isolate w-full min-h-[124dvh] [@media(min-width:900px)]:min-h-[220dvh]"
+      className="relative isolate w-full"
     >
       <div
         data-stage
