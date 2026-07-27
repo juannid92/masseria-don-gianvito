@@ -100,7 +100,11 @@ export function Hero() {
 
   const enter = (delay: number) =>
     reduced
-      ? { initial: false as const }
+      ? {
+          initial: { opacity: 1, y: 0 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0 },
+        }
       : {
           initial: { opacity: 0, y: 14 },
           animate: { opacity: 1, y: 0 },
