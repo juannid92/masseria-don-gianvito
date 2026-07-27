@@ -1,0 +1,289 @@
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "@tanstack/react-router";
+import { ANIME, HEADER_SEZIONI, MASSERIA } from "@/data/masseria";
+import { useHomeSectionNav } from "@/lib/nav";
+import { cn } from "@/lib/utils";
+
+/**
+ * HEADER globale.
+ * - Logo → "/", sezioni Home via hash (nessuna seconda istanza Lenis),
+ *   menu editoriale "La Masseria" con le quattro anime, La Voce, CTA Prenota.
+ * - Safe area sotto l'header: unica variabile condivisa --header-offset.
+ */
+export function Header() {
+  const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const [drawer, setDrawer] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const goToSection = useHomeSectionNav(() => {
+    setOpen(false);
+    setDrawer(false);
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Dropdown: Escape + click esterno
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClick);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClick);
+    };
+  }, [open]);
+
+  // Drawer mobile: blocca e ripristina lo scroll
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (!drawer) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDrawer(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [drawer]);
+
+  useEffect(() => {
+    setDrawer(false);
+    setOpen(false);
+  }, [location.pathname]);
+
+  const animaAttiva = ANIME.find((a) => a.to === location.pathname);
+
+  return (
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
+        scrolled ? "bg-[color:var(--carbone)]/92 backdrop-blur-md" : "bg-transparent",
+      )}
+      style={{ height: "var(--header-offset)" }}
+    >
+      {/* Scrim leggero: garantisce contrasto sopra qualunque materia */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 72%, transparent) 0%, transparent 100%)",
+        }}
+      />
+
+      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-6 px-5 md:px-10">
+        <Link to="/" className="group flex flex-col leading-none" aria-label={MASSERIA.nome}>
+          <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro)]/80">
+            Noci · Puglia
+          </span>
+          <span className="font-display text-[15px] leading-tight text-[color:var(--crema)] md:text-[17px]">
+            Masseria <em className="not-italic text-[color:var(--oro)]">Don Gianvito</em>
+          </span>
+        </Link>
+
+        {/* Desktop */}
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Navigazione principale">
+          {HEADER_SEZIONI.map((s) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => goToSection(s.id)}
+              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/75 transition-colors hover:text-[color:var(--crema)]"
+            >
+              {s.nome}
+            </button>
+          ))}
+
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-haspopup="true"
+              onClick={() => setOpen((v) => !v)}
+              className={cn(
+                "font-eyebrow text-[10px] tracking-[0.24em] transition-colors",
+                open || animaAttiva
+                  ? "text-[color:var(--oro)]"
+                  : "text-[color:var(--crema)]/75 hover:text-[color:var(--crema)]",
+              )}
+            >
+              La Masseria
+            </button>
+            {open && (
+              <div
+                className="absolute right-0 top-[calc(100%+14px)] w-[340px] border border-[color:var(--oro)]/25 bg-[color:var(--carbone)]/97 p-2 shadow-2xl backdrop-blur-md"
+                role="menu"
+              >
+                {ANIME.map((a) => (
+                  <Link
+                    key={a.id}
+                    to={a.to}
+                    role="menuitem"
+                    aria-current={location.pathname === a.to ? "page" : undefined}
+                    className="group flex items-baseline gap-4 px-4 py-3 transition-colors hover:bg-[color:var(--marrone)]/45"
+                  >
+                    <span className="font-display text-[11px] text-[color:var(--oro)]/70">
+                      {a.numero}
+                    </span>
+                    <span className="flex-1">
+                      <span className="block font-display text-[17px] text-[color:var(--crema)]">
+                        {a.nome}
+                      </span>
+                      <span className="block text-[12px] text-[color:var(--crema)]/55">
+                        {a.claim}
+                      </span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => goToSection("la-voce")}
+            className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/75 transition-colors hover:text-[color:var(--crema)]"
+          >
+            La Voce
+          </button>
+
+          <button
+            type="button"
+            onClick={() => goToSection("prenota")}
+            className="border border-[color:var(--oro)]/60 px-5 py-2 font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro)] transition-colors hover:bg-[color:var(--oro)] hover:text-[color:var(--carbone)]"
+          >
+            Prenota
+          </button>
+        </nav>
+
+        {/* Mobile */}
+        <button
+          type="button"
+          className="flex items-center gap-2 lg:hidden"
+          aria-expanded={drawer}
+          aria-label="Apri il menu"
+          onClick={() => setDrawer(true)}
+        >
+          <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/80">
+            Menu
+          </span>
+          <span aria-hidden className="flex h-4 w-6 flex-col justify-between py-[3px]">
+            <span className="block h-px w-full bg-[color:var(--oro)]" />
+            <span className="block h-px w-full bg-[color:var(--oro)]" />
+          </span>
+        </button>
+      </div>
+
+      {/* Filo oro di base header */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-px"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 45%, transparent) 35%, color-mix(in oklab, var(--oro) 45%, transparent) 65%, transparent)",
+          opacity: scrolled ? 1 : 0.35,
+        }}
+      />
+
+      {drawer && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-[color:var(--carbone)] lg:hidden">
+          <div
+            className="flex items-center justify-between px-5"
+            style={{ height: "var(--header-offset)" }}
+          >
+            <span className="font-display text-[15px] text-[color:var(--crema)]">
+              Masseria <em className="not-italic text-[color:var(--oro)]">Don Gianvito</em>
+            </span>
+            <button
+              type="button"
+              onClick={() => setDrawer(false)}
+              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/75"
+            >
+              Chiudi
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-5 pb-10">
+            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro)]/70">
+              Le sezioni
+            </p>
+            <ul className="mb-10 space-y-1">
+              {HEADER_SEZIONI.map((s) => (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    onClick={() => goToSection(s.id)}
+                    className="w-full py-2 text-left font-display text-[24px] text-[color:var(--crema)]"
+                  >
+                    {s.nome}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => goToSection("la-voce")}
+                  className="w-full py-2 text-left font-display text-[24px] text-[color:var(--crema)]"
+                >
+                  La Voce
+                </button>
+              </li>
+            </ul>
+
+            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro)]/70">
+              Le quattro anime
+            </p>
+            <ul className="space-y-1">
+              {ANIME.map((a) => (
+                <li key={a.id}>
+                  <Link
+                    to={a.to}
+                    aria-current={location.pathname === a.to ? "page" : undefined}
+                    onClick={() => setDrawer(false)}
+                    className="flex items-baseline gap-3 py-2"
+                  >
+                    <span className="font-display text-[11px] text-[color:var(--oro)]/70">
+                      {a.numero}
+                    </span>
+                    <span>
+                      <span className="block font-display text-[24px] text-[color:var(--crema)]">
+                        {a.nome}
+                      </span>
+                      <span className="block text-[13px] text-[color:var(--crema)]/50">
+                        {a.claim}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <button
+              type="button"
+              onClick={() => goToSection("prenota")}
+              className="mt-10 w-full border border-[color:var(--oro)]/60 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]"
+            >
+              Prenota
+            </button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
