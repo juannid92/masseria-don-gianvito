@@ -334,14 +334,19 @@ function PinMarker({
   const y = useTransform(sy, (v) => v * -7 * pin.profondita);
   const coord = isMobile ? pin.m : pin.d;
   const apreASinistra = pin.lato === "left";
+  // Stato del pin PRIMA del tocco: il focus da touch non deve valere come "già aperto".
+  const eraAttivo = useRef(false);
 
   return (
     <li
       className="absolute"
       style={{ left: `${coord.x}%`, top: `${coord.y}%`, transform: "translate(-50%,-50%)" }}
+      onPointerDownCapture={(e) => {
+        if (e.pointerType !== "mouse") eraAttivo.current = active;
+      }}
       onClickCapture={(e) => {
         // Touch: il primo tocco apre la scheda, non naviga.
-        if (isMobile && !active) {
+        if (isMobile && !eraAttivo.current) {
           e.preventDefault();
           e.stopPropagation();
           onHover(pin.id);
