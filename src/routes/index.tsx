@@ -41,6 +41,8 @@ function HomePage() {
       <HomeHashHandler />
       <Hero />
       <IlManifesto />
+      <LaStoria />
+
     </>
   );
 }
