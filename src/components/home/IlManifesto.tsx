@@ -66,8 +66,9 @@ export function IlManifesto() {
             0,
           );
         if (grana) tl.fromTo(grana, { yPercent: 0 }, { yPercent: -3, duration: 1 }, 0);
-        if (editoriale) tl.fromTo(editoriale, { yPercent: 0 }, { yPercent: -20, duration: 1 }, 0);
-        if (chiusura) tl.fromTo(chiusura, { yPercent: 0 }, { yPercent: -28, duration: 1 }, 0);
+        // Su mobile/landscape (senza pin) i livelli di testo non traslano: nessun taglio sotto l'header.
+        if (pin && editoriale) tl.fromTo(editoriale, { yPercent: 0 }, { yPercent: -20, duration: 1 }, 0);
+        if (pin && chiusura) tl.fromTo(chiusura, { yPercent: 0 }, { yPercent: -28, duration: 1 }, 0);
 
         // Label narrativa (progress 0 → 1).
         tl.addLabel("terra", 0)
