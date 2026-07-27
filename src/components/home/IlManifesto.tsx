@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
  * ATTO 01 — IL MANIFESTO.
- * Terra · Parola · Peso. Nessuna fotografia, nessuna card, nessuna icona.
- * Una sola timeline locale con ScrollTrigger (scrub 0.6), sticky CSS, nessun pin.
+ * Firma: TERRA · PAROLA · PROFONDITÀ.
+ * Stage pinnato (>=900px), livelli interni traslati in parallasse.
+ * Nessuna fotografia: materia, luce, tipografia.
  */
 export function IlManifesto() {
   const reduced = useReducedMotion();
@@ -20,163 +22,269 @@ export function IlManifesto() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      const q = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel));
-      const righe = q("[data-riga]");
-      const linea = root.querySelector<HTMLElement>("[data-linea]");
-      const sostegno = q("[data-sostegno]");
+      const stage = root.querySelector<HTMLElement>("[data-stage]");
+      const terra = root.querySelector<HTMLElement>("[data-layer='terra'] [data-move]");
+      const luce = root.querySelector<HTMLElement>("[data-layer='luce'] [data-move]");
+      const grana = root.querySelector<HTMLElement>("[data-layer='grana'] [data-move]");
+      const editoriale = root.querySelector<HTMLElement>("[data-editorial]");
       const chiusura = root.querySelector<HTMLElement>("[data-chiusura]");
-      const luce = root.querySelector<HTMLElement>("[data-luce]");
-      const buio = root.querySelector<HTMLElement>("[data-buio]");
-      const occhiello = root.querySelector<HTMLElement>("[data-occhiello]");
+      const linea = root.querySelector<HTMLElement>("[data-linea]");
+      const righe = Array.from(root.querySelectorAll<HTMLElement>("[data-riga]"));
+      const sostegno = root.querySelector<HTMLElement>("[data-sostegno]");
+      const handoff = root.querySelector<HTMLElement>("[data-handoff]");
+      const occhiello02 = root.querySelector<HTMLElement>("[data-occhiello-02]");
+      if (!stage) return;
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: root,
-          start: "top bottom",
-          end: "bottom bottom",
-          scrub: 0.6,
-        },
+      const mm = gsap.matchMedia();
+
+      const buildTimeline = (pin: boolean) => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: root,
+            start: pin ? "top top" : "top bottom",
+            end: pin ? "+=120%" : "bottom bottom",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            ...(pin ? { pin: stage, pinSpacing: true, anticipatePin: 1 } : {}),
+          },
+          defaults: { ease: "none" },
+        });
+
+        // Parallasse multilivello — solo transform/opacity.
+        if (terra)
+          tl.fromTo(
+            terra,
+            { yPercent: 0, scale: 1.06 },
+            { yPercent: -6, scale: 1, duration: 1 },
+            0,
+          );
+        if (luce)
+          tl.fromTo(
+            luce,
+            { yPercent: 0, xPercent: -4, opacity: 0.35 },
+            { yPercent: -14, xPercent: 6, opacity: 0.6, duration: 1 },
+            0,
+          );
+        if (grana) tl.fromTo(grana, { yPercent: 0 }, { yPercent: -3, duration: 1 }, 0);
+        // Su mobile/landscape (senza pin) i livelli di testo non traslano: nessun taglio sotto l'header.
+        if (pin && editoriale) tl.fromTo(editoriale, { yPercent: 0 }, { yPercent: -20, duration: 1 }, 0);
+        if (pin && chiusura) tl.fromTo(chiusura, { yPercent: 0 }, { yPercent: -28, duration: 1 }, 0);
+
+        // Label narrativa (progress 0 → 1).
+        tl.addLabel("terra", 0)
+          .addLabel("linea", 0.1)
+          .addLabel("riga1", 0.18)
+          .addLabel("riga2", 0.3)
+          .addLabel("riga3", 0.42)
+          .addLabel("sostegno", 0.55)
+          .addLabel("luce", 0.6)
+          .addLabel("chiusura", 0.75)
+          .addLabel("attenua", 0.85)
+          .addLabel("handoff", 0.92)
+          .addLabel("atto02", 1);
+
+        if (linea) tl.fromTo(linea, { scaleY: 0 }, { scaleY: 1, duration: 0.12 }, "linea");
+        righe.forEach((riga, i) => {
+          tl.fromTo(
+            riga,
+            { opacity: 0, y: 24, x: i === 1 ? 28 : 0 },
+            { opacity: 1, y: 0, x: 0, duration: 0.1 },
+            [0.18, 0.3, 0.42][i] ?? 0.42,
+          );
+        });
+        if (sostegno)
+          tl.fromTo(sostegno, { opacity: 0, x: 32 }, { opacity: 1, x: 0, duration: 0.1 }, "sostegno");
+        if (chiusura)
+          tl.fromTo(chiusura, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.08 }, "chiusura");
+        if (editoriale) tl.to(editoriale, { opacity: 0.4, duration: 0.15 }, "attenua");
+        if (handoff) tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.08 }, "handoff");
+        if (occhiello02)
+          tl.fromTo(occhiello02, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.06 }, 0.94);
+
+        return tl;
+      };
+
+      mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
+        buildTimeline(true);
       });
 
-      if (linea) tl.fromTo(linea, { scaleY: 0 }, { scaleY: 1, duration: 0.6 }, 0);
-      if (occhiello) tl.fromTo(occhiello, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, 0.1);
-
-      righe.forEach((riga, i) => {
-        tl.fromTo(
-          riga,
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.5 },
-          0.5 + i * 0.45,
-        );
+      mm.add("(max-width: 899px) and (prefers-reduced-motion: no-preference)", () => {
+        buildTimeline(false);
       });
-
-      sostegno.forEach((el, i) => {
-        tl.fromTo(el, { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.5 }, 1.9 + i * 0.2);
-      });
-
-      if (luce) tl.fromTo(luce, { xPercent: -6, yPercent: -4 }, { xPercent: 8, yPercent: 6, duration: 3 }, 0.3);
-      if (chiusura) tl.fromTo(chiusura, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, 2.5);
-      if (buio) tl.fromTo(buio, { opacity: 0 }, { opacity: 1, duration: 1 }, 2.6);
 
       ScrollTrigger.refresh();
+
+      return () => mm.revert();
     }, root);
 
     return () => ctx.revert();
   }, [reduced]);
 
+  // Parallasse mouse (max 8px) su wrapper separati rispetto allo scrub.
+  useEffect(() => {
+    if (reduced) return;
+    const root = rootRef.current;
+    if (!root) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    const targets = Array.from(root.querySelectorAll<HTMLElement>("[data-mouse]"));
+    if (!targets.length) return;
+
+    let frame = 0;
+    const onMove = (e: MouseEvent) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const nx = e.clientX / window.innerWidth - 0.5;
+        const ny = e.clientY / window.innerHeight - 0.5;
+        targets.forEach((el, i) => {
+          const amp = i === 0 ? 5 : 8;
+          el.style.transform = `translate3d(${(-nx * amp).toFixed(2)}px, ${(-ny * amp).toFixed(2)}px, 0)`;
+        });
+      });
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (frame) cancelAnimationFrame(frame);
+      targets.forEach((el) => (el.style.transform = ""));
+    };
+  }, [reduced]);
+
   const statico = reduced;
+  const vis = statico ? 1 : undefined;
 
   return (
     <section
       id="manifesto"
+      data-act="manifesto"
       ref={rootRef}
       aria-label="Il Manifesto"
-      className="relative isolate flex w-full flex-col"
-      style={{
-        // Altezza derivata dal contenuto reale della timeline: nessuna coda vuota.
-        minHeight: "108dvh",
-        background:
-          "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 88%, var(--carbone)) 0%, var(--marrone) 24%, color-mix(in oklab, var(--marrone) 84%, var(--carbone)) 72%, color-mix(in oklab, var(--carbone) 92%, var(--marrone)) 100%)",
-      }}
+      className="relative isolate w-full"
     >
-      {/* Luce mobile sul fondo terra: variazione, mai piatto. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          data-luce
-          className="absolute inset-[-20%]"
-          style={{
-            background:
-              "radial-gradient(58% 46% at 32% 30%, color-mix(in oklab, var(--oliva) 20%, transparent) 0%, transparent 68%), radial-gradient(52% 40% at 76% 72%, color-mix(in oklab, var(--oro) 10%, transparent) 0%, transparent 70%)",
-          }}
-        />
-      </div>
-      <div aria-hidden className="grain pointer-events-none absolute inset-0 opacity-50" />
-
-      {/* Scurimento finale: prepara l'atto 02 (carbone caldo). */}
       <div
-        aria-hidden
-        data-buio
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[55dvh]"
-        style={{
-          opacity: statico ? 1 : 0,
-          background:
-            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 72%, var(--marrone)) 60%, var(--carbone) 100%)",
-        }}
-      />
-
-      {/* Unico segno grafico: la linea di continuità che arriva dalla Hero e prosegue. */}
-      <span
-        aria-hidden
-        data-linea
-        className="pointer-events-none absolute left-5 top-0 z-10 w-px origin-top bg-gradient-to-b from-[color:var(--oro)]/80 via-[color:var(--oro)]/45 to-transparent md:left-10"
-        style={{ height: "62%", transform: statico ? "scaleY(1)" : undefined }}
-      />
-
-      {/* Contenuto in flusso, nessun pin. */}
-      <div className="relative z-10 flex flex-1 items-center">
-        <div
-          className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-10 pb-16 pl-10 pr-5 md:grid-cols-12 md:gap-8 md:pb-24 md:pl-20 md:pr-10 [@media(max-height:520px)]:gap-6 [@media(max-height:520px)]:pb-10 md:[@media(max-height:520px)]:pb-10"
-          style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
-          data-manifesto-grid
-        >
-          {/* Colonna della parola */}
-          <div className="md:col-span-8 md:col-start-1">
-            <p
-              data-occhiello
-              className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/70 md:text-[11px]"
-              style={{ opacity: statico ? 1 : undefined }}
-            >
-              01 — IL MANIFESTO
-            </p>
-            <h2 className="mt-8 font-display text-[clamp(2.5rem,7.2vw,6.2rem)] leading-[0.95] text-[color:var(--crema)] md:mt-12 [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:text-[clamp(1.9rem,4.4vw,2.8rem)]">
-              <span data-riga className="block" style={{ opacity: statico ? 1 : undefined }}>
-                Non compriamo
-              </span>
-              <span
-                data-riga
-                className="ml-[5%] block md:ml-[11%]"
-                style={{ opacity: statico ? 1 : undefined }}
-              >
-                quello che serve.
-              </span>
-              <span
-                data-riga
-                className="ml-[2%] block italic text-[color:var(--oro)] md:ml-[4%]"
-                style={{ opacity: statico ? 1 : undefined }}
-              >
-                Lo facciamo qui.
-              </span>
-            </h2>
-          </div>
-
-          {/* Colonna stretta di sostegno, spostata rispetto al titolo */}
-          <div className="md:col-span-4 md:col-start-9 md:self-end md:pb-4">
-            <p
-              data-sostegno
-              className="max-w-[40ch] text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:text-[17px]"
-              style={{ opacity: statico ? 1 : undefined }}
-            >
-              Gli animali crescono nei nostri terreni. Il latte diventa formaggio ogni mattina. La
-              carne si sceglie al banco. Il pasto si conclude nella nostra sala.
-            </p>
-            <p
-              data-chiusura
-              className="mt-12 text-[12.5px] leading-relaxed tracking-[0.06em] text-[color:var(--crema)]/55 md:mt-20 md:text-[13px]"
-              style={{ opacity: statico ? 1 : undefined }}
-            >
-              Una masseria del Cinquecento, nelle campagne di Noci.
-            </p>
+        data-stage
+        className="relative isolate flex w-full flex-col overflow-hidden min-h-[124dvh] [@media(min-width:900px)]:h-[100dvh] [@media(min-width:900px)]:min-h-0"
+      >
+        {/* 1 — TERRA */}
+        <div aria-hidden data-layer="terra" className="pointer-events-none absolute inset-0">
+          <div data-mouse className="absolute inset-0 will-change-transform">
+            <div
+              data-move
+              className="absolute inset-[-8%]"
+              style={{
+                background:
+                  "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 86%, var(--carbone)) 0%, var(--marrone) 30%, color-mix(in oklab, var(--marrone) 82%, var(--carbone)) 74%, color-mix(in oklab, var(--carbone) 90%, var(--marrone)) 100%)",
+              }}
+            />
           </div>
         </div>
-      </div>
 
-      {/* Handoff verso l'atto 02: nessun bordo secco, il fondo è già quello successivo. */}
-      <div data-manifesto-handoff className="relative z-20">
-        <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-6 md:px-10 md:pb-8">
-          <span aria-hidden className="h-px w-10 bg-[color:var(--oro)]/70" />
-          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/60 md:text-[10px]">
-            02 — LA STORIA
-          </p>
+        {/* 2 — LUCE RADENTE */}
+        <div aria-hidden data-layer="luce" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div data-mouse className="absolute inset-0 will-change-transform">
+            <div
+              data-move
+              className="absolute inset-[-25%]"
+              style={{
+                opacity: statico ? 0.5 : 0.35,
+                background:
+                  "radial-gradient(58% 44% at 30% 28%, color-mix(in oklab, var(--oliva) 26%, transparent) 0%, transparent 68%), radial-gradient(50% 38% at 74% 70%, color-mix(in oklab, var(--oro) 12%, transparent) 0%, transparent 70%)",
+              }}
+            />
+          </div>
+        </div>
+
+        {/* 3 — GRANA */}
+        <div aria-hidden data-layer="grana" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div data-move className="grain absolute inset-[-4%] opacity-50" />
+        </div>
+
+        {/* Linea di continuità dalla Hero */}
+        <span
+          aria-hidden
+          data-linea
+          className="pointer-events-none absolute left-5 top-0 z-10 w-px origin-top bg-gradient-to-b from-[color:var(--oro)]/80 via-[color:var(--oro)]/45 to-transparent md:left-10"
+          style={{ height: "66%", transform: statico ? "scaleY(1)" : undefined }}
+        />
+
+        {/* 4 — EDITORIALE */}
+        <div data-editorial className="relative z-10 flex flex-1 items-center">
+          <div
+            className="mx-auto grid w-full max-w-[1600px] grid-cols-1 gap-10 pb-16 pl-10 pr-5 md:grid-cols-12 md:gap-8 md:pb-24 md:pl-20 md:pr-10 [@media(max-height:520px)]:gap-5 [@media(max-height:520px)]:pb-8"
+            style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
+          >
+            <div className="md:col-span-8 md:col-start-1">
+              <motion.p
+                initial={statico ? false : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/70 md:text-[11px]"
+              >
+                01 — IL MANIFESTO
+              </motion.p>
+
+              <h2 className="mt-8 font-display text-[clamp(2.6rem,7.4vw,6.4rem)] leading-[0.94] text-[color:var(--crema)] md:mt-12 [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:text-[clamp(1.9rem,4.6vw,2.9rem)]">
+                <span data-riga className="block" style={{ opacity: vis }}>
+                  Tutto nasce
+                </span>
+                <span data-riga className="ml-[5%] block md:ml-[11%]" style={{ opacity: vis }}>
+                  nella stessa
+                </span>
+                <span
+                  data-riga
+                  className="ml-[2%] block italic text-[color:var(--oro)] md:ml-[4%]"
+                  style={{ opacity: vis }}
+                >
+                  terra.
+                </span>
+              </h2>
+            </div>
+
+            <div className="md:col-span-4 md:col-start-9 md:self-end md:pb-4">
+              <p
+                data-sostegno
+                className="max-w-[42ch] text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:text-[17px]"
+                style={{ opacity: vis }}
+              >
+                Gli animali crescono nei nostri terreni. Il latte diventa formaggio ogni mattina. La
+                carne si sceglie al banco. Il pasto finisce nella nostra sala.
+              </p>
+              <p
+                data-chiusura
+                className="mt-12 text-[12.5px] leading-relaxed tracking-[0.06em] text-[color:var(--crema)]/55 md:mt-20 md:text-[13px]"
+                style={{ opacity: vis }}
+              >
+                Una masseria del Cinquecento, nelle campagne di Noci.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Handoff verso l'atto 02 */}
+        <div
+          aria-hidden
+          data-handoff
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[58dvh]"
+          style={{
+            opacity: statico ? 1 : 0,
+            background:
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 70%, var(--marrone)) 62%, var(--carbone) 100%)",
+          }}
+        />
+
+        <div className="relative z-20">
+          <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-6 md:px-10 md:pb-8">
+            <span aria-hidden className="h-px w-10 bg-[color:var(--oro)]/70" />
+            <p
+              data-occhiello-02
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/60 md:text-[10px]"
+              style={{ opacity: vis }}
+            >
+              02 — LA STORIA
+            </p>
+          </div>
         </div>
       </div>
     </section>
