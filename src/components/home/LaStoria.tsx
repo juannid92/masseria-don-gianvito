@@ -343,6 +343,30 @@ export function LaStoria() {
                 className="pointer-events-none absolute inset-y-[12%] left-0 w-px bg-gradient-to-b from-transparent via-[color:var(--oro)]/45 to-transparent"
               />
 
+              {/* Volume di pietra: spigolo in luce e ombra portata.
+                  Sostituire con fotografia autentica della muratura prima della pubblicazione. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] [@media(min-width:900px)]:block"
+              >
+                <div
+                  className="absolute inset-y-[8%] left-[16%] right-[-10%]"
+                  style={{
+                    background:
+                      "linear-gradient(96deg, color-mix(in oklab, var(--crema) 13%, transparent) 0%, color-mix(in oklab, var(--marrone) 60%, var(--carbone)) 12%, color-mix(in oklab, var(--carbone) 92%, var(--marrone)) 78%)",
+                    boxShadow: "-70px 0 140px -40px color-mix(in oklab, var(--carbone) 90%, transparent)",
+                  }}
+                />
+                <span
+                  className="absolute inset-y-[8%] left-[16%] w-px"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--oro) 70%, transparent) 32%, color-mix(in oklab, var(--crema) 40%, transparent) 60%, transparent 100%)",
+                  }}
+                />
+              </div>
+
+
               <div
                 data-inner
                 className="relative z-10 mx-auto w-full max-w-[1600px] px-10 py-24 md:px-20 [@media(min-width:900px)]:py-0 [@media(max-height:520px)]:py-12"
