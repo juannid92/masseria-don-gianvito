@@ -153,10 +153,12 @@ export function LaStoria() {
           if (luce) gsap.set(luce, { x: -x * 0.12 });
           if (titolo) gsap.set(titolo, { x: x * 0.4 });
           MOMENTI.forEach((m) => {
-            const inner = root.querySelector<HTMLElement>(`[data-moment='${m.id}'] [data-inner]`);
-            if (inner) gsap.set(inner, { x: x * 0.08 });
+            const el = root.querySelector<HTMLElement>(`[data-moment='${m.id}']`);
+            const inner = el?.querySelector<HTMLElement>("[data-inner]");
+            if (el && inner) gsap.set(inner, { x: (x + el.offsetLeft) * -0.08 });
           });
         });
+
         // Luce che ruota (opacità) e attenuazione del titolo dell'atto.
         if (luce)
           tl.fromTo(luce, { opacity: 0.3 }, { opacity: 0.6, duration: 0.4 }, 0.14).to(
