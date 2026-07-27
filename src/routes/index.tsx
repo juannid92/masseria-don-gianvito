@@ -38,6 +38,7 @@ function HomePage() {
     <>
       <HomeHashHandler />
       <Hero />
+      <IlManifesto />
     </>
   );
 }
