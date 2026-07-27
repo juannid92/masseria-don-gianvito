@@ -60,7 +60,7 @@ export function Hero() {
         {/* Titolo editoriale, ancorato in basso a sinistra */}
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
           <motion.div {...fade(0.15)} className="lg:col-span-7">
-            <h1 className="font-display text-[clamp(2.7rem,8.4vw,6.4rem)] leading-[0.92] text-[color:var(--crema)]">
+            <h1 data-hero-title className="font-display text-[clamp(2.7rem,8.4vw,6.4rem)] leading-[0.92] text-[color:var(--crema)]">
               <span className="block">Dalla terra</span>
               <span className="block">
                 alla <em className="not-italic text-[color:var(--oro)]">tavola.</em>
@@ -81,7 +81,7 @@ export function Hero() {
             aria-label="Le quattro anime della Masseria"
             className="lg:col-span-5"
           >
-            <p className="font-eyebrow mb-3 text-[9px] tracking-[0.34em] text-[color:var(--oro)]/80">
+            <p className="font-eyebrow mb-3 text-[9px] tracking-[0.34em] text-[color:var(--crema)]/70">
               Le quattro anime
             </p>
             <ul className="border-t border-[color:var(--crema)]/20">

@@ -241,3 +241,10 @@ html.reduce-motion [data-reveal-item] {
     min-height: 0;
   }
 }
+
+/* Landscape corto: il titolo dell'Hero non deve spingere il corpo fuori dal primo viewport */
+@media (orientation: landscape) and (max-height: 520px) {
+  [data-hero-title] {
+    font-size: clamp(2rem, 9vh, 3.2rem);
+  }
+}
