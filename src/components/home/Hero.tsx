@@ -10,16 +10,32 @@ import {
 } from "framer-motion";
 import aerial from "@/assets/masseria-aerial.asset.json";
 import { MASSERIA } from "@/data/masseria";
-import { PIN_ANIME, type PinAnima } from "@/data/pin-anime";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { PIN_ANIME, type PinAnima, type PinCoord } from "@/data/pin-anime";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
  * HERO HOME — "La Masseria vista dall'alto".
- * Mappa viva: un solo luogo, quattro mestieri, quattro porte.
- * Nessun ScrollTrigger, nessuna istanza Lenis, nessun rAF proprio:
- * il parallasse usa i motion value di Framer con un singolo listener.
+ * Quattro TARGHE editoriali permanenti, sempre leggibili, ancorate ai luoghi
+ * reali della fotografia aerea. Nessun puntino, nessuna etichetta da hover.
  */
+
+type Tier = "desktop" | "tablet" | "mobile";
+
+/** Fascia di viewport: SSR-safe, un solo listener di resize. */
+function useTier(): Tier {
+  const [tier, setTier] = useState<Tier>("desktop");
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setTier(w < 768 ? "mobile" : w < 1100 ? "tablet" : "desktop");
+    };
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return tier;
+}
+
 /** true quando il puntatore non supporta l'hover (touch). SSR-safe. */
 function useIsTouch(): boolean {
   const [isTouch, setIsTouch] = useState(false);
@@ -33,9 +49,13 @@ function useIsTouch(): boolean {
   return isTouch;
 }
 
+const coordOf = (pin: PinAnima, tier: Tier): PinCoord =>
+  tier === "mobile" ? pin.m : tier === "tablet" ? pin.t : pin.d;
+
 export function Hero() {
   const reduced = useReducedMotion();
-  const isMobile = useIsMobile();
+  const tier = useTier();
+  const isMobile = tier === "mobile";
   const touch = useIsTouch() || isMobile;
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hintVisible, setHintVisible] = useState(true);
@@ -43,8 +63,8 @@ export function Hero() {
 
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 120, damping: 20, mass: 0.4 });
-  const sy = useSpring(py, { stiffness: 120, damping: 20, mass: 0.4 });
+  const sx = useSpring(px, { stiffness: 120, damping: 22, mass: 0.4 });
+  const sy = useSpring(py, { stiffness: 120, damping: 22, mass: 0.4 });
 
   const active = PIN_ANIME.find((p) => p.id === activeId) ?? null;
 
@@ -58,7 +78,7 @@ export function Hero() {
     [dismissHint],
   );
 
-  // Parallasse: un solo listener, disattivato su touch e reduced motion.
+  // Parallasse: massimo 6 px, un solo listener, spento su touch e reduced motion.
   useEffect(() => {
     if (reduced || touch) {
       px.set(0);
@@ -67,11 +87,16 @@ export function Hero() {
     }
     const el = mapRef.current;
     if (!el) return;
+    let ticking = false;
     const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse") return;
-      const r = el.getBoundingClientRect();
-      px.set(((e.clientX - r.left) / r.width - 0.5) * 2);
-      py.set(((e.clientY - r.top) / r.height - 0.5) * 2);
+      if (e.pointerType !== "mouse" || ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        px.set(((e.clientX - r.left) / r.width - 0.5) * 2);
+        py.set(((e.clientY - r.top) / r.height - 0.5) * 2);
+        ticking = false;
+      });
     };
     const onLeave = () => {
       px.set(0);
@@ -95,8 +120,8 @@ export function Hero() {
     return () => window.removeEventListener("keydown", onKey);
   }, [activeId]);
 
-  const photoX = useTransform(sx, (v) => v * -8);
-  const photoY = useTransform(sy, (v) => v * -6);
+  const photoX = useTransform(sx, (v) => v * -6);
+  const photoY = useTransform(sy, (v) => v * -5);
 
   const enter = (delay: number) =>
     reduced
@@ -106,9 +131,9 @@ export function Hero() {
           transition: { duration: 0 },
         }
       : {
-          initial: { opacity: 0, y: 14 },
+          initial: { opacity: 0, y: 12 },
           animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] as const },
+          transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
         };
 
   return (
@@ -120,59 +145,37 @@ export function Hero() {
       {/* ===== Mappa ===== */}
       <div
         ref={mapRef}
-        className="relative isolate min-h-[60dvh] flex-1 overflow-hidden"
+        className="relative isolate min-h-[62dvh] flex-1 overflow-hidden"
         onClick={(e) => {
           if (e.target === e.currentTarget) setActiveId(null);
         }}
       >
-        {/* Fotografia aerea autentica: nitida, calda, senza filtri freddi. */}
+        {/* Fotografia aerea autentica: nitida, contrasto leggermente abbassato. */}
         <motion.div
           aria-hidden={false}
-          className="absolute inset-[-14px]"
+          className="absolute inset-[-10px]"
           style={{ x: photoX, y: photoY }}
         >
           <img
             src={aerial.url}
             alt="Veduta aerea della Masseria Don Gianvito a Noci: i corpi di fabbrica in pietra, i campi coltivati e la strada che li attraversa"
-            className="h-full w-full object-cover object-[62%_center] md:object-center"
-            style={{ filter: "saturate(1.06) contrast(1.04) brightness(1.03)" }}
+            className="h-full w-full object-cover object-[58%_center] md:object-center"
+            style={{ filter: "saturate(1.02) contrast(0.94) brightness(0.97)" }}
             fetchPriority="high"
             decoding="async"
           />
         </motion.div>
 
-        {/* Scrim locale sotto il testo, leggero, mai vignettatura pesante. */}
+        {/* Scrim del titolo: zona esclusiva in alto a sinistra. */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 62%, transparent) 0%, transparent 30%), linear-gradient(100deg, color-mix(in oklab, var(--carbone) 66%, transparent) 0%, transparent 46%), linear-gradient(0deg, color-mix(in oklab, var(--carbone) 72%, transparent) 0%, transparent 26%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 60%, transparent) 0%, transparent 34%), linear-gradient(100deg, color-mix(in oklab, var(--carbone) 62%, transparent) 0%, transparent 44%), linear-gradient(0deg, color-mix(in oklab, var(--carbone) 58%, transparent) 0%, transparent 22%)",
           }}
         />
         <div aria-hidden className="grain absolute inset-0" />
-
-        {/* Scrim di messa a fuoco quando un pin è espanso (buco attorno al pin). */}
-        <AnimatePresence>
-          {active && (
-            <motion.div
-              key="focus-scrim"
-              aria-hidden
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reduced ? 0 : 0.3 }}
-              className="absolute inset-0"
-              style={{
-                background: `radial-gradient(26% 34% at ${
-                  isMobile ? active.m.x : active.d.x
-                }% ${
-                  isMobile ? active.m.y : active.d.y
-                }%, transparent 0%, color-mix(in oklab, var(--carbone) 46%, transparent) 100%)`,
-              }}
-            />
-          )}
-        </AnimatePresence>
 
         {/* ===== Titolo ===== */}
         <div
@@ -180,41 +183,41 @@ export function Hero() {
           style={{ paddingTop: "var(--page-header-safe-offset)" }}
         >
           <motion.div
-            animate={{ opacity: active ? 0.6 : 1 }}
+            animate={{ opacity: active ? 0.75 : 1 }}
             transition={{ duration: reduced ? 0 : 0.3 }}
-            className="max-w-xl"
+            className="max-w-md lg:max-w-lg"
           >
             <motion.p
-              {...enter(0.05)}
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/75 md:text-[10px]"
+              {...enter(0.04)}
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/80 md:text-[10px]"
             >
               {MASSERIA.nome} · Noci
             </motion.p>
             <motion.h1
-              {...enter(0.18)}
+              {...enter(0.14)}
               data-hero-title
-              className="mt-4 font-display text-[clamp(2.4rem,7vw,5.4rem)] leading-[0.94] text-[color:var(--crema)]"
+              className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] leading-[0.96] text-[color:var(--crema)]"
             >
               <span className="block">Un solo luogo.</span>
               <span className="block text-[color:var(--oro)]">Quattro mestieri.</span>
             </motion.h1>
             <motion.p
-              {...enter(0.3)}
-              className="mt-5 max-w-sm text-[15px] leading-relaxed text-[color:var(--crema)]/80 md:text-[16px]"
+              {...enter(0.24)}
+              className="mt-4 max-w-xs text-[13px] leading-relaxed text-[color:var(--crema)]/80 md:text-[15px]"
             >
               Dalla terra alla tavola, ogni passaggio avviene qui.
             </motion.p>
           </motion.div>
         </div>
 
-        {/* ===== I quattro pin ===== */}
+        {/* ===== Le quattro targhe ===== */}
         <ul className="absolute inset-0 z-30 m-0 list-none p-0">
           {PIN_ANIME.map((pin, i) => (
-            <PinMarker
+            <PinTarga
               key={pin.id}
               pin={pin}
               index={i}
-              isMobile={isMobile}
+              tier={tier}
               touch={touch}
               reduced={reduced}
               active={activeId === pin.id}
@@ -231,24 +234,24 @@ export function Hero() {
           {touch && active && (
             <motion.div
               key={`sheet-${active.id}`}
-              initial={reduced ? false : { opacity: 0, y: 18 }}
+              initial={reduced ? false : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, y: 10 }}
+              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-x-3 bottom-3 z-40"
             >
               <Link
                 to={active.to}
                 aria-label={`${active.nome} — scopri la pagina dedicata`}
-                className="block rounded-md border border-[color:var(--oro)]/45 bg-[color:var(--carbone)]/92 p-4 backdrop-blur-sm"
+                className="block rounded-md border-2 border-[color:var(--oro)] bg-[color:var(--carbone)] p-4 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)]"
               >
-                <span className="font-eyebrow block text-[9px] tracking-[0.3em] text-[color:var(--oro)]">
-                  {active.numero} · {active.nome}
+                <span className="font-eyebrow block text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
+                  {active.numero} · {active.nome.toUpperCase()}
                 </span>
-                <span className="mt-2 block text-[14px] leading-snug text-[color:var(--crema)]/85">
+                <span className="mt-2 block text-[14px] leading-snug text-[color:var(--crema)]">
                   {active.descrizione}
                 </span>
-                <span className="mt-3 block text-[12px] font-medium text-[color:var(--crema)]">
+                <span className="mt-3 block text-[13px] font-medium text-[color:var(--crema)]">
                   {active.invito} →
                 </span>
               </Link>
@@ -258,22 +261,22 @@ export function Hero() {
 
         {/* ===== Indicatore di esplorazione ===== */}
         <AnimatePresence>
-          {hintVisible && (
+          {hintVisible && !active && (
             <motion.p
               key="hint"
               initial={reduced ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: reduced ? 0 : 1.4 }}
-              className="font-eyebrow pointer-events-none absolute inset-x-0 bottom-4 z-20 text-center text-[9px] tracking-[0.3em] text-[color:var(--crema)]/70"
+              transition={{ duration: 0.4, delay: reduced ? 0 : 1.2 }}
+              className="font-eyebrow pointer-events-none absolute inset-x-0 bottom-4 z-20 text-center text-[9px] tracking-[0.3em] text-[color:var(--crema)]/75"
             >
-              {touch ? "Tocca un luogo per entrare" : "Passa sui luoghi per esplorare"}
+              QUATTRO LUOGHI. {touch ? "TOCCA" : "CLICCA"} PER ENTRARE
             </motion.p>
           )}
         </AnimatePresence>
       </div>
 
-      {/* ===== Fila delle quattro anime (mobile): accesso senza toccare la foto ===== */}
+      {/* ===== Fila delle quattro anime (mobile): obbligatoria ===== */}
       <nav
         aria-label="Le quattro anime della Masseria"
         className="relative z-20 border-t border-[color:var(--crema)]/15 bg-[color:var(--carbone)] md:hidden"
@@ -287,18 +290,15 @@ export function Hero() {
                 onFocus={() => setActiveId(pin.id)}
                 onClick={dismissHint}
                 onPointerDown={() => select(pin.id)}
-                className={`flex h-full flex-col justify-center px-4 py-3 transition-colors ${
+                className={`flex h-full min-h-[56px] flex-col justify-center px-4 py-3 transition-colors ${
                   activeId === pin.id ? "bg-[color:var(--crema)]/10" : ""
                 }`}
               >
-                <span className="font-display text-[10px] text-[color:var(--oro)]">
+                <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro)]">
                   {pin.numero}
                 </span>
-                <span className="font-display text-[17px] leading-tight text-[color:var(--crema)]">
-                  {pin.nome}
-                </span>
-                <span className="mt-0.5 text-[11px] text-[color:var(--crema)]/60">
-                  {pin.invito}
+                <span className="font-eyebrow text-[15px] uppercase leading-tight tracking-[0.08em] text-[color:var(--crema)]">
+                  {pin.nome} <span aria-hidden>→</span>
                 </span>
               </Link>
             </li>
@@ -306,7 +306,7 @@ export function Hero() {
         </ul>
       </nav>
 
-      {/* ===== Handoff verso l'atto 01 (nessun bordo secco, gap 0px) ===== */}
+      {/* ===== Handoff verso l'atto 01 (gap 0px) ===== */}
       <div
         data-hero-handoff
         className="relative z-20"
@@ -327,11 +327,13 @@ export function Hero() {
   );
 }
 
-/** Un pin: disco crema, bordo bordeaux, anello che pulsa, anteprima su hover/focus. */
-function PinMarker({
+/**
+ * Una TARGA: nodo ancorato + linea guida + cartellino editoriale sempre visibile.
+ */
+function PinTarga({
   pin,
   index,
-  isMobile,
+  tier,
   touch,
   reduced,
   active,
@@ -342,7 +344,7 @@ function PinMarker({
 }: {
   pin: PinAnima;
   index: number;
-  isMobile: boolean;
+  tier: Tier;
   touch: boolean;
   reduced: boolean;
   active: boolean;
@@ -351,17 +353,22 @@ function PinMarker({
   sx: MotionValue<number>;
   sy: MotionValue<number>;
 }) {
-  const x = useTransform(sx, (v) => v * -10 * pin.profondita);
-  const y = useTransform(sy, (v) => v * -7 * pin.profondita);
-  const coord = isMobile ? pin.m : pin.d;
-  const apreASinistra = pin.lato === "left";
-  // Stato del pin PRIMA del tocco: il focus da touch non deve valere come "già aperto".
+  const x = useTransform(sx, (v) => v * -6 * pin.profondita);
+  const y = useTransform(sy, (v) => v * -5 * pin.profondita);
+  const coord = coordOf(pin, tier);
+  const { dx, dy } = coord.off;
+  const compatta = tier === "mobile";
+  const larghezza = tier === "desktop" ? 244 : tier === "tablet" ? 208 : 152;
+  const verso: "right" | "left" = dx >= 0 ? "right" : "left";
+  // Stato del pin PRIMA del tocco: il focus da touch non vale come "già aperto".
   const eraAttivo = useRef(false);
+
+  const bordo = active ? "var(--oro)" : "color-mix(in oklab, var(--crema) 62%, transparent)";
 
   return (
     <li
       className="absolute"
-      style={{ left: `${coord.x}%`, top: `${coord.y}%`, transform: "translate(-50%,-50%)" }}
+      style={{ left: `${coord.x}%`, top: `${coord.y}%` }}
       onPointerDownCapture={(e) => {
         if (e.pointerType !== "mouse") eraAttivo.current = active;
       }}
@@ -376,109 +383,135 @@ function PinMarker({
     >
       <motion.div
         style={reduced || touch ? undefined : { x, y }}
-        animate={{ opacity: dimmed ? 0.45 : 1 }}
+        animate={{ opacity: dimmed ? 0.55 : 1 }}
         transition={{ duration: reduced ? 0 : 0.25 }}
         className="relative"
       >
-        <Link
-          to={pin.to}
-          aria-label={`${pin.nome} — scopri la pagina dedicata`}
-          aria-current={active ? "true" : undefined}
-          onPointerEnter={(e) => {
-            if (e.pointerType === "mouse") onHover(pin.id);
-          }}
-          onPointerLeave={(e) => {
-            if (e.pointerType === "mouse") onHover(null);
-          }}
-          onClick={() => onHover(pin.id)}
-          onFocus={() => onHover(pin.id)}
-          onBlur={() => onHover(null)}
-          className="relative flex size-11 items-center justify-center rounded-full"
-        >
-          <span className="sr-only">
-            {pin.nome}. {pin.descrizione} {pin.invito}.
-          </span>
-
-          {/* anello che pulsa, uno solo, sottile */}
-          {!reduced && (
-            <motion.span
-              aria-hidden
-              className="absolute rounded-full border"
-              style={{ borderColor: "color-mix(in oklab, var(--crema) 70%, transparent)" }}
-              initial={{ width: 18, height: 18, opacity: 0.5 }}
-              animate={{ width: [18, 40], height: [18, 40], opacity: [0.5, 0] }}
-              transition={{
-                duration: 2.6,
-                repeat: Infinity,
-                repeatDelay: 0.8,
-                delay: 0.9 + index * 0.1,
-                ease: "easeOut",
-              }}
-            />
-          )}
-
-          {/* disco */}
-          <motion.span
+        {/* chiarore locale attorno al nodo, minimo */}
+        {active && (
+          <span
             aria-hidden
-            initial={reduced ? false : { scale: 0, opacity: 0 }}
-            animate={{ scale: active ? 1.25 : 1, opacity: 1 }}
-            transition={{
-              duration: 0.3,
-              delay: reduced ? 0 : 0.6 + index * 0.1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="block size-4 rounded-full border-2"
+            className="pointer-events-none absolute size-24 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
-              background: active ? "var(--bordeaux)" : "var(--crema)",
-              borderColor: active ? "var(--oro)" : "var(--bordeaux)",
-              boxShadow: "0 2px 10px color-mix(in oklab, var(--carbone) 55%, transparent)",
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--oro) 26%, transparent) 0%, transparent 70%)",
             }}
           />
-        </Link>
+        )}
 
-        {/* Anteprima desktop, ancorata al lato scelto in base alla posizione */}
-        <AnimatePresence>
-          {active && !touch && (
+        {/* linea guida nodo → targa */}
+        <svg
+          aria-hidden
+          className="pointer-events-none absolute overflow-visible"
+          width="1"
+          height="1"
+        >
+          <motion.line
+            x1="0"
+            y1="0"
+            x2={dx}
+            y2={dy}
+            stroke={active ? "var(--oro)" : "color-mix(in oklab, var(--crema) 78%, transparent)"}
+            strokeWidth="1"
+            initial={reduced ? false : { pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 1 }}
+            transition={{ duration: reduced ? 0 : 0.32, delay: reduced ? 0 : 0.5 + index * 0.1 }}
+          />
+        </svg>
+
+        {/* nodo pieno ancorato al punto reale */}
+        <motion.span
+          aria-hidden
+          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
+          initial={reduced ? false : { opacity: 0, scale: 0.5 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            width: active ? 16 : 11,
+            height: active ? 16 : 11,
+          }}
+          transition={{ duration: reduced ? 0 : 0.3, delay: reduced ? 0 : 0.45 + index * 0.1 }}
+          style={{
+            background: "var(--crema)",
+            borderColor: "var(--bordeaux)",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.55)",
+          }}
+        />
+
+        {/* la targa */}
+        <motion.div
+          className="absolute"
+          style={{
+            left: verso === "right" ? dx : undefined,
+            right: verso === "left" ? -dx : undefined,
+            top: dy,
+            width: larghezza,
+            transform: "translateY(-50%)",
+          }}
+          initial={reduced ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduced ? 0 : 0.4, delay: reduced ? 0 : 0.4 + index * 0.1 }}
+        >
+          <Link
+            to={pin.to}
+            aria-label={`${pin.numero} ${pin.nome} — ${pin.descrizione} ${pin.invito}`}
+            aria-current={active ? "true" : undefined}
+            onPointerEnter={(e) => {
+              if (e.pointerType === "mouse") onHover(pin.id);
+            }}
+            onPointerLeave={(e) => {
+              if (e.pointerType === "mouse") onHover(null);
+            }}
+            onClick={() => onHover(pin.id)}
+            onFocus={() => onHover(pin.id)}
+            onBlur={() => onHover(null)}
+            className="group block rounded-[3px] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
+          >
             <motion.div
-              initial={reduced ? false : { opacity: 0, x: apreASinistra ? 8 : -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-              className={`pointer-events-none absolute top-1/2 w-[248px] -translate-y-1/2 ${
-                apreASinistra ? "right-[calc(100%+10px)]" : "left-[calc(100%+10px)]"
-              }`}
+              animate={{ y: active && !touch ? -3 : 0 }}
+              transition={{ duration: reduced ? 0 : 0.2 }}
+              className="rounded-[3px] border px-3 py-2.5 md:px-4 md:py-3"
+              style={{
+                background: "color-mix(in oklab, var(--carbone) 94%, var(--bordeaux))",
+                borderColor: bordo,
+                boxShadow: "0 14px 34px -10px rgba(0,0,0,0.72), 0 2px 6px rgba(0,0,0,0.45)",
+              }}
             >
-              <div
-                className={`rounded-md border bg-[color:var(--carbone)]/92 p-3.5 backdrop-blur-sm ${
-                  apreASinistra ? "text-right" : "text-left"
-                }`}
-                style={{ borderColor: "color-mix(in oklab, var(--oro) 55%, transparent)" }}
-              >
-                <p className="font-eyebrow text-[9px] tracking-[0.3em] text-[color:var(--oro)]">
-                  {pin.numero} · {pin.nome}
-                </p>
-                <p className="mt-2 text-[13px] leading-snug text-[color:var(--crema)]/85">
-                  {pin.descrizione}
-                </p>
-                <p
-                  className="mt-2.5 text-[12px] font-medium"
-                  style={{ color: "var(--crema)" }}
-                >
-                  {apreASinistra ? "← " : ""}
-                  {pin.invito}
-                  {apreASinistra ? "" : " →"}
-                </p>
-                <span
+              <span className="font-eyebrow block text-[12px] leading-none tracking-[0.28em] text-[color:var(--oro)] md:text-[13px]">
+                {pin.numero}
+              </span>
+              <span className="font-eyebrow mt-1.5 flex items-baseline justify-between gap-2 text-[15px] uppercase leading-tight tracking-[0.1em] text-[color:var(--crema)] md:text-[20px]">
+                {pin.nome}
+                <motion.span
                   aria-hidden
-                  className="mt-3 block h-px w-full"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, ${pin.tinta}, transparent)`,
-                  }}
-                />
-              </div>
+                  animate={{ x: active && !touch ? 3 : 0 }}
+                  transition={{ duration: reduced ? 0 : 0.2 }}
+                  className="text-[color:var(--oro)]"
+                >
+                  →
+                </motion.span>
+              </span>
+              {!compatta && (
+                <span className="mt-1.5 block text-[13px] leading-snug text-[color:var(--crema)]/85 md:text-[13.5px]">
+                  {pin.descrizione}
+                </span>
+              )}
+              <AnimatePresence>
+                {active && !touch && (
+                  <motion.span
+                    initial={reduced ? false : { opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: reduced ? 0 : 0.2 }}
+                    className="mt-2 block overflow-hidden text-[12.5px] font-medium tracking-wide text-[color:var(--oro)]"
+                  >
+                    {pin.invito}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </motion.div>
-          )}
-        </AnimatePresence>
+          </Link>
+        </motion.div>
       </motion.div>
     </li>
   );
