@@ -383,7 +383,7 @@ export function LaTavola() {
           >
             <span className="block">La filiera</span>
             <span className="ml-[3%] block">diventa</span>
-            <span className="ml-[1%] block italic text-[color:var(--bianco-calce)]">un pasto.</span>
+            <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)]">un pasto.</span>
           </h2>
           <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[17px]">
             Tutto quello che cresce nei campi, passa dal caseificio e dalla macelleria, arriva sulla
@@ -448,7 +448,7 @@ export function LaTavola() {
         </div>
 
         <div className="relative z-[3] flex max-w-[900px] flex-col items-center">
-          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-su-scuro)] md:text-[11px]">
+          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]">
             IL RITO COMPLETO
           </p>
           <h3
@@ -649,7 +649,7 @@ function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
             className={`font-eyebrow text-[10px] tracking-[0.34em] md:text-[11px] ${
               isArrosto
                 ? "text-[color:var(--carminio)]"
-                : "text-[color:var(--oro-su-scuro)]"
+                : "text-[color:var(--bianco-calce)]/70"
             }`}
           >
             {q.occhiello}

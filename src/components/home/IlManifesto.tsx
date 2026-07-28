@@ -254,7 +254,7 @@ export function IlManifesto() {
               </p>
               <p
                 data-chiusura
-                className="mt-12 text-[15px] leading-relaxed tracking-[0.04em] text-[color:var(--pietra-800)]/80 md:mt-20 md:text-[15px]"
+                className="mt-12 text-[16px] leading-relaxed tracking-[0.04em] text-[color:var(--pietra-800)]/80 md:mt-20 md:text-[16px]"
                 style={{ opacity: vis }}
               >
                 Una masseria del Cinquecento, nelle campagne di Noci.
