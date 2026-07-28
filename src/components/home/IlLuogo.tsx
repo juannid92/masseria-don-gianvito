@@ -274,7 +274,7 @@ export function IlLuogo() {
       data-act="luogo"
       ref={rootRef}
       aria-label="Il Luogo"
-      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:min-h-[240dvh]"
+      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:min-h-[170dvh]"
     >
       {/* Stage sticky (CSS nativo, NON GSAP pin) */}
       <div
@@ -484,11 +484,11 @@ export function IlLuogo() {
         <div
           aria-hidden
           data-handoff
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[48dvh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[24dvh]"
           style={{
-            opacity: statico ? 1 : 0,
+            opacity: statico ? 0.7 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--marrone) 62%, var(--carbone)) 55%, var(--marrone) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--marrone) 40%, transparent) 55%, color-mix(in oklab, var(--marrone) 70%, transparent) 100%)",
           }}
         />
 
