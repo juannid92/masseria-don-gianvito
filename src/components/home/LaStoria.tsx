@@ -238,9 +238,10 @@ export function LaStoria() {
     <section
       id="storia"
       data-act="storia"
+      data-tone="dark"
       ref={rootRef}
       aria-label="La Storia"
-      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:h-[320dvh]"
+      className="relative isolate w-full bg-[color:var(--pietra-800)] [@media(min-width:900px)]:h-[320dvh]"
     >
       <div
         data-stage
