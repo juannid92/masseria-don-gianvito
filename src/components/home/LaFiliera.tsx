@@ -84,9 +84,13 @@ export function LaFiliera() {
     const ctx = gsap.context(() => {
       const main = root.querySelector<SVGPathElement>("[data-filo='main']");
       const latte = root.querySelector<SVGPathElement>("[data-filo='latte']");
+      const latteUnder = root.querySelector<SVGPathElement>("[data-filo='latte-under']");
       const carne = root.querySelector<SVGPathElement>("[data-filo='carne']");
       const oro = root.querySelector<SVGPathElement>("[data-filo='oro']");
       const dots = Array.from(root.querySelectorAll<SVGCircleElement>("[data-dot]"));
+      const parallaxSlow = Array.from(root.querySelectorAll<HTMLElement>("[data-parallax='slow']"));
+      const parallaxFast = Array.from(root.querySelectorAll<HTMLElement>("[data-parallax='fast']"));
+      const luce = root.querySelector<HTMLElement>("[data-luce]");
       if (!main || !latte || !carne || !oro) return;
 
       const setup = (p: SVGPathElement) => {
@@ -96,9 +100,17 @@ export function LaFiliera() {
       };
       setup(main);
       setup(latte);
+      if (latteUnder) setup(latteUnder);
       setup(carne);
       setup(oro);
       dots.forEach((d) => gsap.set(d, { opacity: 0, scale: 0.6, transformOrigin: "center" }));
+
+      // Promozione a layer solo per gli elementi realmente animati durante lo
+      // scrub. Rimossa al kill del context per non trattenere memoria video.
+      const animated: (SVGPathElement | HTMLElement)[] = [main, latte, carne, oro];
+      if (latteUnder) animated.push(latteUnder);
+      animated.forEach((el) => ((el as SVGPathElement).style.willChange = "stroke-dashoffset"));
+      [...parallaxSlow, ...parallaxFast].forEach((el) => (el.style.willChange = "transform"));
 
       // UN SOLO trigger locale per il filo. Nodi e testi hanno ScrollTriggers
       // separati sul proprio article per il reveal — max 5 in totale.
@@ -107,7 +119,9 @@ export function LaFiliera() {
           trigger: root,
           start: "top bottom",
           end: "bottom bottom",
-          scrub: 0.6,
+          // 0.8 scelto empiricamente: sotto 0.6 il filo insegue lo scroll a
+          // scatti su trackpad, sopra 1.0 il tratto sembra molle e in ritardo.
+          scrub: 0.8,
           invalidateOnRefresh: true,
         },
         defaults: { ease: "none" },
@@ -121,6 +135,7 @@ export function LaFiliera() {
       tl.to(dots[1], { opacity: 1, scale: 1, duration: 0.04 }, 0.4);
 
       // Fase B · SDOPPIAMENTO — latte a sinistra (bianco-latte), carne a destra (carminio)
+      if (latteUnder) tl.to(latteUnder, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       tl.to(latte, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       tl.to(carne, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       // Segno visivo della biforcazione
@@ -129,6 +144,21 @@ export function LaFiliera() {
       // Fase C · CONVERGENZA in oro fino alla tavola
       tl.to(oro, { strokeDashoffset: 0, duration: 0.22 }, 0.76);
       tl.to(dots[3], { opacity: 1, scale: 1, duration: 0.04 }, 0.92);
+
+      // PARALLASSE — solo transform, unico timeline, nessun trigger extra.
+      // Differenza fra livelli contigui ~10%: titoli scorrono al 100% (naturale),
+      // occhielli/annotazioni al 92%, corpo testo al 106%.
+      parallaxSlow.forEach((el) => tl.fromTo(el, { yPercent: 4 }, { yPercent: -4, duration: 1 }, 0));
+      parallaxFast.forEach((el) => tl.fromTo(el, { yPercent: -3 }, { yPercent: 3, duration: 1 }, 0));
+
+      // Luce direzionale che si sposta impercettibilmente lungo lo scroll.
+      if (luce) tl.fromTo(luce, { yPercent: -6 }, { yPercent: 6, duration: 1 }, 0);
+
+      // Onkill: rimuovi will-change per liberare i layer.
+      return () => {
+        animated.forEach((el) => ((el as SVGPathElement).style.willChange = ""));
+        [...parallaxSlow, ...parallaxFast].forEach((el) => (el.style.willChange = ""));
+      };
     }, root);
 
     return () => ctx.revert();
@@ -150,16 +180,24 @@ export function LaFiliera() {
     >
       {/* Fondo bianco calce pieno — nessuna finta materia. Sola concessione:
           una luce direzionale tenue che segue la colonna del filo, per dare
-          rilievo senza colorare la superficie. */}
+          rilievo senza colorare la superficie. Layer isolato con translateZ
+          per non forzare ridipinture dell'intera sezione a ogni frame. */}
       <div
+        data-luce
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-0"
+        className="pointer-events-none absolute inset-0 z-0 will-change-transform"
         style={{
+          transform: "translateZ(0)",
           background:
             "radial-gradient(60% 40% at 26% 12%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 70%), radial-gradient(50% 35% at 74% 58%, color-mix(in oklab, var(--oro-antico) 6%, transparent) 0%, transparent 70%), radial-gradient(50% 30% at 50% 92%, color-mix(in oklab, var(--pietra-800) 10%, transparent) 0%, transparent 72%)",
         }}
       />
-      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-30" />
+      {/* Grana statica su layer proprio (translateZ) — non tocca lo scrub. */}
+      <div
+        aria-hidden
+        className="grain pointer-events-none absolute inset-0 z-0 opacity-30"
+        style={{ transform: "translateZ(0)" }}
+      />
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
@@ -175,12 +213,6 @@ export function LaFiliera() {
             <stop offset="0%" stopColor="#b2833a" />
             <stop offset="100%" stopColor="#b2833a" />
           </linearGradient>
-          {/* Filtro discreto per rendere leggibile il tratto bianco-latte
-              sul fondo bianco-calce: sola ombra minima, nessun glow. */}
-          <filter id="filo-latte-shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="1.2"
-              floodColor="#1f1a15" floodOpacity="0.18" />
-          </filter>
         </defs>
         <path
           data-filo="main"
@@ -191,14 +223,25 @@ export function LaFiliera() {
           strokeLinecap="round"
           style={staticStroke}
         />
+        {/* Tratto latte — doppio stroke per staccare dal fondo bianco calce
+            senza filtri SVG: sotto un avorio caldo più profondo, sopra un
+            bianco latte. Niente feDropShadow su elemento animato. */}
+        <path
+          data-filo="latte-under"
+          d={D_LATTE}
+          fill="none"
+          stroke="#e8dcc0"
+          strokeWidth="4.2"
+          strokeLinecap="round"
+          style={staticStroke}
+        />
         <path
           data-filo="latte"
           d={D_LATTE}
           fill="none"
           stroke="#fffdf7"
-          strokeWidth="3"
+          strokeWidth="2.4"
           strokeLinecap="round"
-          filter="url(#filo-latte-shadow)"
           style={staticStroke}
         />
         <path
@@ -223,7 +266,9 @@ export function LaFiliera() {
         <circle data-dot cx="100" cy="520" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
         <circle data-dot cx="300" cy="1560" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
         <circle data-dot cx="200" cy="2200" r="8" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="3400" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        {/* Ultimo nodo alzato a cy=3120 per restare visibile sopra
+            l'handoff pietra-800 (che parte dal fondo). */}
+        <circle data-dot cx="200" cy="3120" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
       </svg>
 
       {/* Contenuti — 4 nodi in flusso normale, lato alternato rispetto al filo */}
