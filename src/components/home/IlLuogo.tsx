@@ -274,7 +274,7 @@ export function IlLuogo() {
       data-act="luogo"
       ref={rootRef}
       aria-label="Il Luogo"
-      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:min-h-[360dvh]"
+      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:min-h-[240dvh]"
     >
       {/* Stage sticky (CSS nativo, NON GSAP pin) */}
       <div
