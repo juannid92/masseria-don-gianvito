@@ -5,20 +5,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
- * ATTO 04 — LA FILIERA.
- * Firma: FILO · MATERIA CHE CAMBIA · CONTINUITÀ.
- * Regia: un unico tracciato SVG che si disegna con lo scroll, attraversa
- * tutta la sezione, si sdoppia (crema per il latte, bordeaux per la carne)
- * e si riunisce in oro fino alla tavola. Nessun pin, nessuno sticky a
- * piena altezza, nessun traveling orizzontale.
- *
- * Il path parte dall'endpoint destro del solco chiuso dall'Atto 03
- * (viewBox 1200×300, x=1240, y≈230 → qui riscalato in viewBox 400×3800).
- * Il fondo di partenza è var(--marrone), identico al fondo finale del 03.
- *
- * Sostituire eventuali crop/texture provvisori con fotografie autentiche
- * dei campi, degli animali, del caseificio e della tavola prima della
- * pubblicazione.
+ * ATTO 04 — LA FILIERA. Nuova veste: bianco calce dominante, filo dorato,
+ * sdoppiamento latte/carminio, riunione oro. Nessuna finta materia:
+ * solo bianco pieno, grana finissima, luce direzionale tenue lungo il filo,
+ * e una campitura pietra-800 riservata al solo momento della riunione.
+ * Regia, path, timeline, trigger, copy, pin: invariati.
  */
 
 type NodoId = "terra" | "animali" | "trasformazione" | "tavola";
