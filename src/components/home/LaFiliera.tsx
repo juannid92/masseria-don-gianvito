@@ -114,7 +114,7 @@ export function LaFiliera() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
-          start: "top top",
+          start: "top bottom",
           end: "bottom bottom",
           scrub: 0.6,
           invalidateOnRefresh: true,
