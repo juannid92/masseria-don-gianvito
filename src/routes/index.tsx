@@ -4,7 +4,6 @@ import { IlManifesto } from "@/components/home/IlManifesto";
 import { LaStoria } from "@/components/home/LaStoria";
 import { IlLuogo } from "@/components/home/IlLuogo";
 import { LaFiliera } from "@/components/home/LaFiliera";
-import { LaTavola } from "@/components/home/LaTavola";
 import { useHomeHashScroll } from "@/lib/nav";
 
 export const Route = createFileRoute("/")({
@@ -47,7 +46,6 @@ function HomePage() {
       <LaStoria />
       <IlLuogo />
       <LaFiliera />
-      <LaTavola />
     </>
   );
 }
