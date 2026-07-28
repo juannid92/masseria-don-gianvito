@@ -649,7 +649,7 @@ function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
             className={`font-eyebrow text-[10px] tracking-[0.34em] md:text-[11px] ${
               isArrosto
                 ? "text-[color:var(--carminio)]"
-                : "text-[color:var(--oro-su-scuro)]"
+                : "text-[color:var(--bianco-calce)]/70"
             }`}
           >
             {q.occhiello}
