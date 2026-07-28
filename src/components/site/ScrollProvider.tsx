@@ -55,6 +55,16 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
       gsap.ticker.lagSmoothing(0);
     };
 
+    // Instrumentation ?verify=1 — sonda P3.
+    // Esporre ScrollTrigger permette di contare i trigger reali dell'istanza
+    // GSAP effettivamente usata dall'app (i probe che re-importano il modulo
+    // vedono un'altra istanza e restituiscono 0). ESCLUSIVAMENTE dietro
+    // ?verify=1: se il flag non è presente, la proprietà non viene mai
+    // scritta. Impossibile in produzione senza il flag.
+    if (verifyMode) {
+      (window as unknown as { __ST?: typeof ScrollTrigger }).__ST = ScrollTrigger;
+    }
+
     const applyMotionPreference = () => {
       const reduced = motionQuery.matches;
       root.classList.add("js-ready");

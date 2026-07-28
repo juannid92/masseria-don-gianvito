@@ -210,7 +210,10 @@ export function IlLuogo() {
                 ease: "none",
                 scrollTrigger: {
                   trigger: mask,
-                  start: "top 92%",
+                  // Anticipato da 92% a 100%: la fotografia inizia ad affiorare
+                  // non appena il bordo superiore della maschera tocca il fondo
+                  // del viewport. Nessun tratto vuoto in ingresso su mobile.
+                  start: "top 100%",
                   end: "top 40%",
                   scrub: 0.6,
                   invalidateOnRefresh: true,

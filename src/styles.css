@@ -15,14 +15,32 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* Brand */
+  /* ============================================================
+     BRAND — Palette OPZIONE A "Pietra e Oliva" (Turno A).
+     Fonte unica di verità. I nomi vecchi (crema/marrone/bordeaux/
+     terracotta/oliva/oro) restano definiti come ALIAS di transizione
+     più in basso, verranno rimossi nel Turno B insieme alla
+     rifattorizzazione tonale degli atti.
+     ============================================================ */
+  --color-pietra-100: var(--pietra-100);
+  --color-pietra-200: var(--pietra-200);
+  --color-pietra-400: var(--pietra-400);
+  --color-pietra-800: var(--pietra-800);
+  --color-oliva-500: var(--oliva-500);
+  --color-oliva-700: var(--oliva-700);
+  --color-oro-antico: var(--oro-antico);
+  --color-ruggine: var(--ruggine);
   --color-carbone: var(--carbone);
-  --color-bordeaux: var(--bordeaux);
-  --color-terracotta: var(--terracotta);
-  --color-crema: var(--crema);
-  --color-marrone: var(--marrone);
-  --color-oliva: var(--oliva);
-  --color-oro: var(--oro);
+
+  /* Alias di transizione — MAPPATURA VECCHIO → NUOVO.
+     Da rimuovere nel Turno B una volta che gli atti 00–04 usano
+     esclusivamente i nuovi nomi. */
+  --color-crema: var(--pietra-100);
+  --color-marrone: var(--pietra-800);
+  --color-oliva: var(--oliva-500);
+  --color-oro: var(--oro-antico);
+  --color-bordeaux: var(--ruggine);
+  --color-terracotta: var(--ruggine);
 
   /* shadcn semantic */
   --color-background: var(--background);
@@ -58,35 +76,56 @@
   --page-header-safe-offset: calc(var(--header-offset) + 28px);
   --radius: 0.5rem;
 
-  /* === Palette === */
-  --carbone: #1a1210;
-  --bordeaux: #6e1a14;
-  --terracotta: #b33a1a;
-  --crema: #f2e8d5;
-  --marrone: #3d2a1e;
-  --oliva: #6b7340;
-  --oro: #c49a4a;
+  /* ============================================================
+     PALETTE — OPZIONE A "Pietra e Oliva"
+     Regole (Turno A):
+     - fondo dominante per atto: chiaro (pietra-100/200) O scuro (pietra-800)
+     - un solo accento vivo per atto (oliva | oro-antico | ruggine)
+     - ruggine: solo carne/cottura, max 2 momenti nel sito
+     - oro-antico: max 1 occorrenza per atto
+     - carbone: solo testo di lettura, mai fondo di un intero atto
+     - bordeaux/terracotta: RIMOSSI dalla palette
+     ============================================================ */
+  --pietra-100: #f4f0e6;
+  --pietra-200: #e5ddc9;
+  --pietra-400: #b6a98a;
+  --pietra-800: #4b4636;
+  --oliva-500: #7a8551;
+  --oliva-700: #4d5734;
+  --oro-antico: #b2833a;
+  --ruggine: #8a4a2e;
+  --carbone: #1f1a15;
+
+  /* Alias di transizione (rimossi nel Turno B) */
+  --crema: var(--pietra-100);
+  --marrone: var(--pietra-800);
+  --oliva: var(--oliva-500);
+  --oro: var(--oro-antico);
+  --bordeaux: var(--ruggine);
+  --terracotta: var(--ruggine);
 
   /* === shadcn semantic === */
-  --background: oklch(0.16 0.02 35);
-  --foreground: oklch(0.93 0.04 75);
-  --card: oklch(0.2 0.03 35);
-  --card-foreground: oklch(0.93 0.04 75);
-  --popover: oklch(0.2 0.03 35);
-  --popover-foreground: oklch(0.93 0.04 75);
-  --primary: oklch(0.55 0.1 90);
-  --primary-foreground: oklch(0.16 0.02 35);
-  --secondary: oklch(0.28 0.04 40);
-  --secondary-foreground: oklch(0.93 0.04 75);
-  --muted: oklch(0.24 0.02 35);
-  --muted-foreground: oklch(0.72 0.03 70);
-  --accent: oklch(0.55 0.09 90);
-  --accent-foreground: oklch(0.16 0.02 35);
-  --destructive: oklch(0.45 0.15 25);
-  --destructive-foreground: oklch(0.97 0.02 80);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.66 0.1 85);
+  /* Allineati alla palette Pietra e Oliva:
+     fondo chiaro (pietra-100), testo carbone, primary oliva. */
+  --background: #f4f0e6;
+  --foreground: #1f1a15;
+  --card: #f4f0e6;
+  --card-foreground: #1f1a15;
+  --popover: #f4f0e6;
+  --popover-foreground: #1f1a15;
+  --primary: #7a8551;
+  --primary-foreground: #f4f0e6;
+  --secondary: #e5ddc9;
+  --secondary-foreground: #1f1a15;
+  --muted: #e5ddc9;
+  --muted-foreground: #4b4636;
+  --accent: #b2833a;
+  --accent-foreground: #1f1a15;
+  --destructive: #8a4a2e;
+  --destructive-foreground: #f4f0e6;
+  --border: rgba(31, 26, 21, 0.12);
+  --input: rgba(31, 26, 21, 0.12);
+  --ring: #b2833a;
 }
 
 @media (min-width: 768px) {
@@ -109,8 +148,10 @@
   }
 
   body {
-    background-color: var(--carbone);
-    color: var(--crema);
+    /* Body neutro: gli atti dipingono i propri fondi.
+       Fondo pietra chiaro evita flash scuro tra le sezioni. */
+    background-color: var(--pietra-100);
+    color: var(--carbone);
     font-family: var(--font-sans);
     font-size: 16px;
     overflow-x: hidden;
