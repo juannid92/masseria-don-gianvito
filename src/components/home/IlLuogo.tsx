@@ -76,7 +76,11 @@ export function IlLuogo() {
         const chiusura = root.querySelector<HTMLElement>("[data-chiusura]");
         const handoff = root.querySelector<HTMLElement>("[data-handoff]");
         const occhiello04 = root.querySelector<HTMLElement>("[data-occhiello-04]");
+        const eyebrow = root.querySelector<HTMLElement>("[data-eyebrow-03]");
         if (!sticky || !mask || !photo) return;
+
+        // Stato di giunzione condiviso Fase A ↔ Fase B (deve combaciare esatto).
+        const MASK_JOIN = "inset(0% 12% 0% 12%)";
 
         // Solco: preparo dasharray in base alla lunghezza reale.
         let solcoLen = 0;
@@ -85,6 +89,29 @@ export function IlLuogo() {
           gsap.set(solco, { strokeDasharray: solcoLen, strokeDashoffset: solcoLen });
         }
 
+        // ── FASE A · APPROCCIO ────────────────────────────────────────────
+        // Trigger dedicato (nessun pin) che copre i ~100dvh in cui la sezione
+        // sale dal fondo del viewport fino ad agganciarsi allo sticky.
+        // Durante questa fase il visitatore vede maschera aprirsi, foto,
+        // occhiello e prima riga di titolo — mai un tratto vuoto.
+        const tlA = gsap.timeline({
+          scrollTrigger: {
+            trigger: root,
+            start: "top bottom",
+            end: "top top",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+          defaults: { ease: "none" },
+        });
+        if (cut) tlA.fromTo(cut, { scaleY: 1, opacity: 1 }, { scaleY: 0.02, opacity: 0, duration: 0.5 }, 0);
+        if (muretto) tlA.fromTo(muretto, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55 }, 0.35);
+        tlA.fromTo(mask, { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: MASK_JOIN, duration: 0.85 }, 0.05);
+        if (eyebrow) tlA.fromTo(eyebrow, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3 }, 0.35);
+        if (righe[0])
+          tlA.fromTo(righe[0], { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35 }, 0.55);
+
+        // ── FASE B · SEQUENZA STICKY (riprende dallo stato di giunzione) ──
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: root,
@@ -96,50 +123,31 @@ export function IlLuogo() {
           defaults: { ease: "none" },
         });
 
-        // ── Fase A · match cut ────────────────────────────────────────────
-        // Linea d'oro verticale (continua lo spigolo della pietra di Storia)
-        // si accorcia e ruota fino a coincidere con il muretto orizzontale.
-        if (cut)
-          tl.fromTo(
-            cut,
-            { scaleY: 1, opacity: 1 },
-            { scaleY: 0.02, opacity: 0, duration: 0.1 },
-            0.04,
-          );
-        if (muretto)
-          tl.fromTo(
-            muretto,
-            { scaleX: 0, opacity: 0 },
-            { scaleX: 1, opacity: 1, duration: 0.12 },
-            0.06,
-          );
-
-        // ── Fase B · maschera che si apre dal centro ──────────────────────
+        // La maschera prosegue dallo stato di giunzione (12% inset) fino a 0.
         tl.fromTo(
           mask,
-          { clipPath: "inset(0% 50% 0% 50%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 0.22 },
-          0.1,
+          { clipPath: MASK_JOIN },
+          { clipPath: "inset(0% 0% 0% 0%)", duration: 0.16 },
+          0,
         );
-
-        // Reveal tipografico per riga
-        righe.forEach((riga, i) => {
+        // Titolo: la riga 0 è già dentro dalla Fase A. Rivelo righe 1 e 2.
+        righe.slice(1).forEach((riga, i) => {
           tl.fromTo(
             riga,
             { yPercent: 110, opacity: 0 },
             { yPercent: 0, opacity: 1, duration: 0.08 },
-            0.16 + i * 0.05,
+            0.06 + i * 0.06,
           );
         });
         if (testo)
-          tl.fromTo(testo, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.08 }, 0.34);
+          tl.fromTo(testo, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.08 }, 0.28);
 
         // ── Fase C · primo depth crop (scale 1 → 1.2) ─────────────────────
         tl.fromTo(
           photo,
           { scale: 1, transformOrigin: "50% 55%" },
           { scale: 1.2, duration: 0.24 },
-          0.36,
+          0.3,
         );
         // Rack focus: livello lontano perde nitidezza.
         if (photoFar)
@@ -147,7 +155,7 @@ export function IlLuogo() {
             photoFar,
             { filter: "blur(0px)", opacity: 0.9 },
             { filter: "blur(6px)", opacity: 0.55, duration: 0.24 },
-            0.36,
+            0.3,
           );
 
         // ── Fase D · secondo depth crop (scale 1.2 → 1.35) sul cortile ────
@@ -159,36 +167,30 @@ export function IlLuogo() {
             duration: 0.22,
             ease: "power1.inOut",
           },
-          0.6,
+          0.54,
         );
 
         // Annotazioni: una alla volta, cross dissolve (mai due leggibili insieme).
         annot.forEach((el, i) => {
-          const inAt = [0.42, 0.6, 0.76][i];
-          const outAt = [0.58, 0.74, 0.92][i];
+          const inAt = [0.36, 0.52, 0.66][i];
+          const outAt = [0.5, 0.64, 0.78][i];
           tl.fromTo(el, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.05 }, inAt);
           if (i < 2) tl.to(el, { opacity: 0, y: -8, duration: 0.05 }, outAt);
         });
 
         // ── Fase E · chiusura sul cortile, solco e occhiello 04 ───────────
+        // Anticipata: solco e occhiello 04 devono essere COMPLETAMENTE visibili
+        // nel 15% finale dello sticky, prima del rilascio.
         if (rack)
-          tl.fromTo(
-            rack,
-            { opacity: 0 },
-            { opacity: 1, duration: 0.08 },
-            0.82,
-          );
+          tl.fromTo(rack, { opacity: 0 }, { opacity: 1, duration: 0.08 }, 0.7);
+        if (handoff)
+          tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.12 }, 0.72);
         if (solco)
-          tl.to(
-            solco,
-            { strokeDashoffset: 0, duration: 0.14, ease: "power2.out" },
-            0.86,
-          );
+          tl.to(solco, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out" }, 0.72);
         if (chiusura)
-          tl.fromTo(chiusura, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.06 }, 0.9);
-        if (handoff) tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.06 }, 0.92);
+          tl.fromTo(chiusura, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.06 }, 0.8);
         if (occhiello04)
-          tl.fromTo(occhiello04, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.05 }, 0.96);
+          tl.fromTo(occhiello04, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.06 }, 0.85);
       });
 
       // Mobile / landscape corto: nessuno sticky lungo, sequenza verticale.
@@ -208,8 +210,8 @@ export function IlLuogo() {
                 ease: "none",
                 scrollTrigger: {
                   trigger: mask,
-                  start: "top 85%",
-                  end: "top 30%",
+                  start: "top 92%",
+                  end: "top 40%",
                   scrub: 0.6,
                   invalidateOnRefresh: true,
                 },
@@ -370,6 +372,7 @@ export function IlLuogo() {
           style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
         >
           <motion.p
+            data-eyebrow-03
             initial={statico ? false : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
