@@ -197,16 +197,14 @@ export function LaFiliera() {
             "radial-gradient(60% 40% at 26% 12%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 70%), radial-gradient(50% 35% at 74% 58%, color-mix(in oklab, var(--oro-antico) 6%, transparent) 0%, transparent 70%), radial-gradient(50% 30% at 50% 92%, color-mix(in oklab, var(--pietra-800) 10%, transparent) 0%, transparent 72%)",
         }}
       />
-      {/* Grana statica: opacità dimezzata (0.30 → 0.15) e altezza limitata
-          a ~120dvh sticky, così la texture ripaint copre solo l'area
-          visibile invece delle intere 380dvh. Recupero paint su Filiera. */}
+      {/* Grana statica: opacità dimezzata 0.30 → 0.15 per ridurre il costo
+          di composite mix-blend-overlay sull'intera sezione (380dvh).
+          Layer promosso, invariato in flow. */}
       <div
         aria-hidden
-        className="pointer-events-none sticky top-0 z-0 h-[120dvh] w-full"
+        className="grain pointer-events-none absolute inset-0 z-0 opacity-15"
         style={{ transform: "translateZ(0)" }}
-      >
-        <div className="grain absolute inset-0 opacity-15" />
-      </div>
+      />
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
