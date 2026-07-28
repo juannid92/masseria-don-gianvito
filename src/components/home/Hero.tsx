@@ -322,7 +322,7 @@ export function Hero() {
         <div aria-hidden className="hairline-oro" />
         <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-5 md:px-10 md:py-6">
           <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
-          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/65 md:text-[10px]">
+          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--pietra-800)]/70 md:text-[10px]">
             01 · Il Manifesto
           </p>
         </div>
