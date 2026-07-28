@@ -238,18 +238,18 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/75 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico-testo)] md:text-[11px]"
           >
             04 — LA FILIERA
           </motion.p>
-          <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--crema)] md:mt-10">
+          <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
             <span className="block">Dalla terra</span>
             <span className="ml-[3%] block md:ml-[7%]">alla tavola,</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro)] md:ml-[3%]">
+            <span className="ml-[1%] block italic text-[color:var(--carbone)] md:ml-[3%]">
               senza uscire.
             </span>
           </h2>
-          <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:mt-8 md:text-[17px]">
+          <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
             Ogni passaggio avviene dentro la masseria. Quello che cresce nei campi nutre gli
             animali. Quello che gli animali danno passa dal caseificio e dalla macelleria. Quello
             che ne esce arriva in sala.
@@ -271,13 +271,13 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/85 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[2].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--crema)]">
+          <h3 className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
             <span className="block">{NODI[2].titolo[0]}</span>
-            <span className="ml-[2%] block italic text-[color:var(--oro)]">
+            <span className="ml-[2%] block italic text-[color:var(--carbone)]">
               {NODI[2].titolo[1]}
             </span>
           </h3>
@@ -289,10 +289,10 @@ export function LaFiliera() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="max-w-[36ch] md:pl-4"
             >
-              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/80">
+              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80">
                 IL LATTE
               </p>
-              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 [@media(min-width:900px)]:text-[color:var(--carbone)]/85 md:text-[17px]">
+              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoLatte}
               </p>
             </motion.div>
@@ -303,10 +303,10 @@ export function LaFiliera() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="max-w-[36ch] justify-self-end md:pr-4"
             >
-              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/80">
+              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--carminio-scuro)]">
                 LA CARNE
               </p>
-              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 md:text-[17px]">
+              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoCarne}
               </p>
             </motion.div>
@@ -323,40 +323,42 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/90 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[3].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--crema)] [@media(min-width:900px)]:text-[color:var(--carbone)]">
+          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
             <span className="block">{NODI[3].titolo[0]}</span>
-            <span className="mt-1 block italic text-[color:var(--oro)] [@media(min-width:900px)]:text-[color:var(--bordeaux)]">
+            <span className="mt-1 block italic text-[color:var(--carbone)]">
               {NODI[3].titolo[1]}
             </span>
           </h3>
-          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--crema)]/90 [@media(min-width:900px)]:text-[color:var(--carbone)]/85 md:text-[17px]">
+          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
             {NODI[3].testo}
           </p>
 
           {/* Chiusura dell'atto */}
-          <p className="mt-16 max-w-[30ch] font-display text-[clamp(1.2rem,2.4vw,1.8rem)] italic leading-[1.12] text-[color:var(--oro)] [@media(min-width:900px)]:text-[color:var(--bordeaux)] md:mt-24">
+          <p className="mt-16 max-w-[30ch] font-display text-[clamp(1.2rem,2.4vw,1.8rem)] italic leading-[1.12] text-[color:var(--carbone)] md:mt-24">
             Quattro mestieri, un solo percorso.
           </p>
         </article>
       </div>
 
-      {/* Handoff verso l'Atto 05 — fondo finale = fondo di partenza del 05 */}
+      {/* Handoff verso l'Atto 05 — unica campitura profonda ammessa nell'atto,
+          riservata al momento della riunione. Non è finta materia: è pietra
+          scura pulita, senza gradienti che imitano legno o cibo. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[36dvh]"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--crema) 82%, var(--oro)) 60%, color-mix(in oklab, var(--crema) 88%, var(--marrone)) 100%)",
+            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 60%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
         }}
       />
-      <div className="relative z-10 border-t border-[color:var(--marrone)]/25 bg-[color:color-mix(in_oklab,var(--crema)_88%,var(--marrone))]">
+      <div className="relative z-10 border-t border-[color:var(--bianco-calce)]/15 bg-[color:var(--pietra-800)]">
         <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-6 md:px-10 md:py-8">
-          <span aria-hidden className="h-px w-10 bg-[color:var(--bordeaux)]/60" />
-          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--carbone)]/70 md:text-[10px]">
+          <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
+          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/80 md:text-[10px]">
             05 — LA TAVOLA
           </p>
         </div>
@@ -387,7 +389,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/85 md:text-[11px]"
+          className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
         >
           {nodo.occhiello}
         </motion.p>
@@ -396,7 +398,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--crema)]"
+          className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--carbone)]"
         >
           {nodo.titolo[0]}
         </motion.h3>
@@ -405,7 +407,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
-          className="mt-6 text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:text-[17px]"
+          className="mt-6 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]"
         >
           {nodo.testo}
         </motion.p>
