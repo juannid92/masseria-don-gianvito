@@ -169,8 +169,14 @@
   }
 
   :focus-visible {
+    /* Anello a doppio contrasto: visibile sia su bianco-calce sia su pietra-800.
+       Il ring oro è la firma di brand, i due shadow (carbone + bianco-calce)
+       garantiscono contrasto pieno su qualunque fondo. */
     outline: 2px solid var(--oro-antico);
     outline-offset: 3px;
+    box-shadow:
+      0 0 0 1px var(--carbone),
+      0 0 0 6px color-mix(in oklab, var(--bianco-calce) 85%, transparent);
     border-radius: 2px;
   }
 
