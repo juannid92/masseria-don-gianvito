@@ -272,9 +272,10 @@ export function IlLuogo() {
     <section
       id="luogo"
       data-act="luogo"
+      data-tone="dark"
       ref={rootRef}
       aria-label="Il Luogo"
-      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:min-h-[170dvh]"
+      className="relative isolate w-full bg-[color:var(--pietra-800)] [@media(min-width:900px)]:min-h-[170dvh]"
     >
       {/* Stage sticky (CSS nativo, NON GSAP pin) */}
       <div
