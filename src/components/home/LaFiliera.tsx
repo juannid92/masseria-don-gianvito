@@ -283,18 +283,19 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico-testo)] md:text-[11px]"
           >
             04 — LA FILIERA
           </motion.p>
-          <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
+          <h2 data-parallax="fast" className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
             <span className="block">Dalla terra</span>
             <span className="ml-[3%] block md:ml-[7%]">alla tavola,</span>
             <span className="ml-[1%] block italic text-[color:var(--carbone)] md:ml-[3%]">
               senza uscire.
             </span>
           </h2>
-          <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
+          <p data-parallax="slow" className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
             Ogni passaggio avviene dentro la masseria. Quello che cresce nei campi nutre gli
             animali. Quello che gli animali danno passa dal caseificio e dalla macelleria. Quello
             che ne esce arriva in sala.
@@ -394,10 +395,10 @@ export function LaFiliera() {
           scura pulita, senza gradienti che imitano legno o cibo. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[36dvh]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[22dvh]"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 60%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
+            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 70%, var(--pietra-800)) 65%, var(--pietra-800) 100%)",
         }}
       />
       <div className="relative z-10 border-t border-[color:var(--bianco-calce)]/15 bg-[color:var(--pietra-800)]">
