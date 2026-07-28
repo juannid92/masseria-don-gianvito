@@ -383,6 +383,20 @@ export function IlLuogo() {
           }}
         />
 
+        {/* Scrim di leggibilità INDIPENDENTE dalla maschera.
+            Il titolo bianco resta leggibile anche quando la maschera è chiusa
+            e rivela il bianco calce ai lati: garantiamo un velo scuro locale
+            sotto l'angolo alto-sinistra (titolo) e sotto la fascia in basso
+            (occhiello + annotazioni). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-20"
+          style={{
+            background:
+              "linear-gradient(110deg, color-mix(in oklab, var(--pietra-800) 68%, transparent) 0%, color-mix(in oklab, var(--pietra-800) 22%, transparent) 46%, transparent 66%), linear-gradient(0deg, color-mix(in oklab, var(--pietra-800) 55%, transparent) 0%, transparent 34%)",
+          }}
+        />
+
         {/* Editoriale: titolo, testo, annotazioni */}
         <div
           className="relative z-30 mx-auto flex h-full max-w-[1600px] flex-col px-5 pb-16 md:px-10 md:pb-20"
