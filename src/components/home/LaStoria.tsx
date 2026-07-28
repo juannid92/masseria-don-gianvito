@@ -314,7 +314,7 @@ export function LaStoria() {
           <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.95] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
             <span className="block">Il tempo qui</span>
             <span className="ml-[4%] block md:ml-[9%]">non è passato.</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro-antico)] md:ml-[3%]">È rimasto.</span>
+            <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)] md:ml-[3%]">È rimasto.</span>
           </h2>
         </div>
 
@@ -374,7 +374,7 @@ export function LaStoria() {
                 style={{ paddingTop: "calc(var(--page-header-safe-offset) + 1vh)" }}
               >
                 <div className="max-w-[46ch]">
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)]/85">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]">
                     {m.occhiello}
                   </p>
                   <h3 className="mt-5 font-display text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1] text-[color:var(--bianco-calce)] [@media(max-height:520px)]:text-[clamp(1.5rem,3.4vw,2.1rem)]">
