@@ -82,39 +82,31 @@ export function LaFiliera() {
     gsap.registerPlugin(ScrollTrigger);
 
     const willChangeEls: HTMLElement[] = [];
-    const willChangeSvg: SVGPathElement[] = [];
+    const willChangeSvg: (SVGElement | HTMLElement)[] = [];
 
     const ctx = gsap.context(() => {
-      const main = root.querySelector<SVGPathElement>("[data-filo='main']");
-      const latte = root.querySelector<SVGPathElement>("[data-filo='latte']");
-      const latteUnder = root.querySelector<SVGPathElement>("[data-filo='latte-under']");
-      const carne = root.querySelector<SVGPathElement>("[data-filo='carne']");
-      const oro = root.querySelector<SVGPathElement>("[data-filo='oro']");
-      const dots = Array.from(root.querySelectorAll<SVGCircleElement>("[data-dot]"));
+      const filoWrap = root.querySelector<SVGElement>("[data-filo-wrap]");
       const parallaxSlow = Array.from(root.querySelectorAll<HTMLElement>("[data-parallax='slow']"));
       const parallaxFast = Array.from(root.querySelectorAll<HTMLElement>("[data-parallax='fast']"));
       const luce = root.querySelector<HTMLElement>("[data-luce]");
-      if (!main || !latte || !carne || !oro) return;
+      if (!filoWrap) return;
 
-      const setup = (p: SVGPathElement) => {
-        const len = p.getTotalLength();
-        gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
-        return len;
-      };
-      setup(main);
-      setup(latte);
-      if (latteUnder) setup(latteUnder);
-      setup(carne);
-      setup(oro);
-      dots.forEach((d) => gsap.set(d, { opacity: 0, scale: 0.6, transformOrigin: "center" }));
-
-      // Promozione a layer solo per gli elementi realmente animati durante lo
-      // scrub. Rimossa al kill del context per non trattenere memoria video.
-      const animated: (SVGPathElement | HTMLElement)[] = [main, latte, carne, oro];
-      if (latteUnder) animated.push(latteUnder);
-      animated.forEach((el) => ((el as SVGPathElement).style.willChange = "stroke-dashoffset"));
+      // Stato iniziale: SVG interamente clippato dal basso.
+      // La rivelazione avviene animando UNA SOLA proprietà CSS
+      // (clip-path: inset) sull'elemento SVG. Nessun ricalcolo di path
+      // né dashoffset: il compositore gestisce l'intero reveal fuori dal
+      // main thread. Fasi (main → latte/carne → oro) restano identiche
+      // grazie alla monotonia verticale dei tracciati:
+      //   main   Y ∈ [0, 2200]      → progresso 0 → 0.579
+      //   latte/carne Y ∈ [2200, 2920] → 0.579 → 0.768
+      //   oro    Y ∈ [2920, 3800]    → 0.768 → 1.0
+      // Coincide con la timeline precedente (main 0-0.55, biforcazione
+      // 0.55-0.75, oro 0.76-0.98). Nessun cambio percepito, nessun
+      // "accorciamento" del tracciato: le curve restano intatte.
+      gsap.set(filoWrap, { clipPath: "inset(0% 0% 100% 0%)" });
+      (filoWrap as unknown as HTMLElement).style.willChange = "clip-path";
+      willChangeSvg.push(filoWrap);
       [...parallaxSlow, ...parallaxFast].forEach((el) => (el.style.willChange = "transform"));
-      willChangeSvg.push(...(animated as SVGPathElement[]));
       willChangeEls.push(...parallaxSlow, ...parallaxFast);
 
       // UN SOLO trigger locale per il filo. Nodi e testi hanno ScrollTriggers
@@ -124,35 +116,18 @@ export function LaFiliera() {
           trigger: root,
           start: "top bottom",
           end: "bottom bottom",
-          // Scrub 0.9: bilancia inerzia trackpad e reattività desktop.
-          // 0.8 dava jitter su Filiera lunga; 0.9 tiene media FPS > 55.
           scrub: 0.9,
           invalidateOnRefresh: true,
         },
         defaults: { ease: "none" },
       });
 
-      // Fase A · disegno del filo principale (terra + animali), oro antico
-      tl.to(main, { strokeDashoffset: 0, duration: 0.55 }, 0);
-      // Il dot terra si accende quando il filo lo raggiunge (~progress 0.15)
-      tl.to(dots[0], { opacity: 1, scale: 1, duration: 0.04 }, 0.15);
-      // Il dot animali (~progress 0.4)
-      tl.to(dots[1], { opacity: 1, scale: 1, duration: 0.04 }, 0.4);
-
-      // Fase B · SDOPPIAMENTO — latte a sinistra (bianco-latte), carne a destra (carminio)
-      if (latteUnder) tl.to(latteUnder, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
-      tl.to(latte, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
-      tl.to(carne, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
-      // Segno visivo della biforcazione
-      tl.to(dots[2], { opacity: 1, scale: 1, duration: 0.04 }, 0.58);
-
-      // Fase C · CONVERGENZA in oro fino alla tavola
-      tl.to(oro, { strokeDashoffset: 0, duration: 0.22 }, 0.76);
-      tl.to(dots[3], { opacity: 1, scale: 1, duration: 0.04 }, 0.92);
+      // Rivelazione unica: clip inset animato dal 100% (tutto coperto)
+      // allo 0% (tutto visibile). Compositor-driven: il main thread
+      // non ridisegna i path a ogni frame.
+      tl.to(filoWrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1 }, 0);
 
       // PARALLASSE — solo transform, unico timeline, nessun trigger extra.
-      // Differenza fra livelli contigui ~10%: titoli scorrono al 100% (naturale),
-      // occhielli/annotazioni al 92%, corpo testo al 106%.
       parallaxSlow.forEach((el) => tl.fromTo(el, { yPercent: 4 }, { yPercent: -4, duration: 1 }, 0));
       parallaxFast.forEach((el) => tl.fromTo(el, { yPercent: -3 }, { yPercent: 3, duration: 1 }, 0));
 
@@ -163,16 +138,16 @@ export function LaFiliera() {
 
     return () => {
       ctx.revert();
-      willChangeSvg.forEach((el) => (el.style.willChange = ""));
+      willChangeSvg.forEach((el) => ((el as HTMLElement).style.willChange = ""));
       willChangeEls.forEach((el) => (el.style.willChange = ""));
     };
   }, [reduced]);
 
   const statico = reduced;
-  // Reduced motion: paths interamente disegnati (nessun dashoffset).
-  const staticStroke = statico
-    ? { strokeDasharray: undefined as string | undefined, strokeDashoffset: undefined as number | undefined }
-    : {};
+  // Reduced motion: SVG interamente visibile (nessun clip).
+  const filoWrapStyle = statico
+    ? { clipPath: "inset(0% 0% 0% 0%)" as string }
+    : { clipPath: "inset(0% 0% 100% 0%)" as string };
 
   return (
     <section
@@ -208,10 +183,12 @@ export function LaFiliera() {
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
+        data-filo-wrap
         aria-hidden
         className="pointer-events-none absolute inset-0 z-[2] h-full w-full"
         viewBox="0 0 400 3800"
         preserveAspectRatio="none"
+        style={filoWrapStyle}
       >
         <defs>
           {/* Filo principale — oro antico costante, la luce direzionale dello
@@ -228,7 +205,6 @@ export function LaFiliera() {
           stroke="url(#filo-main)"
           strokeWidth="2.2"
           strokeLinecap="round"
-          style={staticStroke}
         />
         {/* Tratto latte — doppio stroke per staccare dal fondo bianco calce
             senza filtri SVG: sotto un avorio caldo più profondo, sopra un
@@ -240,7 +216,6 @@ export function LaFiliera() {
           stroke="#e8dcc0"
           strokeWidth="4.2"
           strokeLinecap="round"
-          style={staticStroke}
         />
         <path
           data-filo="latte"
@@ -249,7 +224,6 @@ export function LaFiliera() {
           stroke="#fffdf7"
           strokeWidth="2.4"
           strokeLinecap="round"
-          style={staticStroke}
         />
         <path
           data-filo="carne"
@@ -258,7 +232,6 @@ export function LaFiliera() {
           stroke="#9b2233"
           strokeWidth="2.4"
           strokeLinecap="round"
-          style={staticStroke}
         />
         <path
           data-filo="oro"
@@ -267,15 +240,14 @@ export function LaFiliera() {
           stroke="#b2833a"
           strokeWidth="4"
           strokeLinecap="round"
-          style={staticStroke}
         />
-        {/* Nodi lungo il filo */}
-        <circle data-dot cx="100" cy="520" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="300" cy="1560" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="2200" r="8" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
-        {/* Ultimo nodo alzato a cy=3120 per restare visibile sopra
-            l'handoff pietra-800 (che parte dal fondo). */}
-        <circle data-dot cx="200" cy="3120" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        {/* Nodi lungo il filo — appaiono naturalmente man mano che il clip
+            supera la loro Y. Nessun tween per-nodo: pop visivo garantito
+            dal transito del bordo di clip. */}
+        <circle cx="100" cy="520" r="7" fill="#b2833a" />
+        <circle cx="300" cy="1560" r="7" fill="#b2833a" />
+        <circle cx="200" cy="2200" r="8" fill="#b2833a" />
+        <circle cx="200" cy="3120" r="9" fill="#b2833a" />
       </svg>
 
       {/* Contenuti — 4 nodi in flusso normale, lato alternato rispetto al filo */}
