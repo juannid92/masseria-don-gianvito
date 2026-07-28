@@ -116,6 +116,9 @@ export function Header() {
   const animaAttiva = ANIME.find((a) => a.to === location.pathname);
 
   const isLight = tone === "light";
+  // Oro adattivo: su fondi chiari usa sempre `--oro-antico-testo`
+  // (contrasto AA), su fondi scuri l'oro pieno.
+  const oroText = isLight ? "var(--oro-antico-testo)" : "var(--oro-antico)";
   const textStrong = isLight ? "text-[color:var(--pietra-800)]" : "text-[color:var(--bianco-calce)]";
   const textSoft = isLight
     ? "text-[color:var(--pietra-800)]/75 hover:text-[color:var(--pietra-800)]"
@@ -145,7 +148,10 @@ export function Header() {
 
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-6 px-5 md:px-10">
         <Link to="/" className="group flex flex-col leading-none" aria-label={MASSERIA.nome}>
-          <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/80">
+          <span
+            className="font-eyebrow text-[9px] tracking-[0.34em] transition-colors duration-500"
+            style={{ color: `color-mix(in oklab, ${oroText} 80%, transparent)` }}
+          >
             Noci · Puglia
           </span>
           <span
@@ -154,7 +160,13 @@ export function Header() {
               textStrong,
             )}
           >
-            Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
+            Masseria{" "}
+            <em
+              className="not-italic transition-colors duration-500"
+              style={{ color: oroText }}
+            >
+              Don Gianvito
+            </em>
           </span>
         </Link>
 
@@ -182,10 +194,11 @@ export function Header() {
               onClick={() => setOpen((v) => !v)}
               className={cn(
                 "font-eyebrow text-[10px] tracking-[0.24em] transition-colors",
-                open || animaAttiva
-                  ? "text-[color:var(--oro-antico)]"
-                  : textSoft,
+                (open || animaAttiva) ? "" : textSoft,
               )}
+              style={
+                open || animaAttiva ? { color: oroText } : undefined
+              }
             >
               La Masseria
             </button>
@@ -233,7 +246,11 @@ export function Header() {
           <button
             type="button"
             onClick={() => goToSection("prenota")}
-            className="border border-[color:var(--oro-antico)]/60 px-5 py-2 font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-antico)] transition-colors hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)]"
+            className="px-5 py-2 font-eyebrow text-[10px] tracking-[0.24em] transition-colors border hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)]"
+            style={{
+              color: oroText,
+              borderColor: `color-mix(in oklab, ${oroText} 60%, transparent)`,
+            }}
           >
             Prenota
           </button>
@@ -256,8 +273,8 @@ export function Header() {
             Menu
           </span>
           <span aria-hidden className="flex h-4 w-6 flex-col justify-between py-[3px]">
-            <span className="block h-px w-full bg-[color:var(--oro-antico)]" />
-            <span className="block h-px w-full bg-[color:var(--oro-antico)]" />
+            <span className="block h-px w-full" style={{ background: oroText }} />
+            <span className="block h-px w-full" style={{ background: oroText }} />
           </span>
         </button>
       </div>
