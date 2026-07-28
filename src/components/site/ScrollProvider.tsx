@@ -24,6 +24,13 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
     let tick: ((time: number) => void) | null = null;
     let onLenisScroll: (() => void) | null = null;
 
+    // Modalità ?verify=1 — utile a Playwright: disattiva lo smooth-scroll
+    // così le posizioni finali sono deterministiche. Lenis non viene
+    // istanziato affatto: fallback allo scroll nativo del browser.
+    const verifyMode =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("verify") === "1";
+
     const teardownLenis = () => {
       if (onLenisScroll && lenis) lenis.off("scroll", onLenisScroll);
       if (tick) gsap.ticker.remove(tick);
@@ -36,6 +43,7 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
 
     const setupLenis = () => {
       if (lenis) return;
+      if (verifyMode) return;
       lenis = new Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false });
       (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
