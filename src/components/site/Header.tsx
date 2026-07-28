@@ -137,7 +137,12 @@ export function Header() {
           <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/80">
             Noci · Puglia
           </span>
-          <span className={cn("font-display text-[15px] leading-tight md:text-[17px]", textStrong)}>
+          <span
+            className={cn(
+              "font-display text-[15px] leading-tight transition-colors duration-500 md:text-[17px]",
+              textStrong,
+            )}
+          >
             Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
           </span>
         </Link>
