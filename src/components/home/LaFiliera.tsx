@@ -169,19 +169,25 @@ export function LaFiliera() {
         preserveAspectRatio="none"
       >
         <defs>
+          {/* Filo principale — oro antico costante, la luce direzionale dello
+              sfondo dà la variazione senza sporcare la tinta. */}
           <linearGradient id="filo-main" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6b7340" />
-            <stop offset="35%" stopColor="#6b7340" />
-            <stop offset="60%" stopColor="#5a4a2e" />
-            <stop offset="100%" stopColor="#3d2a1e" />
+            <stop offset="0%" stopColor="#b2833a" />
+            <stop offset="100%" stopColor="#b2833a" />
           </linearGradient>
+          {/* Filtro discreto per rendere leggibile il tratto bianco-latte
+              sul fondo bianco-calce: sola ombra minima, nessun glow. */}
+          <filter id="filo-latte-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="0" stdDeviation="1.2"
+              floodColor="#1f1a15" floodOpacity="0.18" />
+          </filter>
         </defs>
         <path
           data-filo="main"
           d={D_MAIN}
           fill="none"
           stroke="url(#filo-main)"
-          strokeWidth="2.6"
+          strokeWidth="2.2"
           strokeLinecap="round"
           style={staticStroke}
         />
@@ -189,17 +195,18 @@ export function LaFiliera() {
           data-filo="latte"
           d={D_LATTE}
           fill="none"
-          stroke="#f2e8d5"
-          strokeWidth="2.2"
+          stroke="#fffdf7"
+          strokeWidth="3"
           strokeLinecap="round"
+          filter="url(#filo-latte-shadow)"
           style={staticStroke}
         />
         <path
           data-filo="carne"
           d={D_CARNE}
           fill="none"
-          stroke="#6e1a14"
-          strokeWidth="2.2"
+          stroke="#9b2233"
+          strokeWidth="2.4"
           strokeLinecap="round"
           style={staticStroke}
         />
@@ -207,16 +214,16 @@ export function LaFiliera() {
           data-filo="oro"
           d={D_ORO}
           fill="none"
-          stroke="#c49a4a"
-          strokeWidth="3"
+          stroke="#b2833a"
+          strokeWidth="4"
           strokeLinecap="round"
           style={staticStroke}
         />
         {/* Nodi lungo il filo */}
-        <circle data-dot cx="100" cy="520" r="6" fill="#6b7340" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="300" cy="1560" r="6" fill="#3d2a1e" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="2200" r="6" fill="#c49a4a" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="3400" r="7" fill="#c49a4a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="100" cy="520" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="300" cy="1560" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="200" cy="2200" r="8" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="200" cy="3400" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
       </svg>
 
       {/* Contenuti — 4 nodi in flusso normale, lato alternato rispetto al filo */}
