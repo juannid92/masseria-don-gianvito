@@ -113,14 +113,14 @@ export function LaFiliera() {
         defaults: { ease: "none" },
       });
 
-      // Fase A · disegno del filo principale (terra + animali), oliva → marrone
+      // Fase A · disegno del filo principale (terra + animali), oro antico
       tl.to(main, { strokeDashoffset: 0, duration: 0.55 }, 0);
       // Il dot terra si accende quando il filo lo raggiunge (~progress 0.15)
       tl.to(dots[0], { opacity: 1, scale: 1, duration: 0.04 }, 0.15);
       // Il dot animali (~progress 0.4)
       tl.to(dots[1], { opacity: 1, scale: 1, duration: 0.04 }, 0.4);
 
-      // Fase B · SDOPPIAMENTO — latte a sinistra (crema), carne a destra (bordeaux)
+      // Fase B · SDOPPIAMENTO — latte a sinistra (bianco-latte), carne a destra (carminio)
       tl.to(latte, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       tl.to(carne, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       // Segno visivo della biforcazione
