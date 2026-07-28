@@ -42,7 +42,7 @@ export function IlManifesto() {
           scrollTrigger: {
             trigger: root,
             start: pin ? "top top" : "top bottom",
-            end: pin ? "+=120%" : "bottom bottom",
+            end: pin ? "+=70%" : "bottom bottom",
             scrub: 0.6,
             invalidateOnRefresh: true,
             ...(pin ? { pin: stage, pinSpacing: true, anticipatePin: 1 } : {}),
@@ -267,7 +267,7 @@ export function IlManifesto() {
         <div
           aria-hidden
           data-handoff
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[58dvh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[34dvh]"
           style={{
             opacity: statico ? 1 : 0,
             background:
@@ -276,14 +276,14 @@ export function IlManifesto() {
         />
 
         <div className="relative z-20">
-          <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-6 md:px-10 md:pb-8">
+          <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-8 md:px-10 md:pb-10">
             <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
             <p
               data-occhiello-02
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/80 md:text-[10px]"
+              className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/90 md:text-[12px]"
               style={{ opacity: vis }}
             >
-              02 — LA STORIA
+              02 — LA STORIA · Un tempo lungo, senza fretta.
             </p>
           </div>
         </div>

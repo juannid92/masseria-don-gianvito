@@ -518,12 +518,12 @@ function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
   const isArrosto = q.id === "arrosto";
   const altezzaClass =
     q.id === "cucina"
-      ? "min-h-[115dvh] [@media(min-width:900px)]:min-h-[105dvh]"
+      ? "min-h-[92dvh] [@media(min-width:900px)]:min-h-[82dvh]"
       : q.id === "arrosto"
-        ? "min-h-[125dvh] [@media(min-width:900px)]:min-h-[110dvh]"
+        ? "min-h-[98dvh] [@media(min-width:900px)]:min-h-[86dvh]"
         : q.id === "dolce"
-          ? "min-h-[95dvh] [@media(min-width:900px)]:min-h-[85dvh]"
-          : "min-h-[105dvh] [@media(min-width:900px)]:min-h-[95dvh]";
+          ? "min-h-[78dvh] [@media(min-width:900px)]:min-h-[70dvh]"
+          : "min-h-[86dvh] [@media(min-width:900px)]:min-h-[76dvh]";
 
   return (
     <article
