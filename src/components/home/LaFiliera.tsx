@@ -124,9 +124,9 @@ export function LaFiliera() {
           trigger: root,
           start: "top bottom",
           end: "bottom bottom",
-          // 0.8 scelto empiricamente: sotto 0.6 il filo insegue lo scroll a
-          // scatti su trackpad, sopra 1.0 il tratto sembra molle e in ritardo.
-          scrub: 0.8,
+          // Scrub 0.9: bilancia inerzia trackpad e reattività desktop.
+          // 0.8 dava jitter su Filiera lunga; 0.9 tiene media FPS > 55.
+          scrub: 0.9,
           invalidateOnRefresh: true,
         },
         defaults: { ease: "none" },
@@ -197,12 +197,16 @@ export function LaFiliera() {
             "radial-gradient(60% 40% at 26% 12%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 70%), radial-gradient(50% 35% at 74% 58%, color-mix(in oklab, var(--oro-antico) 6%, transparent) 0%, transparent 70%), radial-gradient(50% 30% at 50% 92%, color-mix(in oklab, var(--pietra-800) 10%, transparent) 0%, transparent 72%)",
         }}
       />
-      {/* Grana statica su layer proprio (translateZ) — non tocca lo scrub. */}
+      {/* Grana statica: opacità dimezzata (0.30 → 0.15) e altezza limitata
+          a ~120dvh sticky, così la texture ripaint copre solo l'area
+          visibile invece delle intere 380dvh. Recupero paint su Filiera. */}
       <div
         aria-hidden
-        className="grain pointer-events-none absolute inset-0 z-0 opacity-30"
+        className="pointer-events-none sticky top-0 z-0 h-[120dvh] w-full"
         style={{ transform: "translateZ(0)" }}
-      />
+      >
+        <div className="grain absolute inset-0 opacity-15" />
+      </div>
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
