@@ -44,7 +44,7 @@ export const PIN_ANIME: PinAnima[] = [
     m: { x: 58, y: 38, off: { dx: -30, dy: 22 } },
     s: { x: 60, y: 18, off: { dx: 28, dy: 0 } },
     lato: "right",
-    tinta: "var(--oliva)",
+    tinta: "var(--oliva-500)",
     profondita: 0.5,
   },
   {
@@ -59,7 +59,7 @@ export const PIN_ANIME: PinAnima[] = [
     m: { x: 34, y: 52, off: { dx: 28, dy: 22 } },
     s: { x: 30, y: 42, off: { dx: 28, dy: 0 } },
     lato: "right",
-    tinta: "var(--crema)",
+    tinta: "var(--bianco-calce)",
     profondita: 0.8,
   },
   {
@@ -74,7 +74,7 @@ export const PIN_ANIME: PinAnima[] = [
     m: { x: 70, y: 66, off: { dx: -30, dy: 22 } },
     s: { x: 74, y: 66, off: { dx: -28, dy: 0 } },
     lato: "left",
-    tinta: "var(--bordeaux)",
+    tinta: "var(--oro-antico)",
     profondita: 1,
   },
   {
@@ -89,7 +89,7 @@ export const PIN_ANIME: PinAnima[] = [
     m: { x: 36, y: 82, off: { dx: 28, dy: 20 } },
     s: { x: 46, y: 88, off: { dx: 28, dy: 0 } },
     lato: "right",
-    tinta: "var(--terracotta)",
+    tinta: "var(--oro-antico)",
     profondita: 1.3,
   },
 ];

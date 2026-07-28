@@ -178,6 +178,7 @@ export function LaFiliera() {
     <section
       id="filiera"
       data-act="filiera"
+      data-tone="light"
       ref={rootRef}
       aria-label="La Filiera"
       className="relative isolate w-full bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:min-h-[380dvh]"

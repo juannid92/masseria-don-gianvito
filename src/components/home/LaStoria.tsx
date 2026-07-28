@@ -51,11 +51,11 @@ const MOMENTI: Momento[] = [
 /** Luce propria di ogni momento: fredda e radente → calda con oliva → interna crema. */
 const LUCE: Record<Momento["id"], string> = {
   pietra:
-    "radial-gradient(52% 40% at 22% 30%, color-mix(in oklab, var(--crema) 16%, transparent) 0%, transparent 70%)",
+    "radial-gradient(52% 40% at 22% 30%, color-mix(in oklab, var(--bianco-calce) 16%, transparent) 0%, transparent 70%)",
   lavoro:
-    "radial-gradient(56% 46% at 50% 22%, color-mix(in oklab, var(--oliva) 30%, transparent) 0%, transparent 68%), radial-gradient(44% 36% at 62% 60%, color-mix(in oklab, var(--oro) 16%, transparent) 0%, transparent 70%)",
+    "radial-gradient(56% 46% at 50% 22%, color-mix(in oklab, var(--oliva-500) 30%, transparent) 0%, transparent 68%), radial-gradient(44% 36% at 62% 60%, color-mix(in oklab, var(--oro-antico) 16%, transparent) 0%, transparent 70%)",
   famiglia:
-    "radial-gradient(60% 50% at 68% 58%, color-mix(in oklab, var(--crema) 22%, transparent) 0%, transparent 72%)",
+    "radial-gradient(60% 50% at 68% 58%, color-mix(in oklab, var(--bianco-calce) 22%, transparent) 0%, transparent 72%)",
 };
 
 export function LaStoria() {
@@ -238,9 +238,10 @@ export function LaStoria() {
     <section
       id="storia"
       data-act="storia"
+      data-tone="dark"
       ref={rootRef}
       aria-label="La Storia"
-      className="relative isolate w-full bg-[color:var(--carbone)] [@media(min-width:900px)]:h-[320dvh]"
+      className="relative isolate w-full bg-[color:var(--pietra-800)] [@media(min-width:900px)]:h-[320dvh]"
     >
       <div
         data-stage
@@ -252,7 +253,7 @@ export function LaStoria() {
             className="absolute inset-[-6%]"
             style={{
               background:
-                "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 88%, var(--marrone)) 0%, color-mix(in oklab, var(--marrone) 62%, var(--carbone)) 46%, color-mix(in oklab, var(--carbone) 92%, var(--marrone)) 100%)",
+                "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 88%, var(--pietra-800)) 0%, color-mix(in oklab, var(--pietra-800) 62%, var(--carbone)) 46%, color-mix(in oklab, var(--carbone) 92%, var(--pietra-800)) 100%)",
             }}
           />
           {/* Blocchi di muratura: profondità, spigolo e ombra portata. */}
@@ -279,7 +280,7 @@ export function LaStoria() {
             style={{
               opacity: statico ? 0.5 : 0.3,
               background:
-                "radial-gradient(46% 38% at 24% 26%, color-mix(in oklab, var(--crema) 14%, transparent) 0%, transparent 70%), radial-gradient(40% 34% at 76% 66%, color-mix(in oklab, var(--oro) 12%, transparent) 0%, transparent 72%)",
+                "radial-gradient(46% 38% at 24% 26%, color-mix(in oklab, var(--bianco-calce) 14%, transparent) 0%, transparent 70%), radial-gradient(40% 34% at 76% 66%, color-mix(in oklab, var(--oro-antico) 12%, transparent) 0%, transparent 72%)",
             }}
           />
         </div>
@@ -292,7 +293,7 @@ export function LaStoria() {
         {/* Spigolo illuminato: prosegue la linea di continuità dell'atto 01 */}
         <span
           aria-hidden
-          className="pointer-events-none absolute left-5 top-0 z-10 h-[46%] w-px bg-gradient-to-b from-[color:var(--oro)]/70 via-[color:var(--oro)]/30 to-transparent md:left-10"
+          className="pointer-events-none absolute left-5 top-0 z-10 h-[46%] w-px bg-gradient-to-b from-[color:var(--oro-antico)]/70 via-[color:var(--oro-antico)]/30 to-transparent md:left-10"
         />
 
         {/* Titolo dell'atto */}
@@ -306,14 +307,14 @@ export function LaStoria() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/70 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]"
           >
             02 — LA STORIA
           </motion.p>
-          <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.95] text-[color:var(--crema)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
+          <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.95] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
             <span className="block">Il tempo qui</span>
             <span className="ml-[4%] block md:ml-[9%]">non è passato.</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro)] md:ml-[3%]">È rimasto.</span>
+            <span className="ml-[1%] block italic text-[color:var(--oro-antico)] md:ml-[3%]">È rimasto.</span>
           </h2>
         </div>
 
@@ -340,7 +341,7 @@ export function LaStoria() {
               {/* Spigolo di pietra illuminato */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute inset-y-[12%] left-0 w-px bg-gradient-to-b from-transparent via-[color:var(--oro)]/45 to-transparent"
+                className="pointer-events-none absolute inset-y-[12%] left-0 w-px bg-gradient-to-b from-transparent via-[color:var(--oro-antico)]/45 to-transparent"
               />
 
               {/* Volume di pietra: spigolo in luce e ombra portata.
@@ -353,7 +354,7 @@ export function LaStoria() {
                   className="absolute inset-y-[8%] left-[16%] right-[-10%]"
                   style={{
                     background:
-                      "linear-gradient(96deg, color-mix(in oklab, var(--crema) 13%, transparent) 0%, color-mix(in oklab, var(--marrone) 60%, var(--carbone)) 12%, color-mix(in oklab, var(--carbone) 92%, var(--marrone)) 78%)",
+                      "linear-gradient(96deg, color-mix(in oklab, var(--bianco-calce) 13%, transparent) 0%, color-mix(in oklab, var(--pietra-800) 60%, var(--carbone)) 12%, color-mix(in oklab, var(--carbone) 92%, var(--pietra-800)) 78%)",
                     boxShadow: "-70px 0 140px -40px color-mix(in oklab, var(--carbone) 90%, transparent)",
                   }}
                 />
@@ -361,7 +362,7 @@ export function LaStoria() {
                   className="absolute inset-y-[8%] left-[16%] w-px"
                   style={{
                     background:
-                      "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--oro) 70%, transparent) 32%, color-mix(in oklab, var(--crema) 40%, transparent) 60%, transparent 100%)",
+                      "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 70%, transparent) 32%, color-mix(in oklab, var(--bianco-calce) 40%, transparent) 60%, transparent 100%)",
                   }}
                 />
               </div>
@@ -373,14 +374,14 @@ export function LaStoria() {
                 style={{ paddingTop: "calc(var(--page-header-safe-offset) + 1vh)" }}
               >
                 <div className="max-w-[46ch]">
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/85">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)]/85">
                     {m.occhiello}
                   </p>
-                  <h3 className="mt-5 font-display text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1] text-[color:var(--crema)] [@media(max-height:520px)]:text-[clamp(1.5rem,3.4vw,2.1rem)]">
+                  <h3 className="mt-5 font-display text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1] text-[color:var(--bianco-calce)] [@media(max-height:520px)]:text-[clamp(1.5rem,3.4vw,2.1rem)]">
                     <span className="block">{m.titolo[0]}</span>
                     <span className="ml-[3%] block">{m.titolo[1]}</span>
                   </h3>
-                  <p className="mt-6 max-w-[42ch] text-[16px] leading-relaxed text-[color:var(--crema)]/80 md:text-[17px]">
+                  <p className="mt-6 max-w-[42ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[17px]">
                     {m.testo}
                   </p>
                 </div>
@@ -393,7 +394,7 @@ export function LaStoria() {
             <div className="relative z-10 mx-auto w-full max-w-[1600px] px-10 md:px-20">
               <p
                 data-chiusura
-                className="max-w-[26ch] font-display text-[clamp(1.6rem,3.2vw,2.6rem)] italic leading-[1.12] text-[color:var(--crema)]/90"
+                className="max-w-[26ch] font-display text-[clamp(1.6rem,3.2vw,2.6rem)] italic leading-[1.12] text-[color:var(--bianco-calce)]/90"
                 style={{ opacity: vis }}
               >
                 Cinque secoli dopo, si lavora ancora qui.
@@ -411,7 +412,7 @@ export function LaStoria() {
             <span
               key={m.id}
               data-dot
-              className="font-eyebrow text-[9px] tracking-[0.3em] text-[color:var(--crema)]"
+              className="font-eyebrow text-[9px] tracking-[0.3em] text-[color:var(--bianco-calce)]"
               style={{ opacity: statico ? (i === 0 ? 1 : 0.35) : 0.35 }}
             >
               {m.n}
@@ -427,16 +428,16 @@ export function LaStoria() {
           style={{
             opacity: statico ? 1 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 78%, var(--marrone)) 46%, color-mix(in oklab, var(--marrone) 58%, var(--carbone)) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 78%, var(--pietra-800)) 46%, color-mix(in oklab, var(--pietra-800) 58%, var(--carbone)) 100%)",
           }}
         />
 
         <div className="absolute inset-x-0 bottom-0 z-30 [@media(max-width:899px)]:relative">
           <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-6 md:px-10 md:pb-8">
-            <span aria-hidden className="h-px w-10 bg-[color:var(--oro)]/70" />
+            <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
             <p
               data-occhiello-03
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/60 md:text-[10px]"
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/60 md:text-[10px]"
               style={{ opacity: vis }}
             >
               03 — IL LUOGO

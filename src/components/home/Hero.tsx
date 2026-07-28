@@ -141,6 +141,8 @@ export function Hero() {
   return (
     <section
       id="hero"
+      data-act="hero"
+      data-tone="dark"
       aria-label="La Masseria vista dall'alto"
       className="relative isolate flex min-h-[100dvh] w-full flex-col bg-[color:var(--carbone)]"
     >
@@ -191,21 +193,21 @@ export function Hero() {
           >
             <motion.p
               {...enter(0.04)}
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/80 md:text-[10px]"
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/80 md:text-[10px]"
             >
               {MASSERIA.nome} · Noci
             </motion.p>
             <motion.h1
               {...enter(0.14)}
               data-hero-title
-              className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] leading-[0.96] text-[color:var(--crema)]"
+              className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] leading-[0.96] text-[color:var(--bianco-calce)]"
             >
               <span className="block">Un solo luogo.</span>
-              <span className="block text-[color:var(--oro)]">Quattro mestieri.</span>
+              <span className="block text-[color:var(--oro-antico)]">Quattro mestieri.</span>
             </motion.h1>
             <motion.p
               {...enter(0.24)}
-              className="mt-4 max-w-xs text-[13px] leading-relaxed text-[color:var(--crema)]/80 md:text-[15px]"
+              className="mt-4 max-w-xs text-[13px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[15px]"
             >
               Dalla terra alla tavola, ogni passaggio avviene qui.
             </motion.p>
@@ -245,15 +247,15 @@ export function Hero() {
               <Link
                 to={active.to}
                 aria-label={`${active.nome} — scopri la pagina dedicata`}
-                className="block rounded-md border-2 border-[color:var(--oro)] bg-[color:var(--carbone)] p-4 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)]"
+                className="block rounded-md border-2 border-[color:var(--oro-antico)] bg-[color:var(--carbone)] p-4 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)]"
               >
-                <span className="font-eyebrow block text-[10px] tracking-[0.3em] text-[color:var(--oro)]">
+                <span className="font-eyebrow block text-[10px] tracking-[0.3em] text-[color:var(--oro-antico)]">
                   {active.numero} · {active.nome.toUpperCase()}
                 </span>
-                <span className="mt-2 block text-[14px] leading-snug text-[color:var(--crema)]">
+                <span className="mt-2 block text-[14px] leading-snug text-[color:var(--bianco-calce)]">
                   {active.descrizione}
                 </span>
-                <span className="mt-3 block text-[13px] font-medium text-[color:var(--crema)]">
+                <span className="mt-3 block text-[13px] font-medium text-[color:var(--bianco-calce)]">
                   {active.invito} →
                 </span>
               </Link>
@@ -270,7 +272,7 @@ export function Hero() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, delay: reduced ? 0 : 1.2 }}
-              className="font-eyebrow pointer-events-none absolute inset-x-0 bottom-4 z-20 text-center text-[9px] tracking-[0.3em] text-[color:var(--crema)]/75"
+              className="font-eyebrow pointer-events-none absolute inset-x-0 bottom-4 z-20 text-center text-[9px] tracking-[0.3em] text-[color:var(--bianco-calce)]/75"
             >
               QUATTRO LUOGHI. {touch ? "TOCCA" : "CLICCA"} PER ENTRARE
             </motion.p>
@@ -281,11 +283,11 @@ export function Hero() {
       {/* ===== Fila delle quattro anime (mobile): obbligatoria ===== */}
       <nav
         aria-label="Le quattro anime della Masseria"
-        className="relative z-20 border-t border-[color:var(--crema)]/15 bg-[color:var(--carbone)] md:hidden"
+        className="relative z-20 border-t border-[color:var(--bianco-calce)]/15 bg-[color:var(--carbone)] md:hidden"
       >
         <ul className="grid grid-cols-2">
           {PIN_ANIME.map((pin) => (
-            <li key={pin.id} className="border-b border-r border-[color:var(--crema)]/12">
+            <li key={pin.id} className="border-b border-r border-[color:var(--bianco-calce)]/12">
               <Link
                 to={pin.to}
                 aria-label={`${pin.nome} — scopri la pagina dedicata`}
@@ -293,13 +295,13 @@ export function Hero() {
                 onClick={dismissHint}
                 onPointerDown={() => select(pin.id)}
                 className={`flex h-full min-h-[56px] flex-col justify-center px-4 py-3 transition-colors ${
-                  activeId === pin.id ? "bg-[color:var(--crema)]/10" : ""
+                  activeId === pin.id ? "bg-[color:var(--bianco-calce)]/10" : ""
                 }`}
               >
-                <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro)]">
+                <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-antico)]">
                   {pin.numero}
                 </span>
-                <span className="font-eyebrow text-[15px] uppercase leading-tight tracking-[0.08em] text-[color:var(--crema)]">
+                <span className="font-eyebrow text-[15px] uppercase leading-tight tracking-[0.08em] text-[color:var(--bianco-calce)]">
                   {pin.nome} <span aria-hidden>→</span>
                 </span>
               </Link>
@@ -314,13 +316,13 @@ export function Hero() {
         className="relative z-20"
         style={{
           background:
-            "linear-gradient(180deg, var(--carbone) 0%, color-mix(in oklab, var(--marrone) 88%, var(--carbone)) 100%)",
+            "linear-gradient(180deg, var(--carbone) 0%, color-mix(in oklab, var(--bianco-calce) 50%, var(--carbone)) 55%, var(--bianco-calce) 100%)",
         }}
       >
         <div aria-hidden className="hairline-oro" />
         <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-5 md:px-10 md:py-6">
-          <span aria-hidden className="h-px w-10 bg-[color:var(--oro)]/70" />
-          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/65 md:text-[10px]">
+          <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
+          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--pietra-800)]/70 md:text-[10px]">
             01 · Il Manifesto
           </p>
         </div>
@@ -365,7 +367,7 @@ function PinTarga({
   // Stato del pin PRIMA del tocco: il focus da touch non vale come "già aperto".
   const eraAttivo = useRef(false);
 
-  const bordo = active ? "var(--oro)" : "color-mix(in oklab, var(--crema) 62%, transparent)";
+  const bordo = active ? "var(--oro-antico)" : "color-mix(in oklab, var(--bianco-calce) 62%, transparent)";
 
   return (
     <li
@@ -396,7 +398,7 @@ function PinTarga({
             className="pointer-events-none absolute size-24 -translate-x-1/2 -translate-y-1/2 rounded-full"
             style={{
               background:
-                "radial-gradient(circle, color-mix(in oklab, var(--oro) 26%, transparent) 0%, transparent 70%)",
+                "radial-gradient(circle, color-mix(in oklab, var(--oro-antico) 26%, transparent) 0%, transparent 70%)",
             }}
           />
         )}
@@ -413,7 +415,7 @@ function PinTarga({
             y1="0"
             x2={dx}
             y2={dy}
-            stroke={active ? "var(--oro)" : "color-mix(in oklab, var(--crema) 78%, transparent)"}
+            stroke={active ? "var(--oro-antico)" : "color-mix(in oklab, var(--bianco-calce) 78%, transparent)"}
             strokeWidth="1"
             initial={reduced ? false : { pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
@@ -434,8 +436,8 @@ function PinTarga({
           }}
           transition={{ duration: reduced ? 0 : 0.3, delay: reduced ? 0 : 0.45 + index * 0.1 }}
           style={{
-            background: "var(--crema)",
-            borderColor: "var(--bordeaux)",
+            background: "var(--bianco-calce)",
+            borderColor: "var(--oro-antico)",
             boxShadow: "0 2px 8px rgba(0,0,0,0.55)",
           }}
         />
@@ -467,34 +469,34 @@ function PinTarga({
             onClick={() => onHover(pin.id)}
             onFocus={() => onHover(pin.id)}
             onBlur={() => onHover(null)}
-            className="group block rounded-[3px] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
+            className="group block rounded-[3px] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro-antico)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
           >
             <motion.div
               animate={{ y: active && !touch ? -3 : 0 }}
               transition={{ duration: reduced ? 0 : 0.2 }}
               className="rounded-[3px] border px-3 py-2.5 md:px-4 md:py-3"
               style={{
-                background: "color-mix(in oklab, var(--carbone) 94%, var(--bordeaux))",
+                background: "color-mix(in oklab, var(--carbone) 94%, var(--oro-antico))",
                 borderColor: bordo,
                 boxShadow: "0 14px 34px -10px rgba(0,0,0,0.72), 0 2px 6px rgba(0,0,0,0.45)",
               }}
             >
-              <span className="font-eyebrow block text-[12px] leading-none tracking-[0.28em] text-[color:var(--oro)] md:text-[13px]">
+              <span className="font-eyebrow block text-[12px] leading-none tracking-[0.28em] text-[color:var(--oro-antico)] md:text-[13px]">
                 {pin.numero}
               </span>
-              <span className="font-eyebrow mt-1.5 flex items-baseline justify-between gap-2 text-[15px] uppercase leading-tight tracking-[0.1em] text-[color:var(--crema)] md:text-[20px]">
+              <span className="font-eyebrow mt-1.5 flex items-baseline justify-between gap-2 text-[15px] uppercase leading-tight tracking-[0.1em] text-[color:var(--bianco-calce)] md:text-[20px]">
                 {pin.nome}
                 <motion.span
                   aria-hidden
                   animate={{ x: active && !touch ? 3 : 0 }}
                   transition={{ duration: reduced ? 0 : 0.2 }}
-                  className="text-[color:var(--oro)]"
+                  className="text-[color:var(--oro-antico)]"
                 >
                   →
                 </motion.span>
               </span>
               {!compatta && (
-                <span className="mt-1.5 block text-[13px] leading-snug text-[color:var(--crema)]/85 md:text-[13.5px]">
+                <span className="mt-1.5 block text-[13px] leading-snug text-[color:var(--bianco-calce)]/85 md:text-[13.5px]">
                   {pin.descrizione}
                 </span>
               )}
@@ -505,7 +507,7 @@ function PinTarga({
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: reduced ? 0 : 0.2 }}
-                    className="mt-2 block overflow-hidden text-[12.5px] font-medium tracking-wide text-[color:var(--oro)]"
+                    className="mt-2 block overflow-hidden text-[12.5px] font-medium tracking-wide text-[color:var(--oro-antico)]"
                   >
                     {pin.invito}
                   </motion.span>
