@@ -3,6 +3,7 @@ import { Hero } from "@/components/home/Hero";
 import { IlManifesto } from "@/components/home/IlManifesto";
 import { LaStoria } from "@/components/home/LaStoria";
 import { IlLuogo } from "@/components/home/IlLuogo";
+import { LaFiliera } from "@/components/home/LaFiliera";
 import { useHomeHashScroll } from "@/lib/nav";
 
 export const Route = createFileRoute("/")({
@@ -44,6 +45,7 @@ function HomePage() {
       <IlManifesto />
       <LaStoria />
       <IlLuogo />
+      <LaFiliera />
     </>
   );
 }
