@@ -290,7 +290,7 @@ export function IlLuogo() {
         <span
           aria-hidden
           data-match-cut
-          className="pointer-events-none absolute left-5 top-0 z-20 h-[46%] w-px origin-top md:left-10"
+          className="pointer-events-none absolute left-5 top-0 z-20 h-[22%] w-px origin-top md:left-10"
           style={{
             opacity: statico ? 0 : 1,
             background:
@@ -301,7 +301,7 @@ export function IlLuogo() {
         <span
           aria-hidden
           data-muretto
-          className="pointer-events-none absolute left-0 right-0 top-[46%] z-20 h-px origin-left"
+          className="pointer-events-none absolute left-0 right-0 top-[22%] z-20 h-px origin-left"
           style={{
             opacity: statico ? 1 : 0,
             background:
