@@ -146,60 +146,20 @@ export function LaFiliera() {
       data-act="filiera"
       ref={rootRef}
       aria-label="La Filiera"
-      className="relative isolate w-full bg-[color:var(--marrone)] [@media(min-width:900px)]:min-h-[380dvh]"
+      className="relative isolate w-full bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:min-h-[380dvh]"
     >
-      {/* Fondo continuo: parte dal marrone finale dell'Atto 03, scivola verso
-          la crema calda dell'Atto 05. */}
+      {/* Fondo bianco calce pieno — nessuna finta materia. Sola concessione:
+          una luce direzionale tenue che segue la colonna del filo, per dare
+          rilievo senza colorare la superficie. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, var(--marrone) 0%, color-mix(in oklab, var(--marrone) 84%, var(--oliva)) 24%, color-mix(in oklab, var(--marrone) 62%, var(--carbone)) 44%, color-mix(in oklab, var(--marrone) 60%, var(--crema)) 74%, color-mix(in oklab, var(--crema) 72%, var(--marrone)) 100%)",
+            "radial-gradient(60% 40% at 26% 12%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 70%), radial-gradient(50% 35% at 74% 58%, color-mix(in oklab, var(--oro-antico) 6%, transparent) 0%, transparent 70%), radial-gradient(50% 30% at 50% 92%, color-mix(in oklab, var(--pietra-800) 10%, transparent) 0%, transparent 72%)",
         }}
       />
-      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-40" />
-
-      {/* Materie ai lati del filo — pannelli laterali a piena larghezza per nodo.
-          Nessuna card, nessuna cornice. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-[1]">
-        {/* Terra: solchi ampi, luce radente sinistra */}
-        <div
-          className="absolute inset-x-0 top-0 h-[24%]"
-          style={{
-            background:
-              "radial-gradient(60% 80% at 20% 40%, color-mix(in oklab, var(--oliva) 22%, transparent) 0%, transparent 70%), repeating-linear-gradient(96deg, transparent 0 22px, color-mix(in oklab, var(--carbone) 22%, transparent) 22px 24px)",
-            opacity: 0.55,
-          }}
-        />
-        {/* Animali: ombre morbide, oliva su marrone */}
-        <div
-          className="absolute inset-x-0 top-[24%] h-[26%]"
-          style={{
-            background:
-              "radial-gradient(70% 100% at 78% 50%, color-mix(in oklab, var(--oliva) 26%, transparent) 0%, transparent 72%), radial-gradient(50% 60% at 30% 40%, color-mix(in oklab, var(--marrone) 40%, var(--carbone)) 0%, transparent 70%)",
-            opacity: 0.6,
-          }}
-        />
-        {/* Trasformazione: DOPPIA SUPERFICIE — avorio a sinistra, pietra + bordeaux a destra */}
-        <div
-          className="absolute inset-x-0 top-[50%] h-[26%]"
-          style={{
-            background:
-              "linear-gradient(90deg, color-mix(in oklab, var(--crema) 82%, var(--marrone)) 0%, color-mix(in oklab, var(--crema) 62%, var(--marrone)) 46%, color-mix(in oklab, var(--carbone) 62%, var(--bordeaux)) 54%, color-mix(in oklab, var(--bordeaux) 62%, var(--carbone)) 100%)",
-            opacity: 0.68,
-          }}
-        />
-        {/* Tavola: crema calda, legno chiaro */}
-        <div
-          className="absolute inset-x-0 top-[76%] h-[24%]"
-          style={{
-            background:
-              "radial-gradient(70% 90% at 50% 60%, color-mix(in oklab, var(--crema) 78%, var(--oro)) 0%, transparent 70%), linear-gradient(180deg, color-mix(in oklab, var(--marrone) 30%, var(--crema)) 0%, color-mix(in oklab, var(--crema) 85%, var(--oro)) 100%)",
-            opacity: 0.72,
-          }}
-        />
-      </div>
+      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-30" />
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
