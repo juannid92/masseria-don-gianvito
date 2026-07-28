@@ -317,11 +317,12 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[2].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
+          <h3 data-parallax="fast" className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
             <span className="block">{NODI[2].titolo[0]}</span>
             <span className="ml-[2%] block italic text-[color:var(--carbone)]">
               {NODI[2].titolo[1]}
@@ -369,11 +370,12 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[3].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
+          <h3 data-parallax="fast" className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
             <span className="block">{NODI[3].titolo[0]}</span>
             <span className="mt-1 block italic text-[color:var(--carbone)]">
               {NODI[3].titolo[1]}
@@ -435,6 +437,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
+          data-parallax="slow"
           className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
         >
           {nodo.occhiello}
@@ -444,6 +447,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
+          data-parallax="fast"
           className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--carbone)]"
         >
           {nodo.titolo[0]}
