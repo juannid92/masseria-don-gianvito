@@ -16,11 +16,10 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* ============================================================
-     BRAND — Palette OPZIONE A "Pietra e Oliva" (Turno A).
-     Fonte unica di verità. I nomi vecchi (crema/marrone/bordeaux/
-     terracotta/oliva/oro) restano definiti come ALIAS di transizione
-     più in basso, verranno rimossi nel Turno B insieme alla
-     rifattorizzazione tonale degli atti.
+     BRAND — Palette definitiva "Bianco Calce / Oro / Carminio".
+     Fonte unica di verità. Gli alias di transizione crema/marrone/
+     oro/oliva/bordeaux/terracotta sono RIMOSSI: ogni riferimento va
+     ai token nuovi.
      ============================================================ */
   --color-pietra-100: var(--pietra-100);
   --color-pietra-200: var(--pietra-200);
@@ -30,22 +29,11 @@
   --color-oliva-700: var(--oliva-700);
   --color-oro-antico: var(--oro-antico);
   --color-oro-antico-testo: var(--oro-antico-testo);
-  --color-ruggine: var(--ruggine);
   --color-carbone: var(--carbone);
   --color-bianco-calce: var(--bianco-calce);
   --color-bianco-latte: var(--bianco-latte);
   --color-carminio: var(--carminio);
   --color-carminio-scuro: var(--carminio-scuro);
-
-  /* Alias di transizione — MAPPATURA VECCHIO → NUOVO.
-     Da rimuovere nel Turno B una volta che gli atti 00–04 usano
-     esclusivamente i nuovi nomi. */
-  --color-crema: var(--pietra-100);
-  --color-marrone: var(--pietra-800);
-  --color-oliva: var(--oliva-500);
-  --color-oro: var(--oro-antico);
-  --color-bordeaux: var(--ruggine);
-  --color-terracotta: var(--ruggine);
 
   /* shadcn semantic */
   --color-background: var(--background);
@@ -82,12 +70,14 @@
   --radius: 0.5rem;
 
   /* ============================================================
-     PALETTE — OPZIONE A "Pietra e Oliva"
-     Regole (Turno A):
-     - fondo dominante per atto: chiaro (pietra-100/200) O scuro (pietra-800)
-     - un solo accento vivo per atto (oliva | oro-antico | ruggine)
-     - ruggine: solo carne/cottura, max 2 momenti nel sito
-     - oro-antico: max 1 occorrenza per atto
+     PALETTE — "Bianco Calce / Oro / Carminio"
+     Regole di frequenza (tutta la Home):
+     - dominante di sito: bianco-calce
+     - identità: oro-antico (max 2 per atto, di cui max 1 testuale)
+     - accento raro: carminio (max 2 in tutto il sito, in Home solo
+       sul ramo carne della Filiera)
+     - profondità: pietra-800 (Storia, Luogo, Footer)
+     - oliva: max 1 per atto, SOLO dove si parla di terra o colture
      - carbone: solo testo di lettura, mai fondo di un intero atto
      - bordeaux/terracotta: RIMOSSI dalla palette
      ============================================================ */
@@ -99,42 +89,32 @@
   --oliva-700: #4d5734;
   --oro-antico: #b2833a;
   --oro-antico-testo: #a67728;
-  --ruggine: #8a4a2e;
   --carbone: #1f1a15;
 
-  /* Nuovi token — gerarchia bianco-calce / oro / carminio (2026-01) */
   --bianco-calce: #faf6ec;    /* dominante, bianco caldo */
   --bianco-latte: #fffdf7;    /* superfici in evidenza / tratto latte */
-  --carminio: #9b2233;        /* accento raro, testo su chiaro OK (5.5:1) */
+  --carminio: #9b2233;        /* accento raro, testo su chiaro (5.5:1) */
   --carminio-scuro: #6e1622;  /* fondi profondi o testo che deve tagliare */
 
-  /* Alias di transizione (rimossi nel Turno B) */
-  --crema: var(--pietra-100);
-  --marrone: var(--pietra-800);
-  --oliva: var(--oliva-500);
-  --oro: var(--oro-antico);
-  --bordeaux: var(--ruggine);
-  --terracotta: var(--ruggine);
-
   /* === shadcn semantic === */
-  /* Allineati alla palette Pietra e Oliva:
-     fondo chiaro (pietra-100), testo carbone, primary oliva. */
-  --background: #f4f0e6;
+  /* Allineati alla gerarchia bianco-calce: fondo dominante bianco caldo,
+     testo carbone, primary oro-antico. */
+  --background: #faf6ec;
   --foreground: #1f1a15;
-  --card: #f4f0e6;
+  --card: #faf6ec;
   --card-foreground: #1f1a15;
-  --popover: #f4f0e6;
+  --popover: #faf6ec;
   --popover-foreground: #1f1a15;
-  --primary: #7a8551;
-  --primary-foreground: #f4f0e6;
+  --primary: #b2833a;
+  --primary-foreground: #faf6ec;
   --secondary: #e5ddc9;
   --secondary-foreground: #1f1a15;
   --muted: #e5ddc9;
   --muted-foreground: #4b4636;
   --accent: #b2833a;
-  --accent-foreground: #1f1a15;
-  --destructive: #8a4a2e;
-  --destructive-foreground: #f4f0e6;
+  --accent-foreground: #faf6ec;
+  --destructive: #9b2233;
+  --destructive-foreground: #faf6ec;
   --border: rgba(31, 26, 21, 0.12);
   --input: rgba(31, 26, 21, 0.12);
   --ring: #b2833a;
@@ -182,12 +162,12 @@
   }
 
   ::selection {
-    background: var(--oro);
+    background: var(--oro-antico);
     color: var(--carbone);
   }
 
   :focus-visible {
-    outline: 2px solid var(--oro);
+    outline: 2px solid var(--oro-antico);
     outline-offset: 3px;
     border-radius: 2px;
   }
@@ -224,9 +204,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    color-mix(in oklab, var(--oro) 55%, transparent) 28%,
-    var(--oro) 50%,
-    color-mix(in oklab, var(--oro) 55%, transparent) 72%,
+    color-mix(in oklab, var(--oro-antico) 55%, transparent) 28%,
+    var(--oro-antico) 50%,
+    color-mix(in oklab, var(--oro-antico) 55%, transparent) 72%,
     transparent 100%
   );
 }
