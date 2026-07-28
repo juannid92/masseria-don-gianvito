@@ -428,7 +428,7 @@ export function LaStoria() {
           style={{
             opacity: statico ? 1 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 78%, var(--pietra-800)) 46%, color-mix(in oklab, var(--pietra-800) 58%, var(--carbone)) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--pietra-800) 60%, var(--bianco-calce)) 46%, var(--bianco-calce) 100%)",
           }}
         />
 
@@ -437,7 +437,7 @@ export function LaStoria() {
             <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
             <p
               data-occhiello-03
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/60 md:text-[10px]"
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--pietra-800)]/75 md:text-[10px]"
               style={{ opacity: vis }}
             >
               03 — IL LUOGO
