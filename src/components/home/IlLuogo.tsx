@@ -460,7 +460,7 @@ export function IlLuogo() {
                     marginTop: statico && i > 0 ? "1.25rem" : undefined,
                   }}
                 >
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/85">
                     {a.occhiello}
                   </p>
                   <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/90 md:text-[17px]">
