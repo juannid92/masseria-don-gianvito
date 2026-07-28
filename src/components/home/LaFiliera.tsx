@@ -334,7 +334,7 @@ export function LaFiliera() {
               <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/80">
                 IL LATTE
               </p>
-              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
+              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 [@media(min-width:900px)]:text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoLatte}
               </p>
             </motion.div>
@@ -369,18 +369,18 @@ export function LaFiliera() {
           >
             {NODI[3].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
+          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--crema)] [@media(min-width:900px)]:text-[color:var(--carbone)]">
             <span className="block">{NODI[3].titolo[0]}</span>
-            <span className="mt-1 block italic text-[color:var(--bordeaux)]">
+            <span className="mt-1 block italic text-[color:var(--oro)] [@media(min-width:900px)]:text-[color:var(--bordeaux)]">
               {NODI[3].titolo[1]}
             </span>
           </h3>
-          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
+          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--crema)]/90 [@media(min-width:900px)]:text-[color:var(--carbone)]/85 md:text-[17px]">
             {NODI[3].testo}
           </p>
 
           {/* Chiusura dell'atto */}
-          <p className="mt-16 max-w-[30ch] font-display text-[clamp(1.2rem,2.4vw,1.8rem)] italic leading-[1.12] text-[color:var(--bordeaux)] md:mt-24">
+          <p className="mt-16 max-w-[30ch] font-display text-[clamp(1.2rem,2.4vw,1.8rem)] italic leading-[1.12] text-[color:var(--oro)] [@media(min-width:900px)]:text-[color:var(--bordeaux)] md:mt-24">
             Quattro mestieri, un solo percorso.
           </p>
         </article>
