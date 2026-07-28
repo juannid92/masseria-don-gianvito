@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PreviewPaletteRouteImport } from './routes/preview-palette'
 import { Route as MacelleriaRouteImport } from './routes/macelleria'
 import { Route as CaseificioRouteImport } from './routes/caseificio'
 import { Route as BraceriaRouteImport } from './routes/braceria'
@@ -16,6 +17,11 @@ import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as AgriturismoRouteImport } from './routes/agriturismo'
 import { Route as IndexRouteImport } from './routes/index'
 
+const PreviewPaletteRoute = PreviewPaletteRouteImport.update({
+  id: '/preview-palette',
+  path: '/preview-palette',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MacelleriaRoute = MacelleriaRouteImport.update({
   id: '/macelleria',
   path: '/macelleria',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/preview-palette': typeof PreviewPaletteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/preview-palette': typeof PreviewPaletteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/preview-palette': typeof PreviewPaletteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/preview-palette'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/preview-palette'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/preview-palette'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,10 +118,18 @@ export interface RootRouteChildren {
   BraceriaRoute: typeof BraceriaRoute
   CaseificioRoute: typeof CaseificioRoute
   MacelleriaRoute: typeof MacelleriaRoute
+  PreviewPaletteRoute: typeof PreviewPaletteRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/preview-palette': {
+      id: '/preview-palette'
+      path: '/preview-palette'
+      fullPath: '/preview-palette'
+      preLoaderRoute: typeof PreviewPaletteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/macelleria': {
       id: '/macelleria'
       path: '/macelleria'
@@ -162,7 +182,18 @@ const rootRouteChildren: RootRouteChildren = {
   BraceriaRoute: BraceriaRoute,
   CaseificioRoute: CaseificioRoute,
   MacelleriaRoute: MacelleriaRoute,
+  PreviewPaletteRoute: PreviewPaletteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
