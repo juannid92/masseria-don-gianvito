@@ -141,6 +141,8 @@ export function Hero() {
   return (
     <section
       id="hero"
+      data-act="hero"
+      data-tone="dark"
       aria-label="La Masseria vista dall'alto"
       className="relative isolate flex min-h-[100dvh] w-full flex-col bg-[color:var(--carbone)]"
     >
@@ -314,7 +316,7 @@ export function Hero() {
         className="relative z-20"
         style={{
           background:
-            "linear-gradient(180deg, var(--carbone) 0%, color-mix(in oklab, var(--pietra-800) 88%, var(--carbone)) 100%)",
+            "linear-gradient(180deg, var(--carbone) 0%, color-mix(in oklab, var(--bianco-calce) 50%, var(--carbone)) 55%, var(--bianco-calce) 100%)",
         }}
       >
         <div aria-hidden className="hairline-oro" />
