@@ -427,7 +427,7 @@ export function LaStoria() {
           style={{
             opacity: statico ? 1 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 76%, var(--marrone)) 60%, var(--carbone) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 78%, var(--marrone)) 46%, color-mix(in oklab, var(--marrone) 58%, var(--carbone)) 100%)",
           }}
         />
 
