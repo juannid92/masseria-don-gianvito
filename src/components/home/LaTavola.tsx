@@ -371,7 +371,7 @@ export function LaTavola() {
         <div className="relative z-[3] flex w-full max-w-[1400px] flex-col items-center pt-[calc(var(--page-header-safe-offset)+2vh)] text-center">
           <p
             data-apertura-eyebrow
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)] md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/85 md:text-[11px]"
             style={{ opacity: statico ? 1 : 0 }}
           >
             05 — LA TAVOLA
@@ -448,7 +448,7 @@ export function LaTavola() {
         </div>
 
         <div className="relative z-[3] flex max-w-[900px] flex-col items-center">
-          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)] md:text-[11px]">
+          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-su-scuro)] md:text-[11px]">
             IL RITO COMPLETO
           </p>
           <h3
@@ -649,7 +649,7 @@ function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
             className={`font-eyebrow text-[10px] tracking-[0.34em] md:text-[11px] ${
               isArrosto
                 ? "text-[color:var(--carminio)]"
-                : "text-[color:var(--oro-antico)]"
+                : "text-[color:var(--oro-su-scuro)]"
             }`}
           >
             {q.occhiello}
@@ -679,7 +679,7 @@ function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
 
           {q.nota && (
             <div className="mt-8 flex items-start gap-3 border-l border-[color:var(--bianco-calce)]/25 pl-4 md:mt-10">
-              <p className="text-[14px] leading-relaxed text-[color:var(--bianco-calce)]/70 md:text-[15px]">
+              <p className="text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[15px]">
                 {q.nota}
               </p>
             </div>
