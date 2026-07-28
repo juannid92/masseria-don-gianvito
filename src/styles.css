@@ -29,8 +29,13 @@
   --color-oliva-500: var(--oliva-500);
   --color-oliva-700: var(--oliva-700);
   --color-oro-antico: var(--oro-antico);
+  --color-oro-antico-testo: var(--oro-antico-testo);
   --color-ruggine: var(--ruggine);
   --color-carbone: var(--carbone);
+  --color-bianco-calce: var(--bianco-calce);
+  --color-bianco-latte: var(--bianco-latte);
+  --color-carminio: var(--carminio);
+  --color-carminio-scuro: var(--carminio-scuro);
 
   /* Alias di transizione — MAPPATURA VECCHIO → NUOVO.
      Da rimuovere nel Turno B una volta che gli atti 00–04 usano
@@ -93,8 +98,15 @@
   --oliva-500: #7a8551;
   --oliva-700: #4d5734;
   --oro-antico: #b2833a;
+  --oro-antico-testo: #a67728;
   --ruggine: #8a4a2e;
   --carbone: #1f1a15;
+
+  /* Nuovi token — gerarchia bianco-calce / oro / carminio (2026-01) */
+  --bianco-calce: #faf6ec;    /* dominante, bianco caldo */
+  --bianco-latte: #fffdf7;    /* superfici in evidenza / tratto latte */
+  --carminio: #9b2233;        /* accento raro, testo su chiaro OK (5.5:1) */
+  --carminio-scuro: #6e1622;  /* fondi profondi o testo che deve tagliare */
 
   /* Alias di transizione (rimossi nel Turno B) */
   --crema: var(--pietra-100);

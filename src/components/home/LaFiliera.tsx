@@ -5,20 +5,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
- * ATTO 04 — LA FILIERA.
- * Firma: FILO · MATERIA CHE CAMBIA · CONTINUITÀ.
- * Regia: un unico tracciato SVG che si disegna con lo scroll, attraversa
- * tutta la sezione, si sdoppia (crema per il latte, bordeaux per la carne)
- * e si riunisce in oro fino alla tavola. Nessun pin, nessuno sticky a
- * piena altezza, nessun traveling orizzontale.
- *
- * Il path parte dall'endpoint destro del solco chiuso dall'Atto 03
- * (viewBox 1200×300, x=1240, y≈230 → qui riscalato in viewBox 400×3800).
- * Il fondo di partenza è var(--marrone), identico al fondo finale del 03.
- *
- * Sostituire eventuali crop/texture provvisori con fotografie autentiche
- * dei campi, degli animali, del caseificio e della tavola prima della
- * pubblicazione.
+ * ATTO 04 — LA FILIERA. Nuova veste: bianco calce dominante, filo dorato,
+ * sdoppiamento latte/carminio, riunione oro. Nessuna finta materia:
+ * solo bianco pieno, grana finissima, luce direzionale tenue lungo il filo,
+ * e una campitura pietra-800 riservata al solo momento della riunione.
+ * Regia, path, timeline, trigger, copy, pin: invariati.
  */
 
 type NodoId = "terra" | "animali" | "trasformazione" | "tavola";
@@ -122,14 +113,14 @@ export function LaFiliera() {
         defaults: { ease: "none" },
       });
 
-      // Fase A · disegno del filo principale (terra + animali), oliva → marrone
+      // Fase A · disegno del filo principale (terra + animali), oro antico
       tl.to(main, { strokeDashoffset: 0, duration: 0.55 }, 0);
       // Il dot terra si accende quando il filo lo raggiunge (~progress 0.15)
       tl.to(dots[0], { opacity: 1, scale: 1, duration: 0.04 }, 0.15);
       // Il dot animali (~progress 0.4)
       tl.to(dots[1], { opacity: 1, scale: 1, duration: 0.04 }, 0.4);
 
-      // Fase B · SDOPPIAMENTO — latte a sinistra (crema), carne a destra (bordeaux)
+      // Fase B · SDOPPIAMENTO — latte a sinistra (bianco-latte), carne a destra (carminio)
       tl.to(latte, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       tl.to(carne, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       // Segno visivo della biforcazione
@@ -155,60 +146,20 @@ export function LaFiliera() {
       data-act="filiera"
       ref={rootRef}
       aria-label="La Filiera"
-      className="relative isolate w-full bg-[color:var(--marrone)] [@media(min-width:900px)]:min-h-[380dvh]"
+      className="relative isolate w-full bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:min-h-[380dvh]"
     >
-      {/* Fondo continuo: parte dal marrone finale dell'Atto 03, scivola verso
-          la crema calda dell'Atto 05. */}
+      {/* Fondo bianco calce pieno — nessuna finta materia. Sola concessione:
+          una luce direzionale tenue che segue la colonna del filo, per dare
+          rilievo senza colorare la superficie. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 z-0"
         style={{
           background:
-            "linear-gradient(180deg, var(--marrone) 0%, color-mix(in oklab, var(--marrone) 84%, var(--oliva)) 24%, color-mix(in oklab, var(--marrone) 62%, var(--carbone)) 44%, color-mix(in oklab, var(--marrone) 60%, var(--crema)) 74%, color-mix(in oklab, var(--crema) 72%, var(--marrone)) 100%)",
+            "radial-gradient(60% 40% at 26% 12%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 70%), radial-gradient(50% 35% at 74% 58%, color-mix(in oklab, var(--oro-antico) 6%, transparent) 0%, transparent 70%), radial-gradient(50% 30% at 50% 92%, color-mix(in oklab, var(--pietra-800) 10%, transparent) 0%, transparent 72%)",
         }}
       />
-      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-40" />
-
-      {/* Materie ai lati del filo — pannelli laterali a piena larghezza per nodo.
-          Nessuna card, nessuna cornice. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 z-[1]">
-        {/* Terra: solchi ampi, luce radente sinistra */}
-        <div
-          className="absolute inset-x-0 top-0 h-[24%]"
-          style={{
-            background:
-              "radial-gradient(60% 80% at 20% 40%, color-mix(in oklab, var(--oliva) 22%, transparent) 0%, transparent 70%), repeating-linear-gradient(96deg, transparent 0 22px, color-mix(in oklab, var(--carbone) 22%, transparent) 22px 24px)",
-            opacity: 0.55,
-          }}
-        />
-        {/* Animali: ombre morbide, oliva su marrone */}
-        <div
-          className="absolute inset-x-0 top-[24%] h-[26%]"
-          style={{
-            background:
-              "radial-gradient(70% 100% at 78% 50%, color-mix(in oklab, var(--oliva) 26%, transparent) 0%, transparent 72%), radial-gradient(50% 60% at 30% 40%, color-mix(in oklab, var(--marrone) 40%, var(--carbone)) 0%, transparent 70%)",
-            opacity: 0.6,
-          }}
-        />
-        {/* Trasformazione: DOPPIA SUPERFICIE — avorio a sinistra, pietra + bordeaux a destra */}
-        <div
-          className="absolute inset-x-0 top-[50%] h-[26%]"
-          style={{
-            background:
-              "linear-gradient(90deg, color-mix(in oklab, var(--crema) 82%, var(--marrone)) 0%, color-mix(in oklab, var(--crema) 62%, var(--marrone)) 46%, color-mix(in oklab, var(--carbone) 62%, var(--bordeaux)) 54%, color-mix(in oklab, var(--bordeaux) 62%, var(--carbone)) 100%)",
-            opacity: 0.68,
-          }}
-        />
-        {/* Tavola: crema calda, legno chiaro */}
-        <div
-          className="absolute inset-x-0 top-[76%] h-[24%]"
-          style={{
-            background:
-              "radial-gradient(70% 90% at 50% 60%, color-mix(in oklab, var(--crema) 78%, var(--oro)) 0%, transparent 70%), linear-gradient(180deg, color-mix(in oklab, var(--marrone) 30%, var(--crema)) 0%, color-mix(in oklab, var(--crema) 85%, var(--oro)) 100%)",
-            opacity: 0.72,
-          }}
-        />
-      </div>
+      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-30" />
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
@@ -218,19 +169,25 @@ export function LaFiliera() {
         preserveAspectRatio="none"
       >
         <defs>
+          {/* Filo principale — oro antico costante, la luce direzionale dello
+              sfondo dà la variazione senza sporcare la tinta. */}
           <linearGradient id="filo-main" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#6b7340" />
-            <stop offset="35%" stopColor="#6b7340" />
-            <stop offset="60%" stopColor="#5a4a2e" />
-            <stop offset="100%" stopColor="#3d2a1e" />
+            <stop offset="0%" stopColor="#b2833a" />
+            <stop offset="100%" stopColor="#b2833a" />
           </linearGradient>
+          {/* Filtro discreto per rendere leggibile il tratto bianco-latte
+              sul fondo bianco-calce: sola ombra minima, nessun glow. */}
+          <filter id="filo-latte-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="0" stdDeviation="1.2"
+              floodColor="#1f1a15" floodOpacity="0.18" />
+          </filter>
         </defs>
         <path
           data-filo="main"
           d={D_MAIN}
           fill="none"
           stroke="url(#filo-main)"
-          strokeWidth="2.6"
+          strokeWidth="2.2"
           strokeLinecap="round"
           style={staticStroke}
         />
@@ -238,17 +195,18 @@ export function LaFiliera() {
           data-filo="latte"
           d={D_LATTE}
           fill="none"
-          stroke="#f2e8d5"
-          strokeWidth="2.2"
+          stroke="#fffdf7"
+          strokeWidth="3"
           strokeLinecap="round"
+          filter="url(#filo-latte-shadow)"
           style={staticStroke}
         />
         <path
           data-filo="carne"
           d={D_CARNE}
           fill="none"
-          stroke="#6e1a14"
-          strokeWidth="2.2"
+          stroke="#9b2233"
+          strokeWidth="2.4"
           strokeLinecap="round"
           style={staticStroke}
         />
@@ -256,16 +214,16 @@ export function LaFiliera() {
           data-filo="oro"
           d={D_ORO}
           fill="none"
-          stroke="#c49a4a"
-          strokeWidth="3"
+          stroke="#b2833a"
+          strokeWidth="4"
           strokeLinecap="round"
           style={staticStroke}
         />
         {/* Nodi lungo il filo */}
-        <circle data-dot cx="100" cy="520" r="6" fill="#6b7340" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="300" cy="1560" r="6" fill="#3d2a1e" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="2200" r="6" fill="#c49a4a" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="3400" r="7" fill="#c49a4a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="100" cy="520" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="300" cy="1560" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="200" cy="2200" r="8" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        <circle data-dot cx="200" cy="3400" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
       </svg>
 
       {/* Contenuti — 4 nodi in flusso normale, lato alternato rispetto al filo */}
@@ -280,18 +238,18 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/75 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico-testo)] md:text-[11px]"
           >
             04 — LA FILIERA
           </motion.p>
-          <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--crema)] md:mt-10">
+          <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
             <span className="block">Dalla terra</span>
             <span className="ml-[3%] block md:ml-[7%]">alla tavola,</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro)] md:ml-[3%]">
+            <span className="ml-[1%] block italic text-[color:var(--carbone)] md:ml-[3%]">
               senza uscire.
             </span>
           </h2>
-          <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:mt-8 md:text-[17px]">
+          <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
             Ogni passaggio avviene dentro la masseria. Quello che cresce nei campi nutre gli
             animali. Quello che gli animali danno passa dal caseificio e dalla macelleria. Quello
             che ne esce arriva in sala.
@@ -313,13 +271,13 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/85 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[2].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--crema)]">
+          <h3 className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
             <span className="block">{NODI[2].titolo[0]}</span>
-            <span className="ml-[2%] block italic text-[color:var(--oro)]">
+            <span className="ml-[2%] block italic text-[color:var(--carbone)]">
               {NODI[2].titolo[1]}
             </span>
           </h3>
@@ -331,10 +289,10 @@ export function LaFiliera() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="max-w-[36ch] md:pl-4"
             >
-              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/80">
+              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80">
                 IL LATTE
               </p>
-              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 [@media(min-width:900px)]:text-[color:var(--carbone)]/85 md:text-[17px]">
+              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoLatte}
               </p>
             </motion.div>
@@ -345,10 +303,10 @@ export function LaFiliera() {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="max-w-[36ch] justify-self-end md:pr-4"
             >
-              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/80">
+              <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--carminio-scuro)]">
                 LA CARNE
               </p>
-              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 md:text-[17px]">
+              <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoCarne}
               </p>
             </motion.div>
@@ -365,40 +323,42 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/90 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[3].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--crema)] [@media(min-width:900px)]:text-[color:var(--carbone)]">
+          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
             <span className="block">{NODI[3].titolo[0]}</span>
-            <span className="mt-1 block italic text-[color:var(--oro)] [@media(min-width:900px)]:text-[color:var(--bordeaux)]">
+            <span className="mt-1 block italic text-[color:var(--carbone)]">
               {NODI[3].titolo[1]}
             </span>
           </h3>
-          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--crema)]/90 [@media(min-width:900px)]:text-[color:var(--carbone)]/85 md:text-[17px]">
+          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
             {NODI[3].testo}
           </p>
 
           {/* Chiusura dell'atto */}
-          <p className="mt-16 max-w-[30ch] font-display text-[clamp(1.2rem,2.4vw,1.8rem)] italic leading-[1.12] text-[color:var(--oro)] [@media(min-width:900px)]:text-[color:var(--bordeaux)] md:mt-24">
+          <p className="mt-16 max-w-[30ch] font-display text-[clamp(1.2rem,2.4vw,1.8rem)] italic leading-[1.12] text-[color:var(--carbone)] md:mt-24">
             Quattro mestieri, un solo percorso.
           </p>
         </article>
       </div>
 
-      {/* Handoff verso l'Atto 05 — fondo finale = fondo di partenza del 05 */}
+      {/* Handoff verso l'Atto 05 — unica campitura profonda ammessa nell'atto,
+          riservata al momento della riunione. Non è finta materia: è pietra
+          scura pulita, senza gradienti che imitano legno o cibo. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[36dvh]"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--crema) 82%, var(--oro)) 60%, color-mix(in oklab, var(--crema) 88%, var(--marrone)) 100%)",
+            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 60%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
         }}
       />
-      <div className="relative z-10 border-t border-[color:var(--marrone)]/25 bg-[color:color-mix(in_oklab,var(--crema)_88%,var(--marrone))]">
+      <div className="relative z-10 border-t border-[color:var(--bianco-calce)]/15 bg-[color:var(--pietra-800)]">
         <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-6 md:px-10 md:py-8">
-          <span aria-hidden className="h-px w-10 bg-[color:var(--bordeaux)]/60" />
-          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--carbone)]/70 md:text-[10px]">
+          <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
+          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/80 md:text-[10px]">
             05 — LA TAVOLA
           </p>
         </div>
@@ -429,7 +389,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/85 md:text-[11px]"
+          className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
         >
           {nodo.occhiello}
         </motion.p>
@@ -438,7 +398,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
-          className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--crema)]"
+          className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--carbone)]"
         >
           {nodo.titolo[0]}
         </motion.h3>
@@ -447,7 +407,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
-          className="mt-6 text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:text-[17px]"
+          className="mt-6 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]"
         >
           {nodo.testo}
         </motion.p>
