@@ -372,6 +372,7 @@ export function IlLuogo() {
           style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
         >
           <motion.p
+            data-eyebrow-03
             initial={statico ? false : { opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
