@@ -321,7 +321,7 @@ export function LaTavola() {
           ============================================================ */}
       <div
         data-apertura
-        className="relative flex min-h-[90dvh] flex-col items-center justify-center px-5 md:px-10 [@media(min-width:900px)]:min-h-[110dvh]"
+        className="relative flex min-h-[100dvh] flex-col items-center justify-center px-5 md:px-10 [@media(min-width:900px)]:min-h-[90dvh]"
       >
         {/* Cover bianco calce che copre l'apertura all'inizio dello scroll,
             poi svanisce lasciando la pietra scura. */}
@@ -419,7 +419,7 @@ export function LaTavola() {
           ============================================================ */}
       <div
         data-chiusura
-        className="relative flex min-h-[90dvh] flex-col items-center justify-center px-5 pb-20 pt-16 text-center md:px-10 [@media(min-width:900px)]:min-h-[110dvh]"
+        className="relative flex min-h-[100dvh] flex-col items-center justify-center px-5 pb-20 pt-16 text-center md:px-10 [@media(min-width:900px)]:min-h-[85dvh]"
       >
         <div
           data-chiusura-luce
@@ -518,12 +518,12 @@ function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
   const isArrosto = q.id === "arrosto";
   const altezzaClass =
     q.id === "cucina"
-      ? "min-h-[110dvh] [@media(min-width:900px)]:min-h-[130dvh]"
+      ? "min-h-[115dvh] [@media(min-width:900px)]:min-h-[105dvh]"
       : q.id === "arrosto"
-        ? "min-h-[120dvh] [@media(min-width:900px)]:min-h-[140dvh]"
+        ? "min-h-[125dvh] [@media(min-width:900px)]:min-h-[110dvh]"
         : q.id === "dolce"
-          ? "min-h-[90dvh] [@media(min-width:900px)]:min-h-[100dvh]"
-          : "min-h-[100dvh] [@media(min-width:900px)]:min-h-[110dvh]";
+          ? "min-h-[95dvh] [@media(min-width:900px)]:min-h-[85dvh]"
+          : "min-h-[105dvh] [@media(min-width:900px)]:min-h-[95dvh]";
 
   return (
     <article
