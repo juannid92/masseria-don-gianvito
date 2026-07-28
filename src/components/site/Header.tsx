@@ -9,12 +9,15 @@ import { cn } from "@/lib/utils";
  * - Logo → "/", sezioni Home via hash (nessuna seconda istanza Lenis),
  *   menu editoriale "La Masseria" con le quattro anime, La Voce, CTA Prenota.
  * - Safe area sotto l'header: unica variabile condivisa --header-offset.
+ * - Tono adattivo: rileva `[data-tone]` della sezione sotto la barra e alterna
+ *   testo/scrim chiaro (fondo scuro) o scuro (fondo bianco calce).
  */
 export function Header() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [tone, setTone] = useState<"dark" | "light">("dark");
   const menuRef = useRef<HTMLDivElement | null>(null);
   const goToSection = useHomeSectionNav(() => {
     setOpen(false);
@@ -28,6 +31,38 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Tono adattivo: la sezione [data-tone] che interseca la banda header
+  // determina il tono. Fallback dark (pagine interne senza data-tone).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const headerH =
+      parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue("--header-offset"),
+      ) || 76;
+    const probeY = Math.round(headerH / 2) + 4;
+    let raf = 0;
+    const detect = () => {
+      raf = 0;
+      const el = document.elementFromPoint(24, probeY) as HTMLElement | null;
+      if (!el) return;
+      const withTone = el.closest("[data-tone]") as HTMLElement | null;
+      const next = (withTone?.dataset.tone as "dark" | "light" | undefined) ?? "dark";
+      setTone((prev) => (prev === next ? prev : next));
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(detect);
+    };
+    detect();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [location.pathname]);
 
   // Dropdown: Escape + click esterno
   useEffect(() => {
@@ -69,11 +104,24 @@ export function Header() {
 
   const animaAttiva = ANIME.find((a) => a.to === location.pathname);
 
+  const isLight = tone === "light";
+  const textStrong = isLight ? "text-[color:var(--pietra-800)]" : "text-[color:var(--bianco-calce)]";
+  const textSoft = isLight
+    ? "text-[color:var(--pietra-800)]/75 hover:text-[color:var(--pietra-800)]"
+    : "text-[color:var(--bianco-calce)]/75 hover:text-[color:var(--bianco-calce)]";
+  const scrimGradient = isLight
+    ? "linear-gradient(180deg, color-mix(in oklab, var(--bianco-calce) 78%, transparent) 0%, transparent 100%)"
+    : "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 72%, transparent) 0%, transparent 100%)";
+  const bgScrolled = isLight
+    ? "bg-[color:var(--bianco-calce)]/92 backdrop-blur-md"
+    : "bg-[color:var(--pietra-800)]/92 backdrop-blur-md";
+
   return (
     <header
+      data-header-tone={tone}
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
-        scrolled ? "bg-[color:var(--carbone)]/92 backdrop-blur-md" : "bg-transparent",
+        scrolled ? bgScrolled : "bg-transparent",
       )}
       style={{ height: "var(--header-offset)" }}
     >
@@ -81,10 +129,7 @@ export function Header() {
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 72%, transparent) 0%, transparent 100%)",
-        }}
+        style={{ background: scrimGradient }}
       />
 
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-6 px-5 md:px-10">
@@ -92,7 +137,7 @@ export function Header() {
           <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/80">
             Noci · Puglia
           </span>
-          <span className="font-display text-[15px] leading-tight text-[color:var(--bianco-calce)] md:text-[17px]">
+          <span className={cn("font-display text-[15px] leading-tight md:text-[17px]", textStrong)}>
             Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
           </span>
         </Link>
@@ -104,7 +149,10 @@ export function Header() {
               key={s.id}
               type="button"
               onClick={() => goToSection(s.id)}
-              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/75 transition-colors hover:text-[color:var(--bianco-calce)]"
+              className={cn(
+                "font-eyebrow text-[10px] tracking-[0.24em] transition-colors",
+                textSoft,
+              )}
             >
               {s.nome}
             </button>
@@ -120,7 +168,7 @@ export function Header() {
                 "font-eyebrow text-[10px] tracking-[0.24em] transition-colors",
                 open || animaAttiva
                   ? "text-[color:var(--oro-antico)]"
-                  : "text-[color:var(--bianco-calce)]/75 hover:text-[color:var(--bianco-calce)]",
+                  : textSoft,
               )}
             >
               La Masseria
@@ -158,7 +206,10 @@ export function Header() {
           <button
             type="button"
             onClick={() => goToSection("la-voce")}
-            className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/75 transition-colors hover:text-[color:var(--bianco-calce)]"
+            className={cn(
+              "font-eyebrow text-[10px] tracking-[0.24em] transition-colors",
+              textSoft,
+            )}
           >
             La Voce
           </button>
@@ -180,7 +231,12 @@ export function Header() {
           aria-label="Apri il menu"
           onClick={() => setDrawer(true)}
         >
-          <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/80">
+          <span
+            className={cn(
+              "font-eyebrow text-[10px] tracking-[0.24em]",
+              isLight ? "text-[color:var(--pietra-800)]/85" : "text-[color:var(--bianco-calce)]/80",
+            )}
+          >
             Menu
           </span>
           <span aria-hidden className="flex h-4 w-6 flex-col justify-between py-[3px]">
