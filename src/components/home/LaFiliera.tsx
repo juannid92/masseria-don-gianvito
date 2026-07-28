@@ -81,6 +81,9 @@ export function LaFiliera() {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    const willChangeEls: HTMLElement[] = [];
+    const willChangeSvg: SVGPathElement[] = [];
+
     const ctx = gsap.context(() => {
       const main = root.querySelector<SVGPathElement>("[data-filo='main']");
       const latte = root.querySelector<SVGPathElement>("[data-filo='latte']");
@@ -111,6 +114,8 @@ export function LaFiliera() {
       if (latteUnder) animated.push(latteUnder);
       animated.forEach((el) => ((el as SVGPathElement).style.willChange = "stroke-dashoffset"));
       [...parallaxSlow, ...parallaxFast].forEach((el) => (el.style.willChange = "transform"));
+      willChangeSvg.push(...(animated as SVGPathElement[]));
+      willChangeEls.push(...parallaxSlow, ...parallaxFast);
 
       // UN SOLO trigger locale per il filo. Nodi e testi hanno ScrollTriggers
       // separati sul proprio article per il reveal — max 5 in totale.
@@ -154,14 +159,13 @@ export function LaFiliera() {
       // Luce direzionale che si sposta impercettibilmente lungo lo scroll.
       if (luce) tl.fromTo(luce, { yPercent: -6 }, { yPercent: 6, duration: 1 }, 0);
 
-      // Onkill: rimuovi will-change per liberare i layer.
-      return () => {
-        animated.forEach((el) => ((el as SVGPathElement).style.willChange = ""));
-        [...parallaxSlow, ...parallaxFast].forEach((el) => (el.style.willChange = ""));
-      };
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      willChangeSvg.forEach((el) => (el.style.willChange = ""));
+      willChangeEls.forEach((el) => (el.style.willChange = ""));
+    };
   }, [reduced]);
 
   const statico = reduced;
