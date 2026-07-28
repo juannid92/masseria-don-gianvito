@@ -407,7 +407,7 @@ export function LaTavola() {
         className="relative z-[3] mx-auto flex w-full max-w-[1200px] items-center gap-4 px-5 py-16 md:px-10 md:py-20"
       >
         <span aria-hidden className="hidden h-px flex-1 bg-[color:var(--bianco-calce)]/20 md:block" />
-        <p className="text-center text-[14px] leading-relaxed text-[color:var(--bianco-calce)]/70 md:max-w-[52ch] md:text-[15px]">
+        <p className="text-center text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:max-w-[52ch] md:text-[15px]">
           Piatti e disponibilità possono cambiare. Contatta la Masseria per confermare il menu del
           giorno.
         </p>
