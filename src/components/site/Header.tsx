@@ -44,10 +44,21 @@ export function Header() {
     let raf = 0;
     const detect = () => {
       raf = 0;
-      const el = document.elementFromPoint(24, probeY) as HTMLElement | null;
-      if (!el) return;
-      const withTone = el.closest("[data-tone]") as HTMLElement | null;
-      const next = (withTone?.dataset.tone as "dark" | "light" | undefined) ?? "dark";
+      // Iteriamo le sezioni [data-tone] e prendiamo quella che interseca
+      // la banda dell'header. Evita l'inganno di elementFromPoint quando
+      // l'header fisso cattura il punto in alto a sinistra.
+      const nodes = document.querySelectorAll<HTMLElement>("[data-tone]");
+      let match: "dark" | "light" | null = null;
+      for (const n of Array.from(nodes)) {
+        const r = n.getBoundingClientRect();
+        if (r.top <= probeY && r.bottom > probeY) {
+          const t = n.dataset.tone;
+          if (t === "light" || t === "dark") match = t;
+          // non "break": una sezione più annidata (più recente nel DOM)
+          // vince sull'antenata, coerente con lo z-index visivo.
+        }
+      }
+      const next = match ?? "dark";
       setTone((prev) => (prev === next ? prev : next));
     };
     const onScroll = () => {
@@ -137,7 +148,12 @@ export function Header() {
           <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/80">
             Noci · Puglia
           </span>
-          <span className={cn("font-display text-[15px] leading-tight md:text-[17px]", textStrong)}>
+          <span
+            className={cn(
+              "font-display text-[15px] leading-tight transition-colors duration-500 md:text-[17px]",
+              textStrong,
+            )}
+          >
             Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
           </span>
         </Link>

@@ -272,27 +272,38 @@ export function IlLuogo() {
     <section
       id="luogo"
       data-act="luogo"
-      data-tone="dark"
+      data-tone="light"
       ref={rootRef}
       aria-label="Il Luogo"
-      className="relative isolate w-full bg-[color:var(--pietra-800)] [@media(min-width:900px)]:min-h-[170dvh]"
+      className="relative isolate w-full bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:min-h-[170dvh]"
     >
       {/* Stage sticky (CSS nativo, NON GSAP pin) */}
       <div
         data-sticky
-        className="relative isolate w-full overflow-hidden [@media(min-width:900px)]:sticky [@media(min-width:900px)]:top-0 [@media(min-width:900px)]:h-[100dvh]"
+        className="relative isolate w-full overflow-hidden bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:sticky [@media(min-width:900px)]:top-0 [@media(min-width:900px)]:h-[100dvh]"
       >
-        {/* Fondo di partenza: continua il carbone-marrone di uscita di Storia. */}
+        {/* Fondo di partenza: bianco calce con luce direzionale sottile.
+            La fotografia, incorniciata dal bianco, guadagna forza al centro. */}
         <div
           aria-hidden
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--pietra-800) 58%, var(--carbone)) 0%, color-mix(in oklab, var(--pietra-800) 42%, var(--carbone)) 55%, color-mix(in oklab, var(--pietra-800) 72%, var(--carbone)) 100%)",
+              "var(--bianco-calce)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(60% 42% at 26% 18%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 68%), radial-gradient(48% 36% at 78% 74%, color-mix(in oklab, var(--pietra-800) 8%, transparent) 0%, transparent 72%)",
+            opacity: 0.9,
           }}
         />
 
-        {/* Match cut: linea d'oro verticale continua lo spigolo di pietra di Storia */}
+        {/* Match cut: linea d'oro verticale continua lo spigolo di pietra di Storia.
+            L'oro resta leggibile sia sul bianco calce esterno che sulla foto. */}
         <span
           aria-hidden
           data-match-cut
@@ -332,7 +343,7 @@ export function IlLuogo() {
               src={aerial.url}
               alt=""
               className="h-full w-full object-cover object-[30%_35%]"
-              style={{ filter: "saturate(0.9) contrast(0.9) brightness(0.85)" }}
+              style={{ filter: "saturate(0.92) contrast(0.96) brightness(0.98)" }}
               decoding="async"
             />
           </div>
@@ -342,23 +353,25 @@ export function IlLuogo() {
               src={aerial.url}
               alt="Vista aerea dei campi e del cortile della Masseria Don Gianvito, lungo la provinciale per Mottola"
               className="h-full w-full object-cover object-[28%_42%]"
-              style={{ filter: "saturate(1) contrast(0.95) brightness(0.94)" }}
+              style={{ filter: "saturate(1.02) contrast(1.02) brightness(1.02)" }}
               decoding="async"
             />
           </div>
-          {/* Scrim di leggibilità per titolo e annotazioni */}
+          {/* Scrim di leggibilità per titolo e annotazioni.
+              Su fondo chiaro il testo sale in ombra: scrim caldo, mai nero pieno,
+              solo dove serve (angolo alto-sinistra e fascia inferiore). */}
           <div
             aria-hidden
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(100deg, color-mix(in oklab, var(--carbone) 68%, transparent) 0%, color-mix(in oklab, var(--carbone) 30%, transparent) 40%, transparent 60%), linear-gradient(0deg, color-mix(in oklab, var(--carbone) 68%, transparent) 0%, transparent 42%)",
+                "linear-gradient(100deg, color-mix(in oklab, var(--pietra-800) 62%, transparent) 0%, color-mix(in oklab, var(--pietra-800) 24%, transparent) 42%, transparent 62%), linear-gradient(0deg, color-mix(in oklab, var(--pietra-800) 55%, transparent) 0%, transparent 40%)",
             }}
           />
           <div aria-hidden className="grain absolute inset-0" />
         </div>
 
-        {/* Rack focus / velo caldo che entra nella chiusura */}
+        {/* Rack focus / velo caldo che entra nella chiusura (verso cortile) */}
         <div
           aria-hidden
           data-rack
@@ -366,7 +379,21 @@ export function IlLuogo() {
           style={{
             opacity: statico ? 0.5 : 0,
             background:
-              "radial-gradient(52% 44% at 38% 62%, transparent 0%, color-mix(in oklab, var(--pietra-800) 55%, transparent) 60%, color-mix(in oklab, var(--carbone) 78%, var(--pietra-800)) 100%)",
+              "radial-gradient(52% 44% at 38% 62%, transparent 0%, color-mix(in oklab, var(--pietra-800) 40%, transparent) 60%, color-mix(in oklab, var(--pietra-800) 70%, transparent) 100%)",
+          }}
+        />
+
+        {/* Scrim di leggibilità INDIPENDENTE dalla maschera.
+            Il titolo bianco resta leggibile anche quando la maschera è chiusa
+            e rivela il bianco calce ai lati: garantiamo un velo scuro locale
+            sotto l'angolo alto-sinistra (titolo) e sotto la fascia in basso
+            (occhiello + annotazioni). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-20"
+          style={{
+            background:
+              "linear-gradient(110deg, color-mix(in oklab, var(--pietra-800) 68%, transparent) 0%, color-mix(in oklab, var(--pietra-800) 22%, transparent) 46%, transparent 66%), linear-gradient(0deg, color-mix(in oklab, var(--pietra-800) 55%, transparent) 0%, transparent 34%)",
           }}
         />
 
@@ -457,7 +484,8 @@ export function IlLuogo() {
         </div>
 
         {/* Solco nella terra: primo segno del filo dell'atto 04.
-            SVG absolute in fondo alla scena sticky. */}
+            Ora oro-antico, coerente col filo su Filiera; leggibile su
+            bianco calce e sul passaggio scuro finale. */}
         <svg
           aria-hidden
           className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[42%] w-full"
@@ -468,28 +496,29 @@ export function IlLuogo() {
             data-solco
             d="M -20 240 C 240 210, 480 260, 700 220 S 1080 200, 1240 230"
             fill="none"
-            stroke="color-mix(in oklab, var(--oliva-500) 62%, var(--pietra-800))"
-            strokeWidth="2.2"
+            stroke="var(--oro-antico)"
+            strokeWidth="1.8"
             strokeLinecap="round"
             style={{
               // Reduced motion: solco già visibile per intero.
               strokeDasharray: statico ? undefined : 1,
               strokeDashoffset: statico ? 0 : 1,
-              filter:
-                "drop-shadow(0 1px 0 color-mix(in oklab, var(--carbone) 60%, transparent))",
+              opacity: 0.9,
             }}
           />
         </svg>
 
-        {/* Handoff verso l'atto 04 — fondo finale = fondo di partenza dell'atto 04 */}
+        {/* Handoff verso l'atto 04 — passaggio scuro BREVE come "beat" di stacco
+            fra due atti chiari (Luogo → Filiera). Non copre il solco, che resta
+            visibile sopra come cardine del match cut. */}
         <div
           aria-hidden
           data-handoff
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[24dvh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[18dvh]"
           style={{
-            opacity: statico ? 0.7 : 0,
+            opacity: statico ? 0.85 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--pietra-800) 40%, transparent) 55%, color-mix(in oklab, var(--pietra-800) 70%, transparent) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--pietra-800) 62%, transparent) 55%, var(--pietra-800) 100%)",
           }}
         />
 
@@ -499,7 +528,7 @@ export function IlLuogo() {
             <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
             <p
               data-occhiello-04
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/65 md:text-[10px]"
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/85 md:text-[10px]"
               style={{ opacity: vis }}
             >
               04 — LA FILIERA
