@@ -403,7 +403,7 @@ export function LaStoria() {
                 style={{ paddingTop: "calc(var(--page-header-safe-offset) + 1vh)" }}
               >
                 <div className="max-w-[46ch]">
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70">
                     {m.occhiello}
                   </p>
                   <h3 className="mt-5 font-display text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1] text-[color:var(--bianco-calce)] [@media(max-height:520px)]:text-[clamp(1.5rem,3.4vw,2.1rem)]">
