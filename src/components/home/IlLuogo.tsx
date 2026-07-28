@@ -154,7 +154,7 @@ export function IlLuogo() {
         tl.to(
           photo,
           {
-            scale: 1.35,
+            scale: 1.28,
             transformOrigin: "38% 62%", // spostamento verso il cortile
             duration: 0.22,
             ease: "power1.inOut",
@@ -429,7 +429,7 @@ export function IlLuogo() {
                   <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/90">
                     {a.occhiello}
                   </p>
-                  <p className="mt-3 text-[15px] leading-relaxed text-[color:var(--crema)]/90 md:text-[16px]">
+                  <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 md:text-[17px]">
                     {a.testo}
                   </p>
                 </article>
@@ -441,7 +441,7 @@ export function IlLuogo() {
           <div className="mt-10 max-w-[46ch] [@media(min-width:900px)]:absolute [@media(min-width:900px)]:bottom-16 [@media(min-width:900px)]:left-10">
             <p
               data-chiusura
-              className="text-[13px] leading-relaxed tracking-[0.06em] text-[color:var(--crema)]/70"
+              className="text-[13px] leading-relaxed tracking-[0.08em] text-[color:var(--crema)]/70 md:text-[13px]"
               style={{ opacity: vis }}
             >
               Noci (BA), sulla provinciale per Mottola.
