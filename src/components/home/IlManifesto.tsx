@@ -175,7 +175,7 @@ export function IlManifesto() {
               className="absolute inset-[-8%]"
               style={{
                 background:
-                  "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 86%, var(--carbone)) 0%, var(--marrone) 30%, color-mix(in oklab, var(--marrone) 82%, var(--carbone)) 74%, color-mix(in oklab, var(--carbone) 90%, var(--marrone)) 100%)",
+                  "linear-gradient(180deg, color-mix(in oklab, var(--pietra-800) 86%, var(--carbone)) 0%, var(--pietra-800) 30%, color-mix(in oklab, var(--pietra-800) 82%, var(--carbone)) 74%, color-mix(in oklab, var(--carbone) 90%, var(--pietra-800)) 100%)",
               }}
             />
           </div>
@@ -190,7 +190,7 @@ export function IlManifesto() {
               style={{
                 opacity: statico ? 0.5 : 0.35,
                 background:
-                  "radial-gradient(58% 44% at 30% 28%, color-mix(in oklab, var(--oliva) 26%, transparent) 0%, transparent 68%), radial-gradient(50% 38% at 74% 70%, color-mix(in oklab, var(--oro) 12%, transparent) 0%, transparent 70%)",
+                  "radial-gradient(58% 44% at 30% 28%, color-mix(in oklab, var(--oliva-500) 26%, transparent) 0%, transparent 68%), radial-gradient(50% 38% at 74% 70%, color-mix(in oklab, var(--oro-antico) 12%, transparent) 0%, transparent 70%)",
               }}
             />
           </div>
@@ -205,7 +205,7 @@ export function IlManifesto() {
         <span
           aria-hidden
           data-linea
-          className="pointer-events-none absolute left-5 top-0 z-10 w-px origin-top bg-gradient-to-b from-[color:var(--oro)]/80 via-[color:var(--oro)]/45 to-transparent md:left-10"
+          className="pointer-events-none absolute left-5 top-0 z-10 w-px origin-top bg-gradient-to-b from-[color:var(--oro-antico)]/80 via-[color:var(--oro-antico)]/45 to-transparent md:left-10"
           style={{ height: "66%", transform: statico ? "scaleY(1)" : undefined }}
         />
 
@@ -220,12 +220,12 @@ export function IlManifesto() {
                 initial={statico ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/70 md:text-[11px]"
+                className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]"
               >
                 01 — IL MANIFESTO
               </motion.p>
 
-              <h2 className="mt-8 font-display text-[clamp(2.6rem,7.4vw,6.4rem)] leading-[0.94] text-[color:var(--crema)] md:mt-12 [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:text-[clamp(1.9rem,4.6vw,2.9rem)]">
+              <h2 className="mt-8 font-display text-[clamp(2.6rem,7.4vw,6.4rem)] leading-[0.94] text-[color:var(--bianco-calce)] md:mt-12 [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:text-[clamp(1.9rem,4.6vw,2.9rem)]">
                 <span data-riga className="block" style={{ opacity: vis }}>
                   Tutto nasce
                 </span>
@@ -234,7 +234,7 @@ export function IlManifesto() {
                 </span>
                 <span
                   data-riga
-                  className="ml-[2%] block italic text-[color:var(--oro)] md:ml-[4%]"
+                  className="ml-[2%] block italic text-[color:var(--oro-antico)] md:ml-[4%]"
                   style={{ opacity: vis }}
                 >
                   terra.
@@ -245,7 +245,7 @@ export function IlManifesto() {
             <div className="md:col-span-4 md:col-start-9 md:self-end md:pb-4">
               <p
                 data-sostegno
-                className="max-w-[42ch] text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:text-[17px]"
+                className="max-w-[42ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[17px]"
                 style={{ opacity: vis }}
               >
                 Gli animali crescono nei nostri terreni. Il latte diventa formaggio ogni mattina. La
@@ -253,7 +253,7 @@ export function IlManifesto() {
               </p>
               <p
                 data-chiusura
-                className="mt-12 text-[12.5px] leading-relaxed tracking-[0.06em] text-[color:var(--crema)]/55 md:mt-20 md:text-[13px]"
+                className="mt-12 text-[12.5px] leading-relaxed tracking-[0.06em] text-[color:var(--bianco-calce)]/55 md:mt-20 md:text-[13px]"
                 style={{ opacity: vis }}
               >
                 Una masseria del Cinquecento, nelle campagne di Noci.
@@ -270,16 +270,16 @@ export function IlManifesto() {
           style={{
             opacity: statico ? 1 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 70%, var(--marrone)) 62%, var(--carbone) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--carbone) 70%, var(--pietra-800)) 62%, var(--carbone) 100%)",
           }}
         />
 
         <div className="relative z-20">
           <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-6 md:px-10 md:pb-8">
-            <span aria-hidden className="h-px w-10 bg-[color:var(--oro)]/70" />
+            <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
             <p
               data-occhiello-02
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/60 md:text-[10px]"
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/60 md:text-[10px]"
               style={{ opacity: vis }}
             >
               02 — LA STORIA

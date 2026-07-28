@@ -287,7 +287,7 @@ export function IlLuogo() {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--marrone) 58%, var(--carbone)) 0%, color-mix(in oklab, var(--marrone) 42%, var(--carbone)) 55%, color-mix(in oklab, var(--marrone) 72%, var(--carbone)) 100%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--pietra-800) 58%, var(--carbone)) 0%, color-mix(in oklab, var(--pietra-800) 42%, var(--carbone)) 55%, color-mix(in oklab, var(--pietra-800) 72%, var(--carbone)) 100%)",
           }}
         />
 
@@ -299,7 +299,7 @@ export function IlLuogo() {
           style={{
             opacity: statico ? 0 : 1,
             background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--oro) 80%, transparent) 0%, color-mix(in oklab, var(--oro) 30%, transparent) 100%)",
+              "linear-gradient(180deg, color-mix(in oklab, var(--oro-antico) 80%, transparent) 0%, color-mix(in oklab, var(--oro-antico) 30%, transparent) 100%)",
           }}
         />
         {/* Muretto: la stessa linea d'oro, distesa orizzontalmente. */}
@@ -310,7 +310,7 @@ export function IlLuogo() {
           style={{
             opacity: statico ? 1 : 0,
             background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro) 60%, transparent) 24%, var(--oro) 50%, color-mix(in oklab, var(--oro) 60%, transparent) 76%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 60%, transparent) 24%, var(--oro-antico) 50%, color-mix(in oklab, var(--oro-antico) 60%, transparent) 76%, transparent 100%)",
           }}
         />
 
@@ -365,7 +365,7 @@ export function IlLuogo() {
           style={{
             opacity: statico ? 0.5 : 0,
             background:
-              "radial-gradient(52% 44% at 38% 62%, transparent 0%, color-mix(in oklab, var(--marrone) 55%, transparent) 60%, color-mix(in oklab, var(--carbone) 78%, var(--marrone)) 100%)",
+              "radial-gradient(52% 44% at 38% 62%, transparent 0%, color-mix(in oklab, var(--pietra-800) 55%, transparent) 60%, color-mix(in oklab, var(--carbone) 78%, var(--pietra-800)) 100%)",
           }}
         />
 
@@ -380,13 +380,13 @@ export function IlLuogo() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--crema)]/75 md:text-[11px]"
+            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/75 md:text-[11px]"
           >
             03 — IL LUOGO
           </motion.p>
 
           {/* Titolo, tre righe, reveal per riga da dietro una maschera */}
-          <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--crema)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
+          <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
             <span className="block overflow-hidden">
               <span data-riga className="block" style={{ opacity: vis }}>
                 Fuori Noci,
@@ -400,7 +400,7 @@ export function IlLuogo() {
             <span className="ml-[1%] block overflow-hidden md:ml-[3%]">
               <span
                 data-riga
-                className="block italic text-[color:var(--oro)]"
+                className="block italic text-[color:var(--oro-antico)]"
                 style={{ opacity: vis }}
               >
                 smette di correre.
@@ -410,7 +410,7 @@ export function IlLuogo() {
 
           <p
             data-testo
-            className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--crema)]/85 md:mt-10 md:text-[17px]"
+            className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:mt-10 md:text-[17px]"
             style={{ opacity: vis }}
           >
             La masseria si trova lungo la provinciale per Mottola, tra campi coltivati e muretti a
@@ -432,10 +432,10 @@ export function IlLuogo() {
                     marginTop: statico && i > 0 ? "1.25rem" : undefined,
                   }}
                 >
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro)]/90">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)]/90">
                     {a.occhiello}
                   </p>
-                  <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--crema)]/90 md:text-[17px]">
+                  <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/90 md:text-[17px]">
                     {a.testo}
                   </p>
                 </article>
@@ -447,7 +447,7 @@ export function IlLuogo() {
           <div className="mt-10 max-w-[46ch] [@media(min-width:900px)]:absolute [@media(min-width:900px)]:bottom-16 [@media(min-width:900px)]:left-10">
             <p
               data-chiusura
-              className="text-[13px] leading-relaxed tracking-[0.08em] text-[color:var(--crema)]/70 md:text-[13px]"
+              className="text-[13px] leading-relaxed tracking-[0.08em] text-[color:var(--bianco-calce)]/70 md:text-[13px]"
               style={{ opacity: vis }}
             >
               Noci (BA), sulla provinciale per Mottola.
@@ -467,7 +467,7 @@ export function IlLuogo() {
             data-solco
             d="M -20 240 C 240 210, 480 260, 700 220 S 1080 200, 1240 230"
             fill="none"
-            stroke="color-mix(in oklab, var(--oliva) 62%, var(--marrone))"
+            stroke="color-mix(in oklab, var(--oliva-500) 62%, var(--pietra-800))"
             strokeWidth="2.2"
             strokeLinecap="round"
             style={{
@@ -488,17 +488,17 @@ export function IlLuogo() {
           style={{
             opacity: statico ? 0.7 : 0,
             background:
-              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--marrone) 40%, transparent) 55%, color-mix(in oklab, var(--marrone) 70%, transparent) 100%)",
+              "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--pietra-800) 40%, transparent) 55%, color-mix(in oklab, var(--pietra-800) 70%, transparent) 100%)",
           }}
         />
 
         {/* Occhiello 04 — LA FILIERA */}
         <div className="absolute inset-x-0 bottom-0 z-30">
           <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 pb-6 md:px-10 md:pb-8">
-            <span aria-hidden className="h-px w-10 bg-[color:var(--oro)]/70" />
+            <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
             <p
               data-occhiello-04
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--crema)]/65 md:text-[10px]"
+              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/65 md:text-[10px]"
               style={{ opacity: vis }}
             >
               04 — LA FILIERA

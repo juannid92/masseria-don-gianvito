@@ -89,11 +89,11 @@ export function Header() {
 
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between gap-6 px-5 md:px-10">
         <Link to="/" className="group flex flex-col leading-none" aria-label={MASSERIA.nome}>
-          <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro)]/80">
+          <span className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/80">
             Noci · Puglia
           </span>
-          <span className="font-display text-[15px] leading-tight text-[color:var(--crema)] md:text-[17px]">
-            Masseria <em className="not-italic text-[color:var(--oro)]">Don Gianvito</em>
+          <span className="font-display text-[15px] leading-tight text-[color:var(--bianco-calce)] md:text-[17px]">
+            Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
           </span>
         </Link>
 
@@ -104,7 +104,7 @@ export function Header() {
               key={s.id}
               type="button"
               onClick={() => goToSection(s.id)}
-              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/75 transition-colors hover:text-[color:var(--crema)]"
+              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/75 transition-colors hover:text-[color:var(--bianco-calce)]"
             >
               {s.nome}
             </button>
@@ -119,15 +119,15 @@ export function Header() {
               className={cn(
                 "font-eyebrow text-[10px] tracking-[0.24em] transition-colors",
                 open || animaAttiva
-                  ? "text-[color:var(--oro)]"
-                  : "text-[color:var(--crema)]/75 hover:text-[color:var(--crema)]",
+                  ? "text-[color:var(--oro-antico)]"
+                  : "text-[color:var(--bianco-calce)]/75 hover:text-[color:var(--bianco-calce)]",
               )}
             >
               La Masseria
             </button>
             {open && (
               <div
-                className="absolute right-0 top-[calc(100%+14px)] w-[340px] border border-[color:var(--oro)]/25 bg-[color:var(--carbone)]/97 p-2 shadow-2xl backdrop-blur-md"
+                className="absolute right-0 top-[calc(100%+14px)] w-[340px] border border-[color:var(--oro-antico)]/25 bg-[color:var(--carbone)]/97 p-2 shadow-2xl backdrop-blur-md"
                 role="menu"
               >
                 {ANIME.map((a) => (
@@ -136,16 +136,16 @@ export function Header() {
                     to={a.to}
                     role="menuitem"
                     aria-current={location.pathname === a.to ? "page" : undefined}
-                    className="group flex items-baseline gap-4 px-4 py-3 transition-colors hover:bg-[color:var(--marrone)]/45"
+                    className="group flex items-baseline gap-4 px-4 py-3 transition-colors hover:bg-[color:var(--pietra-800)]/45"
                   >
-                    <span className="font-display text-[11px] text-[color:var(--oro)]/70">
+                    <span className="font-display text-[11px] text-[color:var(--oro-antico)]/70">
                       {a.numero}
                     </span>
                     <span className="flex-1">
-                      <span className="block font-display text-[17px] text-[color:var(--crema)]">
+                      <span className="block font-display text-[17px] text-[color:var(--bianco-calce)]">
                         {a.nome}
                       </span>
-                      <span className="block text-[12px] text-[color:var(--crema)]/55">
+                      <span className="block text-[12px] text-[color:var(--bianco-calce)]/55">
                         {a.claim}
                       </span>
                     </span>
@@ -158,7 +158,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => goToSection("la-voce")}
-            className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/75 transition-colors hover:text-[color:var(--crema)]"
+            className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/75 transition-colors hover:text-[color:var(--bianco-calce)]"
           >
             La Voce
           </button>
@@ -166,7 +166,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => goToSection("prenota")}
-            className="border border-[color:var(--oro)]/60 px-5 py-2 font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro)] transition-colors hover:bg-[color:var(--oro)] hover:text-[color:var(--carbone)]"
+            className="border border-[color:var(--oro-antico)]/60 px-5 py-2 font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-antico)] transition-colors hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)]"
           >
             Prenota
           </button>
@@ -180,12 +180,12 @@ export function Header() {
           aria-label="Apri il menu"
           onClick={() => setDrawer(true)}
         >
-          <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/80">
+          <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/80">
             Menu
           </span>
           <span aria-hidden className="flex h-4 w-6 flex-col justify-between py-[3px]">
-            <span className="block h-px w-full bg-[color:var(--oro)]" />
-            <span className="block h-px w-full bg-[color:var(--oro)]" />
+            <span className="block h-px w-full bg-[color:var(--oro-antico)]" />
+            <span className="block h-px w-full bg-[color:var(--oro-antico)]" />
           </span>
         </button>
       </div>
@@ -196,7 +196,7 @@ export function Header() {
         className="absolute inset-x-0 bottom-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro) 45%, transparent) 35%, color-mix(in oklab, var(--oro) 45%, transparent) 65%, transparent)",
+            "linear-gradient(90deg, transparent, color-mix(in oklab, var(--oro-antico) 45%, transparent) 35%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 65%, transparent)",
           opacity: scrolled ? 1 : 0.35,
         }}
       />
@@ -207,20 +207,20 @@ export function Header() {
             className="flex items-center justify-between px-5"
             style={{ height: "var(--header-offset)" }}
           >
-            <span className="font-display text-[15px] text-[color:var(--crema)]">
-              Masseria <em className="not-italic text-[color:var(--oro)]">Don Gianvito</em>
+            <span className="font-display text-[15px] text-[color:var(--bianco-calce)]">
+              Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
             </span>
             <button
               type="button"
               onClick={() => setDrawer(false)}
-              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--crema)]/75"
+              className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]/75"
             >
               Chiudi
             </button>
           </div>
 
           <div className="flex-1 overflow-y-auto px-5 pb-10">
-            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro)]/70">
+            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/70">
               Le sezioni
             </p>
             <ul className="mb-10 space-y-1">
@@ -229,7 +229,7 @@ export function Header() {
                   <button
                     type="button"
                     onClick={() => goToSection(s.id)}
-                    className="w-full py-2 text-left font-display text-[24px] text-[color:var(--crema)]"
+                    className="w-full py-2 text-left font-display text-[24px] text-[color:var(--bianco-calce)]"
                   >
                     {s.nome}
                   </button>
@@ -239,14 +239,14 @@ export function Header() {
                 <button
                   type="button"
                   onClick={() => goToSection("la-voce")}
-                  className="w-full py-2 text-left font-display text-[24px] text-[color:var(--crema)]"
+                  className="w-full py-2 text-left font-display text-[24px] text-[color:var(--bianco-calce)]"
                 >
                   La Voce
                 </button>
               </li>
             </ul>
 
-            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro)]/70">
+            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/70">
               Le quattro anime
             </p>
             <ul className="space-y-1">
@@ -258,14 +258,14 @@ export function Header() {
                     onClick={() => setDrawer(false)}
                     className="flex items-baseline gap-3 py-2"
                   >
-                    <span className="font-display text-[11px] text-[color:var(--oro)]/70">
+                    <span className="font-display text-[11px] text-[color:var(--oro-antico)]/70">
                       {a.numero}
                     </span>
                     <span>
-                      <span className="block font-display text-[24px] text-[color:var(--crema)]">
+                      <span className="block font-display text-[24px] text-[color:var(--bianco-calce)]">
                         {a.nome}
                       </span>
-                      <span className="block text-[13px] text-[color:var(--crema)]/50">
+                      <span className="block text-[13px] text-[color:var(--bianco-calce)]/50">
                         {a.claim}
                       </span>
                     </span>
@@ -277,7 +277,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => goToSection("prenota")}
-              className="mt-10 w-full border border-[color:var(--oro)]/60 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro)]"
+              className="mt-10 w-full border border-[color:var(--oro-antico)]/60 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro-antico)]"
             >
               Prenota
             </button>
