@@ -81,12 +81,19 @@ export function LaFiliera() {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    const willChangeEls: HTMLElement[] = [];
+    const willChangeSvg: SVGPathElement[] = [];
+
     const ctx = gsap.context(() => {
       const main = root.querySelector<SVGPathElement>("[data-filo='main']");
       const latte = root.querySelector<SVGPathElement>("[data-filo='latte']");
+      const latteUnder = root.querySelector<SVGPathElement>("[data-filo='latte-under']");
       const carne = root.querySelector<SVGPathElement>("[data-filo='carne']");
       const oro = root.querySelector<SVGPathElement>("[data-filo='oro']");
       const dots = Array.from(root.querySelectorAll<SVGCircleElement>("[data-dot]"));
+      const parallaxSlow = Array.from(root.querySelectorAll<HTMLElement>("[data-parallax='slow']"));
+      const parallaxFast = Array.from(root.querySelectorAll<HTMLElement>("[data-parallax='fast']"));
+      const luce = root.querySelector<HTMLElement>("[data-luce]");
       if (!main || !latte || !carne || !oro) return;
 
       const setup = (p: SVGPathElement) => {
@@ -96,9 +103,19 @@ export function LaFiliera() {
       };
       setup(main);
       setup(latte);
+      if (latteUnder) setup(latteUnder);
       setup(carne);
       setup(oro);
       dots.forEach((d) => gsap.set(d, { opacity: 0, scale: 0.6, transformOrigin: "center" }));
+
+      // Promozione a layer solo per gli elementi realmente animati durante lo
+      // scrub. Rimossa al kill del context per non trattenere memoria video.
+      const animated: (SVGPathElement | HTMLElement)[] = [main, latte, carne, oro];
+      if (latteUnder) animated.push(latteUnder);
+      animated.forEach((el) => ((el as SVGPathElement).style.willChange = "stroke-dashoffset"));
+      [...parallaxSlow, ...parallaxFast].forEach((el) => (el.style.willChange = "transform"));
+      willChangeSvg.push(...(animated as SVGPathElement[]));
+      willChangeEls.push(...parallaxSlow, ...parallaxFast);
 
       // UN SOLO trigger locale per il filo. Nodi e testi hanno ScrollTriggers
       // separati sul proprio article per il reveal — max 5 in totale.
@@ -107,7 +124,9 @@ export function LaFiliera() {
           trigger: root,
           start: "top bottom",
           end: "bottom bottom",
-          scrub: 0.6,
+          // 0.8 scelto empiricamente: sotto 0.6 il filo insegue lo scroll a
+          // scatti su trackpad, sopra 1.0 il tratto sembra molle e in ritardo.
+          scrub: 0.8,
           invalidateOnRefresh: true,
         },
         defaults: { ease: "none" },
@@ -121,6 +140,7 @@ export function LaFiliera() {
       tl.to(dots[1], { opacity: 1, scale: 1, duration: 0.04 }, 0.4);
 
       // Fase B · SDOPPIAMENTO — latte a sinistra (bianco-latte), carne a destra (carminio)
+      if (latteUnder) tl.to(latteUnder, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       tl.to(latte, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       tl.to(carne, { strokeDashoffset: 0, duration: 0.2 }, 0.55);
       // Segno visivo della biforcazione
@@ -129,9 +149,23 @@ export function LaFiliera() {
       // Fase C · CONVERGENZA in oro fino alla tavola
       tl.to(oro, { strokeDashoffset: 0, duration: 0.22 }, 0.76);
       tl.to(dots[3], { opacity: 1, scale: 1, duration: 0.04 }, 0.92);
+
+      // PARALLASSE — solo transform, unico timeline, nessun trigger extra.
+      // Differenza fra livelli contigui ~10%: titoli scorrono al 100% (naturale),
+      // occhielli/annotazioni al 92%, corpo testo al 106%.
+      parallaxSlow.forEach((el) => tl.fromTo(el, { yPercent: 4 }, { yPercent: -4, duration: 1 }, 0));
+      parallaxFast.forEach((el) => tl.fromTo(el, { yPercent: -3 }, { yPercent: 3, duration: 1 }, 0));
+
+      // Luce direzionale che si sposta impercettibilmente lungo lo scroll.
+      if (luce) tl.fromTo(luce, { yPercent: -6 }, { yPercent: 6, duration: 1 }, 0);
+
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      willChangeSvg.forEach((el) => (el.style.willChange = ""));
+      willChangeEls.forEach((el) => (el.style.willChange = ""));
+    };
   }, [reduced]);
 
   const statico = reduced;
@@ -150,16 +184,24 @@ export function LaFiliera() {
     >
       {/* Fondo bianco calce pieno — nessuna finta materia. Sola concessione:
           una luce direzionale tenue che segue la colonna del filo, per dare
-          rilievo senza colorare la superficie. */}
+          rilievo senza colorare la superficie. Layer isolato con translateZ
+          per non forzare ridipinture dell'intera sezione a ogni frame. */}
       <div
+        data-luce
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-0"
+        className="pointer-events-none absolute inset-0 z-0 will-change-transform"
         style={{
+          transform: "translateZ(0)",
           background:
             "radial-gradient(60% 40% at 26% 12%, color-mix(in oklab, var(--oro-antico) 8%, transparent) 0%, transparent 70%), radial-gradient(50% 35% at 74% 58%, color-mix(in oklab, var(--oro-antico) 6%, transparent) 0%, transparent 70%), radial-gradient(50% 30% at 50% 92%, color-mix(in oklab, var(--pietra-800) 10%, transparent) 0%, transparent 72%)",
         }}
       />
-      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-30" />
+      {/* Grana statica su layer proprio (translateZ) — non tocca lo scrub. */}
+      <div
+        aria-hidden
+        className="grain pointer-events-none absolute inset-0 z-0 opacity-30"
+        style={{ transform: "translateZ(0)" }}
+      />
 
       {/* Il filo — un unico SVG che copre tutta la sezione */}
       <svg
@@ -175,12 +217,6 @@ export function LaFiliera() {
             <stop offset="0%" stopColor="#b2833a" />
             <stop offset="100%" stopColor="#b2833a" />
           </linearGradient>
-          {/* Filtro discreto per rendere leggibile il tratto bianco-latte
-              sul fondo bianco-calce: sola ombra minima, nessun glow. */}
-          <filter id="filo-latte-shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="1.2"
-              floodColor="#1f1a15" floodOpacity="0.18" />
-          </filter>
         </defs>
         <path
           data-filo="main"
@@ -191,14 +227,25 @@ export function LaFiliera() {
           strokeLinecap="round"
           style={staticStroke}
         />
+        {/* Tratto latte — doppio stroke per staccare dal fondo bianco calce
+            senza filtri SVG: sotto un avorio caldo più profondo, sopra un
+            bianco latte. Niente feDropShadow su elemento animato. */}
+        <path
+          data-filo="latte-under"
+          d={D_LATTE}
+          fill="none"
+          stroke="#e8dcc0"
+          strokeWidth="4.2"
+          strokeLinecap="round"
+          style={staticStroke}
+        />
         <path
           data-filo="latte"
           d={D_LATTE}
           fill="none"
           stroke="#fffdf7"
-          strokeWidth="3"
+          strokeWidth="2.4"
           strokeLinecap="round"
-          filter="url(#filo-latte-shadow)"
           style={staticStroke}
         />
         <path
@@ -223,7 +270,9 @@ export function LaFiliera() {
         <circle data-dot cx="100" cy="520" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
         <circle data-dot cx="300" cy="1560" r="7" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
         <circle data-dot cx="200" cy="2200" r="8" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
-        <circle data-dot cx="200" cy="3400" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
+        {/* Ultimo nodo alzato a cy=3120 per restare visibile sopra
+            l'handoff pietra-800 (che parte dal fondo). */}
+        <circle data-dot cx="200" cy="3120" r="9" fill="#b2833a" style={statico ? { opacity: 1 } : undefined} />
       </svg>
 
       {/* Contenuti — 4 nodi in flusso normale, lato alternato rispetto al filo */}
@@ -238,18 +287,19 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico-testo)] md:text-[11px]"
           >
             04 — LA FILIERA
           </motion.p>
-          <h2 className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
+          <h2 data-parallax="fast" className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
             <span className="block">Dalla terra</span>
             <span className="ml-[3%] block md:ml-[7%]">alla tavola,</span>
             <span className="ml-[1%] block italic text-[color:var(--carbone)] md:ml-[3%]">
               senza uscire.
             </span>
           </h2>
-          <p className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
+          <p data-parallax="slow" className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
             Ogni passaggio avviene dentro la masseria. Quello che cresce nei campi nutre gli
             animali. Quello che gli animali danno passa dal caseificio e dalla macelleria. Quello
             che ne esce arriva in sala.
@@ -271,11 +321,12 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[2].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
+          <h3 data-parallax="fast" className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
             <span className="block">{NODI[2].titolo[0]}</span>
             <span className="ml-[2%] block italic text-[color:var(--carbone)]">
               {NODI[2].titolo[1]}
@@ -323,11 +374,12 @@ export function LaFiliera() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
+            data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
           >
             {NODI[3].occhiello}
           </motion.p>
-          <h3 className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
+          <h3 data-parallax="fast" className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
             <span className="block">{NODI[3].titolo[0]}</span>
             <span className="mt-1 block italic text-[color:var(--carbone)]">
               {NODI[3].titolo[1]}
@@ -349,10 +401,10 @@ export function LaFiliera() {
           scura pulita, senza gradienti che imitano legno o cibo. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[36dvh]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[22dvh]"
         style={{
           background:
-            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 60%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
+            "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 70%, var(--pietra-800)) 65%, var(--pietra-800) 100%)",
         }}
       />
       <div className="relative z-10 border-t border-[color:var(--bianco-calce)]/15 bg-[color:var(--pietra-800)]">
@@ -389,6 +441,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
+          data-parallax="slow"
           className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
         >
           {nodo.occhiello}
@@ -398,6 +451,7 @@ function NodoBlocco({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.55, ease: "easeOut" }}
+          data-parallax="fast"
           className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--carbone)]"
         >
           {nodo.titolo[0]}
