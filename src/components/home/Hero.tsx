@@ -207,7 +207,7 @@ export function Hero() {
             </motion.h1>
             <motion.p
               {...enter(0.24)}
-              className="mt-4 max-w-xs text-[13px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[15px]"
+              className="mt-4 max-w-xs text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[15px]"
             >
               Dalla terra alla tavola, ogni passaggio avviene qui.
             </motion.p>
@@ -252,10 +252,10 @@ export function Hero() {
                 <span className="font-eyebrow block text-[10px] tracking-[0.3em] text-[color:var(--oro-antico)]">
                   {active.numero} · {active.nome.toUpperCase()}
                 </span>
-                <span className="mt-2 block text-[14px] leading-snug text-[color:var(--bianco-calce)]">
+                <span className="mt-2 block text-[16px] leading-snug text-[color:var(--bianco-calce)]">
                   {active.descrizione}
                 </span>
-                <span className="mt-3 block text-[13px] font-medium text-[color:var(--bianco-calce)]">
+                <span className="mt-3 block text-[15px] font-medium text-[color:var(--bianco-calce)]">
                   {active.invito} →
                 </span>
               </Link>
@@ -496,7 +496,7 @@ function PinTarga({
                 </motion.span>
               </span>
               {!compatta && (
-                <span className="mt-1.5 block text-[13px] leading-snug text-[color:var(--bianco-calce)]/85 md:text-[13.5px]">
+                <span className="mt-1.5 block text-[16px] leading-snug text-[color:var(--bianco-calce)]/90 md:text-[13.5px]">
                   {pin.descrizione}
                 </span>
               )}

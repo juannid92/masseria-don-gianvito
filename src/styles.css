@@ -29,6 +29,7 @@
   --color-oliva-700: var(--oliva-700);
   --color-oro-antico: var(--oro-antico);
   --color-oro-antico-testo: var(--oro-antico-testo);
+  --color-oro-su-scuro: var(--oro-su-scuro);
   --color-carbone: var(--carbone);
   --color-bianco-calce: var(--bianco-calce);
   --color-bianco-latte: var(--bianco-latte);
@@ -89,6 +90,7 @@
   --oliva-700: #4d5734;
   --oro-antico: #b2833a;
   --oro-antico-testo: #a67728;
+  --oro-su-scuro: #dab873;   /* testo oro su pietra-800: 4.97:1 (AA body) */
   --carbone: #1f1a15;
 
   --bianco-calce: #faf6ec;    /* dominante, bianco caldo */

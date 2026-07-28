@@ -8,9 +8,9 @@ export const Route = createFileRoute("/agriturismo")({
       {
         name: "description",
         content:
-          "Cucina, tavola e braceria alla Masseria Don Gianvito di Noci: si sceglie la carne al banco, ci si siede, si mangia un pasto completo.",
+          "Cucina, tavola e brace alla Masseria Don Gianvito di Noci: si sceglie la carne al banco, ci si siede, si mangia un pasto completo.",
       },
-      { property: "og:title", content: "Agriturismo — Cucina, tavola e braceria" },
+      { property: "og:title", content: "Agriturismo — Cucina, tavola e brace" },
       {
         property: "og:description",
         content: "Antipasti, primi, arrosto e dolci nella masseria del Cinquecento a Noci.",
@@ -25,7 +25,7 @@ function AgriturismoPage() {
   return (
     <AnimaShell
       numero="IV"
-      claim="Cucina, tavola e braceria"
+      claim="Cucina, tavola e brace"
       titolo="Poi ci si siede, e si resta."
       intro="Scegli la carne al banco, ti siedi, arrivano antipasti e primi, poi la carne cotta alla brace e i dolci. Piatti e disponibilità possono cambiare: contatta la Masseria per confermare il menu del giorno."
     />

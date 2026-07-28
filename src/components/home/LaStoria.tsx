@@ -86,6 +86,30 @@ export function LaStoria() {
         const occhiello03 = root.querySelector<HTMLElement>("[data-occhiello-03]");
         const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-dot]"));
 
+        // Cache riferimenti + offsetLeft: evita querySelector/getProperty per frame.
+        const cachedMomenti = MOMENTI.map((m) => {
+          const el = root.querySelector<HTMLElement>(`[data-moment='${m.id}']`);
+          const inner = el?.querySelector<HTMLElement>("[data-inner]") ?? null;
+          return { el, inner, offsetLeft: el?.offsetLeft ?? 0 };
+        });
+        const setFondoX = fondo ? gsap.quickSetter(fondo, "x", "px") : null;
+        const setGranaX = grana ? gsap.quickSetter(grana, "x", "px") : null;
+        const setLuceX = luce ? gsap.quickSetter(luce, "x", "px") : null;
+        const setTitoloX = titolo ? gsap.quickSetter(titolo, "x", "px") : null;
+        const innerSetters = cachedMomenti.map((c) =>
+          c.inner
+            ? {
+                x: gsap.quickSetter(c.inner, "x", "px"),
+                opacity: gsap.quickSetter(c.inner, "opacity"),
+              }
+            : null,
+        );
+        const wcLayers = [fondo, grana, luce, titolo].filter(Boolean) as HTMLElement[];
+        wcLayers.forEach((el) => (el.style.willChange = "transform"));
+        cachedMomenti.forEach((c) => {
+          if (c.inner) c.inner.style.willChange = "transform, opacity";
+        });
+
         // Distanza e fermate derivate dal DOM reale — mai valori hardcoded.
         const distanza = () => Math.max(0, track.scrollWidth - stage.clientWidth);
         let dist = distanza();
@@ -107,7 +131,7 @@ export function LaStoria() {
             trigger: root,
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.6,
+            scrub: 0.8,
             pin: stage,
             pinSpacing: true,
             anticipatePin: 1,
@@ -115,6 +139,9 @@ export function LaStoria() {
             onRefreshInit: misuraAltezza,
             onRefresh: () => {
               dist = distanza();
+              cachedMomenti.forEach((c) => {
+                if (c.el) c.offsetLeft = c.el.offsetLeft;
+              });
             },
           },
           defaults: { ease: "none" },
@@ -145,24 +172,24 @@ export function LaStoria() {
         seg(() => stop("famiglia"), 0.62, 0.16, "power2.inOut"); // → osservazione famiglia 0.78
         seg(() => -dist, 0.88, 0.12, "power1.inOut"); // chiusura dell'atto
 
-        // Livelli agganciati alla x reale del track (rapporti costanti anche col ritmo variabile).
+        // Livelli agganciati alla x reale del track. Solo transform/opacity (nessuno scale/filter):
+        // niente reflow, cache offset, quickSetter per bypassare il diff GSAP.
         tl.eventCallback("onUpdate", () => {
           const x = Number(gsap.getProperty(track, "x"));
-          if (fondo) gsap.set(fondo, { x: x * 0.84, scale: 1.05 + (x / (dist || 1)) * 0.05 });
-          if (grana) gsap.set(grana, { x: x * 0.96 });
-          if (luce) gsap.set(luce, { x: -x * 0.12 });
-          if (titolo) gsap.set(titolo, { x: x * 0.4 });
-          const w = stage.clientWidth || 1;
-          MOMENTI.forEach((m) => {
-            const el = root.querySelector<HTMLElement>(`[data-moment='${m.id}']`);
-            const inner = el?.querySelector<HTMLElement>("[data-inner]");
-            if (!el || !inner) return;
-            const local = x + el.offsetLeft; // 0 in osservazione
-            // Fuoco: solo il momento osservato è pienamente leggibile.
-            const fuoco = Math.max(0, 1 - Math.abs(local) / (w * 0.62));
-            gsap.set(inner, { x: local * -0.08, opacity: 0.06 + fuoco * 0.94 });
-          });
-
+          if (setFondoX) setFondoX(x * 0.84);
+          if (setGranaX) setGranaX(x * 0.96);
+          if (setLuceX) setLuceX(-x * 0.12);
+          if (setTitoloX) setTitoloX(x * 0.4);
+          const focusW = (stage.clientWidth || 1) * 0.62;
+          for (let i = 0; i < cachedMomenti.length; i++) {
+            const c = cachedMomenti[i];
+            const s = innerSetters[i];
+            if (!c.inner || !s) continue;
+            const local = x + c.offsetLeft;
+            const fuoco = Math.max(0, 1 - Math.abs(local) / focusW);
+            s.x(local * -0.08);
+            s.opacity(0.06 + fuoco * 0.94);
+          }
         });
 
         // Luce che ruota (opacità) e attenuazione del titolo dell'atto.
@@ -225,7 +252,9 @@ export function LaStoria() {
       });
 
       ScrollTrigger.refresh();
-      return () => mm.revert();
+      return () => {
+        mm.revert();
+      };
     }, root);
 
     return () => ctx.revert();
@@ -314,7 +343,7 @@ export function LaStoria() {
           <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.95] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
             <span className="block">Il tempo qui</span>
             <span className="ml-[4%] block md:ml-[9%]">non è passato.</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro-antico)] md:ml-[3%]">È rimasto.</span>
+            <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)] md:ml-[3%]">È rimasto.</span>
           </h2>
         </div>
 
@@ -374,7 +403,7 @@ export function LaStoria() {
                 style={{ paddingTop: "calc(var(--page-header-safe-offset) + 1vh)" }}
               >
                 <div className="max-w-[46ch]">
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)]/85">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]">
                     {m.occhiello}
                   </p>
                   <h3 className="mt-5 font-display text-[clamp(1.9rem,4.4vw,3.6rem)] leading-[1] text-[color:var(--bianco-calce)] [@media(max-height:520px)]:text-[clamp(1.5rem,3.4vw,2.1rem)]">

@@ -428,7 +428,7 @@ export function IlLuogo() {
             <span className="ml-[1%] block overflow-hidden md:ml-[3%]">
               <span
                 data-riga
-                className="block italic text-[color:var(--oro-antico)]"
+                className="block italic text-[color:var(--oro-su-scuro)]"
                 style={{ opacity: vis }}
               >
                 smette di correre.
@@ -460,7 +460,7 @@ export function IlLuogo() {
                     marginTop: statico && i > 0 ? "1.25rem" : undefined,
                   }}
                 >
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico)]/90">
+                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/85">
                     {a.occhiello}
                   </p>
                   <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/90 md:text-[17px]">
@@ -475,7 +475,7 @@ export function IlLuogo() {
           <div className="mt-10 max-w-[46ch] [@media(min-width:900px)]:absolute [@media(min-width:900px)]:bottom-16 [@media(min-width:900px)]:left-10">
             <p
               data-chiusura
-              className="text-[13px] leading-relaxed tracking-[0.08em] text-[color:var(--bianco-calce)]/70 md:text-[13px]"
+              className="text-[16px] leading-relaxed tracking-[0.04em] text-[color:var(--bianco-calce)]/85 md:text-[15px]"
               style={{ opacity: vis }}
             >
               Noci (BA), sulla provinciale per Mottola.
