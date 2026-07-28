@@ -221,7 +221,7 @@ export function IlManifesto() {
                 initial={statico ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--oro-antico-testo)] md:text-[11px]"
+                className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/85 md:text-[11px]"
               >
                 01 — IL MANIFESTO
               </motion.p>
@@ -254,7 +254,7 @@ export function IlManifesto() {
               </p>
               <p
                 data-chiusura
-                className="mt-12 text-[12.5px] leading-relaxed tracking-[0.06em] text-[color:var(--pietra-800)]/70 md:mt-20 md:text-[13px]"
+                className="mt-12 text-[15px] leading-relaxed tracking-[0.04em] text-[color:var(--pietra-800)]/80 md:mt-20 md:text-[15px]"
                 style={{ opacity: vis }}
               >
                 Una masseria del Cinquecento, nelle campagne di Noci.
