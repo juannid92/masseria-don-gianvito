@@ -150,7 +150,7 @@ export function LaTavola() {
       data-tone="dark"
       ref={rootRef}
       aria-label="La Tavola"
-      className="relative isolate w-full overflow-x-clip bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
+      className="relative isolate w-full bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
     >
       {/* Grana statica: materia leggera senza costo di paint. */}
       <div
