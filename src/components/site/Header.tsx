@@ -116,9 +116,10 @@ export function Header() {
   const animaAttiva = ANIME.find((a) => a.to === location.pathname);
 
   const isLight = tone === "light";
-  // Oro adattivo: su fondi chiari usa sempre `--oro-antico-testo`
-  // (contrasto AA), su fondi scuri l'oro pieno.
-  const oroText = isLight ? "var(--oro-antico-testo)" : "var(--oro-antico)";
+  // Oro adattivo PER IL TESTO: su fondi chiari `--oro-antico-testo`,
+  // su fondi scuri `--oro-su-scuro`. L'oro pieno (--oro-antico) resta
+  // riservato a fili e bordi, dove il rapporto di contrasto non si applica.
+  const oroText = isLight ? "var(--oro-antico-testo)" : "var(--oro-su-scuro)";
   const textStrong = isLight ? "text-[color:var(--pietra-800)]" : "text-[color:var(--bianco-calce)]";
   const textSoft = isLight
     ? "text-[color:var(--pietra-800)]/75 hover:text-[color:var(--pietra-800)]"
@@ -150,7 +151,7 @@ export function Header() {
         <Link to="/" className="group flex flex-col leading-none" aria-label={MASSERIA.nome}>
           <span
             className="font-eyebrow text-[9px] tracking-[0.34em] transition-colors duration-500"
-            style={{ color: `color-mix(in oklab, ${oroText} 80%, transparent)` }}
+            style={{ color: oroText }}
           >
             Noci · Puglia
           </span>
@@ -215,7 +216,7 @@ export function Header() {
                     aria-current={location.pathname === a.to ? "page" : undefined}
                     className="group flex items-baseline gap-4 px-4 py-3 transition-colors hover:bg-[color:var(--pietra-800)]/45"
                   >
-                    <span className="font-display text-[11px] text-[color:var(--oro-antico)]/70">
+                    <span className="font-display text-[11px] text-[color:var(--oro-su-scuro)]/80">
                       {a.numero}
                     </span>
                     <span className="flex-1">
@@ -297,7 +298,8 @@ export function Header() {
             style={{ height: "var(--header-offset)" }}
           >
             <span className="font-display text-[15px] text-[color:var(--bianco-calce)]">
-              Masseria <em className="not-italic text-[color:var(--oro-antico)]">Don Gianvito</em>
+              Masseria{" "}
+              <em className="not-italic text-[color:var(--oro-su-scuro)]">Don Gianvito</em>
             </span>
             <button
               type="button"
@@ -309,7 +311,7 @@ export function Header() {
           </div>
 
           <div className="flex-1 overflow-y-auto px-5 pb-10">
-            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/70">
+            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]/85">
               Le sezioni
             </p>
             <ul className="mb-10 space-y-1">
@@ -335,7 +337,7 @@ export function Header() {
               </li>
             </ul>
 
-            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/70">
+            <p className="font-eyebrow mb-4 text-[9px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]/85">
               Le quattro anime
             </p>
             <ul className="space-y-1">
@@ -347,7 +349,7 @@ export function Header() {
                     onClick={() => setDrawer(false)}
                     className="flex items-baseline gap-3 py-2"
                   >
-                    <span className="font-display text-[11px] text-[color:var(--oro-antico)]/70">
+                    <span className="font-display text-[11px] text-[color:var(--oro-su-scuro)]/80">
                       {a.numero}
                     </span>
                     <span>
@@ -366,7 +368,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => goToSection("prenota")}
-              className="mt-10 w-full border border-[color:var(--oro-antico)]/60 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro-antico)]"
+              className="mt-10 w-full border border-[color:var(--oro-antico)]/60 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--oro-su-scuro)]"
             >
               Prenota
             </button>
