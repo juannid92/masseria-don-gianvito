@@ -29,7 +29,7 @@ export function AnimaShell({
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 90% at 18% 12%, color-mix(in oklab, var(--oliva-500) 26%, transparent) 0%, transparent 62%), linear-gradient(180deg, transparent 40%, color-mix(in oklab, var(--carbone) 65%, transparent) 100%)",
+              "radial-gradient(120% 90% at 18% 12%, color-mix(in oklab, var(--oro-antico) 22%, transparent) 0%, transparent 62%), linear-gradient(180deg, transparent 40%, color-mix(in oklab, var(--carbone) 65%, transparent) 100%)",
           }}
         />
         <div aria-hidden className="grain absolute inset-0" />

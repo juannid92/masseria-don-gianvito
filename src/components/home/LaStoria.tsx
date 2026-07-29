@@ -48,12 +48,12 @@ const MOMENTI: Momento[] = [
   },
 ];
 
-/** Luce propria di ogni momento: fredda e radente → calda con oliva → interna crema. */
+/** Luce propria di ogni momento: fredda e radente → calda oro → interna crema. */
 const LUCE: Record<Momento["id"], string> = {
   pietra:
     "radial-gradient(52% 40% at 22% 30%, color-mix(in oklab, var(--bianco-calce) 16%, transparent) 0%, transparent 70%)",
   lavoro:
-    "radial-gradient(56% 46% at 50% 22%, color-mix(in oklab, var(--oliva-500) 30%, transparent) 0%, transparent 68%), radial-gradient(44% 36% at 62% 60%, color-mix(in oklab, var(--oro-antico) 16%, transparent) 0%, transparent 70%)",
+    "radial-gradient(56% 46% at 50% 22%, color-mix(in oklab, var(--oro-antico) 22%, transparent) 0%, transparent 68%), radial-gradient(44% 36% at 62% 60%, color-mix(in oklab, var(--biscotto) 18%, transparent) 0%, transparent 70%)",
   famiglia:
     "radial-gradient(60% 50% at 68% 58%, color-mix(in oklab, var(--bianco-calce) 22%, transparent) 0%, transparent 72%)",
 };

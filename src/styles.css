@@ -25,8 +25,8 @@
   --color-pietra-200: var(--pietra-200);
   --color-pietra-400: var(--pietra-400);
   --color-pietra-800: var(--pietra-800);
-  --color-oliva-500: var(--oliva-500);
-  --color-oliva-700: var(--oliva-700);
+  --color-biscotto: var(--biscotto);
+  --color-biscotto-scuro: var(--biscotto-scuro);
   --color-oro-antico: var(--oro-antico);
   --color-oro-antico-testo: var(--oro-antico-testo);
   --color-oro-su-scuro: var(--oro-su-scuro);
@@ -85,12 +85,15 @@
   --pietra-100: #f4f0e6;
   --pietra-200: #e5ddc9;
   --pietra-400: #b6a98a;
-  --pietra-800: #4b4636;
-  --oliva-500: #7a8551;
-  --oliva-700: #4d5734;
+  /* Fondo scuro: marrone caldo (biscotto-scuro), zero verde.
+     --pietra-800 è mantenuto come alias per non spezzare i molti riferimenti
+     esistenti, ma punta al nuovo marrone. */
+  --pietra-800: #362619;
+  --biscotto: #d9c19c;         /* marrone caldo chiaro, per superfici/testi accento */
+  --biscotto-scuro: #362619;   /* marrone caldo profondo, fondo scuro del sito */
   --oro-antico: #b2833a;
   --oro-antico-testo: #a67728;
-  --oro-su-scuro: #dab873;   /* testo oro su pietra-800: 4.97:1 (AA body) */
+  --oro-su-scuro: #dab873;   /* testo oro su biscotto-scuro: 7.65:1 (AAA body) */
   --carbone: #1f1a15;
 
   --bianco-calce: #faf6ec;    /* dominante, bianco caldo */

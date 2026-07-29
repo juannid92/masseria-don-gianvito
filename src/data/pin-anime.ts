@@ -44,7 +44,7 @@ export const PIN_ANIME: PinAnima[] = [
     m: { x: 58, y: 38, off: { dx: -30, dy: 22 } },
     s: { x: 60, y: 18, off: { dx: 28, dy: 0 } },
     lato: "right",
-    tinta: "var(--oliva-500)",
+    tinta: "var(--oro-antico)",
     profondita: 0.5,
   },
   {
