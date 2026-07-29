@@ -182,7 +182,7 @@ export function IlManifesto() {
           </div>
         </div>
 
-        {/* 2 — LUCE DIREZIONALE (radiali tenui d'oro, nessun oliva) */}
+        {/* 2 — LUCE DIREZIONALE (radiali tenui d'oro) */}
         <div aria-hidden data-layer="luce" className="pointer-events-none absolute inset-0 overflow-hidden">
           <div data-mouse className="absolute inset-0 will-change-transform">
             <div

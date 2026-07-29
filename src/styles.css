@@ -18,8 +18,10 @@
   /* ============================================================
      BRAND — Palette definitiva "Bianco Calce / Oro / Carminio".
      Fonte unica di verità. Gli alias di transizione crema/marrone/
-     oro/oliva/bordeaux/terracotta sono RIMOSSI: ogni riferimento va
-     ai token nuovi.
+     Alias legacy (oliva/bordeaux/terracotta) RIMOSSI dal codice e dalla
+     palette. La palette definitiva è: bianco-calce, oro-antico, carminio,
+     biscotto, biscotto-scuro, carbone (pietra-100/200/400 come sabbie
+     chiare, pietra-800 alias di biscotto-scuro per retro-compatibilità).
      ============================================================ */
   --color-pietra-100: var(--pietra-100);
   --color-pietra-200: var(--pietra-200);
@@ -77,8 +79,7 @@
      - identità: oro-antico (max 2 per atto, di cui max 1 testuale)
      - accento raro: carminio (max 2 in tutto il sito, in Home solo
        sul ramo carne della Filiera)
-     - profondità: pietra-800 (Storia, Luogo, Footer)
-     - oliva: max 1 per atto, SOLO dove si parla di terra o colture
+     - profondità: biscotto-scuro (Storia, Tavola, Footer)
      - carbone: solo testo di lettura, mai fondo di un intero atto
      - bordeaux/terracotta: RIMOSSI dalla palette
      ============================================================ */
