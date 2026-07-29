@@ -70,7 +70,7 @@ function AllevamentoPage() {
           paragrafi={[
             "Si comincia presto, con la mungitura e il governo delle stalle. Poi si passa ai campi.",
             "In primavera e in estate si taglia e si mette da parte il foraggio per i mesi in cui la terra riposa. In autunno e in inverno il lavoro si sposta dentro: stalle, caseificio, laboratorio.",
-            "I tempi li decide la stagione. Quando serve indicare una durata, si dice circa.",
+            "I tempi li decide la stagione, non il calendario.",
           ]}
           fotoEtichetta="lavoro nei campi, taglio del foraggio"
         />
