@@ -140,7 +140,7 @@ export function Prenota() {
                 <li>
                   <a
                     href={MASSERIA.telefonoHref}
-                    className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                    className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     +39 333 939 5750
                   </a>
@@ -148,7 +148,7 @@ export function Prenota() {
                 <li>
                   <a
                     href={MASSERIA.telefono2Href}
-                    className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                    className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     +39 333 387 0292
                   </a>
@@ -158,7 +158,7 @@ export function Prenota() {
                     href={MASSERIA.whatsappPrenota}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 underline decoration-[color:var(--oro-antico)] underline-offset-4 transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                    className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 underline decoration-[color:var(--oro-antico)] underline-offset-4 transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     WhatsApp, con il messaggio già pronto
                   </a>
@@ -176,7 +176,7 @@ export function Prenota() {
                 </a>
                 <a
                   href={MASSERIA.telefonoHref}
-                  className="inline-flex min-h-[52px] w-full items-center justify-center border border-[color:var(--oro-antico)] px-7 font-eyebrow text-[11px] tracking-[0.26em] text-[color:var(--oro-su-scuro)] transition-colors hover:bg-[color:var(--oro-antico)]/12 sm:w-auto"
+                  className="inline-flex min-h-[52px] w-full items-center justify-center border border-[color:var(--oro-antico)] px-7 font-eyebrow text-[11px] tracking-[0.26em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--oro-antico)]/12 sm:w-auto"
                 >
                   Chiama la masseria
                 </a>
@@ -202,7 +202,7 @@ export function Prenota() {
                     href={MASSERIA.maps}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex min-h-[44px] items-center border-b border-[color:var(--oro-antico)] font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-su-scuro)]"
+                    className="inline-flex min-h-[44px] items-center border-b border-[color:var(--oro-antico)] font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]"
                   >
                     Apri in Maps
                   </a>
@@ -210,7 +210,7 @@ export function Prenota() {
                     href={MASSERIA.instagram}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                    className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     Instagram
                   </a>
@@ -218,7 +218,7 @@ export function Prenota() {
                     href={MASSERIA.facebook}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                    className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     Facebook
                   </a>
@@ -246,7 +246,7 @@ export function Prenota() {
                     aria-label="Carica la mappa interattiva di Google Maps con la posizione della masseria"
                     className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[color:var(--bianco-calce)]/[0.04] px-6 text-center transition-colors hover:bg-[color:var(--bianco-calce)]/[0.08]"
                   >
-                    <span className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--oro-su-scuro)]">
+                    <span className="font-eyebrow text-[10px] tracking-[0.28em] text-[color:var(--bianco-calce)]">
                       Mostra la mappa
                     </span>
                     <span className="max-w-xs text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/75">
