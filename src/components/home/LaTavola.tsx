@@ -81,35 +81,40 @@ export function LaTavola() {
         defaults: { ease: "none" },
       });
 
-      // 1. Luce: 0.50 → 0.95 (continua, fino al 70% della progression).
+      // Ripartizione uniforme dei momenti su 200dvh: intervalli 0.20 (≈40dvh
+      // ciascuno). Con start "top 90%" la progression allo stick vale ~0.47,
+      // quindi laterali (0.20) è appena arrivato quando la scena si ferma:
+      // la scena NON è mai vuota, luce e piano sono già a regime.
+      //
+      // 1. Luce: 0.50 → 0.95 (continua, fino a 0.70).
       if (luce) tl.fromTo(luce, { opacity: 0.5 }, { opacity: 0.95, duration: 0.7 }, 0);
 
-      // 2. Segni laterali + prime due didascalie, insieme (0.15 → 0.35).
+      // 2. Segni laterali + prime due didascalie (0.20 → 0.35).
       if (lateraliGroup.length) {
         tl.fromTo(
           lateraliGroup,
           { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.2, stagger: 0 },
-          0.15,
+          { opacity: 1, y: 0, duration: 0.15, stagger: 0 },
+          0.20,
         );
       }
 
-      // 3. Carminio sul piatto centrale + terza didascalia (0.45 → 0.6).
+      // 3. Carminio sul piatto centrale + terza didascalia (0.40 → 0.55).
       if (carminioGroup.length) {
-        tl.fromTo(carminioGroup, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15, stagger: 0 }, 0.45);
+        tl.fromTo(carminioGroup, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15, stagger: 0 }, 0.40);
       }
       if (carminioSpan) {
-        tl.fromTo(carminioSpan, { scale: 0.85 }, { scale: 1, duration: 0.15 }, 0.45);
+        tl.fromTo(carminioSpan, { scale: 0.85 }, { scale: 1, duration: 0.15 }, 0.40);
       }
 
-      // 4. Chiusura con due CTA — ultimo arrivo, completato entro 0.75.
+      // 4. Chiusura + CTA — ultimo arrivo, completato a 0.75.
       if (chiusura) {
-        tl.fromTo(chiusura, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.15 }, 0.6);
+        tl.fromTo(chiusura, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
       }
 
-      // Handoff: luce si abbassa, entra occhiello Atto 06 (ultimo quarto).
-      if (luce) tl.to(luce, { opacity: 0.42, duration: 0.12 }, 0.82);
-      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1 }, 0.88);
+      // Handoff nell'ultimo quarto: luce si abbassa, entra occhiello Atto 06.
+      if (luce) tl.to(luce, { opacity: 0.42, duration: 0.1 }, 0.80);
+      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1 }, 0.85);
     }, root);
 
     return () => {
