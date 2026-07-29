@@ -186,7 +186,7 @@ export function LaTavola() {
             Nota fotografie: se in futuro si aggiunge un'immagine autentica,
             va inserita come ritaglio orizzontale sottile subito sotto la
             didascalia C, senza sostituire nulla del manifesto. */}
-        <div className="relative z-[4] mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-6 gap-y-0 px-5 pt-[var(--page-header-safe-offset)] pb-8 md:gap-x-8 md:px-10 md:pt-[calc(var(--header-offset)+20px)] md:pb-10">
+        <div className="relative z-[4] mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-6 gap-y-0 px-5 pt-[calc(var(--header-offset)+16px)] pb-6 md:gap-x-8 md:px-10 md:pt-[calc(var(--header-offset)+14px)] md:pb-8">
 
           {/* OCCHIELLO + filo oro superiore */}
           <div className="col-span-12 flex items-center gap-4 md:col-span-8">
@@ -212,7 +212,7 @@ export function LaTavola() {
           {/* TITOLO — grande, sinistra, tre righe con offset diversi. */}
           <h2
             data-arrivo="titolo"
-            className="col-span-12 mt-8 font-display text-[clamp(3rem,10.5vw,9rem)] font-light leading-[0.9] text-[color:var(--bianco-calce)] md:col-span-11 md:mt-10"
+            className="col-span-12 mt-4 font-display text-[clamp(2.4rem,7.2vw,6.4rem)] font-light leading-[0.92] text-[color:var(--bianco-calce)] md:col-span-11 md:mt-6"
             style={{ opacity: statico ? 1 : 0.35 }}
           >
             <span className="block">La filiera</span>
@@ -224,7 +224,7 @@ export function LaTavola() {
           {/* A — sinistra, sotto il titolo, media */}
           <p
             data-arrivo="didascalie-ab"
-            className="col-span-12 mt-10 font-display text-[clamp(1.3rem,2.6vw,2rem)] italic leading-[1.15] text-[color:var(--bianco-calce)]/85 md:col-span-5 md:col-start-1 md:mt-14"
+            className="col-span-12 mt-6 font-display text-[clamp(1.2rem,2.2vw,1.7rem)] italic leading-[1.15] text-[color:var(--bianco-calce)]/85 md:col-span-5 md:col-start-1 md:mt-8"
             style={{ opacity: statico ? 1 : 0 }}
           >
             Si comincia dalla tavola.
@@ -233,7 +233,7 @@ export function LaTavola() {
           {/* B — destra, più piccola, in alto */}
           <p
             data-arrivo="didascalie-ab"
-            className="col-span-12 mt-6 text-[16px] leading-[1.5] text-[color:var(--bianco-calce)]/75 md:col-span-4 md:col-start-9 md:mt-14 md:text-[17px]"
+            className="col-span-12 mt-4 text-[16px] leading-[1.45] text-[color:var(--bianco-calce)]/75 md:col-span-4 md:col-start-9 md:mt-10 md:text-[16px]"
             style={{ opacity: statico ? 1 : 0 }}
           >
             Piatti che chiedono tempo.
@@ -243,7 +243,7 @@ export function LaTavola() {
               Tipo grande, spinta a destra, come chiusa di paragrafo. */}
           <p
             data-arrivo="didascalia-c"
-            className="col-span-12 mt-10 font-display text-[clamp(2rem,5.2vw,4rem)] italic leading-[1.05] text-[color:var(--bianco-calce)] md:col-span-9 md:col-start-4 md:mt-16 md:text-right"
+            className="col-span-12 mt-6 font-display text-[clamp(1.8rem,4vw,3rem)] italic leading-[1.05] text-[color:var(--bianco-calce)] md:col-span-9 md:col-start-4 md:mt-10 md:text-right"
             style={{ opacity: statico ? 1 : 0 }}
           >
             Finisce{" "}
@@ -262,7 +262,7 @@ export function LaTavola() {
           </p>
 
           {/* FILO ORO di chiusura */}
-          <div className="col-span-12 mt-12 flex items-center gap-4 md:mt-16">
+          <div className="col-span-12 mt-8 flex items-center gap-4 md:mt-10">
             <span aria-hidden className="block h-px flex-1 bg-[color:var(--oro-antico)]/45" />
             <span aria-hidden className="block h-px w-2 bg-[color:var(--oro-antico)]" />
             <span aria-hidden className="block h-px flex-1 bg-[color:var(--oro-antico)]/45" />
@@ -271,10 +271,10 @@ export function LaTavola() {
           {/* CHIUSURA — frase editoriale + due CTA + disclaimer. */}
           <div
             data-arrivo="chiusura"
-            className="col-span-12 mt-8 flex flex-col items-start gap-6 md:mt-10"
+            className="col-span-12 mt-5 flex flex-col items-start gap-4 md:mt-6 md:gap-5"
             style={{ opacity: statico ? 1 : 0 }}
           >
-            <p className="max-w-[28ch] font-display text-[clamp(1.3rem,2.4vw,1.9rem)] leading-[1.15] text-[color:var(--bianco-calce)]">
+            <p className="max-w-[28ch] font-display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-[color:var(--bianco-calce)]">
               Il rito completo <span className="italic">è nell'Agriturismo.</span>
             </p>
             <div className="flex w-full flex-col items-stretch gap-3 md:w-auto md:flex-row md:items-center">
@@ -292,7 +292,7 @@ export function LaTavola() {
                 PRENOTA UN TAVOLO
               </button>
             </div>
-            <p className="max-w-[52ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/70">
+            <p className="max-w-[52ch] text-[16px] leading-snug text-[color:var(--bianco-calce)]/70">
               Piatti e disponibilità possono cambiare. Contatta la Masseria per confermare il menu del giorno.
             </p>
           </div>
