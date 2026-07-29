@@ -6,32 +6,42 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useHomeSectionNav } from "@/lib/nav";
 
 /**
- * ATTO 05 — LA TAVOLA.
- * Regia: L'ACCUMULO CON SCENA GIÀ COMPOSTA A METÀ.
- * Al primo frame visibile: luce al 50%, piano orizzontale pieno, segno
- * centrale del piatto già presente (non ancora illuminato dal carminio),
- * titolo e occhiello leggibili. La scena NON parte mai vuota.
+ * ATTO 05 — LA TAVOLA (rifacimento tipografico).
  *
- * Sezione: 200dvh desktop, 220dvh mobile. Contenitore sticky CSS a piena
- * altezza. UNA sola timeline scrub, aggancio quando la sezione entra dal
- * fondo (top 90% desktop, top 100% mobile): al momento in cui la scena si
- * ferma in cima, la progressione è già ~0.20.
+ * Regia: MANIFESTO STAMPATO. Niente cerchi né archi: solo tipografia
+ * grande, fili oro sottili e una singola campitura carminio dietro una
+ * parola. La scena è già una pagina composta a metà al primo frame,
+ * poi le parole si aggiungono e restano — non se ne va mai nessuna.
  *
- * Quattro momenti larghi (non sette piccoli innesti):
- *   1. luce che sale al massimo (continua)
- *   2. i due segni laterali entrano INSIEME, con le due prime didascalie
- *   3. il carminio si accende sul piatto centrale + terza didascalia
- *   4. la chiusura con le due CTA
- * Ultimo arrivo completato entro il 75%. L'ultimo quarto è solo chiusura
- * e handoff (luce che si abbassa, occhiello Atto 06).
+ * Struttura (una sola timeline scrub 0.8, un solo ScrollTrigger, zero pin):
+ *   Section 200dvh desktop / 220dvh mobile.
+ *   Sticky child 100dvh (CSS sticky, no pin GSAP).
+ *   start "top 25%" → pre-scroll 25vh prima dell'aggancio in cima.
+ *   end   "bottom bottom" → coincide ESATTAMENTE con la fine del sticky
+ *     (section.bottom = viewport.bottom ⇔ sticky si stacca). Nessun tratto
+ *     morto dopo l'ultima animazione: la scena si stacca subito e la
+ *     sezione finisce. Verifica numerica nel report di consegna.
+ *   Total scrub desktop: pre 25vh + sticky 100vh = 125vh; progressione allo
+ *     stick ≈ 0.20. Mobile: pre 25vh + sticky 120vh = 145vh; stick ≈ 0.17.
  *
- * Regole cromatiche: fondo pietra-800 pieno, un solo testo oro (display
- * italic "un pasto." in --oro-su-scuro), occhielli in bianco-calce/70,
- * carminio unico e permanente sul piatto principale, oliva assente.
- * I "segni" sono forme grafiche pure e grandi (centrale ≥ 30% della scena,
- * laterali ≥ 15%): vanno sostituiti con fotografie autentiche prima
- * della pubblicazione — se dopo l'ingrandimento la composizione appare
- * povera, il problema sono le foto mancanti, non decorazioni da aggiungere.
+ * Quattro arrivi larghi:
+ *   1. Titolo dell'atto (già in scena, entra opacità piena)      0.00–0.15
+ *   2. Prima e seconda didascalia insieme                        0.20–0.35
+ *   3. Terza didascalia + accensione della campitura carminio    0.45–0.60
+ *      dietro la parola "piano" (unica occorrenza del rosso)
+ *   4. Chiusura + CTA                                            0.65–0.75
+ *   Handoff (luce che scende, occhiello Atto 06)                 0.85–1.00
+ *
+ * Palette: fondo --biscotto-scuro pieno (marrone caldo, zero verde),
+ * luce dorata direzionale (l'unico elemento che cresce di continuo),
+ * testo bianco-calce, un solo testo oro (Fraunces italic "un pasto"),
+ * occhielli in bianco-calce/70, carminio come CAMPITURA dietro una parola.
+ * L'unica grafica ammessa sono fili oro sottili (hairline) come separatori.
+ *
+ * Nota fotografie: la composizione NON dipende da immagini. Se in futuro
+ * si volesse innestare una fotografia autentica (piatto, mani, tavola),
+ * il punto naturale è la fascia sotto la terza didascalia, come ritaglio
+ * orizzontale sottile; finché non esiste, il manifesto regge da solo.
  */
 
 export function LaTavola() {
@@ -52,28 +62,28 @@ export function LaTavola() {
       const qq = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel));
 
       const luce = q("[data-luce]");
-      const lateraliGroup = qq("[data-arrivo='laterali']");
-      const carminioGroup = qq("[data-arrivo='carminio']");
-      const carminioSpan = root.querySelector<HTMLElement>("[data-carminio]");
+      const titolo = q("[data-arrivo='titolo']");
+      const rulesTop = qq("[data-rule='top']");
+      const didascalieAB = qq("[data-arrivo='didascalie-ab']");
+      const didascaliaC = q("[data-arrivo='didascalia-c']");
+      const carminioBlock = q("[data-carminio]");
       const chiusura = q("[data-arrivo='chiusura']");
       const handoffEye = q("[data-handoff-eyebrow]");
 
-      [luce, chiusura, handoffEye, ...lateraliGroup, ...carminioGroup].forEach((el) => {
+      [luce, titolo, chiusura, handoffEye, didascaliaC, carminioBlock, ...didascalieAB, ...rulesTop].forEach((el) => {
         if (!el) return;
         el.style.willChange = "transform, opacity";
         willChangeEls.push(el);
       });
 
       // UNA sola timeline scrub sull'intera sezione. Nessun pin.
-      // Aggancio anticipato: parte quando la sezione entra nello schermo
-      // (top 90% desktop, top 100% mobile), non quando la si incolla in
-      // cima. All'istante dello "stick" (top top) la progression è ~0.20.
-      const isMobile = window.matchMedia("(max-width: 899px)").matches;
-      const startEdge = isMobile ? "top 100%" : "top 90%";
+      // Start "top 25%": pre-scroll di 25vh prima dello stick.
+      // End "bottom bottom": coincide con la fine del sticky (section.bottom
+      // = viewport.bottom ⇔ sticky si stacca). Nessun void residuo.
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
-          start: startEdge,
+          start: "top 25%",
           end: "bottom bottom",
           scrub: 0.8,
           invalidateOnRefresh: true,
@@ -81,40 +91,48 @@ export function LaTavola() {
         defaults: { ease: "none" },
       });
 
-      // Ripartizione uniforme dei momenti su 200dvh: intervalli 0.20 (≈40dvh
-      // ciascuno). Con start "top 90%" la progression allo stick vale ~0.47,
-      // quindi laterali (0.20) è appena arrivato quando la scena si ferma:
-      // la scena NON è mai vuota, luce e piano sono già a regime.
-      //
-      // 1. Luce: 0.50 → 0.95 (continua, fino a 0.70).
-      if (luce) tl.fromTo(luce, { opacity: 0.5 }, { opacity: 0.95, duration: 0.7 }, 0);
+      // Luce dorata: cresce in modo continuo per tutta la durata (0.55 → 0.95).
+      // È l'unico elemento che si muove senza sosta.
+      if (luce) tl.fromTo(luce, { opacity: 0.55 }, { opacity: 0.95, duration: 0.7 }, 0);
 
-      // 2. Segni laterali + prime due didascalie (0.20 → 0.35).
-      if (lateraliGroup.length) {
+      // 1. Titolo — già in scena al primo frame, entra a piena opacità.
+      if (titolo) tl.fromTo(titolo, { opacity: 0.35, y: 10 }, { opacity: 1, y: 0, duration: 0.15 }, 0);
+      if (rulesTop.length) {
         tl.fromTo(
-          lateraliGroup,
-          { opacity: 0, y: 18 },
+          rulesTop,
+          { scaleX: 0, transformOrigin: "left center" },
+          { scaleX: 1, duration: 0.2 },
+          0.02,
+        );
+      }
+
+      // 2. Prima e seconda didascalia insieme.
+      if (didascalieAB.length) {
+        tl.fromTo(
+          didascalieAB,
+          { opacity: 0, y: 14 },
           { opacity: 1, y: 0, duration: 0.15, stagger: 0 },
           0.20,
         );
       }
 
-      // 3. Carminio sul piatto centrale + terza didascalia (0.40 → 0.55).
-      if (carminioGroup.length) {
-        tl.fromTo(carminioGroup, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15, stagger: 0 }, 0.40);
-      }
-      if (carminioSpan) {
-        tl.fromTo(carminioSpan, { scale: 0.85 }, { scale: 1, duration: 0.15 }, 0.40);
-      }
-
-      // 4. Chiusura + CTA — ultimo arrivo, completato a 0.75.
-      if (chiusura) {
-        tl.fromTo(chiusura, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
+      // 3. Terza didascalia + campitura carminio dietro "piano".
+      if (didascaliaC) tl.fromTo(didascaliaC, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.15 }, 0.45);
+      if (carminioBlock) {
+        tl.fromTo(
+          carminioBlock,
+          { clipPath: "inset(0 100% 0 0)" },
+          { clipPath: "inset(0 0% 0 0)", duration: 0.18 },
+          0.48,
+        );
       }
 
-      // Handoff nell'ultimo quarto: luce si abbassa, entra occhiello Atto 06.
-      if (luce) tl.to(luce, { opacity: 0.42, duration: 0.1 }, 0.80);
-      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1 }, 0.85);
+      // 4. Chiusura + CTA — ultimo arrivo completato entro 0.75.
+      if (chiusura) tl.fromTo(chiusura, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
+
+      // Handoff nell'ultimo quarto: luce scende, occhiello Atto 06 entra.
+      if (luce) tl.to(luce, { opacity: 0.5, duration: 0.1 }, 0.82);
+      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1 }, 0.88);
     }, root);
 
     return () => {
@@ -132,9 +150,9 @@ export function LaTavola() {
       data-tone="dark"
       ref={rootRef}
       aria-label="La Tavola"
-      className="relative isolate w-full overflow-hidden bg-[color:var(--pietra-800)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
+      className="relative isolate w-full overflow-hidden bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
     >
-      {/* Grana statica, materia senza costo paint. */}
+      {/* Grana statica: materia leggera senza costo di paint. */}
       <div
         aria-hidden
         className="grain pointer-events-none absolute inset-0 z-0 opacity-15"
@@ -142,117 +160,124 @@ export function LaTavola() {
       />
 
       {/* ========================================================
-          SCENA STICKY — una sola inquadratura, tenuta ferma mentre
-          lo scroll avanza. Sticky CSS, non pin GSAP.
+          SCENA STICKY — pagina di manifesto tenuta ferma mentre
+          lo scroll avanza. Sticky CSS 100dvh: la fine del sticky
+          coincide con la fine della sezione (nessun void).
           ======================================================== */}
       <div
-        className="sticky top-0 z-[1] flex h-[100dvh] w-full items-center justify-center overflow-hidden"
+        className="sticky top-0 z-[1] flex h-[100dvh] w-full items-stretch justify-center overflow-hidden"
       >
-        {/* LUCE dorata direzionale — parte già al 50%, sale al 95%. */}
+        {/* LUCE dorata direzionale — parte già al 55%, sale al 95%, poi cala. */}
         <div
           data-luce
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
-            opacity: statico ? 0.95 : 0.5,
+            opacity: statico ? 0.9 : 0.55,
             background:
-              "radial-gradient(62% 50% at 50% 44%, color-mix(in oklab, var(--oro-antico) 30%, transparent) 0%, transparent 70%)",
+              "radial-gradient(70% 55% at 32% 30%, color-mix(in oklab, var(--oro-antico) 26%, transparent) 0%, transparent 72%), radial-gradient(55% 45% at 78% 74%, color-mix(in oklab, var(--oro-antico) 14%, transparent) 0%, transparent 74%)",
           }}
         />
 
-        {/* PIANO — hairline oro orizzontale, ancora la scena. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-[6%] right-[6%] top-[62%] z-[2] h-[2px]"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 55%, transparent) 14%, var(--oro-antico) 50%, color-mix(in oklab, var(--oro-antico) 55%, transparent) 86%, transparent 100%)",
-          }}
-        />
+        {/* MANIFESTO TIPOGRAFICO.
+            Griglia 12 colonne desktop, layout impilato mobile. Le tre
+            didascalie hanno pesi/dimensioni DIVERSI e vivono in colonne
+            diverse — non sono una colonna centrata.
+            Nota fotografie: se in futuro si aggiunge un'immagine autentica,
+            va inserita come ritaglio orizzontale sottile subito sotto la
+            didascalia C, senza sostituire nulla del manifesto. */}
+        <div className="relative z-[4] mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-x-6 gap-y-0 px-5 pt-[var(--page-header-safe-offset)] pb-8 md:gap-x-8 md:px-10 md:pt-[calc(var(--header-offset)+20px)] md:pb-10">
 
-        {/* SEGNI grafici GRANDI sul piano — forme dichiarate, non finta materia.
-            → Sostituire con fotografie autentiche prima della pubblicazione.
-            Centrale ≥ 30% larghezza scena, laterali ≥ 15% ciascuno, tratti spessi. */}
-        <div className="pointer-events-none absolute inset-0 z-[3]" aria-hidden>
-          {/* SEGNO CENTRALE — piatto principale, già presente al primo frame.
-              ≥ 30% larghezza scena. Non è un arrivo: è composizione iniziale. */}
-          <span
-            className="absolute left-1/2 top-[52%] block aspect-square w-[62vmin] max-w-[520px] -translate-x-1/2 rounded-full border-[6px] border-[color:var(--oro-antico)]/70 md:w-[36vw]"
-          />
-          {/* SEGNO LATERALE SX — antipasto, arriva col gruppo laterali. */}
-          <span
-            data-arrivo="laterali"
-            className="absolute left-[6%] top-[48%] block aspect-square w-[22vmin] max-w-[220px] rounded-full border-[4px] border-[color:var(--bianco-calce)]/45 md:left-[10%] md:w-[17vw]"
-            style={{ opacity: statico ? 1 : 0 }}
-          />
-          {/* SEGNO LATERALE DX — dolce, arriva col gruppo laterali. */}
-          <span
-            data-arrivo="laterali"
-            className="absolute right-[6%] top-[50%] block aspect-square w-[20vmin] max-w-[200px] rounded-full border-[4px] border-[color:var(--bianco-calce)]/45 md:right-[10%] md:w-[15vw]"
-            style={{ opacity: statico ? 1 : 0 }}
-          />
-          {/* CARMINIO — brace al centro del piatto principale (unico del sito). */}
-          <span
-            data-arrivo="carminio"
-            data-carminio
-            className="absolute left-1/2 top-[52%] block aspect-square w-[20vmin] max-w-[160px] -translate-x-1/2 rounded-full md:w-[11vw]"
-            style={{
-              opacity: statico ? 0.95 : 0,
-              background:
-                "radial-gradient(circle at 50% 50%, var(--carminio) 0%, color-mix(in oklab, var(--carminio-scuro) 90%, transparent) 65%, transparent 100%)",
-            }}
-          />
-        </div>
-
-        {/* CONTENUTO EDITORIALE fisso: occhiello + titolo dell'atto,
-            leggibili già al primo frame. Le didascalie compaiono coi
-            momenti di arrivo a cui appartengono. */}
-        <div className="relative z-[4] mx-auto flex w-full max-w-[1200px] flex-col items-center px-5 text-center md:px-10">
-          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]">
-            05 — LA TAVOLA
-          </p>
-          <h2 className="mt-6 max-w-[14ch] font-display text-[clamp(2.4rem,6.8vw,5.4rem)] leading-[0.94] text-[color:var(--bianco-calce)] md:mt-8">
-            <span className="block">La filiera</span>
-            <span className="ml-[3%] block">diventa</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)]">un pasto.</span>
-          </h2>
-
-          {/* DIDASCALIE — le prime due arrivano col gruppo laterali,
-              la terza col momento carminio. */}
-          <div className="mt-10 flex w-full max-w-[52ch] flex-col items-center gap-3 text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[16px]">
-            <p
-              data-arrivo="laterali"
-              className="italic"
-              style={{ opacity: statico ? 1 : 0 }}
-            >
-              Si comincia dalla tavola.
-            </p>
-            <p
-              data-arrivo="laterali"
-              className="italic"
-              style={{ opacity: statico ? 1 : 0 }}
-            >
-              Piatti che chiedono tempo.
-            </p>
-            <p
-              data-arrivo="carminio"
-              className="italic"
-              style={{ opacity: statico ? 1 : 0 }}
-            >
-              Finisce piano.
+          {/* OCCHIELLO + filo oro superiore */}
+          <div className="col-span-12 flex items-center gap-4 md:col-span-8">
+            <span
+              data-rule="top"
+              aria-hidden
+              className="block h-px flex-1 origin-left bg-[color:var(--oro-antico)]/70"
+              style={{ transform: statico ? "none" : "scaleX(0)" }}
+            />
+            <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]">
+              05 — LA TAVOLA
             </p>
           </div>
+          <div className="col-span-12 hidden items-center md:col-span-4 md:flex">
+            <span
+              data-rule="top"
+              aria-hidden
+              className="block h-px w-full origin-left bg-[color:var(--oro-antico)]/40"
+              style={{ transform: statico ? "none" : "scaleX(0)" }}
+            />
+          </div>
 
-          {/* CHIUSURA — frase + CTA, ultimo arrivo. Non se ne va. */}
-          <div
-            data-arrivo="chiusura"
-            className="mt-10 flex w-full flex-col items-center gap-6 md:mt-12"
+          {/* TITOLO — grande, sinistra, tre righe con offset diversi. */}
+          <h2
+            data-arrivo="titolo"
+            className="col-span-12 mt-8 font-display text-[clamp(3rem,10.5vw,9rem)] font-light leading-[0.9] text-[color:var(--bianco-calce)] md:col-span-11 md:mt-10"
+            style={{ opacity: statico ? 1 : 0.35 }}
+          >
+            <span className="block">La filiera</span>
+            <span className="ml-[6%] block">diventa</span>
+            <span className="ml-[2%] block italic text-[color:var(--oro-su-scuro)]">un pasto.</span>
+          </h2>
+
+          {/* DIDASCALIE — dimensioni diverse, colonne diverse, non allineate. */}
+          {/* A — sinistra, sotto il titolo, media */}
+          <p
+            data-arrivo="didascalie-ab"
+            className="col-span-12 mt-10 font-display text-[clamp(1.3rem,2.6vw,2rem)] italic leading-[1.15] text-[color:var(--bianco-calce)]/85 md:col-span-5 md:col-start-1 md:mt-14"
             style={{ opacity: statico ? 1 : 0 }}
           >
-            <p className="max-w-[22ch] font-display text-[clamp(1.4rem,2.8vw,2.1rem)] leading-[1.1] text-[color:var(--bianco-calce)]">
+            Si comincia dalla tavola.
+          </p>
+
+          {/* B — destra, più piccola, in alto */}
+          <p
+            data-arrivo="didascalie-ab"
+            className="col-span-12 mt-6 text-[16px] leading-[1.5] text-[color:var(--bianco-calce)]/75 md:col-span-4 md:col-start-9 md:mt-14 md:text-[17px]"
+            style={{ opacity: statico ? 1 : 0 }}
+          >
+            Piatti che chiedono tempo.
+          </p>
+
+          {/* C — la frase finale con la parola "piano" su campitura carminio.
+              Tipo grande, spinta a destra, come chiusa di paragrafo. */}
+          <p
+            data-arrivo="didascalia-c"
+            className="col-span-12 mt-10 font-display text-[clamp(2rem,5.2vw,4rem)] italic leading-[1.05] text-[color:var(--bianco-calce)] md:col-span-9 md:col-start-4 md:mt-16 md:text-right"
+            style={{ opacity: statico ? 1 : 0 }}
+          >
+            Finisce{" "}
+            <span className="relative inline-block px-3 py-[0.02em] text-[color:var(--bianco-calce)]">
+              <span
+                data-carminio
+                aria-hidden
+                className="absolute inset-0 -z-[1] bg-[color:var(--carminio)]"
+                style={{
+                  clipPath: statico ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)",
+                }}
+              />
+              piano
+            </span>
+            .
+          </p>
+
+          {/* FILO ORO di chiusura */}
+          <div className="col-span-12 mt-12 flex items-center gap-4 md:mt-16">
+            <span aria-hidden className="block h-px flex-1 bg-[color:var(--oro-antico)]/45" />
+            <span aria-hidden className="block h-px w-2 bg-[color:var(--oro-antico)]" />
+            <span aria-hidden className="block h-px flex-1 bg-[color:var(--oro-antico)]/45" />
+          </div>
+
+          {/* CHIUSURA — frase editoriale + due CTA + disclaimer. */}
+          <div
+            data-arrivo="chiusura"
+            className="col-span-12 mt-8 flex flex-col items-start gap-6 md:mt-10"
+            style={{ opacity: statico ? 1 : 0 }}
+          >
+            <p className="max-w-[28ch] font-display text-[clamp(1.3rem,2.4vw,1.9rem)] leading-[1.15] text-[color:var(--bianco-calce)]">
               Il rito completo <span className="italic">è nell'Agriturismo.</span>
             </p>
-            <div className="flex w-full max-w-md flex-col items-stretch gap-3 md:w-auto md:flex-row md:items-center md:justify-center">
+            <div className="flex w-full flex-col items-stretch gap-3 md:w-auto md:flex-row md:items-center">
               <Link
                 to="/agriturismo"
                 className="inline-flex min-h-[48px] items-center justify-center border border-[color:var(--oro-antico)] bg-[color:var(--oro-antico)] px-7 py-3 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--carbone)] transition-colors hover:bg-[color:var(--bianco-calce)] hover:border-[color:var(--bianco-calce)]"
@@ -267,7 +292,7 @@ export function LaTavola() {
                 PRENOTA UN TAVOLO
               </button>
             </div>
-            <p className="max-w-[46ch] text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/70">
+            <p className="max-w-[52ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/70">
               Piatti e disponibilità possono cambiare. Contatta la Masseria per confermare il menu del giorno.
             </p>
           </div>
@@ -275,10 +300,12 @@ export function LaTavola() {
       </div>
 
       {/* ========================================================
-          HANDOFF — bordo inferiore della sezione. Fondo pietra-800
+          HANDOFF — bordo inferiore della sezione. Fondo biscotto-scuro
           pieno, coincidente con l'inizio dell'Atto 06. Gap 0px.
+          Nota: questa fascia sta SOTTO il sticky (100dvh), quindi entra
+          in scena solo quando la sezione si stacca. Non aggiunge void.
           ======================================================== */}
-      <div className="relative z-[2] bg-[color:var(--pietra-800)]">
+      <div className="relative z-[2] bg-[color:var(--biscotto-scuro)]">
         <div aria-hidden className="hairline-oro" />
         <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-6 md:px-10 md:py-8">
           <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
