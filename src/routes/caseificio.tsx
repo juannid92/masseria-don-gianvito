@@ -33,7 +33,7 @@ function CaseificioPage() {
       <AnimaHero
         occhiello="II · Caseificio"
         righe={["Il latte non", "fa strada.", "Fa pochi metri."]}
-        frase="Dalla stalla al laboratorio ci sono pochi metri. Il latte della mungitura entra e viene lavorato nella stessa mattina, dentro la masseria."
+        frase="Dalla stalla al laboratorio ci sono pochi metri."
         fotoEtichetta="la mozzarella appena filata nelle mani, a piena larghezza"
       />
 
@@ -45,7 +45,7 @@ function CaseificioPage() {
           paragrafi={[
             "Il latte arriva dalle stalle della masseria e non aspetta. Finita la mungitura, passa in laboratorio.",
             "Nessun trasporto, nessuna sosta: il posto in cui viene munto e il posto in cui viene lavorato sono lo stesso posto.",
-            "Tutto quello che entra la mattina esce lavorato entro la stessa mattina.",
+            "Quello che entra la mattina si lavora nella stessa mattina.",
           ]}
           fotoEtichetta="il latte in lavorazione, prima mattina"
         >

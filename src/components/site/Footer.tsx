@@ -22,13 +22,13 @@ export function Footer() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           {/* Claim — colonna larga */}
           <div className="lg:col-span-5">
-            <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-antico)]/85">
+            <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]/90">
               {MASSERIA.sopratitolo}
             </p>
             <p className="mt-6 font-display text-[clamp(2.4rem,6vw,4.2rem)] leading-[0.95]">
               Dalla terra
               <br />
-              <em className="not-italic text-[color:var(--oro-antico)]">alla tavola.</em>
+              <em className="not-italic text-[color:var(--oro-su-scuro)]">alla tavola.</em>
             </p>
             <p className="mt-6 max-w-sm text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/80">
               {MASSERIA.nome} — masseria del Cinquecento a Noci, sulla strada verso Mottola.
@@ -47,9 +47,9 @@ export function Footer() {
                   <button
                     type="button"
                     onClick={() => goToSection(a.id)}
-                    className="group flex items-baseline gap-2 text-left text-[15px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--oro-antico)]"
+                    className="group flex items-baseline gap-2 text-left text-[15px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--oro-su-scuro)]"
                   >
-                    <span className="font-eyebrow text-[9px] tracking-[0.2em] text-[color:var(--oro-antico)]/80">
+                    <span className="font-eyebrow text-[9px] tracking-[0.2em] text-[color:var(--oro-su-scuro)]/85">
                       {a.numero}
                     </span>
                     {a.nome}
@@ -69,7 +69,7 @@ export function Footer() {
                 <li key={a.id}>
                   <Link
                     to={a.to}
-                    className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-antico)]"
+                    className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
                   >
                     {a.nome}
                   </Link>
@@ -95,7 +95,7 @@ export function Footer() {
                 href={MASSERIA.maps}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-3 inline-block border-b border-[color:var(--oro-antico)] pb-px font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-antico)]"
+                className="mt-3 inline-block border-b border-[color:var(--oro-antico)] pb-px font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-su-scuro)]"
               >
                 Apri in Maps
               </a>
@@ -107,12 +107,12 @@ export function Footer() {
               </p>
               <ul className="space-y-2 text-[15px] text-[color:var(--bianco-calce)]/85">
                 <li>
-                  <a href={MASSERIA.telefonoHref} className="hover:text-[color:var(--oro-antico)]">
+                  <a href={MASSERIA.telefonoHref} className="hover:text-[color:var(--oro-su-scuro)]">
                     {MASSERIA.telefono}
                   </a>
                 </li>
                 <li>
-                  <a href={MASSERIA.telefono2Href} className="hover:text-[color:var(--oro-antico)]">
+                  <a href={MASSERIA.telefono2Href} className="hover:text-[color:var(--oro-su-scuro)]">
                     {MASSERIA.telefono2}
                   </a>
                 </li>
@@ -121,7 +121,7 @@ export function Footer() {
                     href={MASSERIA.whatsapp}
                     target="_blank"
                     rel="noreferrer"
-                    className="hover:text-[color:var(--oro-antico)]"
+                    className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     WhatsApp
                   </a>
@@ -131,7 +131,7 @@ export function Footer() {
                     href={MASSERIA.instagram}
                     target="_blank"
                     rel="noreferrer"
-                    className="hover:text-[color:var(--oro-antico)]"
+                    className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     Instagram
                   </a>
@@ -141,7 +141,7 @@ export function Footer() {
                     href={MASSERIA.facebook}
                     target="_blank"
                     rel="noreferrer"
-                    className="hover:text-[color:var(--oro-antico)]"
+                    className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     Facebook
                   </a>
