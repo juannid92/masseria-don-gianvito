@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "@tanstack/react-router";
@@ -8,34 +7,32 @@ import { useHomeSectionNav } from "@/lib/nav";
 
 /**
  * ATTO 05 — LA TAVOLA.
- * Regia: "quadri a sipario". Nessun pin, nessuno sticky a piena altezza,
- * nessun path SVG continuo, nessuna maschera a fessura. Ogni quadro entra
- * coperto da un pannello che si ritira lungo lo scroll (clip-path), la luce
- * dorata respira lungo il quadro, i segni entrano stagger dopo il 60% di
- * rivelazione del sipario. Trigger locali totali: 6 (apertura + 4 quadri +
- * chiusura). Solo transform / opacity / clip-path. Nessun filtro animato.
+ * Regia: L'ACCUMULO. Una sola inquadratura fissa (sticky, non pin) che si
+ * apparecchia mentre lo scroll avanza. Gli elementi arrivano uno dopo l'altro
+ * e NON escono mai: si sommano fino a comporre un quadro pieno.
  *
- * Regole cromatiche: fondo pietra-800 pieno per tutta la sezione (non varia
- * fra quadri: varia la luce). Oro massimo 2 per quadro (max 1 testuale).
- * Carminio SOLO nell'Arrosto (secondo ed ultimo uso del sito). Zero oliva.
- * I "segni" delle portate sono forme grafiche pure (cerchi, ovali, archi):
- * → SOSTITUIRE con fotografie autentiche dei piatti prima della pubblicazione.
+ * Struttura: sezione 240dvh desktop, 260dvh mobile. Dentro, uno strato
+ * `sticky` a piena altezza di viewport contiene la scena. UNA sola timeline
+ * scrub aggancia lo scroll dell'intera sezione. Nessun pin GSAP.
+ *
+ * Livelli fissi: fondo pietra-800, piano (hairline oro), luce base, titolo,
+ * occhiello 05.
+ * Elementi che si accumulano (7):
+ *   1. luce che si accende (continua per tutto l'atto)
+ *   2. primo segno antipasto + didascalia "Si comincia dalla tavola."
+ *   3. secondo segno antipasto
+ *   4. segno centrale del piatto principale + "Piatti che chiedono tempo."
+ *   5. carminio (unica occorrenza dell'atto e ultima del sito)
+ *   6. ultimo segno + "Finisce piano."
+ *   7. frase di chiusura + CTA
+ * Handoff finale: luce si abbassa, entra l'occhiello 06 — LA VOCE.
+ *
+ * Regole cromatiche: fondo pietra-800 pieno, luce oro-antico crescente,
+ * un solo testo oro (display italic "un pasto." in --oro-su-scuro),
+ * carminio SOLO al piatto principale, zero oliva, nessuna finta materia.
+ * I "segni" sono forme grafiche pure → sostituire con fotografie autentiche
+ * prima della pubblicazione.
  */
-
-type QuadroId = "antipasto" | "cucina" | "arrosto" | "dolce";
-type SipariateDir = "right" | "left";
-
-type Quadro = {
-  id: QuadroId;
-  occhiello: string;
-  titolo: [string, string];
-  testo: string;
-  nota?: string;
-  liste?: { titolo: string; voci: string }[];
-  dir: SipariateDir; // 1,3 → right ; 2,4 → left
-  luceX: string; // origine della luce respirante
-  luceY: string;
-};
 
 const QUADRI: Quadro[] = [
   {
