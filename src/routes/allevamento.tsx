@@ -79,7 +79,7 @@ function AllevamentoPage() {
           occhiello="04 · Dove finisce l'allevamento"
           titolo="Il passaggio"
           paragrafi={[
-            "L'allevamento non è un capitolo chiuso: consegna. Il latte va al caseificio, che lo lavora nella stessa mattina.",
+            "L'allevamento non si chiude qui: consegna. Il latte va al caseificio, che lo lavora nella stessa mattina.",
             "La carne va alla macelleria, dove viene esposta al banco e scelta a vista da chi si fermerà a cena.",
           ]}
           fotoEtichetta="passaggio dalla stalla al laboratorio, mani al lavoro"
