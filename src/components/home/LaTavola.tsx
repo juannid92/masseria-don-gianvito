@@ -7,30 +7,31 @@ import { useHomeSectionNav } from "@/lib/nav";
 
 /**
  * ATTO 05 — LA TAVOLA.
- * Regia: L'ACCUMULO. Una sola inquadratura fissa (sticky, non pin) che si
- * apparecchia mentre lo scroll avanza. Gli elementi arrivano uno dopo l'altro
- * e NON escono mai: si sommano fino a comporre un quadro pieno.
+ * Regia: L'ACCUMULO CON SCENA GIÀ COMPOSTA A METÀ.
+ * Al primo frame visibile: luce al 50%, piano orizzontale pieno, segno
+ * centrale del piatto già presente (non ancora illuminato dal carminio),
+ * titolo e occhiello leggibili. La scena NON parte mai vuota.
  *
- * Struttura: sezione 240dvh desktop, 260dvh mobile. Dentro, un contenitore
- * `sticky` a piena altezza di viewport contiene la scena. UNA sola timeline
- * scrub aggancia lo scroll dell'intera sezione. Nessun pin GSAP.
+ * Sezione: 200dvh desktop, 220dvh mobile. Contenitore sticky CSS a piena
+ * altezza. UNA sola timeline scrub, aggancio quando la sezione entra dal
+ * fondo (top 90% desktop, top 100% mobile): al momento in cui la scena si
+ * ferma in cima, la progressione è già ~0.20.
  *
- * Livelli fissi: fondo pietra-800, piano (hairline oro), titolo, occhiello 05.
- * Elementi che si accumulano (7):
- *   1. luce che si accende (continua per tutto l'atto)
- *   2. primo segno antipasto + "Si comincia dalla tavola."
- *   3. secondo segno antipasto
- *   4. segno centrale del piatto principale + "Piatti che chiedono tempo."
- *   5. carminio (unica occorrenza dell'atto e ultima del sito)
- *   6. ultimo segno + "Finisce piano."
- *   7. frase di chiusura + CTA
- * Handoff finale: luce si abbassa, entra l'occhiello 06 — LA VOCE.
+ * Quattro momenti larghi (non sette piccoli innesti):
+ *   1. luce che sale al massimo (continua)
+ *   2. i due segni laterali entrano INSIEME, con le due prime didascalie
+ *   3. il carminio si accende sul piatto centrale + terza didascalia
+ *   4. la chiusura con le due CTA
+ * Ultimo arrivo completato entro il 75%. L'ultimo quarto è solo chiusura
+ * e handoff (luce che si abbassa, occhiello Atto 06).
  *
- * Regole cromatiche: fondo pietra-800 pieno, luce oro-antico crescente,
- * un solo testo oro (display italic "un pasto." in --oro-su-scuro),
- * carminio SOLO al piatto principale, zero oliva, nessuna finta materia.
- * I "segni" sono forme grafiche pure → sostituire con fotografie autentiche
- * prima della pubblicazione.
+ * Regole cromatiche: fondo pietra-800 pieno, un solo testo oro (display
+ * italic "un pasto." in --oro-su-scuro), occhielli in bianco-calce/70,
+ * carminio unico e permanente sul piatto principale, oliva assente.
+ * I "segni" sono forme grafiche pure e grandi (centrale ≥ 30% della scena,
+ * laterali ≥ 15%): vanno sostituiti con fotografie autentiche prima
+ * della pubblicazione — se dopo l'ingrandimento la composizione appare
+ * povera, il problema sono le foto mancanti, non decorazioni da aggiungere.
  */
 
 export function LaTavola() {
@@ -50,22 +51,29 @@ export function LaTavola() {
       const q = (sel: string) => root.querySelector<HTMLElement>(sel);
       const qq = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel));
 
-      const cover = q("[data-cover]");
       const luce = q("[data-luce]");
-      const arrivi = qq("[data-arrivo]");
+      const lateraliGroup = qq("[data-arrivo='laterali']");
+      const carminioGroup = qq("[data-arrivo='carminio']");
+      const carminioSpan = root.querySelector<HTMLElement>("[data-carminio]");
+      const chiusura = q("[data-arrivo='chiusura']");
       const handoffEye = q("[data-handoff-eyebrow]");
 
-      [cover, luce, handoffEye, ...arrivi].forEach((el) => {
+      [luce, chiusura, handoffEye, ...lateraliGroup, ...carminioGroup].forEach((el) => {
         if (!el) return;
         el.style.willChange = "transform, opacity";
         willChangeEls.push(el);
       });
 
       // UNA sola timeline scrub sull'intera sezione. Nessun pin.
+      // Aggancio anticipato: parte quando la sezione entra nello schermo
+      // (top 90% desktop, top 100% mobile), non quando la si incolla in
+      // cima. All'istante dello "stick" (top top) la progression è ~0.20.
+      const isMobile = window.matchMedia("(max-width: 899px)").matches;
+      const startEdge = isMobile ? "top 100%" : "top 90%";
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
-          start: "top top",
+          start: startEdge,
           end: "bottom bottom",
           scrub: 0.8,
           invalidateOnRefresh: true,
@@ -73,28 +81,40 @@ export function LaTavola() {
         defaults: { ease: "none" },
       });
 
-      // Stacco dal bianco della Filiera → pietra scura (0-8%).
-      if (cover) tl.fromTo(cover, { opacity: 1 }, { opacity: 0, duration: 0.08 }, 0);
+      // Ripartizione uniforme dei momenti su 200dvh: intervalli 0.20 (≈40dvh
+      // ciascuno). Con start "top 90%" la progression allo stick vale ~0.47,
+      // quindi laterali (0.20) è appena arrivato quando la scena si ferma:
+      // la scena NON è mai vuota, luce e piano sono già a regime.
+      //
+      // 1. Luce: 0.50 → 0.95 (continua, fino a 0.70).
+      if (luce) tl.fromTo(luce, { opacity: 0.5 }, { opacity: 0.95, duration: 0.7 }, 0);
 
-      // Luce: unico parametro continuo per tutto l'atto (0.15 → 0.95).
-      if (luce) tl.fromTo(luce, { opacity: 0.15 }, { opacity: 0.95, duration: 0.82 }, 0.06);
-
-      // Momenti di arrivo (0..1). Ogni elemento arriva UNA volta e resta.
-      // start times per data-arrivo index:
-      const arrivalStarts = [0.12, 0.20, 0.30, 0.40, 0.50, 0.62, 0.72];
-      arrivi.forEach((el, i) => {
-        const start = arrivalStarts[i] ?? 0.72;
+      // 2. Segni laterali + prime due didascalie (0.20 → 0.35).
+      if (lateraliGroup.length) {
         tl.fromTo(
-          el,
+          lateraliGroup,
           { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.14 },
-          start,
+          { opacity: 1, y: 0, duration: 0.15, stagger: 0 },
+          0.20,
         );
-      });
+      }
 
-      // Chiusura: luce si abbassa, entra occhiello Atto 06.
-      if (luce) tl.to(luce, { opacity: 0.42, duration: 0.1 }, 0.9);
-      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.08 }, 0.94);
+      // 3. Carminio sul piatto centrale + terza didascalia (0.40 → 0.55).
+      if (carminioGroup.length) {
+        tl.fromTo(carminioGroup, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15, stagger: 0 }, 0.40);
+      }
+      if (carminioSpan) {
+        tl.fromTo(carminioSpan, { scale: 0.85 }, { scale: 1, duration: 0.15 }, 0.40);
+      }
+
+      // 4. Chiusura + CTA — ultimo arrivo, completato a 0.75.
+      if (chiusura) {
+        tl.fromTo(chiusura, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.15 }, 0.60);
+      }
+
+      // Handoff nell'ultimo quarto: luce si abbassa, entra occhiello Atto 06.
+      if (luce) tl.to(luce, { opacity: 0.42, duration: 0.1 }, 0.80);
+      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1 }, 0.85);
     }, root);
 
     return () => {
@@ -112,7 +132,7 @@ export function LaTavola() {
       data-tone="dark"
       ref={rootRef}
       aria-label="La Tavola"
-      className="relative isolate w-full overflow-hidden bg-[color:var(--pietra-800)] text-[color:var(--bianco-calce)] min-h-[260dvh] [@media(min-width:900px)]:min-h-[240dvh]"
+      className="relative isolate w-full overflow-hidden bg-[color:var(--pietra-800)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
     >
       {/* Grana statica, materia senza costo paint. */}
       <div
@@ -128,86 +148,65 @@ export function LaTavola() {
       <div
         className="sticky top-0 z-[1] flex h-[100dvh] w-full items-center justify-center overflow-hidden"
       >
-        {/* Cover bianco-calce → sfuma per stacco dalla Filiera. */}
-        <div
-          data-cover
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-[6]"
-          style={{
-            opacity: statico ? 0 : 1,
-            background:
-              "linear-gradient(180deg, var(--bianco-calce) 0%, color-mix(in oklab, var(--bianco-calce) 55%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
-          }}
-        />
-
-        {/* LUCE dorata direzionale — unico parametro continuo. */}
+        {/* LUCE dorata direzionale — parte già al 50%, sale al 95%. */}
         <div
           data-luce
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
-            opacity: statico ? 0.9 : 0.15,
+            opacity: statico ? 0.95 : 0.5,
             background:
-              "radial-gradient(58% 46% at 50% 42%, color-mix(in oklab, var(--oro-antico) 26%, transparent) 0%, transparent 68%)",
+              "radial-gradient(62% 50% at 50% 44%, color-mix(in oklab, var(--oro-antico) 30%, transparent) 0%, transparent 70%)",
           }}
         />
 
         {/* PIANO — hairline oro orizzontale, ancora la scena. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-0 right-0 top-[62%] z-[2] h-px"
+          className="pointer-events-none absolute left-[6%] right-[6%] top-[62%] z-[2] h-[2px]"
           style={{
             background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 22%, var(--oro-antico) 50%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 78%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 55%, transparent) 14%, var(--oro-antico) 50%, color-mix(in oklab, var(--oro-antico) 55%, transparent) 86%, transparent 100%)",
           }}
         />
 
-        {/* SEGNI grafici che si accumulano sul piano.
-            → Sostituire con fotografie autentiche prima della pubblicazione. */}
+        {/* SEGNI grafici GRANDI sul piano — forme dichiarate, non finta materia.
+            → Sostituire con fotografie autentiche prima della pubblicazione.
+            Centrale ≥ 30% larghezza scena, laterali ≥ 15% ciascuno, tratti spessi. */}
         <div className="pointer-events-none absolute inset-0 z-[3]" aria-hidden>
-          {/* 1. antipasto A — piccolo cerchio in alto a sinistra del piano */}
+          {/* SEGNO CENTRALE — piatto principale, già presente al primo frame.
+              ≥ 30% larghezza scena. Non è un arrivo: è composizione iniziale. */}
           <span
-            data-arrivo="antipasto-a"
-            className="absolute left-[16%] top-[46%] block h-[110px] w-[110px] rounded-full border border-[color:var(--oro-antico)]/55 md:h-[140px] md:w-[140px]"
+            className="absolute left-1/2 top-[52%] block aspect-square w-[62vmin] max-w-[520px] -translate-x-1/2 rounded-full border-[6px] border-[color:var(--oro-antico)]/70 md:w-[36vw]"
+          />
+          {/* SEGNO LATERALE SX — antipasto, arriva col gruppo laterali. */}
+          <span
+            data-arrivo="laterali"
+            className="absolute left-[6%] top-[48%] block aspect-square w-[22vmin] max-w-[220px] rounded-full border-[4px] border-[color:var(--bianco-calce)]/45 md:left-[10%] md:w-[17vw]"
             style={{ opacity: statico ? 1 : 0 }}
           />
-          {/* 2. antipasto B — ovale piccolo accanto */}
+          {/* SEGNO LATERALE DX — dolce, arriva col gruppo laterali. */}
           <span
-            data-arrivo="antipasto-b"
-            className="absolute left-[30%] top-[54%] block h-[36px] w-[110px] rounded-full bg-[color:var(--bianco-calce)]/10 ring-1 ring-[color:var(--bianco-calce)]/25 md:h-[46px] md:w-[150px]"
+            data-arrivo="laterali"
+            className="absolute right-[6%] top-[50%] block aspect-square w-[20vmin] max-w-[200px] rounded-full border-[4px] border-[color:var(--bianco-calce)]/45 md:right-[10%] md:w-[15vw]"
             style={{ opacity: statico ? 1 : 0 }}
           />
-          {/* 3. piatto principale — cerchio grande al centro */}
-          <span
-            data-arrivo="piatto-centrale"
-            className="absolute left-1/2 top-[52%] block h-[180px] w-[180px] -translate-x-1/2 rounded-full border-2 border-[color:var(--oro-antico)]/65 md:h-[220px] md:w-[220px]"
-            style={{ opacity: statico ? 1 : 0 }}
-          />
-          {/* 4. carminio — brace al centro del piatto principale (unico e ultimo del sito) */}
+          {/* CARMINIO — brace al centro del piatto principale (unico del sito). */}
           <span
             data-arrivo="carminio"
             data-carminio
-            className="absolute left-1/2 top-[52%] block h-[64px] w-[64px] -translate-x-1/2 rounded-full md:h-[84px] md:w-[84px]"
+            className="absolute left-1/2 top-[52%] block aspect-square w-[20vmin] max-w-[160px] -translate-x-1/2 rounded-full md:w-[11vw]"
             style={{
               opacity: statico ? 0.95 : 0,
               background:
                 "radial-gradient(circle at 50% 50%, var(--carminio) 0%, color-mix(in oklab, var(--carminio-scuro) 90%, transparent) 65%, transparent 100%)",
             }}
           />
-          {/* 5. dolce — arco piccolo a destra del piano */}
-          <span
-            data-arrivo="ultimo-segno"
-            className="absolute right-[16%] top-[50%] block h-[70px] w-[70px] rounded-full border border-[color:var(--bianco-calce)]/40 md:h-[86px] md:w-[86px]"
-            style={{ opacity: statico ? 1 : 0 }}
-          />
-          <span
-            aria-hidden
-            data-arrivo-ghost
-            className="absolute right-[26%] top-[60%] hidden h-[8px] w-[100px] rounded-full bg-[color:var(--oro-antico)]/30"
-          />
         </div>
 
-        {/* CONTENUTO EDITORIALE fisso: occhiello + titolo dell'atto. */}
+        {/* CONTENUTO EDITORIALE fisso: occhiello + titolo dell'atto,
+            leggibili già al primo frame. Le didascalie compaiono coi
+            momenti di arrivo a cui appartengono. */}
         <div className="relative z-[4] mx-auto flex w-full max-w-[1200px] flex-col items-center px-5 text-center md:px-10">
           <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]">
             05 — LA TAVOLA
@@ -218,25 +217,25 @@ export function LaTavola() {
             <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)]">un pasto.</span>
           </h2>
 
-          {/* MOMENTI — arrivano uno per volta, restano.
-              Sono didascalie brevi accanto ai segni. */}
+          {/* DIDASCALIE — le prime due arrivano col gruppo laterali,
+              la terza col momento carminio. */}
           <div className="mt-10 flex w-full max-w-[52ch] flex-col items-center gap-3 text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[16px]">
             <p
-              data-arrivo="momento-1"
+              data-arrivo="laterali"
               className="italic"
               style={{ opacity: statico ? 1 : 0 }}
             >
               Si comincia dalla tavola.
             </p>
             <p
-              data-arrivo="momento-2"
+              data-arrivo="laterali"
               className="italic"
               style={{ opacity: statico ? 1 : 0 }}
             >
               Piatti che chiedono tempo.
             </p>
             <p
-              data-arrivo="momento-3"
+              data-arrivo="carminio"
               className="italic"
               style={{ opacity: statico ? 1 : 0 }}
             >
