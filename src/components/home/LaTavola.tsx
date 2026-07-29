@@ -53,11 +53,12 @@ export function LaTavola() {
 
       const luce = q("[data-luce]");
       const lateraliGroup = qq("[data-arrivo='laterali']");
-      const carminio = q("[data-arrivo='carminio']");
+      const carminioGroup = qq("[data-arrivo='carminio']");
+      const carminioSpan = root.querySelector<HTMLElement>("[data-carminio]");
       const chiusura = q("[data-arrivo='chiusura']");
       const handoffEye = q("[data-handoff-eyebrow]");
 
-      [luce, carminio, chiusura, handoffEye, ...lateraliGroup].forEach((el) => {
+      [luce, chiusura, handoffEye, ...lateraliGroup, ...carminioGroup].forEach((el) => {
         if (!el) return;
         el.style.willChange = "transform, opacity";
         willChangeEls.push(el);
@@ -94,8 +95,11 @@ export function LaTavola() {
       }
 
       // 3. Carminio sul piatto centrale + terza didascalia (0.45 → 0.6).
-      if (carminio) {
-        tl.fromTo(carminio, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.15 }, 0.45);
+      if (carminioGroup.length) {
+        tl.fromTo(carminioGroup, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.15, stagger: 0 }, 0.45);
+      }
+      if (carminioSpan) {
+        tl.fromTo(carminioSpan, { scale: 0.85 }, { scale: 1, duration: 0.15 }, 0.45);
       }
 
       // 4. Chiusura con due CTA — ultimo arrivo, completato entro 0.75.
