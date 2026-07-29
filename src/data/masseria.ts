@@ -17,6 +17,12 @@ export const MASSERIA = {
   telefono2: "333 387 0292",
   telefono2Href: "tel:+393333870292",
   whatsapp: "https://wa.me/393339395750",
+  /** WhatsApp con messaggio precompilato per la prenotazione di un tavolo. */
+  whatsappPrenota:
+    "https://wa.me/393339395750?text=" +
+    encodeURIComponent(
+      "Buongiorno, vorrei prenotare un tavolo alla Masseria Don Gianvito. Siamo in ___ persone, per il giorno ___. Grazie.",
+    ),
   instagram: "https://instagram.com/masseria_don_gianvito",
   facebook: "https://facebook.com/masseriadongianvito",
   maps: "https://www.google.com/maps?q=40.642739,17.042600",
