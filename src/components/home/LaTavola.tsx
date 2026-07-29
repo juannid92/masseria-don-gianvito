@@ -269,7 +269,7 @@ export function LaTavola() {
               </button>
             </div>
             <p className="max-w-[46ch] text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/70">
-              Piatti e disponibilità possono cambiano. Contatta la Masseria per confermare il menu del giorno.
+              Piatti e disponibilità possono cambiare. Contatta la Masseria per confermare il menu del giorno.
             </p>
           </div>
         </div>
