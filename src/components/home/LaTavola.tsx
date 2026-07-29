@@ -150,7 +150,7 @@ export function LaTavola() {
       data-tone="dark"
       ref={rootRef}
       aria-label="La Tavola"
-      className="relative isolate w-full overflow-hidden bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
+      className="relative isolate w-full overflow-x-clip bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] min-h-[220dvh] [@media(min-width:900px)]:min-h-[200dvh]"
     >
       {/* Grana statica: materia leggera senza costo di paint. */}
       <div
@@ -165,7 +165,7 @@ export function LaTavola() {
           coincide con la fine della sezione (nessun void).
           ======================================================== */}
       <div
-        className="sticky top-0 z-[1] flex h-[100dvh] w-full items-stretch justify-center overflow-hidden"
+        className="sticky top-0 z-[1] flex h-[100dvh] w-full items-stretch justify-center overflow-clip"
       >
         {/* LUCE dorata direzionale — parte già al 55%, sale al 95%, poi cala. */}
         <div
