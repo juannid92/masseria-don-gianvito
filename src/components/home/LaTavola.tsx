@@ -11,15 +11,14 @@ import { useHomeSectionNav } from "@/lib/nav";
  * apparecchia mentre lo scroll avanza. Gli elementi arrivano uno dopo l'altro
  * e NON escono mai: si sommano fino a comporre un quadro pieno.
  *
- * Struttura: sezione 240dvh desktop, 260dvh mobile. Dentro, uno strato
+ * Struttura: sezione 240dvh desktop, 260dvh mobile. Dentro, un contenitore
  * `sticky` a piena altezza di viewport contiene la scena. UNA sola timeline
  * scrub aggancia lo scroll dell'intera sezione. Nessun pin GSAP.
  *
- * Livelli fissi: fondo pietra-800, piano (hairline oro), luce base, titolo,
- * occhiello 05.
+ * Livelli fissi: fondo pietra-800, piano (hairline oro), titolo, occhiello 05.
  * Elementi che si accumulano (7):
  *   1. luce che si accende (continua per tutto l'atto)
- *   2. primo segno antipasto + didascalia "Si comincia dalla tavola."
+ *   2. primo segno antipasto + "Si comincia dalla tavola."
  *   3. secondo segno antipasto
  *   4. segno centrale del piatto principale + "Piatti che chiedono tempo."
  *   5. carminio (unica occorrenza dell'atto e ultima del sito)
@@ -34,58 +33,6 @@ import { useHomeSectionNav } from "@/lib/nav";
  * prima della pubblicazione.
  */
 
-const QUADRI: Quadro[] = [
-  {
-    id: "antipasto",
-    occhiello: "01 · L'ANTIPASTO",
-    titolo: ["Si comincia", "dalla tavola."],
-    testo:
-      "Salumi e formaggi della masseria, frittelle di grano, ricotta piccante, pomodorini e zucchine marinate.",
-    liste: [
-      {
-        titolo: "SALUMI",
-        voci: "Prosciutto crudo · Soppressata · Salsiccia secca · Pancetta tesa",
-      },
-      { titolo: "FORMAGGI", voci: "Mozzarella · Nodini · Primo sale · Ricotta" },
-    ],
-    dir: "right",
-    luceX: "22%",
-    luceY: "26%",
-  },
-  {
-    id: "cucina",
-    occhiello: "02 · LA CUCINA",
-    titolo: ["Piatti che", "chiedono tempo."],
-    testo: "Polpettine al sugo nel pignatiello, spezzatino di vitello e maiale, Pecora in Pignata.",
-    nota:
-      "La Pecora in Pignata cuoce circa cinque ore nel forno a legna, in una pignata chiusa con pasta di pane.",
-    dir: "left",
-    luceX: "72%",
-    luceY: "34%",
-  },
-  {
-    id: "arrosto",
-    occhiello: "03 · L'ARROSTO",
-    titolo: ["Quello che scegli", "al banco."],
-    testo:
-      "Filetto, bombette, salsiccia e la scelta del banco, cotti sui carboni e serviti durante il pasto.",
-    nota:
-      "La frollatura è indicativa, circa quindici giorni, e varia in base al taglio.",
-    dir: "right",
-    luceX: "28%",
-    luceY: "58%",
-  },
-  {
-    id: "dolce",
-    occhiello: "04 · IL DOLCE",
-    titolo: ["Finisce", "piano."],
-    testo: "Dolcini artigianali chiudono il pasto.",
-    dir: "left",
-    luceX: "68%",
-    luceY: "42%",
-  },
-];
-
 export function LaTavola() {
   const reduced = useReducedMotion();
   const rootRef = useRef<HTMLElement | null>(null);
@@ -97,193 +44,57 @@ export function LaTavola() {
     if (!root) return;
 
     gsap.registerPlugin(ScrollTrigger);
-
-    // Bookkeeping will-change per cleanup memoria video.
     const willChangeEls: HTMLElement[] = [];
 
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      const q = (sel: string) => root.querySelector<HTMLElement>(sel);
+      const qq = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel));
 
-      // Trigger 1 · APERTURA — filo dorato dall'alto si allarga fino a
-      // diventare la linea del piano; il fondo passa dal bianco calce
-      // (coda Filiera) alla pietra scura. Momento di stacco chiaro→scuro.
-      const apertura = root.querySelector<HTMLElement>("[data-apertura]");
-      if (apertura) {
-        const filo = apertura.querySelector<HTMLElement>("[data-apertura-filo]");
-        const cover = apertura.querySelector<HTMLElement>("[data-apertura-cover]");
-        const piano = apertura.querySelector<HTMLElement>("[data-apertura-piano]");
-        const eyebrow = apertura.querySelector<HTMLElement>("[data-apertura-eyebrow]");
-        const titolo = apertura.querySelector<HTMLElement>("[data-apertura-titolo]");
-        if (filo) filo.style.willChange = "transform, opacity";
-        if (cover) cover.style.willChange = "opacity";
-        if (piano) piano.style.willChange = "transform, opacity";
-        [filo, cover, piano].forEach((el) => el && willChangeEls.push(el));
+      const cover = q("[data-cover]");
+      const luce = q("[data-luce]");
+      const arrivi = qq("[data-arrivo]");
+      const handoffEye = q("[data-handoff-eyebrow]");
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: apertura,
-            start: "top 95%",
-            end: "top 30%",
-            scrub: 0.8,
-            invalidateOnRefresh: true,
-          },
-          defaults: { ease: "none" },
-        });
-        // Filo che si allarga in orizzontale
-        if (filo) tl.fromTo(filo, { scaleX: 0.02, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 1 }, 0);
-        // Cover bianco → pietra
-        if (cover) tl.fromTo(cover, { opacity: 1 }, { opacity: 0, duration: 0.7 }, 0.15);
-        // Piano: hairline che si distende
-        if (piano) tl.fromTo(piano, { scaleX: 0.1, opacity: 0.4 }, { scaleX: 1, opacity: 1, duration: 0.8 }, 0.2);
-        if (eyebrow) tl.fromTo(eyebrow, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 0.55);
-        if (titolo) tl.fromTo(titolo, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, 0.65);
-      }
+      [cover, luce, handoffEye, ...arrivi].forEach((el) => {
+        if (!el) return;
+        el.style.willChange = "transform, opacity";
+        willChangeEls.push(el);
+      });
 
-      // Trigger 2-5 · QUATTRO QUADRI
-      const quadri = Array.from(root.querySelectorAll<HTMLElement>("[data-quadro]"));
-      quadri.forEach((q) => {
-        const dir = q.dataset.sipariateDir === "left" ? "left" : "right";
-        const sipario = q.querySelector<HTMLElement>("[data-sipario]");
-        const luce = q.querySelector<HTMLElement>("[data-luce]");
-        const segni = Array.from(q.querySelectorAll<HTMLElement>("[data-segno]"));
-        const editorial = q.querySelector<HTMLElement>("[data-editorial]");
-        const carminio = q.querySelector<HTMLElement>("[data-carminio]");
+      // UNA sola timeline scrub sull'intera sezione. Nessun pin.
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: root,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+        },
+        defaults: { ease: "none" },
+      });
 
-        [sipario, luce, editorial, carminio, ...segni].forEach((el) => {
-          if (!el) return;
-          el.style.willChange = "transform, opacity, clip-path";
-          willChangeEls.push(el);
-        });
+      // Stacco dal bianco della Filiera → pietra scura (0-8%).
+      if (cover) tl.fromTo(cover, { opacity: 1 }, { opacity: 0, duration: 0.08 }, 0);
 
-        mm.add(
-          {
-            desktop: "(min-width: 900px)",
-            mobile: "(max-width: 899px)",
-          },
-          (context) => {
-            const isMobile = context.conditions?.mobile === true;
+      // Luce: unico parametro continuo per tutto l'atto (0.15 → 0.95).
+      if (luce) tl.fromTo(luce, { opacity: 0.15 }, { opacity: 0.95, duration: 0.82 }, 0.06);
 
-            const tl = gsap.timeline({
-              scrollTrigger: {
-                trigger: q,
-                start: isMobile ? "top 100%" : "top 88%",
-                end: "top 45%",
-                scrub: 0.7,
-                invalidateOnRefresh: true,
-              },
-              defaults: { ease: "none" },
-            });
-
-            // SIPARIO — clip-path che si ritira dal lato opposto.
-            // dir=right: inset(0 0 0 0) → inset(0 0 0 100%) (scopre da dx→sx: pannello esce a sinistra)
-            // dir=left:  inset(0 0 0 0) → inset(0 100% 0 0) (scopre da sx→dx)
-            // Su mobile: wipe dal basso, uniforme per tutti.
-            if (sipario) {
-              if (isMobile) {
-                tl.fromTo(
-                  sipario,
-                  { clipPath: "inset(0% 0% 0% 0%)" },
-                  { clipPath: "inset(100% 0% 0% 0%)", duration: 1 },
-                  0,
-                );
-              } else if (dir === "right") {
-                tl.fromTo(
-                  sipario,
-                  { clipPath: "inset(0% 0% 0% 0%)" },
-                  { clipPath: "inset(0% 0% 0% 100%)", duration: 1 },
-                  0,
-                );
-              } else {
-                tl.fromTo(
-                  sipario,
-                  { clipPath: "inset(0% 0% 0% 0%)" },
-                  { clipPath: "inset(0% 100% 0% 0%)", duration: 1 },
-                  0,
-                );
-              }
-            }
-
-            // LUCE che respira — sposta e cambia intensità (transform + opacity).
-            if (luce) {
-              tl.fromTo(
-                luce,
-                { xPercent: -6, yPercent: -4, opacity: 0.55 },
-                { xPercent: 6, yPercent: 4, opacity: 0.95, duration: 1 },
-                0,
-              );
-            }
-
-            // SEGNI — entrano dopo il 60% della rivelazione del sipario,
-            // stagger 100 ms, traslazione ≤ 20 px + opacità.
-            if (segni.length) {
-              tl.fromTo(
-                segni,
-                { opacity: 0, y: 18 },
-                { opacity: 1, y: 0, duration: 0.35, stagger: 0.1 },
-                0.6,
-              );
-            }
-
-            // EDITORIAL — parallasse contro il quadro (livello più veloce).
-            if (editorial) {
-              const mult = isMobile ? 0.5 : 1;
-              tl.fromTo(
-                editorial,
-                { yPercent: 6 * mult },
-                { yPercent: -6 * mult, duration: 1 },
-                0,
-              );
-            }
-
-            // CARMINIO (solo Arrosto): entra al 40%, massimo al 60%, esce al 90%.
-            if (carminio) {
-              tl.fromTo(carminio, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.15 }, 0.4);
-              tl.to(carminio, { opacity: 1, duration: 0.2 }, 0.6);
-              tl.to(carminio, { opacity: 0, duration: 0.15 }, 0.9);
-            }
-          },
+      // Momenti di arrivo (0..1). Ogni elemento arriva UNA volta e resta.
+      // start times per data-arrivo index:
+      const arrivalStarts = [0.12, 0.20, 0.30, 0.40, 0.50, 0.62, 0.72];
+      arrivi.forEach((el, i) => {
+        const start = arrivalStarts[i] ?? 0.72;
+        tl.fromTo(
+          el,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.14 },
+          start,
         );
       });
 
-      // Trigger 6 · CHIUSURA — luce si abbassa, segni escono, entra occhiello 06.
-      const chiusura = root.querySelector<HTMLElement>("[data-chiusura]");
-      if (chiusura) {
-        const handoff = root.querySelector<HTMLElement>("[data-handoff]");
-        const handoffEye = handoff?.querySelector<HTMLElement>("[data-handoff-eyebrow]");
-        const cluce = chiusura.querySelector<HTMLElement>("[data-chiusura-luce]");
-        const csegni = Array.from(chiusura.querySelectorAll<HTMLElement>("[data-chiusura-segno]"));
-        const ctitolo = chiusura.querySelector<HTMLElement>("[data-chiusura-titolo]");
-        const ccta = chiusura.querySelector<HTMLElement>("[data-chiusura-cta]");
-
-        [cluce, ctitolo, ccta, handoffEye, ...csegni].forEach((el) => {
-          if (!el) return;
-          el.style.willChange = "transform, opacity";
-          willChangeEls.push(el);
-        });
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: chiusura,
-            start: "top 85%",
-            end: "bottom bottom",
-            scrub: 0.8,
-            invalidateOnRefresh: true,
-          },
-          defaults: { ease: "none" },
-        });
-
-        if (ctitolo) tl.fromTo(ctitolo, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 0.05);
-        if (ccta) tl.fromTo(ccta, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4 }, 0.35);
-        // Segni escono uno a uno verso i bordi
-        csegni.forEach((s, i) => {
-          const outX = i % 2 === 0 ? -60 : 60;
-          tl.to(s, { xPercent: outX, opacity: 0, duration: 0.4 }, 0.55 + i * 0.05);
-        });
-        // Luce dorata si abbassa
-        if (cluce) tl.to(cluce, { opacity: 0.15, duration: 0.6 }, 0.5);
-        // Occhiello 06 entra
-        if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.35 }, 0.8);
-      }
+      // Chiusura: luce si abbassa, entra occhiello Atto 06.
+      if (luce) tl.to(luce, { opacity: 0.42, duration: 0.1 }, 0.9);
+      if (handoffEye) tl.fromTo(handoffEye, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.08 }, 0.94);
     }, root);
 
     return () => {
@@ -301,197 +112,174 @@ export function LaTavola() {
       data-tone="dark"
       ref={rootRef}
       aria-label="La Tavola"
-      className="relative isolate w-full overflow-hidden bg-[color:var(--pietra-800)] text-[color:var(--bianco-calce)]"
+      className="relative isolate w-full overflow-hidden bg-[color:var(--pietra-800)] text-[color:var(--bianco-calce)] min-h-[260dvh] [@media(min-width:900px)]:min-h-[240dvh]"
     >
-      {/* Grana molto discreta e statica: dà materia senza costare paint animato. */}
+      {/* Grana statica, materia senza costo paint. */}
       <div
         aria-hidden
-        className="grain pointer-events-none absolute inset-0 z-0 opacity-20"
+        className="grain pointer-events-none absolute inset-0 z-0 opacity-15"
         style={{ transform: "translateZ(0)" }}
       />
 
-      {/* ============================================================
-          APERTURA — 90dvh su mobile, 110dvh desktop.
-          Il filo dorato della Filiera continua qui, si allarga fino a
-          diventare la linea del piano. Cover bianco-calce che sfuma
-          per rivelare la pietra scura: passaggio chiaro→scuro.
-          ============================================================ */}
+      {/* ========================================================
+          SCENA STICKY — una sola inquadratura, tenuta ferma mentre
+          lo scroll avanza. Sticky CSS, non pin GSAP.
+          ======================================================== */}
       <div
-        data-apertura
-        className="relative flex min-h-[100dvh] flex-col items-center justify-center px-5 md:px-10 [@media(min-width:900px)]:min-h-[90dvh]"
+        className="sticky top-0 z-[1] flex h-[100dvh] w-full items-center justify-center overflow-hidden"
       >
-        {/* Cover bianco calce che copre l'apertura all'inizio dello scroll,
-            poi svanisce lasciando la pietra scura. */}
+        {/* Cover bianco-calce → sfuma per stacco dalla Filiera. */}
         <div
-          data-apertura-cover
+          data-cover
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1]"
+          className="pointer-events-none absolute inset-0 z-[6]"
           style={{
             opacity: statico ? 0 : 1,
             background:
-              "linear-gradient(180deg, var(--bianco-calce) 0%, color-mix(in oklab, var(--bianco-calce) 60%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
+              "linear-gradient(180deg, var(--bianco-calce) 0%, color-mix(in oklab, var(--bianco-calce) 55%, var(--pietra-800)) 55%, var(--pietra-800) 100%)",
           }}
         />
-        {/* Luce direzionale della sezione (statica, ora respira solo nei quadri) */}
+
+        {/* LUCE dorata direzionale — unico parametro continuo. */}
         <div
+          data-luce
           aria-hidden
           className="pointer-events-none absolute inset-0 z-[1]"
           style={{
+            opacity: statico ? 0.9 : 0.15,
             background:
-              "radial-gradient(60% 44% at 50% 40%, color-mix(in oklab, var(--oro-antico) 14%, transparent) 0%, transparent 68%)",
+              "radial-gradient(58% 46% at 50% 42%, color-mix(in oklab, var(--oro-antico) 26%, transparent) 0%, transparent 68%)",
           }}
         />
 
-        {/* Filo dorato che si allarga fino a diventare la linea del piano */}
+        {/* PIANO — hairline oro orizzontale, ancora la scena. */}
         <div
-          data-apertura-filo
           aria-hidden
-          className="absolute left-1/2 top-[26%] z-[2] h-px w-[min(72%,1100px)] -translate-x-1/2 origin-center"
+          className="pointer-events-none absolute left-0 right-0 top-[62%] z-[2] h-px"
           style={{
-            opacity: statico ? 1 : 0,
             background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 60%, transparent) 20%, var(--oro-antico) 50%, color-mix(in oklab, var(--oro-antico) 60%, transparent) 80%, transparent 100%)",
-          }}
-        />
-        {/* Linea del piano — hairline oro che ancora tutta la sezione */}
-        <div
-          data-apertura-piano
-          aria-hidden
-          className="absolute left-1/2 top-[52%] z-[2] h-px w-full -translate-x-1/2 origin-center"
-          style={{
-            opacity: statico ? 1 : 0,
-            background:
-              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 30%, color-mix(in oklab, var(--oro-antico) 60%, transparent) 50%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 70%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 22%, var(--oro-antico) 50%, color-mix(in oklab, var(--oro-antico) 45%, transparent) 78%, transparent 100%)",
           }}
         />
 
-        <div className="relative z-[3] flex w-full max-w-[1400px] flex-col items-center pt-[calc(var(--page-header-safe-offset)+2vh)] text-center">
-          <p
-            data-apertura-eyebrow
-            className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/85 md:text-[11px]"
+        {/* SEGNI grafici che si accumulano sul piano.
+            → Sostituire con fotografie autentiche prima della pubblicazione. */}
+        <div className="pointer-events-none absolute inset-0 z-[3]" aria-hidden>
+          {/* 1. antipasto A — piccolo cerchio in alto a sinistra del piano */}
+          <span
+            data-arrivo="antipasto-a"
+            className="absolute left-[16%] top-[46%] block h-[110px] w-[110px] rounded-full border border-[color:var(--oro-antico)]/55 md:h-[140px] md:w-[140px]"
             style={{ opacity: statico ? 1 : 0 }}
-          >
+          />
+          {/* 2. antipasto B — ovale piccolo accanto */}
+          <span
+            data-arrivo="antipasto-b"
+            className="absolute left-[30%] top-[54%] block h-[36px] w-[110px] rounded-full bg-[color:var(--bianco-calce)]/10 ring-1 ring-[color:var(--bianco-calce)]/25 md:h-[46px] md:w-[150px]"
+            style={{ opacity: statico ? 1 : 0 }}
+          />
+          {/* 3. piatto principale — cerchio grande al centro */}
+          <span
+            data-arrivo="piatto-centrale"
+            className="absolute left-1/2 top-[52%] block h-[180px] w-[180px] -translate-x-1/2 rounded-full border-2 border-[color:var(--oro-antico)]/65 md:h-[220px] md:w-[220px]"
+            style={{ opacity: statico ? 1 : 0 }}
+          />
+          {/* 4. carminio — brace al centro del piatto principale (unico e ultimo del sito) */}
+          <span
+            data-arrivo="carminio"
+            data-carminio
+            className="absolute left-1/2 top-[52%] block h-[64px] w-[64px] -translate-x-1/2 rounded-full md:h-[84px] md:w-[84px]"
+            style={{
+              opacity: statico ? 0.95 : 0,
+              background:
+                "radial-gradient(circle at 50% 50%, var(--carminio) 0%, color-mix(in oklab, var(--carminio-scuro) 90%, transparent) 65%, transparent 100%)",
+            }}
+          />
+          {/* 5. dolce — arco piccolo a destra del piano */}
+          <span
+            data-arrivo="ultimo-segno"
+            className="absolute right-[16%] top-[50%] block h-[70px] w-[70px] rounded-full border border-[color:var(--bianco-calce)]/40 md:h-[86px] md:w-[86px]"
+            style={{ opacity: statico ? 1 : 0 }}
+          />
+          <span
+            aria-hidden
+            data-arrivo-ghost
+            className="absolute right-[26%] top-[60%] hidden h-[8px] w-[100px] rounded-full bg-[color:var(--oro-antico)]/30"
+          />
+        </div>
+
+        {/* CONTENUTO EDITORIALE fisso: occhiello + titolo dell'atto. */}
+        <div className="relative z-[4] mx-auto flex w-full max-w-[1200px] flex-col items-center px-5 text-center md:px-10">
+          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]">
             05 — LA TAVOLA
           </p>
-          <h2
-            data-apertura-titolo
-            className="mt-6 max-w-[14ch] font-display text-[clamp(2.6rem,7.2vw,5.6rem)] leading-[0.94] text-[color:var(--bianco-calce)] md:mt-10"
-            style={{ opacity: statico ? 1 : 0 }}
-          >
+          <h2 className="mt-6 max-w-[14ch] font-display text-[clamp(2.4rem,6.8vw,5.4rem)] leading-[0.94] text-[color:var(--bianco-calce)] md:mt-8">
             <span className="block">La filiera</span>
             <span className="ml-[3%] block">diventa</span>
             <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)]">un pasto.</span>
           </h2>
-          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[17px]">
-            Tutto quello che cresce nei campi, passa dal caseificio e dalla macelleria, arriva sulla
-            stessa tavola.
-          </p>
-        </div>
-      </div>
 
-      {/* ============================================================
-          I QUATTRO QUADRI
-          ============================================================ */}
-      {QUADRI.map((q) => (
-        <QuadroBlocco key={q.id} q={q} statico={statico} />
-      ))}
+          {/* MOMENTI — arrivano uno per volta, restano.
+              Sono didascalie brevi accanto ai segni. */}
+          <div className="mt-10 flex w-full max-w-[52ch] flex-col items-center gap-3 text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[16px]">
+            <p
+              data-arrivo="momento-1"
+              className="italic"
+              style={{ opacity: statico ? 1 : 0 }}
+            >
+              Si comincia dalla tavola.
+            </p>
+            <p
+              data-arrivo="momento-2"
+              className="italic"
+              style={{ opacity: statico ? 1 : 0 }}
+            >
+              Piatti che chiedono tempo.
+            </p>
+            <p
+              data-arrivo="momento-3"
+              className="italic"
+              style={{ opacity: statico ? 1 : 0 }}
+            >
+              Finisce piano.
+            </p>
+          </div>
 
-      {/* ============================================================
-          DISCLAIMER — editorial, non card, tra i quadri e la chiusura.
-          ============================================================ */}
-      <div
-        data-disclaimer
-        className="relative z-[3] mx-auto flex w-full max-w-[1200px] items-center gap-4 px-5 py-16 md:px-10 md:py-20"
-      >
-        <span aria-hidden className="hidden h-px flex-1 bg-[color:var(--bianco-calce)]/20 md:block" />
-        <p className="text-center text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:max-w-[52ch] md:text-[15px]">
-          Piatti e disponibilità possono cambiare. Contatta la Masseria per confermare il menu del
-          giorno.
-        </p>
-        <span aria-hidden className="hidden h-px flex-1 bg-[color:var(--bianco-calce)]/20 md:block" />
-      </div>
-
-      {/* ============================================================
-          CHIUSURA — tavola che si spegne + CTA.
-          ============================================================ */}
-      <div
-        data-chiusura
-        className="relative flex min-h-[100dvh] flex-col items-center justify-center px-5 pb-20 pt-16 text-center md:px-10 [@media(min-width:900px)]:min-h-[85dvh]"
-      >
-        <div
-          data-chiusura-luce
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-[1]"
-          style={{
-            opacity: statico ? 0.4 : 0.85,
-            background:
-              "radial-gradient(50% 40% at 50% 42%, color-mix(in oklab, var(--oro-antico) 22%, transparent) 0%, transparent 70%)",
-          }}
-        />
-        {/* Tre segni residui, che al reveal della chiusura escono ai bordi. */}
-        <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden>
-          <span
-            data-chiusura-segno
-            className="absolute left-[18%] top-[30%] block h-[46px] w-[46px] rounded-full border border-[color:var(--oro-antico)]/45"
-          />
-          <span
-            data-chiusura-segno
-            className="absolute right-[20%] top-[38%] block h-[24px] w-[70px] rounded-full border border-[color:var(--bianco-calce)]/30"
-          />
-          <span
-            data-chiusura-segno
-            className="absolute left-[40%] bottom-[26%] block h-[8px] w-[120px] rounded-full bg-[color:var(--oro-antico)]/35"
-          />
-        </div>
-
-        <div className="relative z-[3] flex max-w-[900px] flex-col items-center">
-          <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]">
-            IL RITO COMPLETO
-          </p>
-          <h3
-            data-chiusura-titolo
-            className="mt-6 max-w-[18ch] font-display text-[clamp(2.2rem,5.4vw,4.2rem)] leading-[0.98] text-[color:var(--bianco-calce)]"
-            style={{ opacity: statico ? 1 : 0 }}
-          >
-            <span className="block">Il rito completo</span>
-            <span className="ml-[2%] block italic">è nell'Agriturismo.</span>
-          </h3>
-          <p className="mt-8 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[17px]">
-            Dalla scelta al banco all'ultimo dolce, tutto il percorso si vive in sala.
-          </p>
-
+          {/* CHIUSURA — frase + CTA, ultimo arrivo. Non se ne va. */}
           <div
-            data-chiusura-cta
-            className="mt-12 flex w-full max-w-md flex-col items-stretch gap-4 md:mt-16 md:w-auto md:flex-row md:items-center md:justify-center"
+            data-arrivo="chiusura"
+            className="mt-10 flex w-full flex-col items-center gap-6 md:mt-12"
             style={{ opacity: statico ? 1 : 0 }}
           >
-            <Link
-              to="/agriturismo"
-              className="inline-flex min-h-[54px] items-center justify-center border border-[color:var(--oro-antico)] bg-[color:var(--oro-antico)] px-8 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--carbone)] transition-colors hover:bg-[color:var(--bianco-calce)] hover:border-[color:var(--bianco-calce)]"
-            >
-              SCOPRI L'AGRITURISMO →
-            </Link>
-            <button
-              type="button"
-              onClick={() => goToSection("prenota")}
-              className="inline-flex min-h-[54px] items-center justify-center border border-[color:var(--bianco-calce)]/50 px-8 py-4 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--bianco-calce)] transition-colors hover:border-[color:var(--oro-antico)] hover:text-[color:var(--oro-antico)]"
-            >
-              PRENOTA UN TAVOLO
-            </button>
+            <p className="max-w-[22ch] font-display text-[clamp(1.4rem,2.8vw,2.1rem)] leading-[1.1] text-[color:var(--bianco-calce)]">
+              Il rito completo <span className="italic">è nell'Agriturismo.</span>
+            </p>
+            <div className="flex w-full max-w-md flex-col items-stretch gap-3 md:w-auto md:flex-row md:items-center md:justify-center">
+              <Link
+                to="/agriturismo"
+                className="inline-flex min-h-[48px] items-center justify-center border border-[color:var(--oro-antico)] bg-[color:var(--oro-antico)] px-7 py-3 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--carbone)] transition-colors hover:bg-[color:var(--bianco-calce)] hover:border-[color:var(--bianco-calce)]"
+              >
+                SCOPRI L'AGRITURISMO →
+              </Link>
+              <button
+                type="button"
+                onClick={() => goToSection("prenota")}
+                className="inline-flex min-h-[48px] items-center justify-center border border-[color:var(--bianco-calce)]/50 px-7 py-3 font-eyebrow text-[11px] tracking-[0.28em] text-[color:var(--bianco-calce)] transition-colors hover:border-[color:var(--oro-antico)] hover:text-[color:var(--oro-antico)]"
+              >
+                PRENOTA UN TAVOLO
+              </button>
+            </div>
+            <p className="max-w-[46ch] text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/70">
+              Piatti e disponibilità possono cambiano. Contatta la Masseria per confermare il menu del giorno.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* ============================================================
-          HANDOFF verso l'Atto 06 — LA VOCE.
-          Fondo finale della sezione: pietra-800 pieno (#4b4636), coerente
-          con l'ipotesi di partenza dell'Atto 06 quando arriverà. Nessun
-          gradiente decorativo, nessun gap.
-          ============================================================ */}
-      <div
-        data-handoff
-        className="relative z-[3] bg-[color:var(--pietra-800)]"
-      >
+      {/* ========================================================
+          HANDOFF — bordo inferiore della sezione. Fondo pietra-800
+          pieno, coincidente con l'inizio dell'Atto 06. Gap 0px.
+          ======================================================== */}
+      <div className="relative z-[2] bg-[color:var(--pietra-800)]">
         <div aria-hidden className="hairline-oro" />
         <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-6 md:px-10 md:py-8">
           <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
@@ -505,184 +293,5 @@ export function LaTavola() {
         </div>
       </div>
     </section>
-  );
-}
-
-// ============================================================
-// QUADRO — un singolo blocco a sipario
-// ============================================================
-function QuadroBlocco({ q, statico }: { q: Quadro; statico: boolean }) {
-  const isArrosto = q.id === "arrosto";
-  const altezzaClass =
-    q.id === "cucina"
-      ? "min-h-[92dvh] [@media(min-width:900px)]:min-h-[82dvh]"
-      : q.id === "arrosto"
-        ? "min-h-[98dvh] [@media(min-width:900px)]:min-h-[86dvh]"
-        : q.id === "dolce"
-          ? "min-h-[78dvh] [@media(min-width:900px)]:min-h-[70dvh]"
-          : "min-h-[86dvh] [@media(min-width:900px)]:min-h-[76dvh]";
-
-  return (
-    <article
-      data-quadro={q.id}
-      data-sipariate-dir={q.dir}
-      className={`relative isolate flex ${altezzaClass} w-full items-center overflow-hidden`}
-    >
-      {/* LUCE che respira (transform/opacity, mai filtri) */}
-      <div
-        data-luce
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[1]"
-        style={{
-          opacity: statico ? 0.85 : 0.5,
-          background: `radial-gradient(52% 42% at ${q.luceX} ${q.luceY}, color-mix(in oklab, var(--oro-antico) 22%, transparent) 0%, transparent 70%)`,
-        }}
-      />
-
-      {/* SIPARIO — pannello pietra-800 che copre la scena a inizio scroll
-          e si ritira lungo lo scrub tramite clip-path.
-          NB: il sipario è il PANNELLO che nasconde: parte pieno (inset 0)
-          e si scopre riducendosi da un lato. */}
-      <div
-        data-sipario
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-[2] bg-[color:var(--pietra-800)]"
-        style={{
-          clipPath: statico ? "inset(100% 0% 0% 0%)" : "inset(0% 0% 0% 0%)",
-        }}
-      />
-
-      {/* SEGNI — forme grafiche pure. Nessuna finta materia.
-          → Sostituire con fotografie autentiche dei piatti prima della pubblicazione. */}
-      <div className="pointer-events-none absolute inset-0 z-[3]" aria-hidden>
-        {q.id === "antipasto" && (
-          <>
-            <span
-              data-segno
-              className="absolute right-[12%] top-[22%] block h-[140px] w-[140px] rounded-full border border-[color:var(--oro-antico)]/55"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            <span
-              data-segno
-              className="absolute right-[26%] top-[54%] block h-[90px] w-[90px] rounded-full bg-[color:var(--bianco-calce)]/8 ring-1 ring-[color:var(--bianco-calce)]/25"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            <span
-              data-segno
-              className="absolute right-[8%] top-[72%] block h-[16px] w-[180px] rounded-full bg-[color:var(--oro-antico)]/30"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-          </>
-        )}
-        {q.id === "cucina" && (
-          <>
-            <span
-              data-segno
-              className="absolute left-[10%] top-[30%] block h-[160px] w-[220px] rounded-[50%] border border-[color:var(--oro-antico)]/50"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            <span
-              data-segno
-              className="absolute left-[22%] top-[60%] block h-[70px] w-[70px] rounded-full bg-[color:var(--oro-antico)]/25"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-          </>
-        )}
-        {q.id === "arrosto" && (
-          <>
-            <span
-              data-segno
-              className="absolute right-[12%] top-[24%] block h-[10px] w-[220px] rounded-full bg-[color:var(--oro-antico)]/40"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            <span
-              data-segno
-              className="absolute right-[22%] top-[38%] block h-[10px] w-[160px] rounded-full bg-[color:var(--oro-antico)]/30"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            {/* Il carminio: unica occorrenza di questo colore in tutto l'atto
-                (e secondo ed ultimo del sito). Braci al centro del quadro. */}
-            <span
-              data-carminio
-              className="absolute right-[18%] top-[62%] block h-[64px] w-[64px] rounded-full"
-              style={{
-                opacity: statico ? 0.85 : 0,
-                background:
-                  "radial-gradient(circle at 50% 50%, var(--carminio) 0%, color-mix(in oklab, var(--carminio-scuro) 90%, transparent) 65%, transparent 100%)",
-              }}
-            />
-          </>
-        )}
-        {q.id === "dolce" && (
-          <>
-            <span
-              data-segno
-              className="absolute left-[14%] top-[32%] block h-[70px] w-[70px] rounded-full border border-[color:var(--bianco-calce)]/40"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            <span
-              data-segno
-              className="absolute left-[26%] top-[56%] block h-[46px] w-[46px] rounded-full bg-[color:var(--oro-antico)]/30"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-            <span
-              data-segno
-              className="absolute left-[18%] top-[76%] block h-[30px] w-[30px] rounded-full border border-[color:var(--oro-antico)]/45"
-              style={{ opacity: statico ? 1 : 0 }}
-            />
-          </>
-        )}
-      </div>
-
-      {/* EDITORIAL — occhiello, titolo, testo, annotazioni */}
-      <div
-        data-editorial
-        className={`relative z-[4] mx-auto flex w-full max-w-[1400px] px-5 md:px-10 ${
-          q.dir === "right" ? "justify-start" : "justify-end"
-        }`}
-      >
-        <div className={`max-w-[46ch] ${q.dir === "left" ? "text-left md:text-right" : ""}`}>
-          <p
-            className={`font-eyebrow text-[10px] tracking-[0.34em] md:text-[11px] ${
-              isArrosto
-                ? "text-[color:var(--carminio)]"
-                : "text-[color:var(--bianco-calce)]/70"
-            }`}
-          >
-            {q.occhiello}
-          </p>
-          <h3 className="mt-5 max-w-[16ch] font-display text-[clamp(2rem,5vw,3.8rem)] leading-[1] text-[color:var(--bianco-calce)] md:mt-7">
-            <span className="block">{q.titolo[0]}</span>
-            <span className="ml-[2%] block italic">{q.titolo[1]}</span>
-          </h3>
-          <p className="mt-6 text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:mt-8 md:text-[17px]">
-            {q.testo}
-          </p>
-
-          {q.liste && (
-            <div className="mt-8 space-y-5 md:mt-10">
-              {q.liste.map((l) => (
-                <div key={l.titolo}>
-                  <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/60">
-                    {l.titolo}
-                  </p>
-                  <p className="mt-2 text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[16px]">
-                    {l.voci}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {q.nota && (
-            <div className="mt-8 flex items-start gap-3 border-l border-[color:var(--bianco-calce)]/25 pl-4 md:mt-10">
-              <p className="text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/80 md:text-[15px]">
-                {q.nota}
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-    </article>
   );
 }
