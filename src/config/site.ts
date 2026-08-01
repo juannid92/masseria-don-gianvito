@@ -5,7 +5,7 @@
 
 export const SITE_CONFIG = {
   // SITE_URL DA CONFERMARE PRIMA DELLA PUBBLICAZIONE
-  url: "https://masseriadongianvito.it",
+  url: "https://id-preview--5872b4b3-ae9a-4a92-810f-f585fc35c4e8.lovable.app",
   name: "Masseria Don Gianvito",
   title: "Masseria Don Gianvito — Dalla terra alla tavola",
   description: "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
