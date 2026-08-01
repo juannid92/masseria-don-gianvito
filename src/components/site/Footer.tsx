@@ -151,7 +151,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-6 border-t border-[color:var(--bianco-calce)]/15 pt-6 text-[12px] text-[color:var(--bianco-calce)]/50 md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-6 border-t border-[color:var(--bianco-calce)]/10 pt-6 text-[12px] text-[color:var(--bianco-calce)]/50 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-2 md:flex-row md:gap-8">
             <span>
               © {anno} {MASSERIA.nome} — Società agricola semplice

@@ -156,7 +156,7 @@ export function LaFiliera() {
       data-tone="light"
       ref={rootRef}
       aria-label="La Filiera"
-      className="relative isolate w-full bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:min-h-[380dvh]"
+      className="relative isolate w-full bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:min-h-[320dvh]"
     >
       {/* Fondo bianco calce pieno — nessuna finta materia. Sola concessione:
           una luce direzionale tenue che segue la colonna del filo, per dare
