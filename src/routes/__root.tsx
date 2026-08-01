@@ -130,6 +130,32 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="it">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Agriturismo",
+              "name": "Masseria Don Gianvito",
+              "description": "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
+              "url": "https://masseriadongianvito.it",
+              "telephone": ["tel:+393339395750", "tel:+393333870292"],
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "SP237 ex SS377 per Mottola km 6,5, Zona C 76",
+                "addressLocality": "Noci",
+                "addressRegion": "BA",
+                "postalCode": "70015",
+                "addressCountry": "IT"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 40.642739,
+                "longitude": 17.0426
+              }
+            })
+          }}
+        />
       </head>
       <body>
         {children}

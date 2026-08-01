@@ -282,22 +282,6 @@ export function AnimaSezione({
   );
 }
 
-          {/* Layout: Immagine a Destra (default) */}
-          {layout === "text-left" && fotoEtichetta && (
-            <div data-reveal className="md:col-span-5">
-              <FotoSegnaposto
-                etichetta={fotoEtichetta}
-                tone={scuro ? "dark" : "light"}
-                ratio={finalRatio}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /** Chiusura: rimando alle altre tre anime + CTA prenotazione. */
 export function AnimaChiusura({ corrente }: { corrente: AnimaId }) {
   const altre = ANIME.filter((a) => a.id !== corrente);
