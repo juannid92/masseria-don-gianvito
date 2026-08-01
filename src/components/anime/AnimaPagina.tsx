@@ -95,19 +95,6 @@ export function FotoSegnaposto({
   );
 }
 
-/** Hero di pagina: 70dvh, occhiello, titolo su tre righe, frase, foto piena. */
-export function AnimaHero({
-  occhiello,
-  righe,
-  frase,
-  fotoEtichetta,
-}: {
-  occhiello: string;
-  righe: [string, string, string];
-  frase: string;
-  fotoEtichetta: string;
-}) {
-  return (
 export function AnimaHero({
   occhiello,
   righe,
@@ -165,8 +152,6 @@ export function AnimaHero({
         </p>
       </div>
     </section>
-  );
-}
   );
 }
 
