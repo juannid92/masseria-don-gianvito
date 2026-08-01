@@ -40,6 +40,7 @@ function MacelleriaPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-right"
           occhiello="01 · Il banco"
           titolo="Tutto è in vista"
           paragrafi={[
@@ -60,6 +61,7 @@ function MacelleriaPage() {
         </AnimaSezione>
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="02 · I tagli"
           titolo="Materia e coltello"
           paragrafi={[

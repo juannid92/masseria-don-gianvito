@@ -156,6 +156,13 @@ export function AnimaHero({
   );
 }
 
+/** Tipi di disposizione per la sezione comune. */
+export type SezioneLayout =
+  | "text-left" // Testo a sinistra, immagine a destra (default)
+  | "text-right" // Testo a destra, immagine a sinistra (invertito)
+  | "full-width" // Immagine sopra a piena larghezza, testo sotto
+  | "text-only"; // Solo testo, sezione stretta
+
 /** Sezione di contenuto: occhiello, titolo breve, paragrafo, foto. */
 export function AnimaSezione({
   id,
@@ -164,17 +171,25 @@ export function AnimaSezione({
   paragrafi,
   fotoEtichetta,
   tone,
+  layout = "text-left",
+  ratio = "4 / 5",
   children,
 }: {
   id?: string;
   occhiello: string;
   titolo: string;
   paragrafi: string[];
-  fotoEtichetta: string;
+  fotoEtichetta?: string;
   tone: "light" | "dark";
+  layout?: SezioneLayout;
+  ratio?: string;
   children?: ReactNode;
 }) {
   const scuro = tone === "dark";
+  const isFull = layout === "full-width";
+  const isOnlyText = layout === "text-only";
+  const isInverted = layout === "text-right";
+
   return (
     <section
       id={id}
@@ -185,38 +200,86 @@ export function AnimaSezione({
         color: scuro ? "var(--bianco-calce)" : "var(--carbone)",
       }}
     >
-      <div className="mx-auto grid w-full max-w-[1100px] gap-10 px-5 py-16 md:grid-cols-12 md:gap-12 md:px-10 md:py-24">
-        <div className="md:col-span-7">
-          <p
-            data-reveal
-            className="font-eyebrow text-[15px] tracking-[0.3em]"
-            style={{ opacity: 0.62 }}
+      <div
+        className={`mx-auto w-full max-w-[1100px] px-5 py-16 md:px-10 md:py-24 ${
+          isOnlyText ? "max-w-[800px]" : ""
+        }`}
+      >
+        <div
+          className={`grid gap-10 md:gap-12 ${
+            isOnlyText ? "grid-cols-1" : "md:grid-cols-12"
+          }`}
+        >
+          {/* Layout: Immagine a Piena Larghezza sopra il testo */}
+          {isFull && fotoEtichetta && (
+            <div data-reveal className="md:col-span-12 mb-4">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio="21 / 9"
+              />
+            </div>
+          )}
+
+          {/* Layout: Immagine a Sinistra (invertito) */}
+          {isInverted && fotoEtichetta && (
+            <div data-reveal className="order-2 md:order-1 md:col-span-5">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={ratio}
+              />
+            </div>
+          )}
+
+          {/* Blocco Testo */}
+          <div
+            className={`
+              ${isOnlyText ? "" : isFull ? "md:col-span-12" : "md:col-span-7"}
+              ${isInverted ? "order-1 md:order-2" : ""}
+            `}
           >
-            {occhiello}
-          </p>
-          <h2
-            data-reveal
-            className="mt-4 font-display text-[clamp(1.7rem,3.4vw,2.5rem)] leading-[1.08]"
-          >
-            {titolo}
-          </h2>
-          <div data-reveal aria-hidden className="hairline-oro mt-5 max-w-[160px]" />
-          {paragrafi.map((p) => (
             <p
-              key={p.slice(0, 24)}
               data-reveal
-              className="mt-5 max-w-[62ch] text-[16px] leading-relaxed md:text-[17px]"
-              style={{ opacity: scuro ? 0.85 : 0.92 }}
+              className="font-eyebrow text-[15px] tracking-[0.3em]"
+              style={{ opacity: 0.62 }}
             >
-              {p}
+              {occhiello}
             </p>
-          ))}
-          {children}
-        </div>
-        <div className="md:col-span-5">
-          <div data-reveal>
-            <FotoSegnaposto etichetta={fotoEtichetta} tone={scuro ? "dark" : "light"} ratio="4 / 5" />
+            <h2
+              data-reveal
+              className="mt-4 font-display text-[clamp(1.7rem,3.4vw,2.5rem)] leading-[1.08]"
+            >
+              {titolo}
+            </h2>
+            <div
+              data-reveal
+              aria-hidden
+              className="hairline-oro mt-5 max-w-[160px]"
+            />
+            {paragrafi.map((p) => (
+              <p
+                key={p.slice(0, 24)}
+                data-reveal
+                className="mt-5 max-w-[62ch] text-[16px] leading-relaxed md:text-[17px]"
+                style={{ opacity: scuro ? 0.85 : 0.92 }}
+              >
+                {p}
+              </p>
+            ))}
+            {children}
           </div>
+
+          {/* Layout: Immagine a Destra (default) */}
+          {layout === "text-left" && fotoEtichetta && (
+            <div data-reveal className="md:col-span-5">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={ratio}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

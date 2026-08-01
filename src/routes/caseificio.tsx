@@ -40,6 +40,7 @@ function CaseificioPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-only"
           occhiello="01 · La mattina"
           titolo="Il latte entra subito"
           paragrafi={[
@@ -47,7 +48,6 @@ function CaseificioPage() {
             "Nessun trasporto, nessuna sosta: il posto in cui viene munto e il posto in cui viene lavorato sono lo stesso posto.",
             "Quello che entra la mattina si lavora nella stessa mattina.",
           ]}
-          fotoEtichetta="il latte in lavorazione, prima mattina"
         >
           <div className="mt-8">
             <Link
