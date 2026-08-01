@@ -40,6 +40,7 @@ function MacelleriaPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-right"
           occhiello="01 · Il banco"
           titolo="Tutto è in vista"
           paragrafi={[
@@ -60,6 +61,7 @@ function MacelleriaPage() {
         </AnimaSezione>
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="02 · I tagli"
           titolo="Materia e coltello"
           paragrafi={[
@@ -68,12 +70,14 @@ function MacelleriaPage() {
             "Quello che c'è cambia. Si guarda e si sceglie fra quello che c'è.",
           ]}
           fotoEtichetta="un taglio in primo piano, sul tagliere"
+          ratio="1 / 1"
         />
       </div>
 
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-right"
           occhiello="03 · Il riposo"
           titolo="Prima si aspetta"
           paragrafi={[
@@ -85,6 +89,7 @@ function MacelleriaPage() {
         />
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="04 · I salumi"
           titolo="Quello che resta appeso"
           paragrafi={[

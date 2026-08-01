@@ -40,6 +40,7 @@ function CaseificioPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-only"
           occhiello="01 · La mattina"
           titolo="Il latte entra subito"
           paragrafi={[
@@ -47,7 +48,6 @@ function CaseificioPage() {
             "Nessun trasporto, nessuna sosta: il posto in cui viene munto e il posto in cui viene lavorato sono lo stesso posto.",
             "Quello che entra la mattina si lavora nella stessa mattina.",
           ]}
-          fotoEtichetta="il latte in lavorazione, prima mattina"
         >
           <div className="mt-8">
             <Link
@@ -60,6 +60,7 @@ function CaseificioPage() {
         </AnimaSezione>
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="02 · Le mani"
           titolo="Si lavora a mano"
           paragrafi={[
@@ -68,12 +69,14 @@ function CaseificioPage() {
             "Chi lavora guarda e sente: la pasta dice quando è pronta, e da lì in poi è questione di pochi minuti.",
           ]}
           fotoEtichetta="i nodini appena formati, mani al lavoro"
+          ratio="3 / 4"
         />
       </div>
 
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-right"
           occhiello="03 · Quello che esce"
           titolo="Quattro forme dello stesso bianco"
           paragrafi={[
@@ -85,6 +88,7 @@ function CaseificioPage() {
         />
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="04 · Dove va"
           titolo="Pochi metri ancora"
           paragrafi={[

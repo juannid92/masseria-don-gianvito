@@ -87,7 +87,7 @@ export function FotoSegnaposto({
           color: scuro ? "var(--bianco-calce)" : "var(--carbone)",
         }}
       >
-        <span className="font-eyebrow text-[15px] leading-snug tracking-[0.18em] opacity-80">
+        <span className="font-eyebrow text-[15px] leading-snug tracking-[0.18em] opacity-80 md:text-[15px]">
           Fotografia da produrre — {etichetta}
         </span>
       </figcaption>
@@ -95,7 +95,6 @@ export function FotoSegnaposto({
   );
 }
 
-/** Hero di pagina: 70dvh, occhiello, titolo su tre righe, frase, foto piena. */
 export function AnimaHero({
   occhiello,
   righe,
@@ -111,7 +110,7 @@ export function AnimaHero({
     <section
       data-tone="dark"
       data-reveal-group
-      className="relative flex h-[70dvh] min-h-[520px] flex-col justify-end bg-[color:var(--biscotto-scuro)]"
+      className="relative flex min-h-[520px] flex-col justify-end bg-[color:var(--biscotto-scuro)] md:h-[70dvh]"
       style={{ paddingTop: "var(--page-header-safe-offset)" }}
     >
       {/* Sostituire con fotografia autentica della Masseria prima della pubblicazione. */}
@@ -123,7 +122,7 @@ export function AnimaHero({
       <div className="relative z-10 mx-auto w-full max-w-[1100px] px-5 pb-12 md:px-10 md:pb-16">
         <p
           data-reveal
-          className="font-eyebrow text-[15px] tracking-[0.3em]"
+          className="font-eyebrow text-[15px] italic tracking-[0.3em]"
           style={{ color: "var(--oro-su-scuro)" }}
         >
           {occhiello}
@@ -164,17 +163,28 @@ export function AnimaSezione({
   paragrafi,
   fotoEtichetta,
   tone,
+  layout = "text-left",
+  ratio,
   children,
 }: {
   id?: string;
   occhiello: string;
   titolo: string;
   paragrafi: string[];
-  fotoEtichetta: string;
+  fotoEtichetta?: string;
   tone: "light" | "dark";
+  layout?: SezioneLayout;
+  ratio?: string;
   children?: ReactNode;
 }) {
   const scuro = tone === "dark";
+  const isFull = layout === "full-width";
+  const isOnlyText = layout === "text-only";
+  const isInverted = layout === "text-right";
+
+  // Rapporti immagine differenziati
+  const finalRatio = ratio || (isFull ? "21 / 9" : "4 / 5");
+
   return (
     <section
       id={id}
@@ -185,38 +195,103 @@ export function AnimaSezione({
         color: scuro ? "var(--bianco-calce)" : "var(--carbone)",
       }}
     >
-      <div className="mx-auto grid w-full max-w-[1100px] gap-10 px-5 py-16 md:grid-cols-12 md:gap-12 md:px-10 md:py-24">
-        <div className="md:col-span-7">
-          <p
-            data-reveal
-            className="font-eyebrow text-[15px] tracking-[0.3em]"
-            style={{ opacity: 0.62 }}
+      <div
+        className={`mx-auto w-full max-w-[1100px] px-5 py-16 md:px-10 md:py-24 ${
+          isOnlyText ? "max-w-[780px]" : ""
+        }`}
+      >
+        <div
+          className={`grid gap-10 md:gap-16 ${
+            isOnlyText ? "grid-cols-1" : "md:grid-cols-12"
+          }`}
+        >
+          {/* Layout: Immagine a Piena Larghezza sopra il testo */}
+          {isFull && fotoEtichetta && (
+            <div data-reveal className="md:col-span-12">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={finalRatio}
+              />
+            </div>
+          )}
+
+          {/* Layout: Immagine a Sinistra (invertito) */}
+          {isInverted && fotoEtichetta && (
+            <div data-reveal className="order-2 md:order-1 md:col-span-5">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={finalRatio}
+              />
+            </div>
+          )}
+
+          {/* Blocco Testo */}
+          <div
+            className={`
+              flex flex-col justify-center
+              ${isOnlyText ? "text-center items-center" : isFull ? "md:col-span-12" : "md:col-span-7"}
+              ${isInverted ? "order-1 md:order-2" : ""}
+            `}
           >
-            {occhiello}
-          </p>
-          <h2
-            data-reveal
-            className="mt-4 font-display text-[clamp(1.7rem,3.4vw,2.5rem)] leading-[1.08]"
-          >
-            {titolo}
-          </h2>
-          <div data-reveal aria-hidden className="hairline-oro mt-5 max-w-[160px]" />
-          {paragrafi.map((p) => (
             <p
-              key={p.slice(0, 24)}
               data-reveal
-              className="mt-5 max-w-[62ch] text-[16px] leading-relaxed md:text-[17px]"
-              style={{ opacity: scuro ? 0.85 : 0.92 }}
+              className="font-eyebrow text-[15px] tracking-[0.3em]"
+              style={{ opacity: 0.62 }}
             >
-              {p}
+              {occhiello}
             </p>
-          ))}
-          {children}
-        </div>
-        <div className="md:col-span-5">
-          <div data-reveal>
-            <FotoSegnaposto etichetta={fotoEtichetta} tone={scuro ? "dark" : "light"} ratio="4 / 5" />
+            <h2
+              data-reveal
+              className={`mt-4 font-display text-[clamp(1.7rem,3.4vw,2.5rem)] leading-[1.08] ${isOnlyText ? "max-w-[18ch]" : ""}`}
+            >
+              {titolo}
+            </h2>
+            <div
+              data-reveal
+              aria-hidden
+              className={`hairline-oro mt-5 max-w-[160px] ${isOnlyText ? "mx-auto" : ""}`}
+            />
+            {paragrafi.map((p) => (
+              <p
+                key={p.slice(0, 24)}
+                data-reveal
+                className={`mt-6 text-[16px] leading-relaxed md:text-[17px] ${isOnlyText ? "max-w-[50ch]" : "max-w-[62ch]"}`}
+                style={{ opacity: scuro ? 0.85 : 0.92 }}
+              >
+                {p}
+              </p>
+            ))}
+            {children}
           </div>
+
+          {/* Layout: Immagine a Destra (default) */}
+          {layout === "text-left" && fotoEtichetta && (
+            <div data-reveal className="md:col-span-5">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={finalRatio}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+          {/* Layout: Immagine a Destra (default) */}
+          {layout === "text-left" && fotoEtichetta && (
+            <div data-reveal className="md:col-span-5">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={ratio}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

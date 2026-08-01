@@ -40,6 +40,7 @@ function AllevamentoPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="full-width"
           occhiello="01 · Gli animali"
           titolo="Chi vive in masseria"
           paragrafi={[
@@ -47,7 +48,7 @@ function AllevamentoPage() {
             "Accanto ai bovini vivono ovini, suini, equini e avicoli. Ogni specie ha il suo spazio, la sua stalla e il suo ritmo di lavoro.",
             "Gli animali si vedono: chi arriva in masseria passa davanti alle stalle prima di sedersi a tavola.",
           ]}
-          fotoEtichetta="bovini in stalla, mezza figura"
+          fotoEtichetta="bovini in stalla e paesaggio circostante, vista ampia"
         />
         <AnimaSezione
           tone="dark"
@@ -65,6 +66,7 @@ function AllevamentoPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-left"
           occhiello="03 · Le stagioni"
           titolo="Il ritmo del lavoro"
           paragrafi={[
@@ -76,6 +78,7 @@ function AllevamentoPage() {
         />
         <AnimaSezione
           tone="dark"
+          layout="text-right"
           occhiello="04 · Dove finisce l'allevamento"
           titolo="Il passaggio"
           paragrafi={[
@@ -83,6 +86,7 @@ function AllevamentoPage() {
             "La carne va alla macelleria, dove viene esposta al banco e scelta a vista da chi si fermerà a cena.",
           ]}
           fotoEtichetta="passaggio dalla stalla al laboratorio, mani al lavoro"
+          ratio="16 / 9"
         >
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
