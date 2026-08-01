@@ -87,7 +87,7 @@ export function FotoSegnaposto({
           color: scuro ? "var(--bianco-calce)" : "var(--carbone)",
         }}
       >
-        <span className="font-eyebrow text-[15px] leading-snug tracking-[0.18em] opacity-80">
+        <span className="font-eyebrow text-[15px] leading-snug tracking-[0.18em] opacity-80 md:text-[15px]">
           Fotografia da produrre — {etichetta}
         </span>
       </figcaption>
@@ -108,10 +108,22 @@ export function AnimaHero({
   fotoEtichetta: string;
 }) {
   return (
+export function AnimaHero({
+  occhiello,
+  righe,
+  frase,
+  fotoEtichetta,
+}: {
+  occhiello: string;
+  righe: [string, string, string];
+  frase: string;
+  fotoEtichetta: string;
+}) {
+  return (
     <section
       data-tone="dark"
       data-reveal-group
-      className="relative flex h-[70dvh] min-h-[520px] flex-col justify-end bg-[color:var(--biscotto-scuro)]"
+      className="relative flex min-h-[520px] flex-col justify-end bg-[color:var(--biscotto-scuro)] md:h-[70dvh]"
       style={{ paddingTop: "var(--page-header-safe-offset)" }}
     >
       {/* Sostituire con fotografia autentica della Masseria prima della pubblicazione. */}
@@ -123,7 +135,7 @@ export function AnimaHero({
       <div className="relative z-10 mx-auto w-full max-w-[1100px] px-5 pb-12 md:px-10 md:pb-16">
         <p
           data-reveal
-          className="font-eyebrow text-[15px] tracking-[0.3em]"
+          className="font-eyebrow text-[15px] italic tracking-[0.3em]"
           style={{ color: "var(--oro-su-scuro)" }}
         >
           {occhiello}
@@ -153,6 +165,8 @@ export function AnimaHero({
         </p>
       </div>
     </section>
+  );
+}
   );
 }
 

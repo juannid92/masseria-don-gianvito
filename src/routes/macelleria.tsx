@@ -76,6 +76,7 @@ function MacelleriaPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-right"
           occhiello="03 · Il riposo"
           titolo="Prima si aspetta"
           paragrafi={[
@@ -87,6 +88,7 @@ function MacelleriaPage() {
         />
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="04 · I salumi"
           titolo="Quello che resta appeso"
           paragrafi={[

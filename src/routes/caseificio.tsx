@@ -60,6 +60,7 @@ function CaseificioPage() {
         </AnimaSezione>
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="02 · Le mani"
           titolo="Si lavora a mano"
           paragrafi={[
@@ -74,6 +75,7 @@ function CaseificioPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-right"
           occhiello="03 · Quello che esce"
           titolo="Quattro forme dello stesso bianco"
           paragrafi={[
@@ -85,6 +87,7 @@ function CaseificioPage() {
         />
         <AnimaSezione
           tone="dark"
+          layout="text-left"
           occhiello="04 · Dove va"
           titolo="Pochi metri ancora"
           paragrafi={[

@@ -66,6 +66,7 @@ function AllevamentoPage() {
       <div data-reveal-group>
         <AnimaSezione
           tone="light"
+          layout="text-left"
           occhiello="03 · Le stagioni"
           titolo="Il ritmo del lavoro"
           paragrafi={[
@@ -77,6 +78,7 @@ function AllevamentoPage() {
         />
         <AnimaSezione
           tone="dark"
+          layout="text-right"
           occhiello="04 · Dove finisce l'allevamento"
           titolo="Il passaggio"
           paragrafi={[
