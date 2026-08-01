@@ -21,6 +21,12 @@ import { MASSERIA } from "@/data/masseria";
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[color:var(--bianco-calce)] px-4 pt-[var(--page-header-safe-offset)]">
+      <HeadContent />
+      {/* 404 DEVE AVERE NOINDEX */}
+      <title>Pagina non trovata — Masseria Don Gianvito</title>
+      <meta name="robots" content="noindex, nofollow" />
+      <link rel="canonical" href={getAbsoluteUrl("/404")} />
+      
       <div className="max-w-md text-center">
         <h1 className="font-display text-7xl text-[color:var(--carbone)]">404</h1>
         <h2 className="mt-4 font-display text-2xl text-[color:var(--carbone)]">Pagina non trovata</h2>
@@ -95,6 +101,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: SITE_CONFIG.description },
       { name: "twitter:card", content: SITE_CONFIG.twitterCard },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
+      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -108,6 +116,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600&display=swap",
       },
+      { rel: "icon", href: "/favicon.ico" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
