@@ -9,6 +9,8 @@ import { LaVoce } from "@/components/home/LaVoce";
 import { Prenota } from "@/components/home/Prenota";
 import { useHomeHashScroll } from "@/lib/nav";
 
+const SITE_URL = "https://masseriadongianvito.it";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -18,7 +20,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Masseria del Cinquecento a Noci (BA): si allevano gli animali, si fa il formaggio, si sceglie la carne al banco e si mangia in agriturismo.",
+          "Masseria del Cinquecento a Noci (BA): allevamento proprio, caseificio artigianale, macelleria a vista e agriturismo della Murgia.",
       },
       {
         property: "og:title",
@@ -27,10 +29,15 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Filiera interna a Noci (BA): allevamento, caseificio, macelleria e agriturismo. Ogni sera, a Noci.",
+          "Filiera interna a Noci (BA): allevamento, caseificio, macelleria e agriturismo. Dalla terra alla tavola, ogni sera.",
       },
+      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { property: "og:url", content: SITE_URL },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
     ],
+    links: [{ rel: "canonical", href: SITE_URL }],
   }),
   component: HomePage,
 });

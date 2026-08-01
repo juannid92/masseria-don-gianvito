@@ -6,20 +6,7 @@ import { ANIME, type AnimaId } from "@/data/masseria";
 import { useHomeSectionNav } from "@/lib/nav";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-/**
- * SCHELETRO COMUNE DELLE PAGINE INTERNE (anime).
- *
- * Regia unica, riusata identica da allevamento, caseificio, macelleria,
- * agriturismo: comparse brevi a soglia (opacita' + 16px), sfasamento leggero
- * fra i blocchi, filo d'oro sotto i titoli.
- * NESSUN pin, nessuna maschera, nessun filo continuo, nessuno scrub,
- * nessuna colonna a velocita' diversa. Massimo 3 ScrollTrigger per pagina:
- * un trigger per ogni `[data-reveal-group]` (hero+sez.1, sez.2+3, sez.4+chiusura).
- *
- * Colore: bianco calce e biscotto scuro come fondi, carbone per il testo,
- * oro per i fili e per UN SOLO testo per pagina (l'occhiello della hero),
- * biscotto come tocco caldo. Carminio e oliva assenti.
- */
+export type SezioneLayout = "text-left" | "text-right" | "full-width" | "text-only";
 
 export function useAnimaReveals(rootRef: React.RefObject<HTMLElement | null>) {
   const reduced = useReducedMotion();
@@ -59,7 +46,6 @@ export function useAnimaReveals(rootRef: React.RefObject<HTMLElement | null>) {
   }, [reduced, rootRef]);
 }
 
-/** Segnaposto fotografico: fondo pieno, nessuna imitazione di materia. */
 export function FotoSegnaposto({
   etichetta,
   ratio = "3 / 2",
@@ -71,7 +57,6 @@ export function FotoSegnaposto({
   tone?: "light" | "dark";
   className?: string;
 }) {
-  // Sostituire con fotografia autentica della Masseria prima della pubblicazione.
   const scuro = tone === "dark";
   return (
     <figure
@@ -113,7 +98,6 @@ export function AnimaHero({
       className="relative flex min-h-[520px] flex-col justify-end bg-[color:var(--biscotto-scuro)] md:h-[70dvh]"
       style={{ paddingTop: "var(--page-header-safe-offset)" }}
     >
-      {/* Sostituire con fotografia autentica della Masseria prima della pubblicazione. */}
       <div
         aria-hidden
         className="absolute inset-0"
@@ -155,7 +139,6 @@ export function AnimaHero({
   );
 }
 
-/** Sezione di contenuto: occhiello, titolo breve, paragrafo, foto. */
 export function AnimaSezione({
   id,
   occhiello,
@@ -181,8 +164,6 @@ export function AnimaSezione({
   const isFull = layout === "full-width";
   const isOnlyText = layout === "text-only";
   const isInverted = layout === "text-right";
-
-  // Rapporti immagine differenziati
   const finalRatio = ratio || (isFull ? "21 / 9" : "4 / 5");
 
   return (
@@ -196,7 +177,7 @@ export function AnimaSezione({
       }}
     >
       <div
-        className={`mx-auto w-full max-w-[1100px] px-5 py-16 md:px-10 md:py-24 ${
+        className={`mx-auto w-full max-w-[1100px] px-5 py-12 md:px-10 md:py-16 ${
           isOnlyText ? "max-w-[780px]" : ""
         }`}
       >
@@ -205,7 +186,6 @@ export function AnimaSezione({
             isOnlyText ? "grid-cols-1" : "md:grid-cols-12"
           }`}
         >
-          {/* Layout: Immagine a Piena Larghezza sopra il testo */}
           {isFull && fotoEtichetta && (
             <div data-reveal className="md:col-span-12">
               <FotoSegnaposto
@@ -216,7 +196,6 @@ export function AnimaSezione({
             </div>
           )}
 
-          {/* Layout: Immagine a Sinistra (invertito) */}
           {isInverted && fotoEtichetta && (
             <div data-reveal className="order-2 md:order-1 md:col-span-5">
               <FotoSegnaposto
@@ -227,7 +206,6 @@ export function AnimaSezione({
             </div>
           )}
 
-          {/* Blocco Testo */}
           <div
             className={`
               flex flex-col justify-center
@@ -266,7 +244,6 @@ export function AnimaSezione({
             {children}
           </div>
 
-          {/* Layout: Immagine a Destra (default) */}
           {layout === "text-left" && fotoEtichetta && (
             <div data-reveal className="md:col-span-5">
               <FotoSegnaposto
@@ -282,30 +259,13 @@ export function AnimaSezione({
   );
 }
 
-          {/* Layout: Immagine a Destra (default) */}
-          {layout === "text-left" && fotoEtichetta && (
-            <div data-reveal className="md:col-span-5">
-              <FotoSegnaposto
-                etichetta={fotoEtichetta}
-                tone={scuro ? "dark" : "light"}
-                ratio={ratio}
-              />
-            </div>
-          )}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/** Chiusura: rimando alle altre tre anime + CTA prenotazione. */
 export function AnimaChiusura({ corrente }: { corrente: AnimaId }) {
   const altre = ANIME.filter((a) => a.id !== corrente);
   const goToSection = useHomeSectionNav();
 
   return (
     <section data-tone="light" className="bg-[color:var(--bianco-calce)] text-[color:var(--carbone)]">
-      <div className="mx-auto w-full max-w-[1100px] px-5 py-16 md:px-10 md:py-24">
+      <div className="mx-auto w-full max-w-[1100px] px-5 py-12 md:px-10 md:py-16">
         <p data-reveal className="font-eyebrow text-[15px] tracking-[0.3em] opacity-62">
           Le altre anime
         </p>
@@ -344,7 +304,6 @@ export function AnimaChiusura({ corrente }: { corrente: AnimaId }) {
   );
 }
 
-/** Guscio: monta la regia condivisa (max 3 trigger). */
 export function AnimaPagina({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   useAnimaReveals(rootRef);

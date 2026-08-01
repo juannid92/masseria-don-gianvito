@@ -17,19 +17,20 @@ import { Footer } from "@/components/site/Footer";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[color:var(--bianco-calce)] px-4 pt-[var(--page-header-safe-offset)]">
       <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+        <h1 className="font-display text-7xl text-[color:var(--carbone)]">404</h1>
+        <h2 className="mt-4 font-display text-2xl text-[color:var(--carbone)]">Pagina non trovata</h2>
+        <div className="hairline-oro mx-auto mt-6 max-w-[120px]" />
+        <p className="mt-6 text-[16px] text-[color:var(--carbone)]/70">
+          La pagina che cerchi non esiste o è stata spostata.
         </p>
-        <div className="mt-6">
+        <div className="mt-10">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="font-eyebrow inline-flex items-center justify-center border border-[color:var(--oro-antico)] px-8 py-3 text-[14px] text-[color:var(--carbone)] transition-colors hover:bg-[color:var(--oro-antico)]/10"
           >
-            Go home
+            Torna alla Home
           </Link>
         </div>
       </div>
@@ -129,6 +130,32 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="it">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Agriturismo",
+              "name": "Masseria Don Gianvito",
+              "description": "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
+              "url": "https://masseriadongianvito.it",
+              "telephone": ["tel:+393339395750", "tel:+393333870292"],
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "SP237 ex SS377 per Mottola km 6,5, Zona C 76",
+                "addressLocality": "Noci",
+                "addressRegion": "BA",
+                "postalCode": "70015",
+                "addressCountry": "IT"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 40.642739,
+                "longitude": 17.0426
+              }
+            })
+          }}
+        />
       </head>
       <body>
         {children}

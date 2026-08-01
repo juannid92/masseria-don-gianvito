@@ -151,11 +151,21 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-2 border-t border-[color:var(--bianco-calce)]/15 pt-6 text-[12px] text-[color:var(--bianco-calce)]/50 md:flex-row md:items-center md:justify-between">
-          <span>
-            © {anno} {MASSERIA.nome} — Società agricola semplice
-          </span>
-          <span className="tabular-nums">P.IVA / CF {MASSERIA.piva}</span>
+        <div className="mt-16 flex flex-col gap-6 border-t border-[color:var(--bianco-calce)]/15 pt-6 text-[12px] text-[color:var(--bianco-calce)]/50 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-2 md:flex-row md:gap-8">
+            <span>
+              © {anno} {MASSERIA.nome} — Società agricola semplice
+            </span>
+            <span className="tabular-nums">P.IVA / CF {MASSERIA.piva}</span>
+          </div>
+          <div className="flex gap-6">
+            <Link to="/legali/privacy" className="hover:text-[color:var(--oro-su-scuro)]">
+              Privacy Policy
+            </Link>
+            <Link to="/legali/cookie" className="hover:text-[color:var(--oro-su-scuro)]">
+              Cookie Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

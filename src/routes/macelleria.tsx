@@ -6,6 +6,8 @@ import {
   AnimaSezione,
 } from "@/components/anime/AnimaPagina";
 
+const SITE_URL = "https://masseriadongianvito.it";
+
 export const Route = createFileRoute("/macelleria")({
   head: () => ({
     meta: [
@@ -13,16 +15,21 @@ export const Route = createFileRoute("/macelleria")({
       {
         name: "description",
         content:
-          "Al banco della Masseria Don Gianvito a Noci la carne è esposta e si sceglie a vista: filetto, bombette, salsiccia, prosciutto crudo, soppressata, salsiccia secca, pancetta tesa.",
+          "Macelleria con banco a vista a Noci: bombette, salsiccia e i tagli della masseria scelti guardando.",
       },
-      { property: "og:title", content: "Macelleria — Si sceglie guardando" },
+      { property: "og:title", content: "Macelleria — Masseria Don Gianvito" },
       {
         property: "og:description",
         content:
-          "La carne degli animali della masseria, esposta al banco: filetto, bombette, salsiccia e i salumi della casa.",
+          "Si sceglie guardando: la carne degli animali della masseria esposta al banco a Noci.",
       },
+      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { property: "og:url", content: `${SITE_URL}/macelleria` },
       { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/macelleria` }],
   }),
   component: MacelleriaPage,
 });
