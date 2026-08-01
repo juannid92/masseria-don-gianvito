@@ -6,6 +6,8 @@ import {
   AnimaSezione,
 } from "@/components/anime/AnimaPagina";
 
+const SITE_URL = "https://masseriadongianvito.it";
+
 export const Route = createFileRoute("/allevamento")({
   head: () => ({
     meta: [
@@ -13,16 +15,21 @@ export const Route = createFileRoute("/allevamento")({
       {
         name: "description",
         content:
-          "L'allevamento della Masseria Don Gianvito a Noci: bovini di Pezzata Rossa incrociata con Frisona, ovini, suini, equini, avicoli e le colture della masseria.",
+          "L'allevamento della Masseria Don Gianvito a Noci: Pezzata Rossa e Frisona crescono negli stessi campi che le nutrono.",
       },
-      { property: "og:title", content: "Allevamento — Gli animali crescono dove mangiano" },
+      { property: "og:title", content: "Allevamento — Masseria Don Gianvito" },
       {
         property: "og:description",
         content:
-          "Bovini, ovini, suini, equini e avicoli nella campagna di Noci, nutriti con foraggio e colture della masseria.",
+          "Gli animali crescono dove mangiano: il foraggio e le colture della masseria a Noci.",
       },
+      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { property: "og:url", content: `${SITE_URL}/allevamento` },
       { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/allevamento` }],
   }),
   component: AllevamentoPage,
 });

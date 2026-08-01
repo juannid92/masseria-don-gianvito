@@ -6,6 +6,8 @@ import {
   AnimaSezione,
 } from "@/components/anime/AnimaPagina";
 
+const SITE_URL = "https://masseriadongianvito.it";
+
 export const Route = createFileRoute("/caseificio")({
   head: () => ({
     meta: [
@@ -13,16 +15,21 @@ export const Route = createFileRoute("/caseificio")({
       {
         name: "description",
         content:
-          "Il latte munto nelle stalle della Masseria Don Gianvito a Noci viene lavorato nella stessa mattina: mozzarelle a chilometro zero, nodini, primo sale, ricotta.",
+          "Caseificio artigianale a Noci: mozzarelle, nodini, primo sale e ricotta lavorati ogni mattina a pochi metri dalle stalle.",
       },
-      { property: "og:title", content: "Caseificio — Il latte non fa strada" },
+      { property: "og:title", content: "Caseificio — Masseria Don Gianvito" },
       {
         property: "og:description",
         content:
-          "Dalla stalla al laboratorio in pochi metri: mozzarelle a chilometro zero, nodini, primo sale e ricotta lavorati nella stessa mattina.",
+          "Il latte non fa strada: mozzarelle a chilometro zero lavorate nella stessa mattina a Noci.",
       },
+      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { property: "og:url", content: `${SITE_URL}/caseificio` },
       { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/caseificio` }],
   }),
   component: CaseificioPage,
 });

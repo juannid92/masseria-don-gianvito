@@ -288,7 +288,7 @@ export function AnimaSezione({
               <FotoSegnaposto
                 etichetta={fotoEtichetta}
                 tone={scuro ? "dark" : "light"}
-                ratio={ratio}
+                ratio={finalRatio}
               />
             </div>
           )}
