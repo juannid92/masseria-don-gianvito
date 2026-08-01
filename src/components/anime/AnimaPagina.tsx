@@ -155,13 +155,6 @@ export function AnimaHero({
   );
 }
 
-/** Tipi di disposizione per la sezione comune. */
-export type SezioneLayout =
-  | "text-left" // Testo a sinistra, immagine a destra (default)
-  | "text-right" // Testo a destra, immagine a sinistra (invertito)
-  | "full-width" // Immagine sopra a piena larghezza, testo sotto
-  | "text-only"; // Solo testo, sezione stretta
-
 /** Sezione di contenuto: occhiello, titolo breve, paragrafo, foto. */
 export function AnimaSezione({
   id,
@@ -171,7 +164,7 @@ export function AnimaSezione({
   fotoEtichetta,
   tone,
   layout = "text-left",
-  ratio = "4 / 5",
+  ratio,
   children,
 }: {
   id?: string;
@@ -189,6 +182,9 @@ export function AnimaSezione({
   const isOnlyText = layout === "text-only";
   const isInverted = layout === "text-right";
 
+  // Rapporti immagine differenziati
+  const finalRatio = ratio || (isFull ? "21 / 9" : "4 / 5");
+
   return (
     <section
       id={id}
@@ -201,21 +197,21 @@ export function AnimaSezione({
     >
       <div
         className={`mx-auto w-full max-w-[1100px] px-5 py-16 md:px-10 md:py-24 ${
-          isOnlyText ? "max-w-[800px]" : ""
+          isOnlyText ? "max-w-[780px]" : ""
         }`}
       >
         <div
-          className={`grid gap-10 md:gap-12 ${
+          className={`grid gap-10 md:gap-16 ${
             isOnlyText ? "grid-cols-1" : "md:grid-cols-12"
           }`}
         >
           {/* Layout: Immagine a Piena Larghezza sopra il testo */}
           {isFull && fotoEtichetta && (
-            <div data-reveal className="md:col-span-12 mb-4">
+            <div data-reveal className="md:col-span-12">
               <FotoSegnaposto
                 etichetta={fotoEtichetta}
                 tone={scuro ? "dark" : "light"}
-                ratio="21 / 9"
+                ratio={finalRatio}
               />
             </div>
           )}
@@ -226,7 +222,7 @@ export function AnimaSezione({
               <FotoSegnaposto
                 etichetta={fotoEtichetta}
                 tone={scuro ? "dark" : "light"}
-                ratio={ratio}
+                ratio={finalRatio}
               />
             </div>
           )}
@@ -234,7 +230,8 @@ export function AnimaSezione({
           {/* Blocco Testo */}
           <div
             className={`
-              ${isOnlyText ? "" : isFull ? "md:col-span-12" : "md:col-span-7"}
+              flex flex-col justify-center
+              ${isOnlyText ? "text-center items-center" : isFull ? "md:col-span-12" : "md:col-span-7"}
               ${isInverted ? "order-1 md:order-2" : ""}
             `}
           >
@@ -247,20 +244,20 @@ export function AnimaSezione({
             </p>
             <h2
               data-reveal
-              className="mt-4 font-display text-[clamp(1.7rem,3.4vw,2.5rem)] leading-[1.08]"
+              className={`mt-4 font-display text-[clamp(1.7rem,3.4vw,2.5rem)] leading-[1.08] ${isOnlyText ? "max-w-[18ch]" : ""}`}
             >
               {titolo}
             </h2>
             <div
               data-reveal
               aria-hidden
-              className="hairline-oro mt-5 max-w-[160px]"
+              className={`hairline-oro mt-5 max-w-[160px] ${isOnlyText ? "mx-auto" : ""}`}
             />
             {paragrafi.map((p) => (
               <p
                 key={p.slice(0, 24)}
                 data-reveal
-                className="mt-5 max-w-[62ch] text-[16px] leading-relaxed md:text-[17px]"
+                className={`mt-6 text-[16px] leading-relaxed md:text-[17px] ${isOnlyText ? "max-w-[50ch]" : "max-w-[62ch]"}`}
                 style={{ opacity: scuro ? 0.85 : 0.92 }}
               >
                 {p}
@@ -268,6 +265,22 @@ export function AnimaSezione({
             ))}
             {children}
           </div>
+
+          {/* Layout: Immagine a Destra (default) */}
+          {layout === "text-left" && fotoEtichetta && (
+            <div data-reveal className="md:col-span-5">
+              <FotoSegnaposto
+                etichetta={fotoEtichetta}
+                tone={scuro ? "dark" : "light"}
+                ratio={finalRatio}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
           {/* Layout: Immagine a Destra (default) */}
           {layout === "text-left" && fotoEtichetta && (
