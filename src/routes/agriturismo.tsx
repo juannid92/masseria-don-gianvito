@@ -123,7 +123,7 @@ function AgriturismoPage() {
         data-tone="light"
         className="bg-[color:var(--biscotto)] text-[color:var(--carbone)]"
       >
-        <div className="mx-auto max-w-[1100px] px-5 py-16 md:px-10 md:py-24">
+        <div className="mx-auto max-w-[1100px] px-5 py-12 md:px-10 md:py-16">
           <div className="grid gap-12 md:grid-cols-2">
             <div>
               <p data-reveal className="font-eyebrow text-[15px] tracking-[0.3em] opacity-62">
