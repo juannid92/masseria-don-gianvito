@@ -15,6 +15,8 @@ import { Route as BraceriaRouteImport } from './routes/braceria'
 import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as AgriturismoRouteImport } from './routes/agriturismo'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LegaliPrivacyRouteImport } from './routes/legali/privacy'
+import { Route as LegaliCookieRouteImport } from './routes/legali/cookie'
 
 const MacelleriaRoute = MacelleriaRouteImport.update({
   id: '/macelleria',
@@ -46,6 +48,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LegaliPrivacyRoute = LegaliPrivacyRouteImport.update({
+  id: '/legali/privacy',
+  path: '/legali/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegaliCookieRoute = LegaliCookieRouteImport.update({
+  id: '/legali/cookie',
+  path: '/legali/cookie',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +66,8 @@ export interface FileRoutesByFullPath {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/legali/cookie': typeof LegaliCookieRoute
+  '/legali/privacy': typeof LegaliPrivacyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +76,8 @@ export interface FileRoutesByTo {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/legali/cookie': typeof LegaliCookieRoute
+  '/legali/privacy': typeof LegaliPrivacyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +87,8 @@ export interface FileRoutesById {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/legali/cookie': typeof LegaliCookieRoute
+  '/legali/privacy': typeof LegaliPrivacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +99,8 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/legali/cookie'
+    | '/legali/privacy'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +109,8 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/legali/cookie'
+    | '/legali/privacy'
   id:
     | '__root__'
     | '/'
@@ -97,6 +119,8 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/legali/cookie'
+    | '/legali/privacy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +130,8 @@ export interface RootRouteChildren {
   BraceriaRoute: typeof BraceriaRoute
   CaseificioRoute: typeof CaseificioRoute
   MacelleriaRoute: typeof MacelleriaRoute
+  LegaliCookieRoute: typeof LegaliCookieRoute
+  LegaliPrivacyRoute: typeof LegaliPrivacyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/legali/privacy': {
+      id: '/legali/privacy'
+      path: '/legali/privacy'
+      fullPath: '/legali/privacy'
+      preLoaderRoute: typeof LegaliPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legali/cookie': {
+      id: '/legali/cookie'
+      path: '/legali/cookie'
+      fullPath: '/legali/cookie'
+      preLoaderRoute: typeof LegaliCookieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,7 +202,19 @@ const rootRouteChildren: RootRouteChildren = {
   BraceriaRoute: BraceriaRoute,
   CaseificioRoute: CaseificioRoute,
   MacelleriaRoute: MacelleriaRoute,
+  LegaliCookieRoute: LegaliCookieRoute,
+  LegaliPrivacyRoute: LegaliPrivacyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

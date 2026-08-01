@@ -8,6 +8,8 @@ import {
 import { MASSERIA, ORARI } from "@/data/masseria";
 import { useHomeSectionNav } from "@/lib/nav";
 
+const SITE_URL = "https://masseriadongianvito.it";
+
 export const Route = createFileRoute("/agriturismo")({
   head: () => ({
     meta: [
@@ -15,16 +17,23 @@ export const Route = createFileRoute("/agriturismo")({
       {
         name: "description",
         content:
-          "Cucina, tavola e brace alla Masseria Don Gianvito di Noci: Pecora in Pignata, antipasti, spezzatino e carne alla brace ogni sera a Noci.",
+          "Cucina, tavola e brace alla Masseria Don Gianvito di Noci: Pecora in Pignata, antipasti, spezzatino e carne alla brace serviti ogni sera a Noci.",
       },
-      { property: "og:title", content: "Agriturismo — Cinque ore prima che ti siedi" },
+      { property: "og:title", content: "Agriturismo — Masseria Don Gianvito" },
       {
         property: "og:description",
         content:
           "La cucina del tempo lungo: la Pecora in Pignata e i piatti della masseria serviti ogni sera a Noci.",
       },
+      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { property: "og:url", content: `${SITE_URL}/agriturismo` },
       { property: "og:type", content: "restaurant" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Agriturismo — Masseria Don Gianvito" },
+      { name: "twitter:description", content: "La cucina del tempo lungo a Noci." },
+      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/agriturismo` }],
   }),
   component: AgriturismoPage,
 });
@@ -36,7 +45,7 @@ function AgriturismoPage() {
     <AnimaPagina>
       <AnimaHero
         occhiello="IV · Agriturismo"
-        righe={["Cinque ore", "prima che", "ti siedi."]}
+        righe={["Cinque ore", "prima che", "tu ti sieda."]}
         frase="Quello che mangi era già in cottura molto prima del tuo arrivo. La cucina qui segue il tempo del fuoco e della brace."
         fotoEtichetta="la tavola apparecchiata con la luce della sera, a piena larghezza"
       />
