@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /legali/
+
 Sitemap: https://masseriadongianvito.it/sitemap.xml

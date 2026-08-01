@@ -5,8 +5,8 @@ import {
   AnimaPagina,
   AnimaSezione,
 } from "@/components/anime/AnimaPagina";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-const SITE_URL = "https://masseriadongianvito.it";
 
 export const Route = createFileRoute("/allevamento")({
   head: () => ({
@@ -23,13 +23,13 @@ export const Route = createFileRoute("/allevamento")({
         content:
           "Gli animali crescono dove mangiano: il foraggio e le colture della masseria a Noci.",
       },
-      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
-      { property: "og:url", content: `${SITE_URL}/allevamento` },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
+      { property: "og:url", content: getAbsoluteUrl("/allevamento") },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
+      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/allevamento` }],
+    links: [{ rel: "canonical", href: getAbsoluteUrl("/allevamento") }],
   }),
   component: AllevamentoPage,
 });

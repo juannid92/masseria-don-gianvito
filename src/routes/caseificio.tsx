@@ -5,8 +5,8 @@ import {
   AnimaPagina,
   AnimaSezione,
 } from "@/components/anime/AnimaPagina";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-const SITE_URL = "https://masseriadongianvito.it";
 
 export const Route = createFileRoute("/caseificio")({
   head: () => ({
@@ -23,13 +23,13 @@ export const Route = createFileRoute("/caseificio")({
         content:
           "Il latte non fa strada: mozzarelle a chilometro zero lavorate nella stessa mattina a Noci.",
       },
-      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
-      { property: "og:url", content: `${SITE_URL}/caseificio` },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
+      { property: "og:url", content: getAbsoluteUrl("/caseificio") },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
+      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/caseificio` }],
+    links: [{ rel: "canonical", href: getAbsoluteUrl("/caseificio") }],
   }),
   component: CaseificioPage,
 });

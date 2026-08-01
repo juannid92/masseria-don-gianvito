@@ -8,8 +8,8 @@ import { LaTavola } from "@/components/home/LaTavola";
 import { LaVoce } from "@/components/home/LaVoce";
 import { Prenota } from "@/components/home/Prenota";
 import { useHomeHashScroll } from "@/lib/nav";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-const SITE_URL = "https://masseriadongianvito.it";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,20 +24,19 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "Masseria Don Gianvito — Dalla terra alla tavola",
+        content: SITE_CONFIG.title,
       },
       {
         property: "og:description",
-        content:
-          "Filiera interna a Noci (BA): allevamento, caseificio, macelleria e agriturismo. Dalla terra alla tavola, ogni sera.",
+        content: SITE_CONFIG.description,
       },
-      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
-      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
+      { property: "og:url", content: SITE_CONFIG.url },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
+      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
-    links: [{ rel: "canonical", href: SITE_URL }],
+    links: [{ rel: "canonical", href: SITE_CONFIG.url }],
   }),
   component: HomePage,
 });

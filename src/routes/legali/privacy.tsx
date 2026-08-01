@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimaPagina } from "@/components/anime/AnimaPagina";
 import { MASSERIA } from "@/data/masseria";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-const SITE_URL = "https://masseriadongianvito.it";
 
 export const Route = createFileRoute("/legali/privacy")({
   head: () => ({
@@ -11,7 +11,7 @@ export const Route = createFileRoute("/legali/privacy")({
       { name: "description", content: "Informativa sulla privacy della Masseria Don Gianvito." },
       { name: "robots", content: "noindex, nofollow" },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/legali/privacy` }],
+    links: [{ rel: "canonical", href: getAbsoluteUrl("/legali/privacy") }],
   }),
   component: PrivacyPage,
 });

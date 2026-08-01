@@ -14,6 +14,9 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ScrollProvider } from "@/components/site/ScrollProvider";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
+import { MASSERIA } from "@/data/masseria";
+
 
 function NotFoundComponent() {
   return (
@@ -81,28 +84,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Masseria Don Gianvito — Dalla terra alla tavola" },
-      {
-        name: "description",
-        content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
-      },
-      { name: "author", content: "Masseria Don Gianvito" },
-      { name: "theme-color", content: "#f4f0e6" },
-      { property: "og:site_name", content: "Masseria Don Gianvito" },
-      { property: "og:title", content: "Masseria Don Gianvito — Dalla terra alla tavola" },
-      { name: "twitter:title", content: "Masseria Don Gianvito — Dalla terra alla tavola" },
-      {
-        property: "og:description",
-        content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
+      { title: SITE_CONFIG.title },
+      { name: "description", content: SITE_CONFIG.description },
+      { name: "author", content: SITE_CONFIG.name },
+      { name: "theme-color", content: SITE_CONFIG.themeColor },
+      { property: "og:site_name", content: SITE_CONFIG.name },
+      { property: "og:title", content: SITE_CONFIG.title },
+      { name: "twitter:title", content: SITE_CONFIG.title },
+      { property: "og:description", content: SITE_CONFIG.description },
+      { name: "twitter:description", content: SITE_CONFIG.description },
+      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
       { property: "og:type", content: "website" },
     ],
     links: [
@@ -135,14 +126,17 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Agriturismo",
-              "name": "Masseria Don Gianvito",
-              "description": "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
-              "url": "https://masseriadongianvito.it",
-              "telephone": ["tel:+393339395750", "tel:+393333870292"],
+              "@type": "Restaurant",
+              "name": SITE_CONFIG.name,
+              "description": SITE_CONFIG.description,
+              "url": SITE_CONFIG.url,
+              "telephone": [
+                `tel:+39${MASSERIA.telefono.replace(/\s/g, "")}`,
+                `tel:+39${MASSERIA.telefono2.replace(/\s/g, "")}`
+              ],
               "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "SP237 ex SS377 per Mottola km 6,5, Zona C 76",
+                "streetAddress": MASSERIA.indirizzo,
                 "addressLocality": "Noci",
                 "addressRegion": "BA",
                 "postalCode": "70015",
@@ -150,9 +144,11 @@ function RootShell({ children }: { children: ReactNode }) {
               },
               "geo": {
                 "@type": "GeoCoordinates",
-                "latitude": 40.642739,
-                "longitude": 17.0426
-              }
+                "latitude": MASSERIA.coordinate.lat,
+                "longitude": MASSERIA.coordinate.lng
+              },
+              "servesCuisine": "Pugliese",
+              "priceRange": "$$"
             })
           }}
         />
