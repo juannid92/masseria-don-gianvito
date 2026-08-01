@@ -7,8 +7,8 @@ import {
 } from "@/components/anime/AnimaPagina";
 import { MASSERIA, ORARI } from "@/data/masseria";
 import { useHomeSectionNav } from "@/lib/nav";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-const SITE_URL = "https://masseriadongianvito.it";
 
 export const Route = createFileRoute("/agriturismo")({
   head: () => ({
@@ -25,15 +25,15 @@ export const Route = createFileRoute("/agriturismo")({
         content:
           "La cucina del tempo lungo: la Pecora in Pignata e i piatti della masseria serviti ogni sera a Noci.",
       },
-      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
-      { property: "og:url", content: `${SITE_URL}/agriturismo` },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
+      { property: "og:url", content: getAbsoluteUrl("/agriturismo") },
       { property: "og:type", content: "restaurant" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
       { name: "twitter:title", content: "Agriturismo — Masseria Don Gianvito" },
       { name: "twitter:description", content: "La cucina del tempo lungo a Noci." },
-      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/agriturismo` }],
+    links: [{ rel: "canonical", href: getAbsoluteUrl("/agriturismo") }],
   }),
   component: AgriturismoPage,
 });

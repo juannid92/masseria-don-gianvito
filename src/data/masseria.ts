@@ -1,7 +1,9 @@
 /**
  * DATI REALI — Masseria Don Gianvito.
  * Unica fonte di verità: nessun dato può essere inventato altrove nel sito.
+ * Ogni modifica a ragione sociale, indirizzo o P.IVA deve avvenire qui.
  */
+
 
 export const MASSERIA = {
   nome: "Masseria Don Gianvito",

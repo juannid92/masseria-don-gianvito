@@ -5,8 +5,8 @@ import {
   AnimaPagina,
   AnimaSezione,
 } from "@/components/anime/AnimaPagina";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-const SITE_URL = "https://masseriadongianvito.it";
 
 export const Route = createFileRoute("/macelleria")({
   head: () => ({
@@ -23,13 +23,13 @@ export const Route = createFileRoute("/macelleria")({
         content:
           "Si sceglie guardando: la carne degli animali della masseria esposta al banco a Noci.",
       },
-      { property: "og:image", content: `${SITE_URL}/og-masseria.jpg` },
-      { property: "og:url", content: `${SITE_URL}/macelleria` },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
+      { property: "og:url", content: getAbsoluteUrl("/macelleria") },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `${SITE_URL}/og-masseria.jpg` },
+      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
+      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/macelleria` }],
+    links: [{ rel: "canonical", href: getAbsoluteUrl("/macelleria") }],
   }),
   component: MacelleriaPage,
 });
