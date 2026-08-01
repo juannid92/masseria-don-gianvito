@@ -70,6 +70,7 @@ function MacelleriaPage() {
             "Quello che c'è cambia. Si guarda e si sceglie fra quello che c'è.",
           ]}
           fotoEtichetta="un taglio in primo piano, sul tagliere"
+          ratio="1 / 1"
         />
       </div>
 

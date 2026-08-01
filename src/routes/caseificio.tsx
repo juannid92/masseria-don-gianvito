@@ -69,6 +69,7 @@ function CaseificioPage() {
             "Chi lavora guarda e sente: la pasta dice quando è pronta, e da lì in poi è questione di pochi minuti.",
           ]}
           fotoEtichetta="i nodini appena formati, mani al lavoro"
+          ratio="3 / 4"
         />
       </div>
 

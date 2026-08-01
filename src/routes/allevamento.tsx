@@ -86,6 +86,7 @@ function AllevamentoPage() {
             "La carne va alla macelleria, dove viene esposta al banco e scelta a vista da chi si fermerà a cena.",
           ]}
           fotoEtichetta="passaggio dalla stalla al laboratorio, mani al lavoro"
+          ratio="16 / 9"
         >
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
