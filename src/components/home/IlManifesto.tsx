@@ -166,7 +166,7 @@ export function IlManifesto() {
     >
       <div
         data-stage
-        className="relative isolate flex w-full flex-col overflow-hidden min-h-[124dvh] bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:h-[100dvh] [@media(min-width:900px)]:min-h-0"
+        className="relative isolate flex w-full flex-col overflow-hidden min-h-[110dvh] bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:h-[100dvh] [@media(min-width:900px)]:min-h-0"
       >
         {/* 1 — FONDO BIANCO CALCE (nessuna finta terra: pieno, grana finissima) */}
         <div aria-hidden data-layer="terra" className="pointer-events-none absolute inset-0">
