@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimaPagina } from "@/components/anime/AnimaPagina";
+import { getAbsoluteUrl } from "@/config/site";
 import { AgriturismoCinema } from "@/components/agriturismo/AgriturismoCinema";
 import { AgriturismoStoriaNuova, AgriturismoGalleriaNuova, AgriturismoDettagliNuovi, AgriturismoCTANuovo, AgriturismoFooterNuovo } from "@/components/agriturismo/AgriturismoNuovaVeste";
 
