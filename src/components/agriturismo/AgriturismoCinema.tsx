@@ -140,7 +140,7 @@ export function AgriturismoCinema() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative h-[360dvh] bg-[color:var(--carbone)]">
+    <section ref={containerRef} id="agriturismo-cinema" className="relative h-[360dvh] bg-[color:var(--carbone)]">
       <div ref={stickyRef} className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-black">
         
         {/* Cinematic Scenes Layer */}

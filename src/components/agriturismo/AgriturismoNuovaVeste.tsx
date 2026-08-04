@@ -46,6 +46,7 @@ export function AgriturismoStoriaNuova() {
   return (
     <section 
       ref={containerRef}
+      id="storia-nuova"
       className="py-24 md:py-48 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] overflow-hidden"
     >
       <div className="mx-auto w-full max-w-[1300px] px-5 md:px-12">
@@ -122,6 +123,7 @@ export function AgriturismoGalleriaNuova() {
   return (
     <section 
       ref={containerRef}
+      id="galleria-nuova"
       className="py-24 md:py-48 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)]"
     >
       <div className="mx-auto w-full max-w-[1300px] px-5 md:px-12">
@@ -176,7 +178,7 @@ export function AgriturismoGalleriaNuova() {
 
 export function AgriturismoDettagliNuovi() {
   return (
-    <section className="py-24 md:py-48 bg-[color:var(--biscotto)]/30 text-[color:var(--carbone)] relative overflow-hidden">
+    <section id="dettagli-nuovi" className="py-24 md:py-48 bg-[color:var(--biscotto)]/30 text-[color:var(--carbone)] relative overflow-hidden">
       {/* Diagonale dorata */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
@@ -227,7 +229,7 @@ export function AgriturismoCTANuovo() {
   const waMessage = encodeURIComponent("Buongiorno Masseria Don Gianvito, vorrei richiedere informazioni per una prenotazione in agriturismo.");
 
   return (
-    <section className="bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] py-32 md:py-48">
+    <section id="cta-nuovo" className="bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] py-32 md:py-48">
       <div className="mx-auto w-full max-w-[1200px] px-5 md:px-12">
         <div className="grid md:grid-cols-12 gap-16 items-end">
           <div className="md:col-span-8">
