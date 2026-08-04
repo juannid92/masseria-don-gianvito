@@ -1,10 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimaPagina } from "@/components/anime/AnimaPagina";
-import { getAbsoluteUrl } from "@/config/site";
-import { AgriturismoHero } from "@/components/agriturismo/AgriturismoHero";
-import { AgriturismoStoria, AgriturismoTavola } from "@/components/agriturismo/AgriturismoContent";
-import { AgriturismoGalleria, AgriturismoDettagli } from "@/components/agriturismo/AgriturismoGallery";
-import { AgriturismoCTA, AgriturismoFooterLinks } from "@/components/agriturismo/AgriturismoFooter";
+import { AgriturismoCinema } from "@/components/agriturismo/AgriturismoCinema";
+import { AgriturismoStoriaNuova, AgriturismoGalleriaNuova, AgriturismoDettagliNuovi, AgriturismoCTANuovo, AgriturismoFooterNuovo } from "@/components/agriturismo/AgriturismoNuovaVeste";
 
 export const Route = createFileRoute("/agriturismo")({
   head: () => ({
@@ -14,6 +11,7 @@ export const Route = createFileRoute("/agriturismo")({
       { property: "og:title", content: "Agriturismo — Masseria Don Gianvito" },
       { property: "og:url", content: getAbsoluteUrl("/agriturismo") },
       { property: "og:type", content: "restaurant" },
+      { property: "og:image", content: getAbsoluteUrl("/images/agriturismo-cinema-02-facciata.webp") },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/agriturismo") }],
   }),
@@ -23,13 +21,12 @@ export const Route = createFileRoute("/agriturismo")({
 function AgriturismoPage() {
   return (
     <AnimaPagina>
-      <AgriturismoHero />
-      <AgriturismoStoria />
-      <AgriturismoTavola />
-      <AgriturismoGalleria />
-      <AgriturismoDettagli />
-      <AgriturismoCTA />
-      <AgriturismoFooterLinks />
+      <AgriturismoCinema />
+      <AgriturismoStoriaNuova />
+      <AgriturismoGalleriaNuova />
+      <AgriturismoDettagliNuovi />
+      <AgriturismoCTANuovo />
+      <AgriturismoFooterNuovo />
     </AnimaPagina>
   );
 }
