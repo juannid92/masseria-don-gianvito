@@ -38,7 +38,7 @@ export function AgriturismoStoria() {
           <div className="md:col-span-5 md:pt-32">
             <div className="max-w-[380px] space-y-12">
               <p data-reveal className="text-[18px] md:text-[20px] leading-relaxed">
-                La masseria nasce nelle campagne di Noci e attraversa i secoli conservando il rapporto fra casa, animali, campi e lavoro. Oggi l’Agriturismo è il punto in cui questa storia si apre agli ospiti: ci si siede dove la masseria continua a vivere e lavorare.
+                La masseria sorge nelle campagne di Noci e attraversa i secoli conservando il rapporto fra casa, animali, campi e lavoro. Oggi l’Agriturismo è il punto in cui questa storia si apre agli ospiti: ci si siede dove la masseria continua a vivere e lavorare.
               </p>
               
               <div data-reveal className="pt-8 border-t border-[color:var(--carbone)]/10">
