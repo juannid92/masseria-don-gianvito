@@ -211,7 +211,7 @@ export function AgriturismoCinema() {
           <rect className="letterbox letterbox-bottom" width="1600" height="40" fill="black" y="860" />
           
           {/* Vignette */}
-          <rect width="1600" height="900" fill="url(#gold-glow)" opacity="0.1" mixBlendMode="multiply" />
+          <rect width="1600" height="900" fill="url(#gold-glow)" opacity="0.1" style={{ mixBlendMode: 'multiply' }} />
         </svg>
 
         {/* Text Overlays Layer */}
