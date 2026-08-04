@@ -1,33 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  AnimaChiusura,
-  AnimaHero,
-  AnimaPagina,
-  AnimaSezione,
-} from "@/components/anime/AnimaPagina";
+import { AnimaChiusura, AnimaHero, AnimaPagina, AnimaSezione } from "@/components/anime/AnimaPagina";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
-
 
 export const Route = createFileRoute("/macelleria")({
   head: () => ({
     meta: [
       { title: "Macelleria — Masseria Don Gianvito · Noci" },
-      {
-        name: "description",
-        content:
-          "Macelleria con banco a vista a Noci: bombette, salsiccia e i tagli della masseria scelti guardando.",
-      },
+      { name: "description", content: "Macelleria con banco a vista: i tagli della masseria scelti guardando." },
       { property: "og:title", content: "Macelleria — Masseria Don Gianvito" },
-      {
-        property: "og:description",
-        content:
-          "Si sceglie guardando: la carne degli animali della masseria esposta al banco a Noci.",
-      },
       { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
       { property: "og:url", content: getAbsoluteUrl("/macelleria") },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
-      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/macelleria") }],
   }),
@@ -37,92 +20,30 @@ export const Route = createFileRoute("/macelleria")({
 function MacelleriaPage() {
   return (
     <AnimaPagina>
-      <AnimaHero
-        occhiello="III · Macelleria"
-        righe={["Si sceglie", "guardando.", "Non leggendo."]}
-        frase="La carne viene dagli animali della masseria. Sta al banco, in vista, e si indica con un dito."
-        fotoEtichetta="il banco con il vetro e la carne esposta, a piena larghezza"
-      />
+      {/* HERO: Pietra (scuro), Vetro, Banco */}
+      <section data-tone="dark" className="relative min-h-[70dvh] bg-[color:var(--biscotto-scuro)] flex items-center justify-center p-5" style={{ paddingTop: "var(--page-header-safe-offset)" }}>
+         <div className="relative w-full max-w-[900px] border-l-4 border-t-4 border-[color:var(--biscotto)] p-8">
+            <p className="font-eyebrow text-[13px] tracking-[0.3em] text-[color:var(--oro-su-scuro)]">III · Macelleria</p>
+            <h1 className="mt-6 font-display text-[clamp(3rem,8vw,5.5rem)] leading-[0.9] text-[color:var(--bianco-calce)]">
+              Si sceglie<br />
+              <span className="italic text-[color:var(--oro-su-scuro)]">guardando.</span><br />
+              Non leggendo.
+            </h1>
+            <div className="absolute right-0 bottom-0 w-[40%] aspect-[3/2] bg-[color:var(--pietra-800)] flex items-center justify-center font-eyebrow text-[12px] opacity-80">
+              FOTO HERO — BANCO A VISTA
+            </div>
+         </div>
+      </section>
 
-      <div data-reveal-group>
-        <AnimaSezione
-          tone="light"
-          layout="text-right"
-          occhiello="01 · Il banco"
-          titolo="Tutto è in vista"
-          paragrafi={[
-            "Dietro il vetro la carne è disposta e basta guardarla. Nessuna descrizione, nessuna lista da consultare.",
-            "Si indica il pezzo. Chi taglia risponde, gira il coltello, mostra la parte che non si vedeva.",
-            "È il modo più corto di scegliere: l'occhio prima della parola.",
-          ]}
-          fotoEtichetta="il vetro del banco, carne esposta e mano che indica"
-        >
-          <div className="mt-8">
-            <Link
-              to="/allevamento"
-              className="font-eyebrow border border-[color:var(--carbone)]/30 px-6 py-3 text-[15px] tracking-[0.22em] transition-colors hover:bg-[color:var(--biscotto)]/40"
-            >
-              Da dove arriva la carne
-            </Link>
-          </div>
-        </AnimaSezione>
-        <AnimaSezione
-          tone="dark"
-          layout="text-left"
-          occhiello="02 · I tagli"
-          titolo="Materia e coltello"
-          paragrafi={[
-            "Il filetto sta da una parte, stretto e scuro. Le bombette dall'altra, chiuse una a una.",
-            "La salsiccia si fa qui, con la carne dello stesso animale. Accanto ci sono i tagli del giorno, quelli che il banco offre in quella giornata e non in un'altra.",
-            "Quello che c'è cambia. Si guarda e si sceglie fra quello che c'è.",
-          ]}
-          fotoEtichetta="un taglio in primo piano, sul tagliere"
-          ratio="1 / 1"
-        />
-      </div>
+      <AnimaSezione tone="dark" layout="text-right" occhiello="01 · Il banco" titolo="Tutto è in vista" 
+        paragrafi={["Dietro il vetro la carne è disposta. Si indica il pezzo. È il modo più corto di scegliere."]}
+        fotoEtichetta="Sostituire con fotografia autentica prima della pubblicazione" ratio="16 / 9" />
 
-      <div data-reveal-group>
-        <AnimaSezione
-          tone="light"
-          layout="text-right"
-          occhiello="03 · Il riposo"
-          titolo="Prima si aspetta"
-          paragrafi={[
-            "Al banco la carne arriva dopo. Prima resta ferma in cella, al buio, per circa quindici giorni.",
-            "In quel tempo perde acqua, si asciuga in superficie e si ammorbidisce dentro. Non c'è niente da fare, se non lasciarla stare.",
-            "Chi lavora passa, guarda, tocca. Quando è pronta si porta al banco: la data la decide la carne.",
-          ]}
-          fotoEtichetta="le bombette pronte, ordinate in vassoio"
-        />
-        <AnimaSezione
-          tone="dark"
-          layout="text-left"
-          occhiello="04 · I salumi"
-          titolo="Quello che resta appeso"
-          paragrafi={[
-            "Il prosciutto crudo sta appeso e aspetta il suo tempo. La soppressata gli sta accanto, più corta e più scura.",
-            "La salsiccia secca si stringe piano, la pancetta tesa resta distesa e bianca sul bordo.",
-            "Quello che si sceglie al banco può finire sul tavolo dell'agriturismo la sera stessa: dal vetro alla brace ci sono pochi passi.",
-          ]}
-          fotoEtichetta="i salumi appesi nella stanza di stagionatura"
-        >
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              to="/agriturismo"
-              className="font-eyebrow border border-[color:var(--bianco-calce)]/35 px-6 py-3 text-[15px] tracking-[0.22em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--bianco-calce)]/10"
-            >
-              Vai all'agriturismo
-            </Link>
-            <Link
-              to="/caseificio"
-              className="font-eyebrow border border-[color:var(--bianco-calce)]/35 px-6 py-3 text-[15px] tracking-[0.22em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--bianco-calce)]/10"
-            >
-              Vai al caseificio
-            </Link>
-          </div>
-        </AnimaSezione>
-        <AnimaChiusura corrente="macelleria" />
-      </div>
+      <AnimaSezione tone="light" layout="text-left" occhiello="02 · I tagli" titolo="Materia e coltello" 
+        paragrafi={["Quello che c'è cambia. Si guarda e si sceglie fra quello che c'è."]}
+        fotoEtichetta="Sostituire con fotografia autentica prima della pubblicazione" ratio="1 / 1" />
+
+      <AnimaChiusura corrente="macelleria" />
     </AnimaPagina>
   );
 }

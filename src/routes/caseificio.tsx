@@ -1,33 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  AnimaChiusura,
-  AnimaHero,
-  AnimaPagina,
-  AnimaSezione,
-} from "@/components/anime/AnimaPagina";
+import { AnimaChiusura, AnimaHero, AnimaPagina, AnimaSezione } from "@/components/anime/AnimaPagina";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
-
 
 export const Route = createFileRoute("/caseificio")({
   head: () => ({
     meta: [
       { title: "Caseificio — Masseria Don Gianvito · Noci" },
-      {
-        name: "description",
-        content:
-          "Caseificio artigianale a Noci: mozzarelle, nodini, primo sale e ricotta lavorati ogni mattina a pochi metri dalle stalle.",
-      },
+      { name: "description", content: "Caseificio artigianale a Noci: il latte lavorato ogni mattina a pochi metri dalle stalle." },
       { property: "og:title", content: "Caseificio — Masseria Don Gianvito" },
-      {
-        property: "og:description",
-        content:
-          "Il latte non fa strada: mozzarelle a chilometro zero lavorate nella stessa mattina a Noci.",
-      },
       { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
       { property: "og:url", content: getAbsoluteUrl("/caseificio") },
       { property: "og:type", content: "article" },
-      { name: "twitter:card", content: SITE_CONFIG.twitterCard },
-      { name: "twitter:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/caseificio") }],
   }),
@@ -37,90 +20,31 @@ export const Route = createFileRoute("/caseificio")({
 function CaseificioPage() {
   return (
     <AnimaPagina>
-      <AnimaHero
-        occhiello="II · Caseificio"
-        righe={["Il latte non", "fa strada.", "Fa pochi metri."]}
-        frase="Dalla stalla al laboratorio ci sono pochi metri."
-        fotoEtichetta="la mozzarella appena filata nelle mani, a piena larghezza"
-      />
+      {/* HERO: Compatta, dettagli ravvicinati */}
+      <section data-tone="light" className="relative min-h-[60dvh] flex flex-col justify-end bg-[color:var(--bianco-calce)] pb-16" style={{ paddingTop: "var(--page-header-safe-offset)" }}>
+        <div className="mx-auto w-full max-w-[800px] px-5 flex flex-col md:flex-row items-end gap-8">
+           <div className="w-full md:w-1/2 aspect-[3/4] bg-[color:var(--biscotto)] flex items-center justify-center">
+             <span className="font-eyebrow text-[12px]">FOTO HERO — DETTAGLIO FILATURA</span>
+           </div>
+           <div className="w-full md:w-1/2 pb-4">
+              <p className="font-eyebrow text-[13px] tracking-[0.3em] text-[color:var(--oro-antico-testo)]">II · Caseificio</p>
+              <h1 className="mt-4 font-display text-[clamp(2.5rem,6vw,4rem)] leading-[0.95] text-[color:var(--carbone)]">
+                Il latte non<br />
+                fa strada.<br />
+                <span className="italic text-[color:var(--oro-antico-testo)]">Fa pochi metri.</span>
+              </h1>
+           </div>
+        </div>
+      </section>
 
-      <div data-reveal-group>
-        <AnimaSezione
-          tone="light"
-          layout="text-only"
-          occhiello="01 · La mattina"
-          titolo="Il latte entra subito"
-          paragrafi={[
-            "Il latte arriva dalle stalle della masseria e non aspetta. Finita la mungitura, passa in laboratorio.",
-            "Nessun trasporto, nessuna sosta: il posto in cui viene munto e il posto in cui viene lavorato sono lo stesso posto.",
-            "Quello che entra la mattina si lavora nella stessa mattina.",
-          ]}
-        >
-          <div className="mt-8">
-            <Link
-              to="/allevamento"
-              className="font-eyebrow border border-[color:var(--carbone)]/30 px-6 py-3 text-[15px] tracking-[0.22em] transition-colors hover:bg-[color:var(--biscotto)]/40"
-            >
-              Da dove arriva il latte
-            </Link>
-          </div>
-        </AnimaSezione>
-        <AnimaSezione
-          tone="dark"
-          layout="text-left"
-          occhiello="02 · Le mani"
-          titolo="Si lavora a mano"
-          paragrafi={[
-            "La pasta si tira, si gira, si chiude. La mozzarella prende forma nelle mani, una alla volta.",
-            "I nodini si formano con lo stesso gesto, più corto e ripetuto.",
-            "Chi lavora guarda e sente: la pasta dice quando è pronta, e da lì in poi è questione di pochi minuti.",
-          ]}
-          fotoEtichetta="i nodini appena formati, mani al lavoro"
-          ratio="3 / 4"
-        />
-      </div>
+      <AnimaSezione tone="dark" layout="text-only" occhiello="01 · La mattina" titolo="Il latte entra subito" 
+        paragrafi={["Il latte arriva dalle stalle e non aspetta. Quello che entra la mattina si lavora nella stessa mattina."]} />
 
-      <div data-reveal-group>
-        <AnimaSezione
-          tone="light"
-          layout="text-right"
-          occhiello="03 · Quello che esce"
-          titolo="Quattro forme dello stesso bianco"
-          paragrafi={[
-            "Le mozzarelle a chilometro zero sono il prodotto della mattina: nascono e finiscono nello stesso giorno.",
-            "Accanto arrivano i nodini, più piccoli e più sodi, e il primo sale, che resta bianco e asciutto.",
-            "La ricotta chiude la lavorazione. Quello che c'è dipende dal latte del giorno: la disponibilità cambia di giorno in giorno.",
-          ]}
-          fotoEtichetta="il banco con i formaggi del giorno"
-        />
-        <AnimaSezione
-          tone="dark"
-          layout="text-left"
-          occhiello="04 · Dove va"
-          titolo="Pochi metri ancora"
-          paragrafi={[
-            "Dal laboratorio i formaggi passano al banco della macelleria, dove si scelgono a vista.",
-            "Il resto va in cucina e arriva sui tavoli dell'agriturismo, la sera stessa.",
-          ]}
-          fotoEtichetta="il passaggio dal laboratorio al banco"
-        >
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Link
-              to="/macelleria"
-              className="font-eyebrow border border-[color:var(--bianco-calce)]/35 px-6 py-3 text-[15px] tracking-[0.22em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--bianco-calce)]/10"
-            >
-              Vai alla macelleria
-            </Link>
-            <Link
-              to="/agriturismo"
-              className="font-eyebrow border border-[color:var(--bianco-calce)]/35 px-6 py-3 text-[15px] tracking-[0.22em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--bianco-calce)]/10"
-            >
-              Vai all'agriturismo
-            </Link>
-          </div>
-        </AnimaSezione>
-        <AnimaChiusura corrente="caseificio" />
-      </div>
+      <AnimaSezione tone="light" layout="text-left" occhiello="02 · Le mani" titolo="Si lavora a mano" 
+        paragrafi={["La pasta si tira, si gira, si chiude. La mozzarella prende forma nelle mani, una alla volta."]}
+        fotoEtichetta="Sostituire con fotografia autentica prima della pubblicazione" ratio="4 / 5" />
+
+      <AnimaChiusura corrente="caseificio" />
     </AnimaPagina>
   );
 }
