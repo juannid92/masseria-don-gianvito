@@ -84,7 +84,7 @@ export function AgriturismoFooterLinks() {
               </span>
               <div className="flex items-end justify-between">
                 <span className="font-display text-[28px] md:text-[32px] group-hover:text-[color:var(--oro-antico-testo)] transition-colors">
-                  {r.label}
+                  {r.nome}
                 </span>
                 <span className="font-display text-[32px] opacity-10 group-hover:opacity-100 transition-opacity">→</span>
               </div>

@@ -1,10 +1,9 @@
-import { useAnimaReveals } from "@/hooks/use-anima-reveals";
+import { useAnimaReveals, FotoSegnaposto } from "@/components/anime/AnimaPagina";
 import { useRef } from "react";
-import { FotoSegnaposto } from "@/components/anime/AnimaPagina";
 
 export function AgriturismoStoria() {
   const containerRef = useRef<HTMLDivElement>(null);
-  useAnimaReveals({ trigger: containerRef });
+  useAnimaReveals(containerRef);
 
   return (
     <section 
@@ -57,7 +56,7 @@ export function AgriturismoStoria() {
 
 export function AgriturismoTavola() {
   const containerRef = useRef<HTMLDivElement>(null);
-  useAnimaReveals({ trigger: containerRef });
+  useAnimaReveals(containerRef);
 
   return (
     <section 

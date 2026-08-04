@@ -1,10 +1,9 @@
-import { useAnimaReveals } from "@/hooks/use-anima-reveals";
+import { useAnimaReveals, FotoSegnaposto } from "@/components/anime/AnimaPagina";
 import { useRef } from "react";
-import { FotoSegnaposto } from "@/components/anime/AnimaPagina";
 
 export function AgriturismoGalleria() {
   const containerRef = useRef<HTMLDivElement>(null);
-  useAnimaReveals({ trigger: containerRef });
+  useAnimaReveals(containerRef);
 
   const items = [
     { label: "LA MASSERIA NELLA LUCE DELLA SERA", ratio: "21 / 9", grid: "md:col-span-12" },
@@ -53,7 +52,7 @@ export function AgriturismoGalleria() {
 
 export function AgriturismoDettagli() {
   const containerRef = useRef<HTMLDivElement>(null);
-  useAnimaReveals({ trigger: containerRef });
+  useAnimaReveals(containerRef);
 
   const dettagli = [
     { label: "DOVE", content: "Nelle campagne di Noci, lungo la provinciale per Mottola" },

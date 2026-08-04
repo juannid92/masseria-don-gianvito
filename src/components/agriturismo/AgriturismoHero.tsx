@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
-import { useAnimaReveals } from "@/hooks/use-anima-reveals";
+import { useAnimaReveals, FotoSegnaposto } from "@/components/anime/AnimaPagina";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FotoSegnaposto } from "@/components/anime/AnimaPagina";
 
 export function AgriturismoHero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,7 +10,7 @@ export function AgriturismoHero() {
   const text2Ref = useRef<HTMLDivElement>(null);
   const text3Ref = useRef<HTMLDivElement>(null);
 
-  useAnimaReveals({ trigger: containerRef });
+  useAnimaReveals(containerRef);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
