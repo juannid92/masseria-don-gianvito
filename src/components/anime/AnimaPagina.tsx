@@ -34,7 +34,7 @@ export function useAnimaReveals(rootRef: React.RefObject<HTMLElement | null>) {
             stagger: 0.08,
             scrollTrigger: {
               trigger: gruppo,
-              start: i === 0 ? "top 95%" : "top 85%",
+              start: "top 92%",
               once: true,
             },
           },
