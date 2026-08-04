@@ -7,11 +7,11 @@ export function AgriturismoGalleria() {
 
   const items = [
     { label: "LA MASSERIA NELLA LUCE DELLA SERA", ratio: "21 / 9", grid: "md:col-span-12" },
-    { label: "L’INGRESSO E IL CORTILE", ratio: "4 / 5", grid: "md:col-span-5" },
-    { label: "LA TAVOLA APPARECCHIATA", ratio: "1 / 1", grid: "md:col-span-7 md:translate-y-24" },
+    { label: "L’INGRESSO E IL CORTILE", ratio: "4 / 5", grid: "md:col-span-5 md:translate-y-12" },
+    { label: "LA TAVOLA APPARECCHIATA", ratio: "1 / 1", grid: "md:col-span-7 md:translate-y-32" },
     { label: "LE MANI IN CUCINA", ratio: "3 / 4", grid: "md:col-span-4" },
-    { label: "L’ARROSTO ALLA BRACE", ratio: "16 / 9", grid: "md:col-span-8" },
-    { label: "UN DETTAGLIO DELLA SALA", ratio: "1 / 1", grid: "md:col-span-4 md:col-start-9 md:-translate-y-24" },
+    { label: "L’ARROSTO ALLA BRACE", ratio: "16 / 9", grid: "md:col-span-8 md:translate-y-12" },
+    { label: "UN DETTAGLIO DELLA SALA", ratio: "1 / 1", grid: "md:col-span-4 md:col-start-9 md:-translate-y-16" },
   ];
 
   return (

@@ -7,8 +7,9 @@ export function AgriturismoStoria() {
 
   return (
     <section 
+      id="storia-agriturismo"
       ref={containerRef}
-      className="py-24 md:py-40 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] overflow-hidden"
+      className="py-24 md:py-40 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] overflow-hidden border-t border-[color:var(--oro-antico)]/20"
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 md:px-12">
         <div className="grid md:grid-cols-12 gap-12 md:gap-24 items-start">
