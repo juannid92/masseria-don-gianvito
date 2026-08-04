@@ -23,11 +23,13 @@ function AgriturismoPage() {
   return (
     <AnimaPagina>
       <AgriturismoCinema />
-      <AgriturismoStoriaNuova />
-      <AgriturismoGalleriaNuova />
-      <AgriturismoDettagliNuovi />
-      <AgriturismoCTANuovo />
-      <AgriturismoFooterNuovo />
+      <div id="next-section">
+        <AgriturismoStoriaNuova />
+        <AgriturismoGalleriaNuova />
+        <AgriturismoDettagliNuovi />
+        <AgriturismoCTANuovo />
+        <AgriturismoFooterNuovo />
+      </div>
     </AnimaPagina>
   );
 }
