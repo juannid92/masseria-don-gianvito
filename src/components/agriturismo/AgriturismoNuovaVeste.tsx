@@ -13,22 +13,24 @@ export function AgriturismoStoriaNuova() {
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
+      // Set initial states ONLY if GSAP is running
+      gsap.set([photoRef.current, titleRef.current, lineRef.current], { opacity: 1, visibility: "visible" });
+
+      gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 80%",
+          start: "top 92%",
+          once: true
         }
-      });
-
-      tl.from(photoRef.current, { 
+      })
+      .from(photoRef.current, { 
         clipPath: "inset(0 0 100% 0)", 
         duration: 1.2, 
         ease: "power3.out" 
       })
       .from(titleRef.current, { 
-        x: 100, 
+        y: 16, 
         opacity: 0, 
         duration: 0.8, 
         ease: "power2.out" 
@@ -88,32 +90,23 @@ export function AgriturismoGalleriaNuova() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       const images = gsap.utils.toArray(".gallery-img-wrap");
+      
+      // Ensure visibility
+      gsap.set(images, { opacity: 1, visibility: "visible" });
+
       images.forEach((img: any) => {
         gsap.from(img, {
           scrollTrigger: {
             trigger: img,
-            start: "top 90%",
-            toggleActions: "play none none none"
+            start: "top 92%",
+            once: true
           },
           clipPath: "inset(100% 0 0 0)",
-          y: 50,
-          duration: 1.5,
-          ease: "power4.out"
-        });
-        
-        // Parallax
-        gsap.to(img.querySelector("img"), {
-          scrollTrigger: {
-            trigger: img,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true
-          },
-          y: "-10%",
-          ease: "none"
+          y: 16,
+          duration: 1.2,
+          ease: "power3.out"
         });
       });
     }, containerRef);
@@ -281,7 +274,7 @@ export function AgriturismoFooterNuovo() {
   const routes = ANIME.filter(a => a.id !== 'agriturismo');
 
   return (
-    <section className="py-32 md:py-48 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)]">
+    <section id="footer-nuovo" className="py-32 md:py-48 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)]">
       <div className="mx-auto w-full max-w-[1200px] px-5 md:px-12">
         <div className="max-w-[800px] mb-24 md:mb-32">
           <h2 className="font-display text-[clamp(2.2rem,6vw,4rem)] leading-[1.05]">

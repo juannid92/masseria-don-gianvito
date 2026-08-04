@@ -67,10 +67,14 @@ export function AgriturismoCinema() {
       tl.addLabel("tavola", 0.74);
       tl.addLabel("handoff", 0.92);
 
-      // Initial state
+      // Initial state set only after GSAP context starts
       gsap.set(".cinema-scene", { opacity: 0, scale: 1, x: 0 });
-      gsap.set(".cinema-scene-1", { opacity: 1 });
-      gsap.set(".cinema-text", { opacity: 0, y: 40 });
+      gsap.set(".cinema-scene-1", { opacity: 1, clipPath: "inset(0 0 0 0)" });
+      gsap.set(".cinema-scene-2", { clipPath: "inset(0 0 0 100%)" });
+      gsap.set(".cinema-scene-3", { clipPath: "circle(0% at 50% 50%)" });
+      gsap.set(".cinema-scene-4", { clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" });
+      
+      gsap.set(".cinema-text", { opacity: 0, y: 16 });
       gsap.set(".cinema-text-1", { opacity: 1, y: 0 });
       gsap.set(".cinema-mask", { attr: { "clip-path": "inset(0 0 0 0)" } });
       gsap.set(".cinema-light", { opacity: 0 });
@@ -151,10 +155,7 @@ export function AgriturismoCinema() {
               className={`cinema-scene cinema-scene-${i+1} absolute inset-0 w-full h-full will-change-transform`}
               style={{ 
                 zIndex: i + 1,
-                clipPath: i === 0 ? 'inset(0 0 0 0)' : 
-                         i === 1 ? 'inset(0 0 0 100%)' :
-                         i === 2 ? 'circle(0% at 50% 50%)' :
-                         'polygon(0 0, 0 0, 0 100%, 0% 100%)'
+                // No default clipPath here, set it in GSAP to avoid flashes or JS-disable invisibility
               }}
             >
               <img 
