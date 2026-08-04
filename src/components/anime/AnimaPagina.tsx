@@ -23,9 +23,9 @@ export function useAnimaReveals(rootRef: React.RefObject<HTMLElement | null>) {
       gruppi.forEach((gruppo, i) => {
         const elementi = gsap.utils.toArray<HTMLElement>("[data-reveal]", gruppo);
         if (!elementi.length) return;
-        gsap.fromTo(
+        gsap.set(elementi, { autoAlpha: 0, y: 16 });
+        gsap.to(
           elementi,
-          { autoAlpha: 0, y: 16 },
           {
             autoAlpha: 1,
             y: 0,
