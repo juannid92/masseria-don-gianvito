@@ -15,7 +15,7 @@ const scenes = [
   {
     id: "facciata",
     img: "/images/agriturismo-cinema-02-facciata.webp",
-    eyebrow: "NOCI · PUGLIA",
+    eyebrow: "",
     headline: "Si arriva quando\nla luce sta\ncambiando.",
     desc: "",
     verticalNote: "NOCI · PUGLIA",
@@ -57,8 +57,6 @@ export function AgriturismoCinema() {
           start: "top 90%",
           end: "bottom bottom",
           scrub: 0.9,
-          // When top of container is 90% of viewport, it's about to stick (which is at top 0)
-          // We want to be ~15% through the sequence when it actually sticks.
         },
       });
 
@@ -87,9 +85,8 @@ export function AgriturismoCinema() {
       // SCENE 2: Facciata (Reveal 1->2)
       tl.to(".cinema-scene-1", { opacity: 0.5, duration: 0.24 }, "facciata-=0.1");
       tl.to(".cinema-scene-2", { opacity: 1, duration: 0.24 }, "facciata-=0.2");
-      tl.fromTo(".cinema-mask-2", 
-        { attr: { "clip-path": "inset(0 0 0 100%)" } },
-        { attr: { "clip-path": "inset(0 0 0 0%)" }, duration: 0.24 }, 
+      tl.to(".cinema-scene-2", 
+        { clipPath: "inset(0 0 0 0%)", duration: 0.24 }, 
         "facciata-=0.2"
       );
       tl.to(".cinema-text-1", { opacity: 0, y: -20, duration: 0.1 }, "facciata-=0.15");
@@ -101,9 +98,8 @@ export function AgriturismoCinema() {
       // SCENE 3: Cortile (Reveal 2->3)
       tl.to(".cinema-scene-2", { opacity: 0.5, duration: 0.24 }, "cortile-=0.1");
       tl.to(".cinema-scene-3", { opacity: 1, duration: 0.24 }, "cortile-=0.2");
-      tl.fromTo(".cinema-mask-3", 
-        { attr: { "clip-path": "circle(0% at 50% 50%)" } },
-        { attr: { "clip-path": "circle(75% at 50% 50%)" }, duration: 0.24 }, 
+      tl.to(".cinema-scene-3", 
+        { clipPath: "circle(75% at 50% 50%)", duration: 0.24 }, 
         "cortile-=0.2"
       );
       tl.to(".cinema-text-2", { opacity: 0, y: -20, duration: 0.1 }, "cortile-=0.15");
@@ -115,9 +111,8 @@ export function AgriturismoCinema() {
       // SCENE 4: Tavola (Reveal 3->4)
       tl.to(".cinema-scene-3", { opacity: 0.5, duration: 0.24 }, "tavola-=0.1");
       tl.to(".cinema-scene-4", { opacity: 1, duration: 0.24 }, "tavola-=0.2");
-      tl.fromTo(".cinema-mask-4", 
-        { attr: { "clip-path": "polygon(0 0, 0 0, 0 100%, 0% 100%)" } },
-        { attr: { "clip-path": "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }, duration: 0.24 }, 
+      tl.to(".cinema-scene-4", 
+        { clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)", duration: 0.24 }, 
         "tavola-=0.2"
       );
       tl.to(".cinema-text-3", { opacity: 0, y: -20, duration: 0.1 }, "tavola-=0.15");
@@ -153,8 +148,14 @@ export function AgriturismoCinema() {
           {scenes.map((scene, i) => (
             <div 
               key={scene.id} 
-              className={`cinema-scene cinema-scene-${i+1} cinema-mask-${i+1} absolute inset-0 w-full h-full will-change-transform`}
-              style={{ zIndex: i + 1 }}
+              className={`cinema-scene cinema-scene-${i+1} absolute inset-0 w-full h-full will-change-transform`}
+              style={{ 
+                zIndex: i + 1,
+                clipPath: i === 0 ? 'inset(0 0 0 0)' : 
+                         i === 1 ? 'inset(0 0 0 100%)' :
+                         i === 2 ? 'circle(0% at 50% 50%)' :
+                         'polygon(0 0, 0 0, 0 100%, 0% 100%)'
+              }}
             >
               <img 
                 src={scene.img} 
