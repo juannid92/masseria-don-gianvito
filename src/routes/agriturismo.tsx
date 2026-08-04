@@ -43,7 +43,7 @@ function AgriturismoPage() {
       <div className="bg-[color:var(--biscotto)] text-[color:var(--carbone)] py-16 text-center px-5">
         <h2 className="font-display text-[2rem]">Prenotazione consigliata</h2>
         <p className="mt-4">Contattaci per confermare il tuo tavolo.</p>
-        <Link to="/#prenota" className="inline-block mt-8 bg-[color:var(--carbone)] text-[color:var(--bianco-calce)] px-8 py-4 font-eyebrow text-[11px] tracking-[0.2em]">PRENOTA ORA</Link>
+        <a href="/#prenota" className="inline-block mt-8 bg-[color:var(--carbone)] text-[color:var(--bianco-calce)] px-8 py-4 font-eyebrow text-[11px] tracking-[0.2em]">PRENOTA ORA</a>
       </div>
 
       <AnimaChiusura corrente="agriturismo" />
