@@ -1,522 +1,169 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import aerial from "@/assets/masseria-aerial.asset.json";
-import { MASSERIA } from "@/data/masseria";
-import { PIN_ANIME, type PinAnima, type PinCoord } from "@/data/pin-anime";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { PIN_ANIME } from "@/data/pin-anime";
+import { JOURNEY } from "@/data/journey";
 
-/**
- * HERO HOME — "La Masseria vista dall'alto".
- * Quattro TARGHE editoriali permanenti, sempre leggibili, ancorate ai luoghi
- * reali della fotografia aerea. Nessun puntino, nessuna etichetta da hover.
- */
-
-type Tier = "desktop" | "tablet" | "mobile" | "short";
-
-/** Fascia di viewport: SSR-safe, un solo listener di resize. */
-function useTier(): Tier {
-  const [tier, setTier] = useState<Tier>("desktop");
-  useEffect(() => {
-    const update = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      if (h < 520 && w >= 640) setTier("short");
-      else setTier(w < 768 ? "mobile" : w < 1100 ? "tablet" : "desktop");
-    };
-    update();
-    window.addEventListener("resize", update, { passive: true });
-    return () => window.removeEventListener("resize", update);
-  }, []);
-  return tier;
-}
-
-/** true quando il puntatore non supporta l'hover (touch). SSR-safe. */
-function useIsTouch(): boolean {
-  const [isTouch, setIsTouch] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: none)");
-    const update = () => setIsTouch(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-  return isTouch;
-}
-
-const coordOf = (pin: PinAnima, tier: Tier): PinCoord =>
-  tier === "mobile" ? pin.m : tier === "short" ? pin.s : tier === "tablet" ? pin.t : pin.d;
-
+/** One image coordinate system on every viewport: no misleading mobile crop. */
 export function Hero() {
-  const reduced = useReducedMotion();
-  const tier = useTier();
-  const isMobile = tier === "mobile";
-  const touch = useIsTouch() || isMobile;
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [hintVisible, setHintVisible] = useState(true);
-  const mapRef = useRef<HTMLDivElement | null>(null);
-
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const sx = useSpring(px, { stiffness: 120, damping: 22, mass: 0.4 });
-  const sy = useSpring(py, { stiffness: 120, damping: 22, mass: 0.4 });
-
-  const active = PIN_ANIME.find((p) => p.id === activeId) ?? null;
-
-  const dismissHint = useCallback(() => setHintVisible(false), []);
-
-  const select = useCallback(
-    (id: string | null) => {
-      setActiveId(id);
-      if (id) dismissHint();
-    },
-    [dismissHint],
-  );
-
-  // Parallasse: massimo 6 px, un solo listener, spento su touch e reduced motion.
+  const root = useRef<HTMLElement>(null);
+  const panel = useRef<HTMLDivElement>(null);
+  const image = useRef<HTMLImageElement>(null);
   useEffect(() => {
-    if (reduced || touch) {
-      px.set(0);
-      py.set(0);
-      return;
-    }
-    const el = mapRef.current;
-    if (!el) return;
-    let ticking = false;
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const r = el.getBoundingClientRect();
-        px.set(((e.clientX - r.left) / r.width - 0.5) * 2);
-        py.set(((e.clientY - r.top) / r.height - 0.5) * 2);
-        ticking = false;
-      });
-    };
-    const onLeave = () => {
-      px.set(0);
-      py.set(0);
-    };
-    el.addEventListener("pointermove", onMove, { passive: true });
-    el.addEventListener("pointerleave", onLeave);
-    return () => {
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
-    };
-  }, [reduced, touch, px, py]);
-
-  // Escape chiude l'anteprima aperta.
+    if (image.current?.complete && !image.current.naturalWidth) setMissingImage(true);
+  }, []);
+  const [selected, setSelected] = useState(0);
+  const [missingImage, setMissingImage] = useState(false);
+  const pin = PIN_ANIME[selected];
+  const chapter = JOURNEY[selected];
   useEffect(() => {
-    if (!activeId) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveId(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [activeId]);
-
-  const photoX = useTransform(sx, (v) => v * -6);
-  const photoY = useTransform(sy, (v) => v * -5);
-
-  const enter = (delay: number) =>
-    reduced
-      ? {
-          initial: { opacity: 1, y: 0 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0 },
-        }
-      : {
-          initial: { opacity: 0, y: 12 },
-          animate: { opacity: 1, y: 0 },
-          transition: { duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] as const },
-        };
-
+    gsap.registerPlugin(ScrollTrigger);
+    const media = gsap.matchMedia();
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      const ctx = gsap.context(() => {
+        gsap.from(".journey-map-intro > *", {
+          opacity: 0,
+          y: 28,
+          stagger: 0.12,
+          duration: 1,
+          ease: "power3.out",
+        });
+        gsap.fromTo(
+          ".journey-map-visual",
+          { y: 0 },
+          {
+            y: -28,
+            ease: "none",
+            scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 1 },
+          },
+        );
+      }, root);
+      return () => ctx.revert();
+    });
+    return () => media.revert();
+  }, []);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        panel.current,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
+      );
+    });
+    return () => ctx.revert();
+  }, [selected]);
   return (
-    <section
-      id="hero"
-      data-act="hero"
-      data-tone="dark"
-      aria-label="La Masseria vista dall'alto"
-      className="relative isolate flex min-h-[100dvh] w-full flex-col bg-[color:var(--carbone)]"
-    >
-      {/* ===== Mappa ===== */}
-      <div
-        ref={mapRef}
-        className="relative isolate min-h-[62dvh] flex-1 overflow-hidden"
-        onClick={(e) => {
-          if (e.target === e.currentTarget) setActiveId(null);
-        }}
-      >
-        {/* Fotografia aerea autentica: nitida, contrasto leggermente abbassato. */}
-        <motion.div
-          aria-hidden={false}
-          className="absolute inset-[-10px]"
-          style={{ x: photoX, y: photoY }}
-        >
-          <img
-            src={aerial.url}
-            alt="Veduta aerea della Masseria Don Gianvito a Noci: i corpi di fabbrica in pietra, i campi coltivati e la strada che li attraversa"
-            className="h-full w-full object-cover object-[58%_center] md:object-center"
-            style={{ filter: "saturate(1.02) contrast(0.94) brightness(0.97)" }}
-            fetchPriority="high"
-            decoding="async"
-          />
-        </motion.div>
-
-        {/* Scrim del titolo: zona esclusiva in alto a sinistra. */}
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, color-mix(in oklab, var(--carbone) 60%, transparent) 0%, transparent 34%), linear-gradient(100deg, color-mix(in oklab, var(--carbone) 62%, transparent) 0%, transparent 44%), linear-gradient(0deg, color-mix(in oklab, var(--carbone) 58%, transparent) 0%, transparent 22%)",
-          }}
-        />
-        <div aria-hidden className="grain absolute inset-0" />
-
-        {/* ===== Titolo ===== */}
-        <div
-          className="pointer-events-none relative z-20 mx-auto flex h-full max-w-[1600px] flex-col px-5 pb-8 md:px-10 md:pb-10"
-          style={{ paddingTop: "var(--page-header-safe-offset)" }}
-        >
-          <motion.div
-            animate={{ opacity: active ? 0.75 : 1 }}
-            transition={{ duration: reduced ? 0 : 0.3 }}
-            className="max-w-md lg:max-w-lg"
-          >
-            <motion.p
-              {...enter(0.04)}
-              className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/80 md:text-[10px]"
-            >
-              {MASSERIA.nome} · Noci
-            </motion.p>
-            <motion.h1
-              {...enter(0.14)}
-              data-hero-title
-              className="mt-3 font-display text-[clamp(2rem,5vw,4.2rem)] leading-[0.96] text-[color:var(--bianco-calce)]"
-            >
-              <span className="block">Un solo luogo.</span>
-              <span className="block text-[color:var(--oro-antico)]">Quattro mestieri.</span>
-            </motion.h1>
-            <motion.p
-              {...enter(0.24)}
-              className="mt-4 max-w-xs text-[16px] leading-relaxed text-[color:var(--bianco-calce)]/85 md:text-[15px]"
-            >
-              Dalla terra alla tavola, ogni passaggio avviene qui.
-            </motion.p>
-          </motion.div>
-        </div>
-
-        {/* ===== Le quattro targhe ===== */}
-        <ul className="absolute inset-0 z-30 m-0 list-none p-0">
-          {PIN_ANIME.map((pin, i) => (
-            <PinTarga
-              key={pin.id}
-              pin={pin}
-              index={i}
-              tier={tier}
-              touch={touch}
-              reduced={reduced}
-              active={activeId === pin.id}
-              dimmed={activeId !== null && activeId !== pin.id}
-              onHover={select}
-              sx={sx}
-              sy={sy}
-            />
-          ))}
-        </ul>
-
-        {/* ===== Scheda mobile ===== */}
-        <AnimatePresence>
-          {touch && active && (
-            <motion.div
-              key={`sheet-${active.id}`}
-              initial={reduced ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: 10 }}
-              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-x-3 bottom-3 z-40"
-            >
-              <Link
-                to={active.to}
-                aria-label={`${active.nome} — scopri la pagina dedicata`}
-                className="block rounded-md border-2 border-[color:var(--oro-antico)] bg-[color:var(--carbone)] p-4 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.7)]"
-              >
-                <span className="font-eyebrow block text-[10px] tracking-[0.3em] text-[color:var(--oro-antico)]">
-                  {active.numero} · {active.nome.toUpperCase()}
-                </span>
-                <span className="mt-2 block text-[16px] leading-snug text-[color:var(--bianco-calce)]">
-                  {active.descrizione}
-                </span>
-                <span className="mt-3 block text-[15px] font-medium text-[color:var(--bianco-calce)]">
-                  {active.invito} →
-                </span>
-              </Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* ===== Indicatore di esplorazione ===== */}
-        <AnimatePresence>
-          {hintVisible && !active && (
-            <motion.p
-              key="hint"
-              initial={reduced ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: reduced ? 0 : 1.2 }}
-              className="font-eyebrow pointer-events-none absolute inset-x-0 bottom-4 z-20 text-center text-[9px] tracking-[0.3em] text-[color:var(--bianco-calce)]/75"
-            >
-              QUATTRO LUOGHI. {touch ? "TOCCA" : "CLICCA"} PER ENTRARE
-            </motion.p>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* ===== Fila delle quattro anime (mobile): obbligatoria ===== */}
-      <nav
-        aria-label="Le quattro anime della Masseria"
-        className="relative z-20 border-t border-[color:var(--bianco-calce)]/15 bg-[color:var(--carbone)] md:hidden"
-      >
-        <ul className="grid grid-cols-2">
-          {PIN_ANIME.map((pin) => (
-            <li key={pin.id} className="border-b border-r border-[color:var(--bianco-calce)]/12">
-              <Link
-                to={pin.to}
-                aria-label={`${pin.nome} — scopri la pagina dedicata`}
-                onFocus={() => setActiveId(pin.id)}
-                onClick={dismissHint}
-                onPointerDown={() => select(pin.id)}
-                className={`flex h-full min-h-[56px] flex-col justify-center px-4 py-3 transition-colors ${
-                  activeId === pin.id ? "bg-[color:var(--bianco-calce)]/10" : ""
-                }`}
-              >
-                <span className="font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-antico)]">
-                  {pin.numero}
-                </span>
-                <span className="font-eyebrow text-[15px] uppercase leading-tight tracking-[0.08em] text-[color:var(--bianco-calce)]">
-                  {pin.nome} <span aria-hidden>→</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* ===== Handoff verso l'atto 01 (gap 0px) ===== */}
-      <div
-        data-hero-handoff
-        className="relative z-20"
-        style={{
-          background:
-            "linear-gradient(180deg, var(--carbone) 0%, color-mix(in oklab, var(--bianco-calce) 50%, var(--carbone)) 55%, var(--bianco-calce) 100%)",
-        }}
-      >
-        <div aria-hidden className="hairline-oro" />
-        <div className="mx-auto flex max-w-[1600px] items-center gap-3 px-5 py-5 md:px-10 md:py-6">
-          <span aria-hidden className="h-px w-10 bg-[color:var(--oro-antico)]/70" />
-          <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--pietra-800)]/70 md:text-[10px]">
-            01 · Il Manifesto
+    <section id="mappa" ref={root} className="journey-map-hero" data-tone="dark">
+      <div className="journey-shell">
+        <div className="journey-map-intro">
+          <p className="journey-kicker">Masseria Don Gianvito · Noci, Puglia</p>
+          <h1>
+            Un luogo.
+            <br />
+            <em>Quattro anime.</em>
+          </h1>
+          <p>
+            Non una visita. Un percorso.
+            <br />
+            Scegli da dove cominciare.
           </p>
+        </div>
+        {missingImage && (
+          <p className="journey-map-notice">
+            Percorso schematico · la fotografia aerea originale è da inserire. Le posizioni dei
+            luoghi saranno verificate sulla foto.
+          </p>
+        )}
+        <div className="journey-map-layout">
+          <div
+            className={`journey-map-visual ${missingImage ? "journey-map-visual--missing" : ""}`}
+          >
+            {!missingImage && (
+              <img
+                ref={image}
+                className="journey-aerial"
+                src={aerial.url}
+                alt="Veduta aerea della masseria, con quattro luoghi da esplorare"
+                onError={() => setMissingImage(true)}
+                fetchPriority="high"
+              />
+            )}
+            {missingImage && (
+              <div className="journey-map-fallback">
+                <span>La masseria dall’alto</span>
+                <p>
+                  La foto aerea originale non è disponibile in locale.
+                  <br />
+                  Percorso schematico: posizioni da verificare sulla fotografia.
+                </p>
+              </div>
+            )}
+            <svg
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="journey-map-thread"
+              aria-hidden="true"
+            >
+              <path d="M64 20 C64 32 44 32 44 46 S78 45 78 60 S46 68 46 86" />
+            </svg>
+            {PIN_ANIME.map((p, i) => (
+              <button
+                type="button"
+                key={p.id}
+                className={`journey-map-pin ${selected === i ? "is-active" : ""}`}
+                style={{ left: `${p.d.x}%`, top: `${p.d.y}%` }}
+                onClick={() => setSelected(i)}
+                aria-label={`Esplora ${p.nome}, capitolo ${p.numero}`}
+                aria-pressed={selected === i}
+                aria-controls="journey-map-detail"
+              >
+                <span className="journey-pin-number">{p.numero}</span>
+                <span className="journey-pin-name">{p.nome}</span>
+              </button>
+            ))}
+            <div className="journey-map-coordinate" aria-hidden="true">
+              01 — 04 / Dalla terra alla tavola
+            </div>
+          </div>
+          <aside
+            className="journey-map-detail"
+            id="journey-map-detail"
+            aria-label="Capitolo selezionato"
+          >
+            <div ref={panel} aria-live="polite" aria-atomic="true">
+              <p className="journey-kicker">Il percorso · {pin.numero} / 04</p>
+              <h2>{pin.nome}</h2>
+              <p className="journey-map-claim">{chapter.title.join(" ")}</p>
+              <p className="journey-map-summary">{chapter.introduction}</p>
+              <Link to={pin.to} className="journey-button">
+                Entra nel capitolo <span aria-hidden="true">↗</span>
+              </Link>
+            </div>
+            <div className="journey-map-selector" role="group" aria-label="Scegli un capitolo">
+              {PIN_ANIME.map((p, i) => (
+                <button
+                  type="button"
+                  key={p.id}
+                  onClick={() => setSelected(i)}
+                  aria-label={p.nome}
+                  aria-pressed={selected === i}
+                >
+                  {p.numero}
+                </button>
+              ))}
+            </div>
+          </aside>
+        </div>
+        <div className="journey-map-footer">
+          <span>Segui il filo. Ogni luogo racconta una parte.</span>
+          <Link to="/" hash="storia" className="journey-text-link">
+            La storia della masseria ↓
+          </Link>
         </div>
       </div>
     </section>
-  );
-}
-
-/**
- * Una TARGA: nodo ancorato + linea guida + cartellino editoriale sempre visibile.
- */
-function PinTarga({
-  pin,
-  index,
-  tier,
-  touch,
-  reduced,
-  active,
-  dimmed,
-  onHover,
-  sx,
-  sy,
-}: {
-  pin: PinAnima;
-  index: number;
-  tier: Tier;
-  touch: boolean;
-  reduced: boolean;
-  active: boolean;
-  dimmed: boolean;
-  onHover: (id: string | null) => void;
-  sx: MotionValue<number>;
-  sy: MotionValue<number>;
-}) {
-  const x = useTransform(sx, (v) => v * -6 * pin.profondita);
-  const y = useTransform(sy, (v) => v * -5 * pin.profondita);
-  const coord = coordOf(pin, tier);
-  const { dx, dy } = coord.off;
-  const compatta = tier === "mobile" || tier === "short";
-  const larghezza = tier === "desktop" ? 244 : tier === "tablet" ? 208 : 156;
-  const verso: "right" | "left" = dx >= 0 ? "right" : "left";
-  // Stato del pin PRIMA del tocco: il focus da touch non vale come "già aperto".
-  const eraAttivo = useRef(false);
-
-  const bordo = active ? "var(--oro-antico)" : "color-mix(in oklab, var(--bianco-calce) 62%, transparent)";
-
-  return (
-    <li
-      className="absolute"
-      style={{ left: `${coord.x}%`, top: `${coord.y}%` }}
-      onPointerDownCapture={(e) => {
-        if (e.pointerType !== "mouse") eraAttivo.current = active;
-      }}
-      onClickCapture={(e) => {
-        // Touch: il primo tocco apre la scheda, non naviga.
-        if (touch && !eraAttivo.current) {
-          e.preventDefault();
-          e.stopPropagation();
-          onHover(pin.id);
-        }
-      }}
-    >
-      <motion.div
-        style={reduced || touch ? undefined : { x, y }}
-        animate={{ opacity: dimmed ? 0.55 : 1 }}
-        transition={{ duration: reduced ? 0 : 0.25 }}
-        className="relative"
-      >
-        {/* chiarore locale attorno al nodo, minimo */}
-        {active && (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute size-24 -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle, color-mix(in oklab, var(--oro-antico) 26%, transparent) 0%, transparent 70%)",
-            }}
-          />
-        )}
-
-        {/* linea guida nodo → targa */}
-        <svg
-          aria-hidden
-          className="pointer-events-none absolute overflow-visible"
-          width="1"
-          height="1"
-        >
-          <motion.line
-            x1="0"
-            y1="0"
-            x2={dx}
-            y2={dy}
-            stroke={active ? "var(--oro-antico)" : "color-mix(in oklab, var(--bianco-calce) 78%, transparent)"}
-            strokeWidth="1"
-            initial={reduced ? false : { pathLength: 0, opacity: 0 }}
-            animate={{ pathLength: 1, opacity: 1 }}
-            transition={{ duration: reduced ? 0 : 0.32, delay: reduced ? 0 : 0.5 + index * 0.1 }}
-          />
-        </svg>
-
-        {/* nodo pieno ancorato al punto reale */}
-        <motion.span
-          aria-hidden
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full border-2"
-          initial={reduced ? false : { opacity: 0, scale: 0.5 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            width: active ? 16 : 11,
-            height: active ? 16 : 11,
-          }}
-          transition={{ duration: reduced ? 0 : 0.3, delay: reduced ? 0 : 0.45 + index * 0.1 }}
-          style={{
-            background: "var(--bianco-calce)",
-            borderColor: "var(--oro-antico)",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.55)",
-          }}
-        />
-
-        {/* la targa */}
-        <motion.div
-          className="absolute"
-          style={{
-            left: verso === "right" ? dx : undefined,
-            right: verso === "left" ? -dx : undefined,
-            top: dy,
-            width: larghezza,
-            transform: "translateY(-50%)",
-          }}
-          initial={reduced ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: reduced ? 0 : 0.4, delay: reduced ? 0 : 0.4 + index * 0.1 }}
-        >
-          <Link
-            to={pin.to}
-            aria-label={`${pin.numero} ${pin.nome} — ${pin.descrizione} ${pin.invito}`}
-            aria-current={active ? "true" : undefined}
-            onPointerEnter={(e) => {
-              if (e.pointerType === "mouse") onHover(pin.id);
-            }}
-            onPointerLeave={(e) => {
-              if (e.pointerType === "mouse") onHover(null);
-            }}
-            onClick={() => onHover(pin.id)}
-            onFocus={() => onHover(pin.id)}
-            onBlur={() => onHover(null)}
-            className="group block rounded-[3px] outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--oro-antico)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--carbone)]"
-          >
-            <motion.div
-              animate={{ y: active && !touch ? -3 : 0 }}
-              transition={{ duration: reduced ? 0 : 0.2 }}
-              className="rounded-[3px] border px-3 py-2.5 md:px-4 md:py-3"
-              style={{
-                background: "color-mix(in oklab, var(--carbone) 94%, var(--oro-antico))",
-                borderColor: bordo,
-                boxShadow: "0 14px 34px -10px rgba(0,0,0,0.72), 0 2px 6px rgba(0,0,0,0.45)",
-              }}
-            >
-              <span className="font-eyebrow block text-[12px] leading-none tracking-[0.28em] text-[color:var(--oro-antico)] md:text-[13px]">
-                {pin.numero}
-              </span>
-              <span className="font-eyebrow mt-1.5 flex items-baseline justify-between gap-2 text-[15px] uppercase leading-tight tracking-[0.1em] text-[color:var(--bianco-calce)] md:text-[20px]">
-                {pin.nome}
-                <motion.span
-                  aria-hidden
-                  animate={{ x: active && !touch ? 3 : 0 }}
-                  transition={{ duration: reduced ? 0 : 0.2 }}
-                  className="text-[color:var(--oro-antico)]"
-                >
-                  →
-                </motion.span>
-              </span>
-              {!compatta && (
-                <span className="mt-1.5 block text-[16px] leading-snug text-[color:var(--bianco-calce)]/90 md:text-[13.5px]">
-                  {pin.descrizione}
-                </span>
-              )}
-              <AnimatePresence>
-                {active && !touch && (
-                  <motion.span
-                    initial={reduced ? false : { opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: reduced ? 0 : 0.2 }}
-                    className="mt-2 block overflow-hidden text-[12.5px] font-medium tracking-wide text-[color:var(--oro-antico)]"
-                  >
-                    {pin.invito}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          </Link>
-        </motion.div>
-      </motion.div>
-    </li>
   );
 }

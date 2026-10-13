@@ -96,6 +96,7 @@ export const ATTI = [
 
 /** Sezioni Home linkate direttamente dall'header. */
 export const HEADER_SEZIONI = [
+  { id: "mappa", nome: "Esplora" },
   { id: "storia", nome: "Storia" },
   { id: "luogo", nome: "Il Luogo" },
   { id: "filiera", nome: "La Filiera" },

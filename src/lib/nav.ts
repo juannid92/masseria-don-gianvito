@@ -11,6 +11,7 @@ import type Lenis from "lenis";
  */
 
 const HOME_SECTION_IDS = [
+  "mappa",
   "manifesto",
   "storia",
   "luogo",

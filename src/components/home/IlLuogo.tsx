@@ -1,3 +1,4 @@
+import { PrototypeImage } from "@/components/journey/PrototypeImage";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
@@ -339,7 +340,7 @@ export function IlLuogo() {
             className="absolute inset-0 hidden [@media(min-width:900px)]:block"
             style={{ opacity: 0.9 }}
           >
-            <img
+            <PrototypeImage
               src={aerial.url}
               alt=""
               className="h-full w-full object-cover object-[30%_35%]"
@@ -349,7 +350,7 @@ export function IlLuogo() {
           </div>
           {/* Livello vicino: crop largo, decentrato sul campo (non sugli edifici) */}
           <div data-photo className="absolute inset-0 will-change-transform">
-            <img
+            <PrototypeImage
               src={aerial.url}
               alt="Vista aerea dei campi e del cortile della Masseria Don Gianvito, lungo la provinciale per Mottola"
               className="h-full w-full object-cover object-[28%_42%]"

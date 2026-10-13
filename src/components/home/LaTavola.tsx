@@ -65,6 +65,7 @@ export function LaTavola() {
       <div aria-hidden className="grain absolute inset-0 opacity-10 pointer-events-none" />
       
       <div className="relative z-10 mx-auto max-w-[1400px] px-5 md:px-10 h-full flex flex-col justify-center">
+        <Link to="/agriturismo" hash="menu" className="journey-text-link mb-8 inline-block">Esplora il menù dell’agriturismo ↗</Link>
         {/* Composizione Tipografica Asimmetrica */}
         <div className="grid grid-cols-12 gap-x-6 gap-y-12 md:gap-x-10">
           

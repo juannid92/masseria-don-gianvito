@@ -16,6 +16,7 @@ export function Header() {
   const [drawer, setDrawer] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [tone, setTone] = useState<"dark" | "light">("dark");
+  const drawerRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const goToSection = useHomeSectionNav(() => {
     setOpen(false);
@@ -77,6 +78,40 @@ export function Header() {
     setOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (!drawer) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } })
+      .__lenis;
+    lenis?.stop();
+    const controls = () =>
+      Array.from(drawerRef.current?.querySelectorAll<HTMLElement>("a[href], button") ?? []);
+    controls()[0]?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setDrawer(false);
+      if (event.key !== "Tab") return;
+      const elements = controls();
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      lenis?.start();
+      document.removeEventListener("keydown", onKey);
+      previousFocus?.focus();
+    };
+  }, [drawer]);
+
   const animaAttiva = ANIME.find((a) => a.to === location.pathname);
 
   const isLight = tone === "light";
@@ -135,13 +170,25 @@ export function Header() {
             </button>
           ))}
 
+          <Link
+            to="/agriturismo"
+            hash="menu"
+            className={cn(
+              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
+              textSoft,
+            )}
+          >
+            Menù
+          </Link>
           <div className="relative" ref={menuRef}>
             <button
               type="button"
+              aria-expanded={open}
+              aria-haspopup="true"
               onClick={() => setOpen((v) => !v)}
               className={cn(
                 "font-eyebrow text-[9px] tracking-[0.22em] transition-colors",
-                (open || animaAttiva) ? "" : textSoft,
+                open || animaAttiva ? "" : textSoft,
               )}
               style={open || animaAttiva ? { color: oroText } : undefined}
             >
@@ -186,32 +233,72 @@ export function Header() {
         {/* Mobile */}
         <button
           type="button"
-          className="lg:hidden"
+          className="lg:hidden min-h-11 min-w-11 flex items-center justify-center"
+          aria-expanded={drawer}
+          aria-haspopup="dialog"
           onClick={() => setDrawer(true)}
         >
           <span className="sr-only">Menu</span>
           <div className="flex flex-col gap-1.5 w-6">
-             <div className="h-px w-full" style={{ background: oroText }} />
-             <div className="h-px w-full" style={{ background: oroText }} />
+            <div className="h-px w-full" style={{ background: oroText }} />
+            <div className="h-px w-full" style={{ background: oroText }} />
           </div>
         </button>
       </div>
 
       {drawer && (
-        <div className="fixed inset-0 z-50 bg-[color:var(--carbone)] p-5 flex flex-col lg:hidden">
+        <div
+          ref={drawerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigazione della masseria"
+          className="fixed inset-0 z-50 bg-[color:var(--carbone)] p-5 flex flex-col lg:hidden"
+        >
           <div className="flex justify-between items-center mb-12">
-             <span className="font-display text-[18px] text-[color:var(--bianco-calce)]">Masseria Don Gianvito</span>
-             <button onClick={() => setDrawer(false)} className="font-eyebrow text-[10px] text-white/50">Chiudi</button>
+            <span className="font-display text-[18px] text-[color:var(--bianco-calce)]">
+              Masseria Don Gianvito
+            </span>
+            <button
+              onClick={() => setDrawer(false)}
+              className="font-eyebrow text-[10px] text-white/50"
+            >
+              Chiudi
+            </button>
           </div>
           <nav className="flex flex-col gap-6">
-             {HEADER_SEZIONI.map(s => (
-               <button key={s.id} onClick={() => goToSection(s.id)} className="text-left font-display text-[26px] text-white">{s.nome}</button>
-             ))}
-             <div className="h-px bg-white/10 my-4" />
-             {ANIME.map(a => (
-               <Link key={a.id} to={a.to} className="font-display text-[26px] text-[color:var(--oro-su-scuro)]">{a.nome}</Link>
-             ))}
-             <button onClick={() => goToSection("prenota")} className="mt-8 h-14 border border-[color:var(--oro-antico)] font-eyebrow text-[11px] text-[color:var(--oro-su-scuro)]">PRENOTA</button>
+            {HEADER_SEZIONI.map((s) => (
+              <button
+                key={s.id}
+                onClick={() => goToSection(s.id)}
+                className="text-left font-display text-[26px] text-white"
+              >
+                {s.nome}
+              </button>
+            ))}
+            <Link
+              to="/agriturismo"
+              hash="menu"
+              onClick={() => setDrawer(false)}
+              className="font-display text-[26px] text-white"
+            >
+              Menù
+            </Link>
+            <div className="h-px bg-white/10 my-4" />
+            {ANIME.map((a) => (
+              <Link
+                key={a.id}
+                to={a.to}
+                className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
+              >
+                {a.nome}
+              </Link>
+            ))}
+            <button
+              onClick={() => goToSection("prenota")}
+              className="mt-8 h-14 border border-[color:var(--oro-antico)] font-eyebrow text-[11px] text-[color:var(--oro-su-scuro)]"
+            >
+              PRENOTA
+            </button>
           </nav>
         </div>
       )}

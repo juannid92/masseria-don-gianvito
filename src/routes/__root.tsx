@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { RouteAtmosphere } from "@/components/journey/RouteAtmosphere";
+
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ScrollProvider } from "@/components/site/ScrollProvider";
@@ -16,7 +18,6 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
-
 
 function NotFoundComponent() {
   return (
@@ -26,10 +27,12 @@ function NotFoundComponent() {
       <title>Pagina non trovata — Masseria Don Gianvito</title>
       <meta name="robots" content="noindex, nofollow" />
       <link rel="canonical" href={getAbsoluteUrl("/404")} />
-      
+
       <div className="max-w-md text-center">
         <h1 className="font-display text-7xl text-[color:var(--carbone)]">404</h1>
-        <h2 className="mt-4 font-display text-2xl text-[color:var(--carbone)]">Pagina non trovata</h2>
+        <h2 className="mt-4 font-display text-2xl text-[color:var(--carbone)]">
+          Pagina non trovata
+        </h2>
         <div className="hairline-oro mx-auto mt-6 max-w-[120px]" />
         <p className="mt-6 text-[16px] text-[color:var(--carbone)]/70">
           La pagina che cerchi non esiste o è stata spostata.
@@ -47,7 +50,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -138,29 +141,29 @@ function RootShell({ children }: { children: ReactNode }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Restaurant",
-              "name": SITE_CONFIG.name,
-              "description": SITE_CONFIG.description,
-              "url": SITE_CONFIG.url,
-              "telephone": [
+              name: SITE_CONFIG.name,
+              description: SITE_CONFIG.description,
+              url: SITE_CONFIG.url,
+              telephone: [
                 `tel:+39${MASSERIA.telefono.replace(/\s/g, "")}`,
-                `tel:+39${MASSERIA.telefono2.replace(/\s/g, "")}`
+                `tel:+39${MASSERIA.telefono2.replace(/\s/g, "")}`,
               ],
-              "address": {
+              address: {
                 "@type": "PostalAddress",
-                "streetAddress": MASSERIA.indirizzo,
-                "addressLocality": "Noci",
-                "addressRegion": "BA",
-                "postalCode": "70015",
-                "addressCountry": "IT"
+                streetAddress: MASSERIA.indirizzo,
+                addressLocality: "Noci",
+                addressRegion: "BA",
+                postalCode: "70015",
+                addressCountry: "IT",
               },
-              "geo": {
+              geo: {
                 "@type": "GeoCoordinates",
-                "latitude": MASSERIA.coordinate.lat,
-                "longitude": MASSERIA.coordinate.lng
+                latitude: MASSERIA.coordinate.lat,
+                longitude: MASSERIA.coordinate.lng,
               },
-              "servesCuisine": "Pugliese",
-              "priceRange": "$$"
-            })
+              servesCuisine: "Pugliese",
+              priceRange: "$$",
+            }),
           }}
         />
       </head>
@@ -178,6 +181,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ScrollProvider>
+        <RouteAtmosphere />
         <Header />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <main className="relative">
@@ -188,4 +192,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

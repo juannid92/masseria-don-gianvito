@@ -9,33 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MacelleriaRouteImport } from './routes/macelleria'
-import { Route as CaseificioRouteImport } from './routes/caseificio'
-import { Route as BraceriaRouteImport } from './routes/braceria'
-import { Route as AllevamentoRouteImport } from './routes/allevamento'
-import { Route as AgriturismoRouteImport } from './routes/agriturismo'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LegaliPrivacyRouteImport } from './routes/legali/privacy'
+import { Route as AgriturismoRouteImport } from './routes/agriturismo'
+import { Route as AllevamentoRouteImport } from './routes/allevamento'
+import { Route as BraceriaRouteImport } from './routes/braceria'
+import { Route as CaseificioRouteImport } from './routes/caseificio'
+import { Route as MacelleriaRouteImport } from './routes/macelleria'
 import { Route as LegaliCookieRouteImport } from './routes/legali/cookie'
+import { Route as LegaliPrivacyRouteImport } from './routes/legali/privacy'
 
-const MacelleriaRoute = MacelleriaRouteImport.update({
-  id: '/macelleria',
-  path: '/macelleria',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CaseificioRoute = CaseificioRouteImport.update({
-  id: '/caseificio',
-  path: '/caseificio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BraceriaRoute = BraceriaRouteImport.update({
-  id: '/braceria',
-  path: '/braceria',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AllevamentoRoute = AllevamentoRouteImport.update({
-  id: '/allevamento',
-  path: '/allevamento',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AgriturismoRoute = AgriturismoRouteImport.update({
@@ -43,19 +28,34 @@ const AgriturismoRoute = AgriturismoRouteImport.update({
   path: '/agriturismo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AllevamentoRoute = AllevamentoRouteImport.update({
+  id: '/allevamento',
+  path: '/allevamento',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LegaliPrivacyRoute = LegaliPrivacyRouteImport.update({
-  id: '/legali/privacy',
-  path: '/legali/privacy',
+const BraceriaRoute = BraceriaRouteImport.update({
+  id: '/braceria',
+  path: '/braceria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseificioRoute = CaseificioRouteImport.update({
+  id: '/caseificio',
+  path: '/caseificio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MacelleriaRoute = MacelleriaRouteImport.update({
+  id: '/macelleria',
+  path: '/macelleria',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LegaliCookieRoute = LegaliCookieRouteImport.update({
   id: '/legali/cookie',
   path: '/legali/cookie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LegaliPrivacyRoute = LegaliPrivacyRouteImport.update({
+  id: '/legali/privacy',
+  path: '/legali/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -136,32 +136,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/macelleria': {
-      id: '/macelleria'
-      path: '/macelleria'
-      fullPath: '/macelleria'
-      preLoaderRoute: typeof MacelleriaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/caseificio': {
-      id: '/caseificio'
-      path: '/caseificio'
-      fullPath: '/caseificio'
-      preLoaderRoute: typeof CaseificioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/braceria': {
-      id: '/braceria'
-      path: '/braceria'
-      fullPath: '/braceria'
-      preLoaderRoute: typeof BraceriaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/allevamento': {
-      id: '/allevamento'
-      path: '/allevamento'
-      fullPath: '/allevamento'
-      preLoaderRoute: typeof AllevamentoRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/agriturismo': {
@@ -171,18 +150,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AgriturismoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/allevamento': {
+      id: '/allevamento'
+      path: '/allevamento'
+      fullPath: '/allevamento'
+      preLoaderRoute: typeof AllevamentoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/legali/privacy': {
-      id: '/legali/privacy'
-      path: '/legali/privacy'
-      fullPath: '/legali/privacy'
-      preLoaderRoute: typeof LegaliPrivacyRouteImport
+    '/braceria': {
+      id: '/braceria'
+      path: '/braceria'
+      fullPath: '/braceria'
+      preLoaderRoute: typeof BraceriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/caseificio': {
+      id: '/caseificio'
+      path: '/caseificio'
+      fullPath: '/caseificio'
+      preLoaderRoute: typeof CaseificioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/macelleria': {
+      id: '/macelleria'
+      path: '/macelleria'
+      fullPath: '/macelleria'
+      preLoaderRoute: typeof MacelleriaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/legali/cookie': {
@@ -190,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: '/legali/cookie'
       fullPath: '/legali/cookie'
       preLoaderRoute: typeof LegaliCookieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/legali/privacy': {
+      id: '/legali/privacy'
+      path: '/legali/privacy'
+      fullPath: '/legali/privacy'
+      preLoaderRoute: typeof LegaliPrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
