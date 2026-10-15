@@ -67,8 +67,10 @@ export function IlManifesto() {
           );
         if (grana) tl.fromTo(grana, { yPercent: 0 }, { yPercent: -3, duration: 1 }, 0);
         // Su mobile/landscape (senza pin) i livelli di testo non traslano: nessun taglio sotto l'header.
-        if (pin && editoriale) tl.fromTo(editoriale, { yPercent: 0 }, { yPercent: -20, duration: 1 }, 0);
-        if (pin && chiusura) tl.fromTo(chiusura, { yPercent: 0 }, { yPercent: -28, duration: 1 }, 0);
+        if (pin && editoriale)
+          tl.fromTo(editoriale, { yPercent: 0 }, { yPercent: -20, duration: 1 }, 0);
+        if (pin && chiusura)
+          tl.fromTo(chiusura, { yPercent: 0 }, { yPercent: -28, duration: 1 }, 0);
 
         // Label narrativa (progress 0 → 1).
         tl.addLabel("terra", 0)
@@ -93,9 +95,19 @@ export function IlManifesto() {
           );
         });
         if (sostegno)
-          tl.fromTo(sostegno, { opacity: 0, x: 32 }, { opacity: 1, x: 0, duration: 0.1 }, "sostegno");
+          tl.fromTo(
+            sostegno,
+            { opacity: 0, x: 32 },
+            { opacity: 1, x: 0, duration: 0.1 },
+            "sostegno",
+          );
         if (chiusura)
-          tl.fromTo(chiusura, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.08 }, "chiusura");
+          tl.fromTo(
+            chiusura,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.08 },
+            "chiusura",
+          );
         if (editoriale) tl.to(editoriale, { opacity: 0.4, duration: 0.15 }, "attenua");
         if (handoff) tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.08 }, "handoff");
         if (occhiello02)
@@ -152,6 +164,31 @@ export function IlManifesto() {
     };
   }, [reduced]);
 
+  // Enhanced: Subtle floating animation for background layers
+  useEffect(() => {
+    if (reduced) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const floatElements = root.querySelectorAll<HTMLElement>("[data-layer]");
+    floatElements.forEach((el, i) => {
+      gsap.to(el, {
+        y: -5 + Math.random() * 10,
+        x: -3 + Math.random() * 6,
+        rotation: -1 + Math.random() * 2,
+        duration: 4 + Math.random() * 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: i * 0.5,
+      });
+    });
+
+    return () => {
+      gsap.killTweensOf(floatElements);
+    };
+  }, [reduced]);
+
   const statico = reduced;
   const vis = statico ? 1 : undefined;
 
@@ -175,15 +212,18 @@ export function IlManifesto() {
               data-move
               className="absolute inset-[-8%]"
               style={{
-                background:
-                  "var(--bianco-calce)",
+                background: "var(--bianco-calce)",
               }}
             />
           </div>
         </div>
 
         {/* 2 — LUCE DIREZIONALE (radiali tenui d'oro) */}
-        <div aria-hidden data-layer="luce" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          aria-hidden
+          data-layer="luce"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
           <div data-mouse className="absolute inset-0 will-change-transform">
             <div
               data-move
@@ -198,7 +238,11 @@ export function IlManifesto() {
         </div>
 
         {/* 3 — GRANA */}
-        <div aria-hidden data-layer="grana" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          aria-hidden
+          data-layer="grana"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
           <div data-move className="grain absolute inset-[-4%] opacity-30" />
         </div>
 

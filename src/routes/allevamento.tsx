@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StoryChapter } from "@/components/journey/StoryChapter";
+import { Allevamento } from "@/components/journey/Allevamento";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
 export const Route = createFileRoute("/allevamento")({
@@ -22,5 +22,5 @@ export const Route = createFileRoute("/allevamento")({
 });
 
 function AllevamentoPage() {
-  return <StoryChapter id="allevamento" />;
+  return <Allevamento />;
 }

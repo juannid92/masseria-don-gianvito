@@ -15,6 +15,7 @@ import { Route as AllevamentoRouteImport } from './routes/allevamento'
 import { Route as BraceriaRouteImport } from './routes/braceria'
 import { Route as CaseificioRouteImport } from './routes/caseificio'
 import { Route as MacelleriaRouteImport } from './routes/macelleria'
+import { Route as ProdottiRouteImport } from './routes/prodotti'
 import { Route as LegaliCookieRouteImport } from './routes/legali/cookie'
 import { Route as LegaliPrivacyRouteImport } from './routes/legali/privacy'
 
@@ -48,6 +49,11 @@ const MacelleriaRoute = MacelleriaRouteImport.update({
   path: '/macelleria',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProdottiRoute = ProdottiRouteImport.update({
+  id: '/prodotti',
+  path: '/prodotti',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LegaliCookieRoute = LegaliCookieRouteImport.update({
   id: '/legali/cookie',
   path: '/legali/cookie',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/prodotti': typeof ProdottiRoute
   '/legali/cookie': typeof LegaliCookieRoute
   '/legali/privacy': typeof LegaliPrivacyRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/prodotti': typeof ProdottiRoute
   '/legali/cookie': typeof LegaliCookieRoute
   '/legali/privacy': typeof LegaliPrivacyRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
   '/macelleria': typeof MacelleriaRoute
+  '/prodotti': typeof ProdottiRoute
   '/legali/cookie': typeof LegaliCookieRoute
   '/legali/privacy': typeof LegaliPrivacyRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/prodotti'
     | '/legali/cookie'
     | '/legali/privacy'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/prodotti'
     | '/legali/cookie'
     | '/legali/privacy'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/braceria'
     | '/caseificio'
     | '/macelleria'
+    | '/prodotti'
     | '/legali/cookie'
     | '/legali/privacy'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   BraceriaRoute: typeof BraceriaRoute
   CaseificioRoute: typeof CaseificioRoute
   MacelleriaRoute: typeof MacelleriaRoute
+  ProdottiRoute: typeof ProdottiRoute
   LegaliCookieRoute: typeof LegaliCookieRoute
   LegaliPrivacyRoute: typeof LegaliPrivacyRoute
 }
@@ -178,6 +191,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MacelleriaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prodotti': {
+      id: '/prodotti'
+      path: '/prodotti'
+      fullPath: '/prodotti'
+      preLoaderRoute: typeof ProdottiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/legali/cookie': {
       id: '/legali/cookie'
       path: '/legali/cookie'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   BraceriaRoute: BraceriaRoute,
   CaseificioRoute: CaseificioRoute,
   MacelleriaRoute: MacelleriaRoute,
+  ProdottiRoute: ProdottiRoute,
   LegaliCookieRoute: LegaliCookieRoute,
   LegaliPrivacyRoute: LegaliPrivacyRoute,
 }

@@ -118,6 +118,21 @@ export function LaVoce() {
               },
             },
           );
+
+        // Enhanced: Floating ambient animation for decorative elements
+        const decorElements = root.querySelectorAll<HTMLElement>("[data-filo]");
+        decorElements.forEach((el, i) => {
+          gsap.to(el, {
+            y: -8 + Math.random() * 16,
+            x: -4 + Math.random() * 8,
+            rotation: -2 + Math.random() * 4,
+            duration: 3 + Math.random() * 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: i * 0.3,
+          });
+        });
       });
 
       // Mobile: singola colonna, differenziale dimezzato (~7%).
@@ -175,19 +190,12 @@ export function LaVoce() {
       aria-label="La Voce"
       className="relative isolate w-full overflow-hidden bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] min-h-[160dvh] md:min-h-[150dvh]"
     >
-      <div
-        aria-hidden
-        className="grain pointer-events-none absolute inset-0 z-0 opacity-10"
-      />
+      <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-10" />
 
       <div className="relative z-[1] mx-auto grid w-full max-w-[1500px] grid-cols-12 gap-x-6 px-5 pt-[calc(var(--header-offset)+40px)] pb-24 md:gap-x-10 md:px-10 md:pt-[calc(var(--header-offset)+64px)] md:pb-32">
         {/* Occhiello + titolo — statici, non parallax. */}
         <div className="col-span-12 mb-16 flex items-center gap-4 md:col-span-10 md:mb-24">
-          <span
-            data-filo
-            aria-hidden
-            className="block h-px w-16 bg-[color:var(--oro-antico)]/70"
-          />
+          <span data-filo aria-hidden className="block h-px w-16 bg-[color:var(--oro-antico)]/70" />
           <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--carbone)]/70 md:text-[11px]">
             06 — <span className="text-[color:var(--oro-antico-testo)]">LA VOCE</span>
           </p>
@@ -200,10 +208,7 @@ export function LaVoce() {
         </h2>
 
         {/* Colonna LENTA (frasi lunghe) — sinistra desktop */}
-        <div
-          data-col="lenta"
-          className="col-span-12 flex flex-col gap-40 md:col-span-6 md:gap-56"
-        >
+        <div data-col="lenta" className="col-span-12 flex flex-col gap-40 md:col-span-6 md:gap-56">
           {FRASI_LUNGHE.map((frase, i) => (
             <div key={i} className="flex flex-col gap-4">
               <span

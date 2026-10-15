@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StoryChapter } from "@/components/journey/StoryChapter";
+import { Caseificio } from "@/components/journey/Caseificio";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
 export const Route = createFileRoute("/caseificio")({
@@ -22,5 +22,5 @@ export const Route = createFileRoute("/caseificio")({
 });
 
 function CaseificioPage() {
-  return <StoryChapter id="caseificio" />;
+  return <Caseificio />;
 }

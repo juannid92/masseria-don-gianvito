@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MASSERIA } from "@/data/masseria";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { PrenotazioneForm } from "@/components/PrenotazioneForm";
 
 /**
  * ATTO 07 — PRENOTA. Chiusura della Home.
@@ -29,6 +30,7 @@ export function Prenota() {
   const reduced = useReducedMotion();
   const rootRef = useRef<HTMLElement | null>(null);
   const [mappaAttiva, setMappaAttiva] = useState(false);
+  const [formAperto, setFormAperto] = useState(false);
 
   useEffect(() => {
     if (reduced) return;
@@ -67,6 +69,126 @@ export function Prenota() {
           },
         );
       }
+
+      // Enhanced: Phone links with hover glow effect
+      const phoneLinks = root.querySelectorAll<HTMLElement>("a[href^='tel']");
+      phoneLinks.forEach((link) => {
+        const glow = document.createElement("span");
+        glow.className = "phone-glow";
+        Object.assign(glow.style, {
+          position: "absolute",
+          inset: "-4px -12px",
+          borderRadius: "4px",
+          background: "var(--oro-antico)",
+          opacity: "0",
+          filter: "blur(12px)",
+          pointerEvents: "none",
+          transition: "opacity 0.3s ease",
+          zIndex: "-1",
+        });
+        link.style.position = "relative";
+        link.appendChild(glow);
+
+        link.addEventListener("mouseenter", () => {
+          gsap.to(glow, { opacity: 0.4, duration: 0.3 });
+          gsap.to(link, { x: 4, duration: 0.3, ease: "power2.out" });
+        });
+        link.addEventListener("mouseleave", () => {
+          gsap.to(glow, { opacity: 0, duration: 0.3 });
+          gsap.to(link, { x: 0, duration: 0.3, ease: "power2.out" });
+        });
+      });
+
+      // Enhanced: CTA buttons with magnetic effect
+      const ctaButtons = root.querySelectorAll<HTMLElement>("button, a.inline-flex");
+      ctaButtons.forEach((btn) => {
+        let pos = { x: 0, y: 0 };
+        let target = { x: 0, y: 0 };
+        let rafId: number;
+
+        const onMove = (e: MouseEvent) => {
+          const rect = btn.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          target = {
+            x: (e.clientX - centerX) * 0.2,
+            y: (e.clientY - centerY) * 0.2,
+          };
+        };
+
+        const animate = () => {
+          pos.x += (target.x - pos.x) * 0.1;
+          pos.y += (target.y - pos.y) * 0.1;
+          btn.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+          rafId = requestAnimationFrame(animate);
+        };
+
+        const onLeave = () => {
+          target = { x: 0, y: 0 };
+        };
+
+        btn.addEventListener("mouseenter", () => {
+          window.addEventListener("mousemove", onMove);
+          rafId = requestAnimationFrame(animate);
+        });
+        btn.addEventListener("mouseleave", () => {
+          window.removeEventListener("mousemove", onMove);
+          cancelAnimationFrame(rafId);
+          gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: "power2.out" });
+        });
+      });
+
+      // Enhanced: List items with stagger reveal on scroll
+      const listItems = root.querySelectorAll<HTMLElement>("li");
+      listItems.forEach((item, i) => {
+        gsap.from(item, {
+          opacity: 0,
+          x: -20,
+          duration: 0.4,
+          delay: i * 0.05,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 90%",
+            once: true,
+          },
+        });
+
+        // Hover effect for list items
+        item.addEventListener("mouseenter", () => {
+          gsap.to(item, { x: 8, duration: 0.3, ease: "power2.out" });
+        });
+        item.addEventListener("mouseleave", () => {
+          gsap.to(item, { x: 0, duration: 0.3, ease: "power2.out" });
+        });
+      });
+
+      // Enhanced: Links with underline animation
+      const underlineLinks = root.querySelectorAll<HTMLElement>("a:not([href^='tel'])");
+      underlineLinks.forEach((link) => {
+        const line = document.createElement("span");
+        line.className = "link-underline";
+        Object.assign(line.style, {
+          position: "absolute",
+          bottom: "-2px",
+          left: "0",
+          width: "100%",
+          height: "1px",
+          backgroundColor: "var(--oro-antico)",
+          transformOrigin: "left center",
+          transform: "scaleX(0)",
+          transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        });
+        link.style.position = "relative";
+        link.appendChild(line);
+
+        link.addEventListener("mouseenter", () => {
+          line.style.transform = "scaleX(1)";
+        });
+        link.addEventListener("mouseleave", () => {
+          line.style.transformOrigin = "right center";
+          line.style.transform = "scaleX(0)";
+        });
+      });
     }, root);
 
     return () => ctx.revert();
@@ -154,26 +276,27 @@ export function Prenota() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href={MASSERIA.whatsappPrenota}
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => setFormAperto(!formAperto)}
                     className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 underline decoration-[color:var(--oro-antico)] underline-offset-4 transition-colors hover:text-[color:var(--bianco-calce)]"
+                    aria-expanded={formAperto}
                   >
-                    WhatsApp, con il messaggio già pronto
-                  </a>
+                    {formAperto
+                      ? "Chiudi il form di prenotazione"
+                      : "WhatsApp, con il messaggio già pronto"}
+                  </button>
                 </li>
               </ul>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href={MASSERIA.whatsappPrenota}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={() => setFormAperto(!formAperto)}
                   className="inline-flex min-h-[52px] w-full items-center justify-center bg-[color:var(--oro-antico)] px-7 font-eyebrow text-[11px] tracking-[0.26em] text-[color:var(--carbone)] transition-opacity hover:opacity-90 sm:w-auto"
                 >
-                  Prenota un tavolo
-                </a>
+                  {formAperto ? "Chiudi" : "Prenota un tavolo"}
+                </button>
                 <a
                   href={MASSERIA.telefonoHref}
                   className="inline-flex min-h-[52px] w-full items-center justify-center border border-[color:var(--oro-antico)] px-7 font-eyebrow text-[11px] tracking-[0.26em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--oro-antico)]/12 sm:w-auto"
@@ -181,6 +304,13 @@ export function Prenota() {
                   Chiama la masseria
                 </a>
               </div>
+
+              {/* Form di prenotazione */}
+              {formAperto && (
+                <div className="mt-8 border-t border-[color:var(--oro-antico)]/35 pt-8">
+                  <PrenotazioneForm variant="dark" showTitle={true} />
+                </div>
+              )}
             </div>
           </div>
 

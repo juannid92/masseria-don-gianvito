@@ -331,6 +331,7 @@ html.reduce-motion [data-reveal-item] {
 .journey-map-footer{display:flex;justify-content:space-between;align-items:center;gap:24px;font-size:13px;color:#cdc7b9;padding-top:24px}
 .journey-story{background:var(--bianco-calce);color:var(--carbone)}
 .journey-chapter-hero{position:relative;overflow:hidden;background:#29291f;color:var(--bianco-calce)}
+.journey-story--allevamento .journey-chapter-hero{background:#29291f}
 .journey-story--caseificio .journey-chapter-hero{background:#3a3226}
 .journey-story--macelleria .journey-chapter-hero{background:#35241f}
 .journey-chapter-hero>.journey-shell{position:relative;min-height:90svh;padding-top:120px;padding-bottom:32px;display:flex;flex-direction:column;justify-content:space-between;gap:64px}
@@ -457,4 +458,612 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
  .fullscreen-hero-asset-note{right:20px;bottom:88px;max-width:23ch;font-size:10px}
 }
 @media(max-height:580px) and (min-width:768px){.fullscreen-hero{min-height:580px}.fullscreen-hero-title h1{font-size:62px}.fullscreen-hero-title{top:48%}.fullscreen-hero-intro{font-size:14px;margin-top:16px}}
+
+/* ============================================================
+   MICRO-INTERAZIONI — Hover impattanti per sito award-winning
+   ============================================================ */
+
+/* Link con underline che si espande */
+.link-hover {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Bottone primario con effetto sweep */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.4s ease;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.15);
+  z-index: -1;
+  transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Bottone secondario con border animation */
+.btn-outline {
+  position: relative;
+  background: transparent;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--oro-antico);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(178, 131, 58, 0.08);
+}
+
+.btn-outline:hover::before {
+  opacity: 1;
+}
+
+/* Card hover con lift e shadow */
+.card-hover {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Scroll indicator pulsante */
+@keyframes scroll-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(8px);
+  }
+}
+
+.scroll-indicator {
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+/* Reveal on scroll - base */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image reveal effect */
+.img-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-reveal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  z-index: 1;
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-reveal.revealed::before {
+  transform: scaleX(0);
+}
+
+/* ============================================================
+   TIPOGRAFIA — Scale e rhythm migliorati per Hero
+   ============================================================ */
+
+/* Display hero ingrandito */
+.fullscreen-hero-title h1 {
+  font-size: clamp(58px, 7.2vw, 110px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+@media (max-width: 767px) {
+  .fullscreen-hero-title h1 {
+    font-size: clamp(42px, 13vw, 58px);
+  }
+}
+
+/* Heading con emphasis */
+.text-heading-xl {
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   NAVIGAZIONE — Transizioni fluide
+   ============================================================ */
+
+/* Menu items con stagger */
+.nav-item {
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: nav-item-enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes nav-item-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-item:nth-child(1) { animation-delay: 0.1s; }
+.nav-item:nth-child(2) { animation-delay: 0.15s; }
+.nav-item:nth-child(3) { animation-delay: 0.2s; }
+.nav-item:nth-child(4) { animation-delay: 0.25s; }
+.nav-item:nth-child(5) { animation-delay: 0.3s; }
+
+/* Hamburger menu animation */
+.menu-icon {
+  width: 24px;
+  height: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-icon span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  transition: all 0.3s ease;
+}
+
+.menu-icon.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-icon.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ============================================================
+   UTILITIES — Quick helpers
+   ============================================================ */
+
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grab:active {
+  cursor: grabbing;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+/* Smooth scroll enhancement */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .scroll-indicator,
+  .reveal-up,
+  .nav-item {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
 @media(prefers-reduced-motion:reduce){.fullscreen-hero-plane{transform:none!important}.fullscreen-hero-pin-dot{transition:none}}
+
+/* ────────────────────────────────────────────────────────────────────────
+   HEROES R3F — Sovrapposizione Canvas + testo
+   Il Canvas Three.js occupa l'intero header, il testo fluttua sopra.
+   ──────────────────────────────────────────────────────────────────────── */
+
+.journey-chapter-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hero-canvas-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-canvas-frame canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100svh;
+  padding-top: 120px;
+  padding-bottom: 32px;
+  gap: 64px;
+  pointer-events: none;
+}
+
+.hero-overlay a,
+.hero-overlay p,
+.hero-overlay span,
+.hero-overlay h1,
+.hero-overlay h2 {
+  pointer-events: auto;
+}
+
+.hero-overlay .journey-chapter-heading {
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 720px) {
+  .hero-overlay {
+    min-height: 88svh;
+    padding-top: 96px;
+    gap: 32px;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   ALLEVAMENTO — Contatore scroll-driven + momenti editoriali
+   ──────────────────────────────────────────────────────────────────────── */
+
+.allevamento-counter-band {
+  background: linear-gradient(180deg, #29291f 0%, #1f1a15 100%);
+  color: var(--bianco-calce);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.allevamento-counter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  align-items: end;
+}
+
+.allevamento-counter-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 1px solid #dfca9f33;
+  padding-left: 24px;
+}
+
+.allevamento-counter-cell:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.allevamento-counter-num {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 9vw, 128px);
+  line-height: 1;
+  font-weight: 400;
+  color: #dfca9f;
+  font-variant-numeric: tabular-nums;
+}
+
+.allevamento-counter-label {
+  font-family: var(--font-eyebrow);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #b6a98a;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .allevamento-counter-band { padding: 48px 0; }
+  .allevamento-counter-grid { grid-template-columns: 1fr; gap: 32px; }
+  .allevamento-counter-cell { border-left: none; padding-left: 0; border-top: 1px solid #dfca9f33; padding-top: 24px; }
+  .allevamento-counter-cell:first-child { border-top: none; padding-top: 0; }
+}
+
+.allevamento-moment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 0;
+  border-bottom: 1px solid #e5ddc9;
+}
+
+.allevamento-moment:last-child { border-bottom: none; }
+
+.allevamento-moment.is-right { direction: rtl; }
+.allevamento-moment.is-right > * { direction: ltr; }
+
+.allevamento-moment-photo {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(135deg, #e5ddc9 0%, #b6a98a 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.allevamento-moment-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.3), transparent 50%);
+}
+
+.allevamento-moment-photo-initials {
+  font-family: var(--font-display);
+  font-size: 96px;
+  color: #36261955;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .allevamento-moment { grid-template-columns: 1fr; gap: 24px; padding: 48px 0; }
+  .allevamento-moment.is-right { direction: ltr; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   CASEIFICIO — Timeline verticale centrale
+   ──────────────────────────────────────────────────────────────────────── */
+
+.caseificio-timeline-section {
+  padding-block: 96px;
+}
+
+.caseificio-timeline-intro {
+  max-width: 720px;
+  margin-bottom: 80px;
+}
+
+.caseificio-timeline-intro h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 16px 0 24px;
+  color: #362619;
+}
+
+.caseificio-timeline {
+  position: relative;
+  padding-left: 32px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.caseificio-timeline-svg {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.caseificio-node {
+  position: relative;
+  padding: 48px 0 48px 32px;
+  border-bottom: 1px solid #e5ddc9;
+}
+
+.caseificio-node:last-child { border-bottom: none; }
+
+.caseificio-node-dot {
+  position: absolute;
+  left: -33px;
+  top: 56px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3a3226;
+  border: 2px solid #dab873;
+  box-shadow: 0 0 0 6px #faf6ec;
+}
+
+.caseificio-node-content h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 8px 0 16px;
+  color: #362619;
+  font-weight: 400;
+}
+
+@media (max-width: 720px) {
+  .caseificio-timeline-section { padding-block: 56px; }
+  .caseificio-timeline-intro { margin-bottom: 48px; }
+  .caseificio-node { padding: 32px 0; }
+  .caseificio-node-dot { top: 40px; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   MACELLERIA — Griglia di card 2-up
+   ──────────────────────────────────────────────────────────────────────── */
+
+.macelleria-intro {
+  max-width: 720px;
+  margin-bottom: 64px;
+}
+
+.macelleria-intro h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 16px 0 24px;
+  color: var(--bianco-calce);
+}
+
+.macelleria-intro p { color: #d9c19c; }
+
+.macelleria-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.macelleria-card {
+  position: relative;
+  background: rgba(255, 253, 247, 0.04);
+  border: 1px solid #dfca9f25;
+  border-radius: 6px;
+  padding: 40px 32px 48px;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.macelleria-card:hover {
+  transform: translateY(-6px);
+  border-color: #dab87366;
+}
+
+.macelleria-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.macelleria-card-header .journey-moment-index {
+  color: #dab873;
+  font-family: var(--font-display);
+  font-size: 32px;
+}
+
+.macelleria-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--bianco-calce);
+  margin: 0 0 16px;
+  font-weight: 400;
+}
+
+.macelleria-card p {
+  color: #d9c19c;
+  line-height: 1.6;
+}
+
+.macelleria-card-ember {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #ff7a2a 50%, transparent 100%);
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+}
+
+.macelleria-card:hover .macelleria-card-ember { opacity: 1; }
+
+@media (max-width: 720px) {
+  .macelleria-card-grid { grid-template-columns: 1fr; gap: 24px; }
+  .macelleria-card { padding: 32px 24px 40px; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   SHARED: index + label dei momenti
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-moment-index {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  color: #dab873;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+.journey-moment-label {
+  font-family: var(--font-eyebrow);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #8a6018;
+  margin: 0 0 4px;
+}
+.journey-moment-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 4px 0 16px;
+  color: #362619;
+  font-weight: 400;
+}
+.journey-moment-text p {
+  color: #4a3d2c;
+  line-height: 1.65;
+  max-width: 56ch;
+}
+
+

@@ -180,6 +180,15 @@ export function Header() {
           >
             Menù
           </Link>
+          <Link
+            to="/prodotti"
+            className={cn(
+              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
+              textSoft,
+            )}
+          >
+            Prodotti
+          </Link>
           <div className="relative" ref={menuRef}>
             <button
               type="button"
@@ -282,6 +291,13 @@ export function Header() {
               className="font-display text-[26px] text-white"
             >
               Menù
+            </Link>
+            <Link
+              to="/prodotti"
+              onClick={() => setDrawer(false)}
+              className="font-display text-[26px] text-white"
+            >
+              Prodotti
             </Link>
             <div className="h-px bg-white/10 my-4" />
             {ANIME.map((a) => (

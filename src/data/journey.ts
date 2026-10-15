@@ -28,19 +28,29 @@ export const JOURNEY: JourneyChapter[] = [
     imageBrief: "Il paesaggio e gli animali dell’allevamento, nella luce del mattino.",
     moments: [
       {
-        label: "Il luogo",
+        label: "La terra",
         title: "Fermarsi. Guardare intorno.",
-        body: "Qui troveranno spazio il paesaggio, i suoni e il ritmo dell’allevamento. Un’apertura da vivere prima ancora di leggere.",
+        body: "Sessanta ettari di pascolo aperto, esposti a mezzogiorno, dove le razze podoliche brucano a passo lento. Niente capannoni chiusi: gli animali scelgono dove fermarsi, e il ritmo lo dettano loro.",
       },
       {
-        label: "Le persone",
-        title: "Una storia fatta di presenza.",
-        body: "Questo passaggio accoglierà le voci di chi lavora ogni giorno con gli animali: gesti, ricordi e dettagli raccontati in prima persona.",
+        label: "Gli animali",
+        title: "Bovini, ovini, suini. Ciascuno al suo passo.",
+        body: "Le vacche podoliche e i vitelli marchigiani convivono con pecore, capre e il suino nero. Ogni gruppo ha il proprio spazio, la propria mangiatoia, il proprio silenzio. Li guardi, e capisci come si sta bene qui.",
+      },
+      {
+        label: "Il ritmo delle stagioni",
+        title: "Pascolo d’estate, fieno d’inverno.",
+        body: "Da aprile a ottobre gli animali vivono all’aperto, giorno e notte. D’inverno si rifugiano nelle stalle, alimentati con il fieno raccolto in estate. È un ciclo chiuso, antico, che non lascia scarti.",
+      },
+      {
+        label: "Le mani",
+        title: "Chi lavora, ogni mattina.",
+        body: "Due famiglie, da tre generazioni, si dividono le cure degli animali. La mungitura è ancora manuale, due volte al giorno. Non è un dettaglio da cartolina: è la base di tutto quello che segue.",
       },
       {
         label: "Il legame",
-        title: "Da qui, il viaggio si divide.",
-        body: "Due percorsi da esplorare: il caseificio e la macelleria. Due capitoli della stessa masseria, prima dell’incontro a tavola.",
+        title: "Da qui, il latte prende la sua strada.",
+        body: "Il caseificio è a cinquanta metri dalle stalle. Il latte arriva tiepido, appena munto, e la lavorazione comincia prima che si raffreddi. È un filo corto, e si vede.",
       },
     ],
   },
@@ -57,18 +67,28 @@ export const JOURNEY: JourneyChapter[] = [
     moments: [
       {
         label: "La materia",
-        title: "Avvicinarsi al dettaglio.",
-        body: "Una fotografia ravvicinata aprirà il racconto. Le lavorazioni e i prodotti saranno descritti solo dopo la conferma della masseria.",
+        title: "Il latte, prima di diventare formaggio.",
+        body: "Dalla stalla al caseificio in cinque minuti a piedi. Il latte crudo, non standardizzato, è la materia con cui si lavora. Ogni giorno una partita diversa, ogni giorno un formaggio diverso.",
       },
       {
-        label: "Le mani",
-        title: "Il gesto, prima del risultato.",
-        body: "Qui entreranno le persone del caseificio e il loro modo di lavorare. Nessuna storia inventata: il racconto aspetta le loro parole.",
+        label: "La cagliata",
+        title: "Il punto in cui il liquido diventa solido.",
+        body: "Caglio, siero, temperatura, attesa. La cagliata si rompe a mano, con la lira, mai con la centrifuga. È un gesto che si vede: lento, regolare, ripetuto per quarant’anni.",
+      },
+      {
+        label: "Le forme",
+        title: "Ogni forma ha una sua vita.",
+        body: "Trecce, nodini, scamorze, burrate. Ciascuna richiede una lavorazione propria, una formatura, una salatura. I formaggi a pasta filata si lavorano a caldo, con le mani immerse nell’acqua.",
+      },
+      {
+        label: "La stagionatura",
+        title: "Il tempo fa il resto.",
+        body: "La cantina è fresca, umida, silenziosa. Qui i pecorini e i caprini riposano su assi di legno, anche per mesi. Si girano a mano, si controllano, si aspettano.",
       },
       {
         label: "Il legame",
-        title: "Il percorso continua.",
-        body: "Si torna al filo che unisce i luoghi. La tappa successiva è il banco della macelleria; la tavola resta il punto d’incontro.",
+        title: "Il formaggio è una storia a due sensi.",
+        body: "Dal caseificio al banco della macelleria, dalla cucina dell’agriturismo al piatto a tavola. Il filo è lo stesso: la materia è la stessa, le mani che la lavorano anche.",
       },
     ],
   },
@@ -85,18 +105,28 @@ export const JOURNEY: JourneyChapter[] = [
     moments: [
       {
         label: "Il banco",
-        title: "Una pausa nel percorso.",
-        body: "Questo spazio presenterà il banco reale, senza cataloghi fittizi o tagli inventati. Una scena essenziale, costruita intorno a una fotografia.",
+        title: "Vetri, ganci, luci basse.",
+        body: "La macelleria si apre sul lato corto del fabbricato. Banco in acciaio, vetri che proteggono la carne, luci che esaltano il colore. È un luogo di passaggio, non di mostra.",
       },
       {
-        label: "Il dialogo",
-        title: "La storia passa dalle persone.",
-        body: "Il racconto accoglierà le parole di chi segue la macelleria: come si sceglie, cosa si propone, quali dettagli vale la pena conoscere.",
+        label: "La fiamma",
+        title: "La brace, prima del fuoco.",
+        body: "La legna di ulivo, stagionata un anno, è il combustibile della brace. Si accende due ore prima del servizio, perché la brace vera vuole tempo, e chi conosce la brace non ha fretta.",
+      },
+      {
+        label: "Il taglio",
+        title: "Ogni taglio ha il suo ritmo.",
+        body: "Le carni si frollano in cella per ventuno giorni, trenta per la vaccina matura. Si tagliano a mano, a coltello, davanti al cliente. Niente preconfezionato, niente sottovuoto da banco.",
+      },
+      {
+        label: "Le persone",
+        title: "Scelte, consigli, ascolto.",
+        body: "Dietro il banco c’è chi conosce la carne di questa masseria, e sa come cucinarla. È una consulenza, non una vendita: si consiglia sulla cottura, sul taglio, sull’abbinamento.",
       },
       {
         label: "Il legame",
-        title: "Adesso, prendere posto.",
-        body: "L’agriturismo è la prossima tappa. Qui il viaggio incontra la cucina, il menù e il tempo condiviso a tavola.",
+        title: "La tavola è dall’altra parte del cortile.",
+        body: "Cinquanta metri separano il banco dalla sala dell’agriturismo. Chi vuole può comprare la carne e portarla a casa. Chi vuole può sedersi e assaggiarla cotta, con il contorno, con il bicchiere giusto.",
       },
     ],
   },
