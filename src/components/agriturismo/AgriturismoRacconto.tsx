@@ -147,23 +147,23 @@ export function AgriLaCasa() {
 const SERA = [
   {
     label: "Il tramonto",
-    title: "Si arriva quando la luce scende sui campi.",
-    body: "Il cortile si riempie piano. Nessuna fretta: la sera qui ha un ritmo suo, e lo impari appena scendi dall’auto.",
+    title: "Si arriva a fine giornata.",
+    body: "Il cortile si riempie con calma. La sera in masseria segue il ritmo del lavoro, non quello della fretta.",
   },
   {
     label: "La brace",
-    title: "Il fuoco è acceso da ore.",
-    body: "La brace d’ulivo è pronta prima degli ospiti. È il primo profumo che incontri, prima ancora della sala.",
+    title: "La brace è già accesa.",
+    body: "Il fuoco viene preparato prima dell’arrivo degli ospiti. La cottura alla brace richiede tempo e attenzione.",
   },
   {
     label: "La tavola",
-    title: "Tutto quello che hai visto arriva qui.",
-    body: "Il latte del mattino, la carne scelta al banco, i campi intorno. La filiera si chiude nel piatto, a pochi metri da dove è cominciata.",
+    title: "Quello che hai visto arriva in tavola.",
+    body: "Il latte, la carne scelta al banco, i prodotti dei campi: la filiera si chiude in sala, nello stesso luogo in cui comincia.",
   },
   {
     label: "La notte",
-    title: "Poi restano le stelle sopra la masseria.",
-    body: "Si esce nel cortile, si guarda in alto. Il buio della campagna è parte dell’esperienza quanto la cena.",
+    title: "Poi resta la campagna.",
+    body: "A fine serata si può uscire nel cortile. Intorno ci sono solo campi, e il silenzio fa parte della serata.",
   },
 ];
 
@@ -341,9 +341,9 @@ export function AgriLaCarta() {
         <header className="agri-carta-head">
           <p className="agri-eyebrow agri-reveal">La carta</p>
           <h2 className="agri-reveal">
-            Ogni piatto sa
+            Ogni piatto
             <br />
-            <em>da dove arriva.</em>
+            <em>ha una provenienza.</em>
           </h2>
         </header>
         <div className="agri-carta-sheet">
@@ -435,11 +435,11 @@ export function AgriPrenota() {
           <p className="agri-eyebrow">Prenota un tavolo</p>
           <h2 className="agri-prenota-title">
             <span className="agri-line">
-              <span>La sera comincia</span>
+              <span>Un tavolo</span>
             </span>
             <span className="agri-line">
               <span>
-                <em>prima di arrivare.</em>
+                <em>alla masseria.</em>
               </span>
             </span>
           </h2>
@@ -486,21 +486,21 @@ const ANIME_FINE = [
   {
     n: "01",
     nome: "Allevamento",
-    claim: "Prima di tutto, la terra.",
+    claim: "La terra e gli animali.",
     to: "/allevamento" as const,
     tone: "allevamento",
   },
   {
     n: "02",
     nome: "Caseificio",
-    claim: "Il bianco prende forma.",
+    claim: "Il latte diventa formaggio.",
     to: "/caseificio" as const,
     tone: "caseificio",
   },
   {
     n: "03",
     nome: "Macelleria",
-    claim: "Il momento della scelta.",
+    claim: "La carne, scelta al banco.",
     to: "/macelleria" as const,
     tone: "macelleria",
   },
@@ -523,7 +523,7 @@ export function AgriFineViaggio() {
       <div className="agri-shell">
         <p className="agri-eyebrow">Fine del percorso · 04 / 04</p>
         <h2 className="agri-fine-title">
-          Prima della tavola <em>c’è tutto il resto.</em>
+          Prima della tavola <em>c’è il lavoro della masseria.</em>
         </h2>
         <nav className="agri-fine-list" aria-label="Le altre anime della masseria">
           {ANIME_FINE.map((a) => (

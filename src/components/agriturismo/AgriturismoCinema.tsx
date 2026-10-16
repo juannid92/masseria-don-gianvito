@@ -7,25 +7,25 @@ const scenes: { img: string | null; title: string; desc: string; label: string }
   {
     img: null,
     title: "La sera comincia\ndalla campagna.",
-    desc: "Il percorso incontra l’agriturismo.",
+    desc: "La tavola della masseria.",
     label: "L’arrivo",
   },
   {
     img: null,
-    title: "La luce cambia.\nIl tempo rallenta.",
-    desc: "Un altro punto di vista sulla masseria.",
+    title: "La luce cambia.\nIl ritmo rallenta.",
+    desc: "Ospitalità nel cuore dell’azienda.",
     label: "La soglia",
   },
   {
     img: null,
-    title: "Entrare.\nSentirsi parte.",
-    desc: "Il racconto continua, dentro il cortile.",
+    title: "Si entra\nnel cortile.",
+    desc: "Un luogo di lavoro che accoglie gli ospiti.",
     label: "Il luogo",
   },
   {
     img: null,
-    title: "Poi ci si siede.\nIl viaggio continua.",
-    desc: "Dalla storia dei luoghi alla tavola.",
+    title: "Poi ci si siede\na tavola.",
+    desc: "Cucina e brace, con i prodotti della masseria.",
     label: "La tavola",
   },
 ];

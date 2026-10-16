@@ -6,17 +6,17 @@ const categories = [
   {
     id: "cucina",
     title: "La cucina",
-    text: "Qui troveranno spazio i piatti del menù, con descrizioni, ingredienti e prezzi confermati dalla masseria.",
+    text: "Antipasti, primi e piatti della cucina di casa, preparati con i prodotti della masseria.",
   },
   {
     id: "brace",
     title: "La brace",
-    text: "Uno spazio dedicato alle proposte della braceria. Tagli, disponibilità e prezzi saranno inseriti a partire dal menù reale.",
+    text: "I tagli della macelleria cotti alla brace. Disponibilità e prezzi vanno richiesti alla masseria.",
   },
   {
     id: "stagione",
     title: "La stagione",
-    text: "Questo capitolo accoglierà le proposte stagionali, quando saranno disponibili e confermate.",
+    text: "Proposte che cambiano con ciò che offrono i campi e la stalla.",
   },
 ];
 export function MenuExperience() {
@@ -33,7 +33,7 @@ export function MenuExperience() {
             <br />
             <em>Nel piatto.</em>
           </h2>
-          <p>Uno spazio per scoprire il menù, separato dal racconto dei luoghi.</p>
+          <p>Il menù della masseria. Le proposte variano con la stagione e la disponibilità.</p>
         </div>
         <div className="journey-menu-grid" data-journey-reveal>
           <figure className="journey-menu-photo">

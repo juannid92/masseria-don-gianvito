@@ -327,7 +327,7 @@ export function IlManifesto() {
               className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/90 md:text-[12px]"
               style={{ opacity: vis }}
             >
-              02 — LA STORIA · Un tempo lungo, senza fretta.
+              02 — LA STORIA · Cinque secoli di lavoro.
             </p>
           </div>
         </div>

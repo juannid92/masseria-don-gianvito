@@ -41,8 +41,8 @@ const MOMENTI: Momento[] = [
   {
     id: "famiglia",
     n: "03",
-    occhiello: "LE STESSE MANI",
-    titolo: ["E il lavoro", "è rimasto in famiglia."],
+    occhiello: "OGGI",
+    titolo: ["Oggi la masseria", "è un’azienda."],
     testo:
       "Dal 2002 la masseria è iscritta alla Camera di Commercio come società agricola. Allevamento, caseificio, macelleria e agriturismo sono nati uno dopo l'altro, nello stesso luogo.",
   },

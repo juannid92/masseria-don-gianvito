@@ -7,11 +7,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Fotografia della tavola e racconto della cena sincronizzato allo scroll. */
 const TEMPI = [
-  { n: "01", t: "Si apparecchia", d: "Tovaglia di lino, pane caldo, olio della casa. Il tavolo è pronto prima che arriviate." },
-  { n: "02", t: "Gli antipasti", d: "Latticini appena fatti, salumi, verdure dell'orto: arrivano tutti insieme, al centro, da dividere." },
-  { n: "03", t: "I primi", d: "Pasta fatta a mano, sughi lenti. Un piatto per ognuno, fumante." },
-  { n: "04", t: "La brace", d: "La carne della nostra macelleria, cotta sul fuoco e portata sul tagliere." },
-  { n: "05", t: "Il dolce", d: "Si chiude con il dolce della casa e un bicchiere. Nessuno ha fretta di alzarsi." },
+  { n: "01", t: "Si apparecchia", d: "Il tavolo è pronto all’arrivo degli ospiti." },
+  { n: "02", t: "Gli antipasti", d: "Latticini, salumi e verdure: si portano al centro, da dividere." },
+  { n: "03", t: "I primi", d: "Primi piatti della cucina di casa, serviti caldi." },
+  { n: "04", t: "La brace", d: "La carne della macelleria della masseria, cotta alla brace." },
+  { n: "05", t: "Il dolce", d: "Si chiude con il dolce della casa." },
 ];
 
 export function AgriLaTavola() {
@@ -72,7 +72,7 @@ export function AgriLaTavola() {
               width={1264} height={848} loading="lazy" decoding="async"
             />
           </div>
-          <figcaption>La gioia di stare a tavola <span>Immagine illustrativa · AI</span></figcaption>
+          <figcaption>La tavola della masseria <span>Immagine illustrativa · AI</span></figcaption>
         </figure>
       </div>
     </section>

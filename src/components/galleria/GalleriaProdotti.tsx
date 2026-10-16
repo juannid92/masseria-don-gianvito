@@ -14,16 +14,16 @@ const prodotti: Prodotto[] = [
   // Formaggi
   {
     id: "mozza-burr",
-    nome: "Mozzarella di Bufala",
+    nome: "Mozzarella",
     descrizione:
-      "Mozzarella fresca artigianale, prodotta con latte 100% di bufala mediterranea italiana.",
+      "Mozzarella fresca, prodotta nel caseificio della masseria.",
     categoria: "formaggi",
     colorePlaceholder: "bg-pietra-200",
   },
   {
     id: "burrata",
     nome: "Burrata Pugliese",
-    descrizione: "Burrata cremosa con cuore di stracciatella, pasta filata artigianale.",
+    descrizione: "Burrata fresca con cuore di stracciatella, lavorata a mano.",
     categoria: "formaggi",
     colorePlaceholder: "bg-pietra-200",
   },
@@ -31,7 +31,7 @@ const prodotti: Prodotto[] = [
     id: "pecorino",
     nome: "Pecorino di Fosso",
     descrizione:
-      "Pecorino stagionato 8 mesi, sapore intenso e aromatico con note di erbe spontanee.",
+      "Formaggio stagionato dal sapore deciso.",
     categoria: "formaggi",
     colorePlaceholder: "bg-pietra-200",
   },
@@ -39,7 +39,7 @@ const prodotti: Prodotto[] = [
     id: "cacio",
     nome: "Caciovito Riserva",
     descrizione:
-      "Formaggio a pasta semicotta, stagionatura minima 6 mesi su assi di legno di castagno.",
+      "Formaggio a pasta semicotta, lasciato maturare con tempo.",
     categoria: "formaggi",
     colorePlaceholder: "bg-pietra-200",
   },
@@ -47,14 +47,14 @@ const prodotti: Prodotto[] = [
     id: "ricotta",
     nome: "Ricotta Fresca",
     descrizione:
-      "Ricotta leggera e vellutata, ottenuta dalla lavorazione del siero del nostro latte.",
+      "Ricotta ottenuta dalla lavorazione del siero.",
     categoria: "formaggi",
     colorePlaceholder: "bg-pietra-200",
   },
   {
     id: "scamorza",
     nome: "Scamorza Affumicata",
-    descrizione: "Scamorza tradizionale affumicata con legno di faggio, pasta morbida e saporita.",
+    descrizione: "Scamorza affumicata, a pasta morbida.",
     categoria: "formaggi",
     colorePlaceholder: "bg-pietra-200",
   },
@@ -62,7 +62,7 @@ const prodotti: Prodotto[] = [
   {
     id: "pugliese-fasani",
     nome: "Pugliese Fasani",
-    descrizione: "Razza bovina pugliese allevata al pascolo, carne rossa pregiata e marezzata.",
+    descrizione: "Carne bovina di allevamento locale, da scegliere al banco.",
     categoria: "carne",
     colorePlaceholder: "bg-carminio/20",
   },
@@ -70,35 +70,35 @@ const prodotti: Prodotto[] = [
     id: "vitello-podolico",
     nome: "Vitello Podolico",
     descrizione:
-      "Carne pregiata di vitello podolico, razza antica allevata in purezza nei nostri pascoli.",
+      "Carne di vitello, da scegliere al banco secondo disponibilità.",
     categoria: "carne",
     colorePlaceholder: "bg-carminio/20",
   },
   {
     id: "cavallo-murge",
     nome: "Cavallo delle Murge",
-    descrizione: "Tradizione pugliese: carne equina, tenera e proteica, allevamento libero.",
+    descrizione: "Carne equina della tradizione pugliese.",
     categoria: "carne",
     colorePlaceholder: "bg-carminio/20",
   },
   {
     id: "capretto",
     nome: "Capretto da Latte",
-    descrizione: "Capretto di pochi giorni, latte materno, carne delicata e pregiata.",
+    descrizione: "Capretto da latte, carne delicata, secondo disponibilità.",
     categoria: "carne",
     colorePlaceholder: "bg-carminio/20",
   },
   {
     id: "agneau",
     nome: "Agnello Pasquale",
-    descrizione: "Agnello da latte, tradizione pasquale pugliese, carne tenera e saporita.",
+    descrizione: "Agnello da latte, legato alla tradizione pasquale pugliese.",
     categoria: "carne",
     colorePlaceholder: "bg-carminio/20",
   },
   {
     id: "suino-nero",
     nome: "Suino Nero Siciliano",
-    descrizione: "Suino nero autoctono, allevamento brado, prosciutto e salamini artigianali.",
+    descrizione: "Salumi e carne di suino, lavorati artigianalmente.",
     categoria: "carne",
     colorePlaceholder: "bg-carminio/20",
   },
@@ -107,14 +107,14 @@ const prodotti: Prodotto[] = [
     id: "olio-evo",
     nome: "Olio Extravergine",
     descrizione:
-      "Olio monovarietale da olive Coratina, frantoio a freddo entro 24 ore dalla raccolta.",
+      "Olio extravergine d’oliva.",
     categoria: "altro",
     colorePlaceholder: "bg-oro-antico/30",
   },
   {
     id: "vino-nero",
     nome: "Negroamaro IGT",
-    descrizione: "Vino rosso Puglia IGT, Negroamaro in purezza, affinamento 12 mesi in legno.",
+    descrizione: "Vino rosso pugliese da uve Negroamaro.",
     categoria: "altro",
     colorePlaceholder: "bg-oro-antico/30",
   },
@@ -122,7 +122,7 @@ const prodotti: Prodotto[] = [
     id: "pasta-senatore",
     nome: "Pasta Senatore Cappelli",
     descrizione:
-      "Pasta di semola di grano duro Senatore Cappelli, trafilata al bronzo, essiccazione lenta.",
+      "Pasta di grano duro, trafilata al bronzo.",
     categoria: "altro",
     colorePlaceholder: "bg-oro-antico/30",
   },
@@ -130,7 +130,7 @@ const prodotti: Prodotto[] = [
     id: "legumi-fave",
     nome: "Fave di Sant'Eramo",
     descrizione:
-      "Fave essiccate della tradizione salentina, coltivazione biologica senza irrigazione.",
+      "Fave secche della tradizione pugliese.",
     categoria: "altro",
     colorePlaceholder: "bg-oro-antico/30",
   },
@@ -138,7 +138,7 @@ const prodotti: Prodotto[] = [
     id: "cotto-mocale",
     nome: "Cotto Mocale",
     descrizione:
-      "Prosciutto cotto artigianale dal suino nero, solo cosce selezionate, stagionatura 18 mesi.",
+      "Prosciutto cotto artigianale.",
     categoria: "altro",
     colorePlaceholder: "bg-oro-antico/30",
   },
@@ -146,7 +146,7 @@ const prodotti: Prodotto[] = [
     id: "salamelle",
     nome: "Salamelle Peperoncino",
     descrizione:
-      "Salamelle piccanti artigianali, ricetta tradizionale pugliese, peperoncino locale.",
+      "Salamelle piccanti artigianali, ricetta tradizionale pugliese.",
     categoria: "altro",
     colorePlaceholder: "bg-oro-antico/30",
   },
@@ -210,16 +210,16 @@ const EtichettaCategoria = ({ categoria }: { categoria: "formaggi" | "carne" | "
   const config: Record<Categoria, { label: string; descrizione: string }> = {
     formaggi: {
       label: "Formaggi e Latticini",
-      descrizione: "Caseificio artigianale con latte fresco delle nostre bufale e pecore pugliesi.",
+      descrizione: "Latticini freschi prodotti nel caseificio della masseria.",
     },
     carne: {
       label: "Carne e Salumi",
       descrizione:
-        "Allevamento proprio e fornitori selezionati, macelleria al chiodo tradizionale.",
+        "Carni dell’allevamento e salumi, da scegliere al banco.",
     },
     altro: {
       label: "Olio, Vino e Prodotti della Terra",
-      descrizione: "Olio extravergine, vini DOC, pasta e legumi della tradizione salentina.",
+      descrizione: "Olio, vino, pasta e legumi della tradizione pugliese.",
     },
   };
 

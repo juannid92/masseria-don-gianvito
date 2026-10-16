@@ -200,19 +200,19 @@ export function Hero() {
       <div className="fullscreen-hero-title">
         <p className="fullscreen-hero-kicker">Masseria Don Gianvito · Noci, Puglia</p>
         <h1>
-          Un luogo.
+          Una masseria.
           <br />
-          <em>Quattro anime.</em>
+          <em>Quattro attività.</em>
         </h1>
         <p className="fullscreen-hero-intro">
-          Dalla terra alla tavola.
+          Allevamento, caseificio, macelleria e agriturismo,
           <br />
-          Entra nei luoghi della masseria.
+          nello stesso luogo, a Noci.
         </p>
       </div>
 
       <div className="fullscreen-hero-bottom">
-        <p>Un’unica masseria. Quattro storie da attraversare.</p>
+        <p>Una storia che comincia nel Cinquecento e continua ogni giorno.</p>
         <Link to="/" hash="manifesto" className="fullscreen-hero-scroll">
           Scopri la masseria <span aria-hidden="true">↓</span>
         </Link>

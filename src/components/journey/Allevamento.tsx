@@ -73,7 +73,7 @@ export function Allevamento() {
       <PinnedCardStack moments={ALLEVAMENTO.moments.map((m, i) => i === 0 ? {
         ...m, image: "/images/allevamento-pascolo-ai.svg",
         imageAlt: "Bovini al pascolo nelle Murge, tra ulivi e muretti a secco",
-      } : m)} kicker="Cinque momenti al pascolo" />
+      } : m)} kicker="Cinque passaggi dall’allevamento" />
 
       {/* CTA verso il prossimo capitolo. */}
       <section className="journey-next journey-next--allevamento" data-journey-reveal>

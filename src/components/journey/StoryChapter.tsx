@@ -35,8 +35,7 @@ export function StoryChapter({ id }: { id: AnimaId }) {
         </div>
       </section>
       <div className="journey-draft-note" data-tone="light">
-        <span>Prototipo editoriale</span> Testi provvisori · fotografie e racconto reale da
-        inserire.
+        <span>Masseria Don Gianvito</span> · Noci, Puglia
       </div>
       <section className="journey-story-body journey-shell" data-tone="light">
         <div className="journey-story-index" aria-hidden="true">

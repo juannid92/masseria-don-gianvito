@@ -1,8 +1,8 @@
 import type { AnimaId } from "./masseria";
 
-/** Editorial scaffolding, NOT verified historical or production claims.
- * Replace copy and null images here when the owner supplies real material.
- * Map anchors remain in pin-anime.ts; this file never guesses real locations.
+/** Testi dei capitoli. Nessun dato numerico o storico non verificato:
+ * aggiungere cifre, date e nomi solo se confermati dalla masseria.
+ * Le posizioni sulla mappa restano in pin-anime.ts.
  */
 export interface JourneyChapter {
   id: AnimaId;
@@ -23,34 +23,34 @@ export const JOURNEY: JourneyChapter[] = [
     title: ["Prima di tutto,", "la terra."],
     keyword: "Origine",
     introduction:
-      "Il percorso comincia qui. Prima del banco, prima della cucina, prima di sedersi a tavola.",
+      "Tutto comincia dalla terra e dagli animali. Il resto della masseria dipende da questo lavoro.",
     image: null,
     imageBrief: "Il paesaggio e gli animali dell’allevamento, nella luce del mattino.",
     moments: [
       {
         label: "La terra",
-        title: "Fermarsi. Guardare intorno.",
-        body: "Sessanta ettari di pascolo aperto, esposti a mezzogiorno, dove le razze podoliche brucano a passo lento. Niente capannoni chiusi: gli animali scelgono dove fermarsi, e il ritmo lo dettano loro.",
+        title: "Una campagna che lavora.",
+        body: "La masseria sorge nelle campagne di Noci, lungo la provinciale per Mottola. Foraggio, grano tenero, ortaggi e frutta crescono sui terreni intorno alla casa e sostengono l’intera attività.",
       },
       {
         label: "Gli animali",
-        title: "Bovini, ovini, suini. Ciascuno al suo passo.",
-        body: "Le vacche podoliche e i vitelli marchigiani convivono con pecore, capre e il suino nero. Ogni gruppo ha il proprio spazio, la propria mangiatoia, il proprio silenzio. Li guardi, e capisci come si sta bene qui.",
+        title: "Bovini, ovini, suini, equini, avicoli.",
+        body: "Gli animali vivono in azienda. I bovini, un incrocio tra Pezzata Rossa e Frisona, danno latte e carne; gli altri allevamenti completano l’offerta della masseria.",
       },
       {
-        label: "Il ritmo delle stagioni",
-        title: "Pascolo d’estate, fieno d’inverno.",
-        body: "Da aprile a ottobre gli animali vivono all’aperto, giorno e notte. D’inverno si rifugiano nelle stalle, alimentati con il fieno raccolto in estate. È un ciclo chiuso, antico, che non lascia scarti.",
+        label: "Le stagioni",
+        title: "Le stagioni guidano il lavoro.",
+        body: "Cosa si semina, quando si munge, cosa arriva in cucina: lo decidono la campagna e gli animali. La masseria si adegua al loro calendario, non il contrario.",
       },
       {
         label: "Le mani",
-        title: "Chi lavora, ogni mattina.",
-        body: "Due famiglie, da tre generazioni, si dividono le cure degli animali. La mungitura è ancora manuale, due volte al giorno. Non è un dettaglio da cartolina: è la base di tutto quello che segue.",
+        title: "Una cura quotidiana.",
+        body: "L’allevamento richiede presenza ogni giorno, anche prima dell’alba. È un lavoro continuo, svolto da chi vive e opera sul posto, ed è la base di tutto quello che segue.",
       },
       {
         label: "Il legame",
-        title: "Da qui, il latte prende la sua strada.",
-        body: "Il caseificio è a cinquanta metri dalle stalle. Il latte arriva tiepido, appena munto, e la lavorazione comincia prima che si raffreddi. È un filo corto, e si vede.",
+        title: "Da qui parte la filiera.",
+        body: "Il latte munto ogni mattina passa al caseificio; la carne va in macelleria. Tutto resta nello stesso luogo, senza passaggi intermedi.",
       },
     ],
   },
@@ -61,34 +61,34 @@ export const JOURNEY: JourneyChapter[] = [
     title: ["Il bianco", "prende forma."],
     keyword: "Gesto",
     introduction:
-      "Dall’origine al gesto. Un capitolo da raccontare attraverso le mani, la materia e il tempo.",
+      "Il latte della masseria diventa formaggio nello stesso luogo in cui viene prodotto.",
     image: null,
     imageBrief: "Le mani al lavoro nel caseificio, tra latte, vapore e lavorazione.",
     moments: [
       {
         label: "La materia",
-        title: "Il latte, prima di diventare formaggio.",
-        body: "Dalla stalla al caseificio in cinque minuti a piedi. Il latte crudo, non standardizzato, è la materia con cui si lavora. Ogni giorno una partita diversa, ogni giorno un formaggio diverso.",
+        title: "Il latte, ogni mattina.",
+        body: "Il latte munto al mattino arriva direttamente al caseificio. È la materia prima di tutta la produzione e determina la qualità di ciò che segue.",
       },
       {
-        label: "La cagliata",
-        title: "Il punto in cui il liquido diventa solido.",
-        body: "Caglio, siero, temperatura, attesa. La cagliata si rompe a mano, con la lira, mai con la centrifuga. È un gesto che si vede: lento, regolare, ripetuto per quarant’anni.",
+        label: "La lavorazione",
+        title: "Un passaggio che richiede attenzione.",
+        body: "Dal latte si ottiene la cagliata, da lavorare con tempi e temperature precisi. È la fase in cui l’esperienza di chi lavora conta più di qualsiasi macchina.",
       },
       {
-        label: "Le forme",
-        title: "Ogni forma ha una sua vita.",
-        body: "Trecce, nodini, scamorze, burrate. Ciascuna richiede una lavorazione propria, una formatura, una salatura. I formaggi a pasta filata si lavorano a caldo, con le mani immerse nell’acqua.",
+        label: "I prodotti",
+        title: "Mozzarella, nodini, primo sale, ricotta.",
+        body: "Il caseificio produce mozzarella, nodini, primo sale e ricotta. Sono prodotti freschi, preparati in quantità legate al latte disponibile.",
       },
       {
-        label: "La stagionatura",
-        title: "Il tempo fa il resto.",
-        body: "La cantina è fresca, umida, silenziosa. Qui i pecorini e i caprini riposano su assi di legno, anche per mesi. Si girano a mano, si controllano, si aspettano.",
+        label: "Il tempo",
+        title: "Ogni formaggio ha il suo tempo.",
+        body: "I formaggi freschi si consumano in pochi giorni, altri richiedono attesa. Il caseificio rispetta questi tempi, senza accelerarli.",
       },
       {
         label: "Il legame",
-        title: "Il formaggio è una storia a due sensi.",
-        body: "Dal caseificio al banco della macelleria, dalla cucina dell’agriturismo al piatto a tavola. Il filo è lo stesso: la materia è la stessa, le mani che la lavorano anche.",
+        title: "Dal caseificio alla tavola.",
+        body: "I latticini arrivano sul banco e in sala senza passaggi intermedi. Chi li assaggia a tavola mangia un prodotto della stessa masseria.",
       },
     ],
   },
@@ -99,34 +99,34 @@ export const JOURNEY: JourneyChapter[] = [
     title: ["Il momento", "della scelta."],
     keyword: "Incontro",
     introduction:
-      "Un nuovo punto di vista sulla masseria. Il banco diventa il passaggio tra il lavoro e la tavola.",
+      "La carne dell’azienda si sceglie al banco, a vista, con il consiglio di chi la conosce.",
     image: null,
     imageBrief: "Il banco e le persone della macelleria, fotografati sul posto.",
     moments: [
       {
         label: "Il banco",
-        title: "Vetri, ganci, luci basse.",
-        body: "La macelleria si apre sul lato corto del fabbricato. Banco in acciaio, vetri che proteggono la carne, luci che esaltano il colore. È un luogo di passaggio, non di mostra.",
+        title: "Un banco a vista.",
+        body: "La carne è esposta e si sceglie guardandola. Insieme ai tagli, il banco propone i salumi della masseria.",
       },
       {
         label: "La fiamma",
-        title: "La brace, prima del fuoco.",
-        body: "La legna di ulivo, stagionata un anno, è il combustibile della brace. Si accende due ore prima del servizio, perché la brace vera vuole tempo, e chi conosce la brace non ha fretta.",
+        title: "La brace.",
+        body: "Una parte dei tagli viene cotta alla brace in agriturismo. Il fuoco si accende con anticipo, perché la cottura richiede tempo.",
       },
       {
         label: "Il taglio",
-        title: "Ogni taglio ha il suo ritmo.",
-        body: "Le carni si frollano in cella per ventuno giorni, trenta per la vaccina matura. Si tagliano a mano, a coltello, davanti al cliente. Niente preconfezionato, niente sottovuoto da banco.",
+        title: "Il taglio giusto.",
+        body: "La scelta del taglio dipende dall’uso: brace, forno o padella. Chi lavora al banco consiglia sulla cottura e sulle quantità.",
       },
       {
         label: "Le persone",
-        title: "Scelte, consigli, ascolto.",
-        body: "Dietro il banco c’è chi conosce la carne di questa masseria, e sa come cucinarla. È una consulenza, non una vendita: si consiglia sulla cottura, sul taglio, sull’abbinamento.",
+        title: "Competenza e ascolto.",
+        body: "Dietro il banco c’è chi conosce la carne della masseria e sa come trattarla. Il consiglio fa parte del servizio.",
       },
       {
         label: "Il legame",
-        title: "La tavola è dall’altra parte del cortile.",
-        body: "Cinquanta metri separano il banco dalla sala dell’agriturismo. Chi vuole può comprare la carne e portarla a casa. Chi vuole può sedersi e assaggiarla cotta, con il contorno, con il bicchiere giusto.",
+        title: "Dal banco alla sala.",
+        body: "Si può acquistare la carne e portarla a casa, oppure sedersi in agriturismo e assaggiarla cotta alla brace. La provenienza è la stessa.",
       },
     ],
   },
@@ -137,7 +137,7 @@ export const JOURNEY: JourneyChapter[] = [
     title: ["Ogni percorso", "arriva a tavola."],
     keyword: "Condivisione",
     introduction:
-      "L’ultima tappa del viaggio, il primo momento da condividere. Storia, cucina e ospitalità si incontrano qui.",
+      "L’ultima tappa: la tavola. Qui la produzione della masseria incontra l’ospitalità.",
     image: null,
     imageBrief: "La tavola e l’ospitalità dell’agriturismo, fotografate sul posto.",
     moments: [],

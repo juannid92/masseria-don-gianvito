@@ -29,18 +29,18 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
  */
 
 const FRASI_LUNGHE = [
-  "Ci si alza presto, quando fuori e' ancora buio, perche' gli animali non aspettano e il primo latte va munto quando decide lui.",
-  "Le stagioni decidono cosa c'e' e cosa manca: si cucina quello che il campo e la stalla stanno dando in quel momento, senza forzare.",
-  "Tutto resta dentro la stessa terra: si nasce qui, si cresce qui, si lavora qui e si mangia qui, senza passaggi in mezzo.",
+  "Il lavoro comincia presto. Gli animali vanno accuditi prima di ogni altra cosa e il latte va lavorato appena munto.",
+  "Le stagioni decidono cosa c’è in cucina. Si prepara ciò che il campo e la stalla offrono in quel momento.",
+  "Tutto resta dentro la stessa azienda: si alleva, si produce, si vende e si serve nello stesso luogo.",
 ] as const;
 
 const NOTE_CORTE = [
-  "Prima della luce, nella stalla.",
-  "Il fuoco si accende presto.",
-  "Quello che c'e', quel giorno.",
-  "Il tempo lo detta la campagna.",
-  "Stessi campi, stesse mani.",
-  "Nessun passaggio in mezzo.",
+  "Prima dell’alba, nella stalla.",
+  "La brace si accende in anticipo.",
+  "Si cucina ciò che c’è.",
+  "Il ritmo lo dà la campagna.",
+  "Stessi campi, stesse persone.",
+  "Nessun intermediario.",
 ] as const;
 
 export function LaVoce() {

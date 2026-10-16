@@ -147,7 +147,7 @@ export function Caseificio() {
   );
 
   const manifesto =
-    "Dal latte crudo al formaggio stagionato, ogni passaggio ha un tempo che non può essere compresso.";
+    "Dal latte al formaggio, ogni passaggio ha un tempo che non può essere compresso.";
 
   return (
     <article ref={root} className="journey-story journey-story--caseificio">

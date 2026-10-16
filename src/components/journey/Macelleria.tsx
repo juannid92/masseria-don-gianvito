@@ -151,7 +151,7 @@ export function Macelleria() {
           </aside>
           <div className="macelleria-station-list">
             <header className="macelleria-stations-intro">
-              <h2>Cinque stazioni, una stessa scelta.</h2>
+              <h2>Cinque passaggi, un’unica filiera.</h2>
               <p>
                 Dalla brace al taglio, dal consiglio all’abbinamento in tavola. Cinque gesti che
                 rendono diversa la carne di questa masseria.

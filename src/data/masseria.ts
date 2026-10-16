@@ -8,7 +8,7 @@
 export const MASSERIA = {
   nome: "Masseria Don Gianvito",
   sopratitolo: "Macelleria · Caseificio · Agriturismo · Allevamento",
-  tagline: "Dalla terra alla tavola. Ogni sera, a Noci.",
+  tagline: "Allevamento, caseificio, macelleria e agriturismo, in un’unica masseria a Noci.",
   indirizzo: "SP237 ex SS377 per Mottola km 6,5, Zona C 76, 70015 Noci (BA)",
   coordinate: { lat: 40.642739, lng: 17.0426 },
   coordinateLabel: "40.642739, 17.042600",
@@ -64,14 +64,14 @@ export const ANIME: Anima[] = [
     id: "caseificio",
     numero: "II",
     nome: "Caseificio",
-    claim: "Il bianco prende forma",
+    claim: "Il latte diventa formaggio",
     to: "/caseificio",
   },
   {
     id: "macelleria",
     numero: "III",
     nome: "Macelleria",
-    claim: "La scelta avviene a vista",
+    claim: "La carne, scelta al banco",
     to: "/macelleria",
   },
   {

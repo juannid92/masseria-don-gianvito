@@ -216,11 +216,11 @@ export function Prenota() {
             id="prenota-titolo"
             className="mt-6 font-display text-[clamp(2.6rem,7vw,5rem)] leading-[0.95] text-[color:var(--oro-su-scuro)]"
           >
-            Vieni a
+            Prenota
             <br />
-            vedere
+            il tuo
             <br />
-            com&apos;è.
+            tavolo.
           </h2>
         </div>
 
