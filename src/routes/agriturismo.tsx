@@ -1,16 +1,14 @@
-import { ChapterNavigation } from "@/components/journey/ChapterNavigation";
-import { MenuExperience } from "@/components/journey/MenuExperience";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimaPagina } from "@/components/anime/AnimaPagina";
 import { getAbsoluteUrl } from "@/config/site";
 import { AgriturismoCinema } from "@/components/agriturismo/AgriturismoCinema";
 import {
-  AgriturismoStoriaNuova,
-  AgriturismoGalleriaNuova,
-  AgriturismoDettagliNuovi,
-  AgriturismoCTANuovo,
-  AgriturismoFooterNuovo,
-} from "@/components/agriturismo/AgriturismoNuovaVeste";
+  AgriLaCasa,
+  AgriLaSera,
+  AgriLaCarta,
+  AgriPrenota,
+  AgriFineViaggio,
+} from "@/components/agriturismo/AgriturismoRacconto";
 
 export const Route = createFileRoute("/agriturismo")({
   head: () => ({
@@ -37,15 +35,15 @@ export const Route = createFileRoute("/agriturismo")({
 function AgriturismoPage() {
   return (
     <AnimaPagina>
-      <AgriturismoCinema />
-      <div id="next-section">
-        <AgriturismoStoriaNuova />
-        <AgriturismoGalleriaNuova />
-        <AgriturismoDettagliNuovi />
-        <MenuExperience />
-        <AgriturismoCTANuovo />
-        <AgriturismoFooterNuovo />
-        <ChapterNavigation current="agriturismo" />
+      <div className="agri-page">
+        <AgriturismoCinema />
+        <div id="next-section">
+          <AgriLaCasa />
+          <AgriLaSera />
+          <AgriLaCarta />
+          <AgriPrenota />
+          <AgriFineViaggio />
+        </div>
       </div>
     </AnimaPagina>
   );
