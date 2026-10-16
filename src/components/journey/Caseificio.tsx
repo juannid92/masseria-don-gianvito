@@ -196,9 +196,14 @@ export function Caseificio() {
         <div className="caseificio-track">
           {CASEIFICIO.moments.map((m, i) => (
             <article key={m.label} className="caseificio-panel">
-              <div className="caseificio-form" aria-hidden="true">
-                <span>{ROMAN[i]}</span>
-                <small>Foto da produrre · {m.label}</small>
+              <div className={"caseificio-form" + (i === 2 ? " caseificio-form--photo journey-photo" : "")} aria-hidden={i === 2 ? undefined : true}>
+                {i === 2 ? <>
+                  <img src="/images/caseificio-mozzarelle-ai.svg" alt="Mozzarelle fresche, burrate e treccia su un piatto di ceramica" width={1264} height={848} loading="lazy" decoding="async" />
+                  <small className="journey-photo-credit">Immagine illustrativa · AI</small>
+                </> : <>
+                  <span>{ROMAN[i]}</span>
+                  <small>Foto da produrre · {m.label}</small>
+                </>}
               </div>
               <div className="caseificio-panel-text">
                 <p className="caseificio-panel-label">

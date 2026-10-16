@@ -7,6 +7,8 @@ interface Moment {
   label: string;
   title: string;
   body: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 /**
@@ -90,8 +92,11 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
         {moments.map((m, i) => (
           <article key={m.label} className="pinned-card" style={{ zIndex: i + 1 }}>
             <div className="pinned-card-photo">
-              <div className="pinned-card-photo-inner">
-                <span>
+              <div className={"pinned-card-photo-inner" + (m.image ? " journey-photo" : "")}>
+                {m.image ? <>
+                  <img src={m.image} alt={m.imageAlt || m.label} width={1264} height={848} loading="lazy" decoding="async" />
+                  <small className="journey-photo-credit">Immagine illustrativa · AI</small>
+                </> : <><span>
                   {m.label
                     .split(" ")
                     .filter((w) => w.length > 2)
@@ -100,7 +105,7 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
                     .slice(0, 2)
                     .toUpperCase()}
                 </span>
-                <small>Foto da produrre · {m.label}</small>
+                <small>Foto da produrre · {m.label}</small></>}
               </div>
             </div>
             <div className="pinned-card-text">

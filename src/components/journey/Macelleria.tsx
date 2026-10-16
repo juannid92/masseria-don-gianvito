@@ -159,9 +159,14 @@ export function Macelleria() {
             </header>
             {MACELLERIA.moments.map((m, i) => (
               <article key={m.label} className="macelleria-station">
-                <div className="macelleria-station-cut" aria-hidden="true">
-                  <span>{String(i + 1).padStart(2, "0")}</span>
-                  <small>Foto da produrre · {m.label}</small>
+                <div className={"macelleria-station-cut" + (i === 1 ? " macelleria-station-cut--photo journey-photo" : "")} aria-hidden={i === 1 ? undefined : true}>
+                  {i === 1 ? <>
+                    <img src="/images/macelleria-brace-ai.svg" alt="Bistecche e bombette sulla griglia sopra la brace accesa" width={1264} height={848} loading="lazy" decoding="async" />
+                    <small className="journey-photo-credit">Immagine illustrativa · AI</small>
+                  </> : <>
+                    <span>{String(i + 1).padStart(2, "0")}</span>
+                    <small>Foto da produrre · {m.label}</small>
+                  </>}
                 </div>
                 <div className="macelleria-station-text">
                   <p className="macelleria-eyebrow">{m.label}</p>
