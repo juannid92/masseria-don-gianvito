@@ -134,7 +134,9 @@ export function Header() {
       style={{ height: "var(--header-offset)" }}
     >
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-5 md:px-10">
-        <Link to="/" className="group flex flex-col leading-none" aria-label={MASSERIA.nome}>
+        <Link to="/" className="group flex items-center gap-3 leading-none" aria-label={MASSERIA.nome}>
+          <img src="/images/logo-emblema.svg" alt="" aria-hidden="true" className="h-9 w-auto md:h-11" />
+          <span className="flex flex-col leading-none">
           <span
             className="font-eyebrow text-[9px] tracking-[0.34em] transition-colors"
             style={{ color: oroText }}
@@ -151,6 +153,7 @@ export function Header() {
             <em className="not-italic" style={{ color: oroText }}>
               Don Gianvito
             </em>
+          </span>
           </span>
         </Link>
 

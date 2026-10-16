@@ -22,6 +22,7 @@ export function Footer() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           {/* Claim — colonna larga */}
           <div className="lg:col-span-5">
+            <img src="/images/logo-completo.svg" alt="Masseria Don Gianvito — azienda agricola, agriturismo, braceria, macelleria" className="mb-10 h-28 w-auto md:h-36" />
             <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]/90">
               {MASSERIA.sopratitolo}
             </p>
