@@ -2,9 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AnimaPagina } from "@/components/anime/AnimaPagina";
 import { getAbsoluteUrl } from "@/config/site";
 import { AgriturismoCinema } from "@/components/agriturismo/AgriturismoCinema";
+import { AgriturismoStoriaNuova } from "@/components/agriturismo/AgriturismoNuovaVeste";
+import { AgriLaTavola } from "@/components/agriturismo/AgriLaTavola";
 import {
-  AgriLaCasa,
-  AgriLaSera,
   AgriLaCarta,
   AgriPrenota,
   AgriFineViaggio,
@@ -35,15 +35,13 @@ export const Route = createFileRoute("/agriturismo")({
 function AgriturismoPage() {
   return (
     <AnimaPagina>
-      <div className="agri-page">
-        <AgriturismoCinema />
-        <div id="next-section">
-          <AgriLaCasa />
-          <AgriLaSera />
-          <AgriLaCarta />
-          <AgriPrenota />
-          <AgriFineViaggio />
-        </div>
+      <AgriturismoCinema />
+      <div id="next-section" className="agri-page">
+        <AgriturismoStoriaNuova />
+        <AgriLaTavola />
+        <AgriLaCarta />
+        <AgriPrenota />
+        <AgriFineViaggio />
       </div>
     </AnimaPagina>
   );

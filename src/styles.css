@@ -1459,3 +1459,36 @@ html {
   .agri-carta-tabs button{font-size:17px;white-space:nowrap}
   .agri-carta-tabs button span{display:none}
 }
+
+/* ───── AGRITURISMO · La tavola (v3) ───── */
+.agri-tav{background:#17120d;color:#efe7d9;position:relative}
+.agri-tav-pin{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px);align-items:center;padding:110px clamp(20px,5vw,80px) 60px;max-width:1440px;margin-inline:auto}
+.agri-tav-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#d69a4e}
+.agri-tav h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(40px,4.6vw,76px);line-height:1;margin:18px 0 36px;hyphens:none}
+.agri-tav h2 em{color:#d69a4e}
+.agri-tav ol{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+.agri-tav-step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:12px 0;border-top:1px solid #efe7d91a;opacity:.32;transition:opacity .5s}
+.agri-tav-step.is-on{opacity:1}
+.agri-tav-step>span{font-size:12px;letter-spacing:.2em;color:#d69a4e;padding-top:6px}
+.agri-tav-step h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(22px,1.9vw,30px);hyphens:none}
+.agri-tav-step p{font-size:15px;line-height:1.55;color:#efe7d9b3;max-height:0;overflow:hidden;transition:max-height .6s ease,margin .6s;hyphens:none}
+.agri-tav-step.is-on p{max-height:90px;margin-top:6px}
+.agri-tav-table{position:relative;aspect-ratio:1/1.05;width:100%;max-width:640px;justify-self:center;border-radius:14px;background:radial-gradient(120% 90% at 40% 30%,#7a5536,#4b321f 70%);box-shadow:0 60px 120px -40px #000,inset 0 0 0 10px #3a2617}
+.agri-tav-table>*{position:absolute;transform:translate(-50%,-50%)}
+.agri-tav-cloth{left:50%;top:50%;width:56%;height:92%;background:repeating-linear-gradient(90deg,#efe7d9 0 18px,#e7dccb 18px 20px);opacity:.92;border-radius:4px;box-shadow:0 10px 30px #0006}
+.agri-tav-coperto{width:17%;aspect-ratio:1}
+.agri-tav-coperto .pl{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,#fbf8f2 52%,#e6ddcf 54%,#fbf8f2 60%,#d9cdb9 100%);box-shadow:0 6px 14px #0005}
+.agri-tav-coperto .gl{position:absolute;width:34%;aspect-ratio:1;right:-26%;top:-18%;border-radius:50%;border:2px solid #ffffff88;background:#ffffff1a}
+.agri-tav-pane{width:14%;aspect-ratio:1.4;border-radius:50%;background:radial-gradient(circle at 40% 35%,#e7b56f,#a8682c 70%);box-shadow:0 6px 14px #0006}
+.agri-tav-olio{width:7%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#b8a23a 40%,#6f6a2a 60%,#ffffff55 64%,#ffffff22);box-shadow:0 6px 12px #0006}
+.agri-tav-vassoio{width:30%;aspect-ratio:1.5;border-radius:50%;background:radial-gradient(circle,#f3ede3 60%,#cbb89b 100%);box-shadow:0 10px 22px #0006}
+.agri-tav-vassoio .b{position:absolute;width:24%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffefb,#ece4d3);box-shadow:0 2px 4px #0003}
+.agri-tav-vassoio.s .s1,.agri-tav-vassoio.s .s2{position:absolute;inset:22% 18%;border-radius:50%;background:repeating-radial-gradient(circle,#b7473f 0 6px,#d9857a 6px 8px)}
+.agri-tav-vassoio.s .s2{inset:30% 52% 30% 14%;background:repeating-linear-gradient(45deg,#6f8a3a 0 5px,#8fa84e 5px 9px)}
+.agri-tav-primo{width:11%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 45% 40%,#e9b54c,#c0662d 55%,#8b3a1d);box-shadow:inset 0 0 6px #0005}
+.agri-tav-fumo{position:absolute;left:50%;bottom:60%;width:40%;height:160%;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 100%,#ffffff55,transparent 70%);filter:blur(6px);animation:agriFumo 2.6s ease-in-out infinite}
+@keyframes agriFumo{0%,100%{opacity:.25;transform:translateX(-50%) translateY(0)}50%{opacity:.7;transform:translateX(-50%) translateY(-8px)}}
+.agri-tav-tagliere{width:28%;aspect-ratio:1.7;border-radius:12px;background:linear-gradient(135deg,#a8743f,#7a4f28);box-shadow:0 12px 24px #0007;display:flex;gap:6%;align-items:center;justify-content:center}
+.agri-tav-tagliere i{display:block;width:22%;aspect-ratio:.8;border-radius:40%;background:repeating-linear-gradient(90deg,#5a2318 0 4px,#7a3122 4px 7px);box-shadow:0 0 0 2px #3a140e}
+.agri-tav-dolce{width:6%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f5d9a5,#c78a45 70%);box-shadow:0 0 0 3px #fbf8f2,0 4px 8px #0005}
+@media (max-width:899px){.agri-tav-pin{grid-template-columns:1fr;padding-top:90px}.agri-tav-step p{max-height:none;margin-top:6px}.agri-tav-step{opacity:1}}
