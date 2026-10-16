@@ -1204,3 +1204,79 @@ html {
   .journey-next--caseificio .journey-next-link{font-size:clamp(22px,6.4vw,30px)}
 }
 .journey-story--caseificio .journey-next--compact a[aria-current=page]{color:var(--cs-oro)}
+
+/* ────────────────────────────────────────────────────────────────────────
+   MACELLERIA v2 — rosso sangue, carbone, osso · Anton + Inter
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-story--macelleria{--mc-sangue:#8a0f14;--mc-sangue-vivo:#b3161d;--mc-scuro:#1a0607;--mc-carbone:#120405;--mc-osso:#f1e6d8;--mc-font:"Anton",Impact,"Arial Narrow",sans-serif;background:var(--mc-carbone);color:var(--mc-osso)}
+.journey-story--macelleria .journey-chapter-hero{background:var(--mc-carbone);color:var(--mc-osso)}
+.hero-canvas-frame--macelleria .hero-canvas-shade{background:linear-gradient(270deg,rgba(18,4,5,.85) 0%,rgba(18,4,5,.45) 38%,rgba(18,4,5,0) 65%),linear-gradient(180deg,rgba(18,4,5,.6) 0%,rgba(18,4,5,0) 28%,rgba(18,4,5,0) 70%,rgba(18,4,5,.95) 100%)}
+.hero-overlay--right .journey-chapter-heading{margin-left:auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.journey-story--macelleria .hero-overlay .journey-chapter-heading{max-width:640px;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.journey-story--macelleria .hero-overlay .journey-kicker{color:#ff7a6a;font-weight:500}
+.journey-story--macelleria .journey-chapter-heading h1{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(52px,7vw,116px);line-height:.92;letter-spacing:.005em;margin:18px 0 26px;color:var(--mc-osso)}
+.journey-story--macelleria .journey-chapter-heading h1 em{font-style:normal;color:var(--mc-sangue-vivo)}
+.journey-story--macelleria .hero-overlay .journey-intro{color:#e3d2c2;max-width:42ch;margin-left:auto}
+.journey-story--macelleria .journey-hero-bottom{color:#ff7a6a;border-top-color:#b3161d66}
+.journey-story--macelleria .hero-overlay .journey-text-link{color:var(--mc-osso)}
+
+.macelleria-eyebrow{font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#ff6b5c}
+
+.macelleria-ribbon{background:var(--mc-osso);color:var(--mc-sangue);padding:36px 0;overflow:hidden;border-block:1px solid #8a0f1433}
+.macelleria-ribbon-row{display:flex;white-space:nowrap;width:max-content;gap:0;will-change:transform}
+.macelleria-ribbon-row+.macelleria-ribbon-row{margin-top:6px;color:transparent;-webkit-text-stroke:1.5px var(--mc-sangue)}
+.macelleria-ribbon-row span{font-family:var(--mc-font);font-size:clamp(56px,8vw,128px);line-height:1;text-transform:uppercase;padding-right:.4em;display:inline-flex;align-items:center;gap:.4em}
+.macelleria-ribbon-row i{font-style:normal;font-family:var(--font-sans);font-size:.3em;color:var(--mc-sangue-vivo);-webkit-text-stroke:0}
+
+.macelleria-stations{background:linear-gradient(180deg,var(--mc-scuro) 0%,var(--mc-carbone) 100%);padding:120px 0 80px}
+.macelleria-stations-grid{display:grid;grid-template-columns:minmax(260px,.8fr) 1.6fr;gap:80px}
+.macelleria-bignum{position:sticky;top:120px;align-self:start;height:calc(100svh - 180px);display:flex;flex-direction:column}
+.macelleria-bignum-window{overflow:hidden;margin-top:24px}
+.macelleria-bignum-value{display:block;font-family:var(--mc-font);font-size:clamp(140px,17vw,280px);line-height:.85;color:var(--mc-sangue-vivo)}
+.macelleria-bignum-label{font-family:var(--mc-font);font-size:28px;text-transform:uppercase;letter-spacing:.02em;margin-top:16px;color:var(--mc-osso)}
+.macelleria-vein{flex:1;width:2px;background:#b3161d26;margin-top:32px;overflow:hidden}
+.macelleria-vein-fill{display:block;width:100%;height:100%;background:var(--mc-sangue-vivo);transform-origin:50% 0;transform:scaleY(0)}
+.macelleria-stations-intro{padding-bottom:72px;border-bottom:1px solid #b3161d40;margin-bottom:24px}
+.macelleria-stations-intro h2{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(40px,4.6vw,76px);line-height:.95;margin:0 0 24px;color:var(--mc-osso)}
+.macelleria-stations-intro p{font-size:18px;line-height:1.7;color:#d9c6b4;max-width:52ch}
+.macelleria-station{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:56px 0;border-bottom:1px solid #b3161d26}
+.macelleria-station:nth-child(odd) .macelleria-station-cut{order:2}
+.macelleria-station-cut{aspect-ratio:4/5;background:linear-gradient(155deg,#5a0b0e 0%,#2a0608 60%,#160304 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:24px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.macelleria-station-cut::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.025) 22px 23px)}
+.macelleria-station-cut span{font-family:var(--mc-font);font-size:96px;line-height:1;color:#f1e6d822;position:relative}
+.macelleria-station-cut small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#f1e6d880;position:relative}
+.macelleria-station-text h3{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(30px,2.8vw,46px);line-height:1;margin:14px 0 20px;color:var(--mc-osso)}
+.macelleria-station-text>p:last-child{font-size:17px;line-height:1.75;color:#d9c6b4;max-width:44ch}
+
+.journey-next--macelleria{background:var(--mc-sangue);color:var(--mc-osso);padding:110px 0 64px}
+.journey-next--macelleria .macelleria-eyebrow{color:#ffd6cf}
+.journey-next--macelleria .journey-next-link{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(32px,4.4vw,68px);letter-spacing:.005em;line-height:1;border-bottom-color:#f1e6d84d;color:var(--mc-osso)}
+.journey-next--macelleria .journey-next-link em{font-style:normal;color:var(--mc-carbone)}
+.journey-next--macelleria .journey-next-link>span:last-child{flex:none;font-family:var(--font-sans);color:var(--mc-osso)}
+.journey-next--macelleria .journey-next-body{color:#f6d9d2;margin-top:24px;max-width:520px}
+.journey-story--macelleria .journey-next--compact{background:var(--mc-sangue);padding:0 0 56px;border-top:0}
+.journey-story--macelleria .journey-next--compact .journey-chapter-nav{padding-top:32px;border-top:1px solid #f1e6d833}
+.journey-story--macelleria .journey-next--compact a{color:var(--mc-osso)}
+.journey-story--macelleria .journey-next--compact .journey-chapter-nav span{color:#ffd6cf}
+.journey-story--macelleria .journey-next--compact a[aria-current=page]{color:#fff;border-bottom-color:#fff}
+
+@media (max-width:900px){
+  .macelleria-stations-grid{grid-template-columns:1fr;gap:0}
+  .macelleria-bignum{position:sticky;top:76px;height:auto;flex-direction:row;align-items:center;gap:16px;background:var(--mc-scuro);padding:12px 0;z-index:2;border-bottom:1px solid #b3161d40}
+  .macelleria-bignum .macelleria-eyebrow,.macelleria-vein{display:none}
+  .macelleria-bignum-window{margin-top:0}
+  .macelleria-bignum-value{font-size:56px}
+  .macelleria-bignum-label{margin-top:0;font-size:20px}
+  .macelleria-stations-intro{padding-top:40px}
+}
+@media (max-width:720px){
+  .journey-story--macelleria .journey-chapter-heading h1{font-size:52px}
+  .journey-story--macelleria .hero-overlay .journey-intro{font-size:16px}
+  .macelleria-stations{padding:56px 0}
+  .macelleria-station{grid-template-columns:1fr;gap:24px;padding:40px 0}
+  .macelleria-station:nth-child(odd) .macelleria-station-cut{order:0}
+  .macelleria-station-cut{aspect-ratio:4/3}
+  .macelleria-station-text>p:last-child,.macelleria-stations-intro p{font-size:15px}
+  .journey-next--macelleria{padding:72px 0 48px}
+  .journey-next--macelleria .journey-next-link{font-size:clamp(28px,8vw,40px)}
+}

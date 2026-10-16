@@ -12,7 +12,7 @@ interface Props {
   /** Se true usa "chars" (caratteri) invece di "words" (parole). */
   chars?: boolean;
   /** "center": titolo e intro centrati nell'hero. */
-  align?: "left" | "center";
+  align?: "left" | "center" | "right";
 }
 
 interface TextRevealOpts {
@@ -108,7 +108,7 @@ export function HeroOverlay({ chapter, next, chars = false, align = "left" }: Pr
 
   return (
     <div
-      className={`journey-shell hero-overlay${align === "center" ? " hero-overlay--center" : ""}`}
+      className={`journey-shell hero-overlay${align !== "left" ? ` hero-overlay--${align}` : ""}`}
       style={{
         transform: reduced ? undefined : `translate3d(${tx}px, ${ty}px, 0)`,
         transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
