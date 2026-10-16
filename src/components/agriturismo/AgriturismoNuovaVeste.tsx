@@ -46,36 +46,34 @@ export function AgriturismoStoriaNuova() {
   }, []);
 
   return (
-    <section 
+    <section
       ref={containerRef}
       id="storia-nuova"
-      className="py-24 md:py-48 bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] overflow-hidden"
+      className="relative py-20 md:py-32 bg-[#e8d5b0] text-[color:var(--carbone)] overflow-hidden"
     >
-      <div className="mx-auto w-full max-w-[1300px] px-5 md:px-12">
-        <div className="relative grid md:grid-cols-12 gap-12 items-center">
-          {/* Photo (Dominant, 65%) */}
-          <div ref={photoRef} className="md:col-span-8 relative z-0">
-             <img 
-               src="/__l5e/assets-v1/81a5f591-4245-43dc-ad91-f989e8ef9ace/masseria-aerial.jpg"
-               alt="Masseria Don Gianvito Aerial"
-               className="w-full aspect-[16/10] object-cover grayscale-[0.3] contrast-[1.05]"
-             />
-             <div ref={lineRef} className="absolute -right-12 top-1/2 w-24 h-px bg-[color:var(--oro-antico)] hidden md:block" />
+      <div className="absolute inset-y-0 right-0 w-full md:w-[38%] bg-[color:var(--carminio-scuro)] hidden md:block" aria-hidden="true" />
+      <div className="relative mx-auto w-full max-w-[1300px] px-5 md:px-12">
+        <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
+          <div ref={photoRef} className="md:col-span-7 relative">
+            <div className="absolute -left-4 -bottom-4 md:-left-6 md:-bottom-6 w-2/3 h-2/3 border border-[color:var(--oro-antico)]" aria-hidden="true" />
+            <img
+              src="/__l5e/assets-v1/81a5f591-4245-43dc-ad91-f989e8ef9ace/masseria-aerial.jpg"
+              alt="Veduta aerea della Masseria Don Gianvito"
+              className="relative w-full aspect-[4/3] object-cover shadow-[0_30px_60px_-30px_rgba(54,38,25,0.6)]"
+            />
+            <div ref={lineRef} className="hidden" />
           </div>
 
-          {/* Text content */}
-          <div className="md:col-span-4 relative z-10 md:-ml-20">
-            <span className="font-eyebrow text-[11px] tracking-[0.4em] text-[color:var(--oro-antico-testo)] mb-6 block">DAL CINQUECENTO</span>
-            <h2 ref={titleRef} className="font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.9] mb-12">
-              Dal Cinquecento, <br />
-              la stessa casa <br />
-              nella stessa terra.
+          <div className="md:col-span-5 relative md:pl-6">
+            <span className="font-eyebrow text-[11px] tracking-[0.4em] text-[color:var(--carminio)] md:text-[color:var(--oro-su-scuro)] mb-6 block">DAL CINQUECENTO</span>
+            <h2 ref={titleRef} className="font-display text-[clamp(2.25rem,4.2vw,3.75rem)] leading-[1] mb-8 md:text-[color:var(--bianco-latte)]">
+              Dal Cinquecento, la stessa casa nella <em className="not-italic text-[color:var(--carminio)] md:text-[color:var(--oro-su-scuro)]">stessa terra.</em>
             </h2>
-            <div className="space-y-8 max-w-[400px]">
-              <p className="text-[18px] md:text-[20px] leading-relaxed">
+            <div className="space-y-6 max-w-[420px] md:text-[color:var(--bianco-calce)]">
+              <p className="text-[17px] md:text-[19px] leading-relaxed">
                 La masseria attraversa i secoli conservando il rapporto fra casa, campi, animali e lavoro. Oggi l’Agriturismo è il punto in cui questa storia si apre agli ospiti.
               </p>
-              <p className="text-[16px] md:text-[17px] opacity-70 italic border-l-2 border-[color:var(--oro-antico)] pl-6">
+              <p className="text-[16px] italic border-l-2 border-[color:var(--oro-antico)] pl-5 opacity-80">
                 La tavola arriva dopo tutto il resto: allevamento, caseificio, macelleria e cucina.
               </p>
             </div>
