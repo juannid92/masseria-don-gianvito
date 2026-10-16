@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MASSERIA } from "@/data/masseria";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { PrenotazioneForm } from "@/components/PrenotazioneForm";
+import { useConsenso } from "@/lib/consent";
 
 /**
  * ATTO 07 — PRENOTA. Chiusura della Home.
@@ -29,7 +30,9 @@ const APERTURA = [
 export function Prenota() {
   const reduced = useReducedMotion();
   const rootRef = useRef<HTMLElement | null>(null);
-  const [mappaAttiva, setMappaAttiva] = useState(false);
+  const [mappaCliccata, setMappaAttiva] = useState(false);
+  const { consenso } = useConsenso();
+  const mappaAttiva = mappaCliccata || Boolean(consenso?.maps);
   const [formAperto, setFormAperto] = useState(false);
 
   useEffect(() => {
@@ -380,7 +383,7 @@ export function Prenota() {
                       Mostra la mappa
                     </span>
                     <span className="max-w-xs text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/75">
-                      La mappa viene caricata da Google solo dopo il tuo clic.
+                      La mappa è di Google: caricandola, Google riceve il tuo indirizzo IP e può impostare cookie. Si carica solo dopo il tuo clic o il tuo consenso.
                     </span>
                   </button>
                 )}

@@ -259,7 +259,17 @@ export function PrenotazioneForm({ showTitle = true, variant = "dark" }: Prenota
             PRENOTA TRAMITE WHATSAPP
           </a>
           <p className={`mt-3 text-xs ${labelColor}`}>
-            Verrai reindirizzato su WhatsApp con il messaggio gia compilato.
+            Verrai reindirizzato su WhatsApp con il messaggio già compilato.
+          </p>
+          <p className={`mt-2 text-xs leading-relaxed ${labelColor}`}>
+            I dati inseriti restano nel tuo browser e non vengono salvati dal sito: servono solo a
+            preparare il messaggio. Se indichi allergie o intolleranze, acconsenti a che le
+            usiamo per servirti in sicurezza. Titolare: Masseria Don Gianvito. Maggiori
+            informazioni nella{" "}
+            <a href="/legali/privacy" className="underline underline-offset-4">
+              Privacy Policy
+            </a>
+            .
           </p>
         </div>
       </form>

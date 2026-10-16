@@ -1,3 +1,4 @@
+import { apriPreferenze } from "@/lib/consent";
 import { Link } from "@tanstack/react-router";
 import { ANIME, ATTI, MASSERIA } from "@/data/masseria";
 import { useHomeSectionNav } from "@/lib/nav";
@@ -166,6 +167,13 @@ export function Footer() {
             <Link to="/legali/cookie" className="hover:text-[color:var(--oro-su-scuro)]">
               Cookie Policy
             </Link>
+            <button
+              type="button"
+              onClick={apriPreferenze}
+              className="hover:text-[color:var(--oro-su-scuro)]"
+            >
+              Preferenze cookie
+            </button>
           </div>
         </div>
       </div>
