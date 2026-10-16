@@ -19,11 +19,17 @@ type Momento = {
   occhiello: string;
   titolo: [string, string];
   testo: string;
+  foto: string;
+  fotoAlt: string;
+  fotoCredito: string;
 };
 
 const MOMENTI: Momento[] = [
   {
     id: "pietra",
+    foto: "/images/storia-pietra.svg",
+    fotoAlt: "Arco a Mottola",
+    fotoCredito: "Stefano Piepoli e Carmine Lentini · pubblico dominio",
     n: "01",
     occhiello: "IL CINQUECENTO",
     titolo: ["Prima di tutto,", "c'era la pietra."],
@@ -32,6 +38,9 @@ const MOMENTI: Momento[] = [
   },
   {
     id: "lavoro",
+    foto: "/images/storia-lavoro.svg",
+    fotoAlt: "Masseria Pantano, Murgia",
+    fotoCredito: "PietroAmendolara.it · CC BY-SA 4.0",
     n: "02",
     occhiello: "LA TERRA",
     titolo: ["Poi è arrivato", "il lavoro."],
@@ -40,6 +49,9 @@ const MOMENTI: Momento[] = [
   },
   {
     id: "famiglia",
+    foto: "/images/storia-famiglia.svg",
+    fotoAlt: "Trulli della Murgia",
+    fotoCredito: "Acquario51 · CC BY-SA 4.0",
     n: "03",
     occhiello: "OGGI",
     titolo: ["Oggi la masseria", "è un’azienda."],
@@ -396,6 +408,21 @@ export function LaStoria() {
                 />
               </div>
 
+
+              {/* Fotografia del luogo (Wikimedia Commons) */}
+              <figure className="pointer-events-none absolute inset-0 z-[1] m-0 [@media(min-width:900px)]:inset-y-[10%] [@media(min-width:900px)]:left-auto [@media(min-width:900px)]:right-[5%] [@media(min-width:900px)]:w-[40%]">
+                <img
+                  src={m.foto}
+                  alt={m.fotoAlt}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover opacity-35 [@media(min-width:900px)]:opacity-95"
+                />
+                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[color:var(--carbone)]/70 via-transparent to-transparent" />
+                <figcaption className="absolute bottom-3 left-3 right-3 hidden text-[10px] tracking-wide text-[color:var(--bianco-calce)]/70 [@media(min-width:900px)]:block">
+                  {m.fotoAlt} — foto {m.fotoCredito}
+                </figcaption>
+              </figure>
 
               <div
                 data-inner
