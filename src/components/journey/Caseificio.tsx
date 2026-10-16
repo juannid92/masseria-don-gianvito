@@ -11,109 +11,230 @@ import { ChapterNavigation } from "./ChapterNavigation";
 
 const CASEIFICIO = JOURNEY.find((c) => c.id === "caseificio")!;
 const NEXT = "macelleria" as const;
+const ROMAN = ["I", "II", "III", "IV", "V"];
 
-/** Capitolo Caseificio: timeline verticale centrale con momenti che si "accendono". */
+/** Capitolo Caseificio: hero 3D del latte, manifesto centrato, 5 gesti in scroll orizzontale. */
 export function Caseificio() {
   const root = useRef<HTMLElement>(null);
   useJourneyMotion(root);
 
   useGSAP(
     () => {
-      // Disegna la linea verticale della timeline man mano che l'utente scrolla.
-      const line = root.current?.querySelector<SVGPathElement>(".caseificio-timeline-line");
-      if (line) {
-        const len = line.getTotalLength();
-        gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
-        gsap.to(line, {
-          strokeDashoffset: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: line,
-            start: "top 70%",
-            end: "bottom 80%",
-            scrub: 1,
-          },
-        });
-      }
-      // Ogni nodo si "accende" quando entra in viewport.
-      const nodes = gsap.utils.toArray<HTMLElement>(".caseificio-node");
-      nodes.forEach((n) => {
+      gsap.registerPlugin(ScrollTrigger);
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const el = root.current!;
+
+        // Manifesto: le parole si "accendono" dal grigio crema all'inchiostro.
+        const words = gsap.utils.toArray<HTMLElement>(".caseificio-manifesto-word", el);
         gsap.fromTo(
-          n,
-          { autoAlpha: 0.3, scale: 0.95 },
+          words,
+          { opacity: 0.18 },
           {
-            autoAlpha: 1,
-            scale: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: { trigger: n, start: "top 75%", once: true },
+            opacity: 1,
+            stagger: 0.1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".caseificio-manifesto",
+              start: "top 75%",
+              end: "bottom 45%",
+              scrub: 0.6,
+            },
           },
         );
+
+        // Filo d'oro che si disegna sotto il manifesto.
+        const thread = el.querySelector<SVGPathElement>(".caseificio-thread path");
+        if (thread) {
+          const len = thread.getTotalLength();
+          gsap.set(thread, { strokeDasharray: len, strokeDashoffset: len });
+          gsap.to(thread, {
+            strokeDashoffset: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".caseificio-thread",
+              start: "top 85%",
+              end: "bottom 50%",
+              scrub: 0.8,
+            },
+          });
+        }
+
+        // 5 gesti in scroll orizzontale pinned.
+        const section = el.querySelector<HTMLElement>(".caseificio-gesti");
+        const track = el.querySelector<HTMLElement>(".caseificio-track");
+        const fill = el.querySelector<HTMLElement>(".caseificio-progress-fill");
+        const current = el.querySelector<HTMLElement>(".caseificio-current");
+        if (section && track) {
+          section.classList.add("is-horizontal");
+          const panels = gsap.utils.toArray<HTMLElement>(".caseificio-panel", track);
+          const distance = () => track.scrollWidth - window.innerWidth;
+          const tween = gsap.to(track, {
+            x: () => -distance(),
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: () => `+=${distance()}`,
+              pin: true,
+              scrub: 0.7,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              snap: {
+                snapTo: (value: number) => {
+                  // Allinea ogni gesto al bordo sinistro del contenuto.
+                  const first = panels[0].offsetLeft;
+                  const points = panels.map((p) =>
+                    Math.min(1, (p.offsetLeft - first) / Math.max(1, distance())),
+                  );
+                  return points.reduce((a, b) =>
+                    Math.abs(b - value) < Math.abs(a - value) ? b : a,
+                  );
+                },
+                duration: 0.5,
+                ease: "power2.inOut",
+                delay: 0.05,
+              },
+              onUpdate: (self) => {
+                if (fill) fill.style.transform = `scaleX(${self.progress})`;
+                const idx = Math.min(
+                  panels.length - 1,
+                  Math.round(self.progress * (panels.length - 1)),
+                );
+                if (current) current.textContent = ROMAN[idx];
+              },
+            },
+          });
+          panels.forEach((panel) => {
+            const form = panel.querySelector(".caseificio-form");
+            const text = panel.querySelectorAll(".caseificio-panel-text > *");
+            gsap.fromTo(
+              form,
+              { scale: 0.7, rotate: -12 },
+              {
+                scale: 1,
+                rotate: 0,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: panel,
+                  containerAnimation: tween,
+                  start: "left right",
+                  end: "center center",
+                  scrub: true,
+                },
+              },
+            );
+            gsap.from(text, {
+              y: 30,
+              autoAlpha: 0,
+              stagger: 0.08,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: panel,
+                containerAnimation: tween,
+                start: "left 70%",
+                toggleActions: "play none none reverse",
+              },
+            });
+          });
+          return () => section.classList.remove("is-horizontal");
+        }
       });
+      return () => mm.revert();
     },
     { scope: root },
   );
 
+  const manifesto =
+    "Dal latte crudo al formaggio stagionato, ogni passaggio ha un tempo che non può essere compresso.";
+
   return (
     <article ref={root} className="journey-story journey-story--caseificio">
-      <header className="journey-chapter-hero">
+      <header className="journey-chapter-hero" data-tone="light">
         <CaseificioHero />
-        <HeroOverlay chapter={CASEIFICIO} next={NEXT} chars />
+        <HeroOverlay chapter={CASEIFICIO} next={NEXT} align="center" />
       </header>
 
-      <section className="journey-shell journey-story-body caseificio-timeline-section">
-        <header className="caseificio-timeline-intro" data-journey-reveal>
-          <p className="journey-kicker">Il processo</p>
-          <h2 className="font-display">Cinque gesti. Cinque attese.</h2>
-          <p>
-            Dal latte crudo al formaggio stagionato, ogni passaggio ha un tempo che non può essere
-            compresso. Segui la linea centrale, dall’alto verso il basso.
+      <section className="caseificio-manifesto" data-tone="light">
+        <div className="journey-shell">
+          <p className="caseificio-eyebrow">Il processo · Cinque gesti, cinque attese</p>
+          <p className="caseificio-manifesto-text">
+            {manifesto.split(" ").map((w, i) => (
+              <span key={i} className="caseificio-manifesto-word">
+                {w}{" "}
+              </span>
+            ))}
           </p>
-        </header>
-
-        <div className="caseificio-timeline">
-          {/* Linea SVG centrale */}
           <svg
-            className="caseificio-timeline-svg"
-            viewBox="0 0 2 2000"
+            className="caseificio-thread"
+            viewBox="0 0 1200 80"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
             <path
-              className="caseificio-timeline-line"
-              d="M1 0 L1 2000"
-              stroke="#dab873"
-              strokeWidth="0.04"
+              d="M0 40 C 200 0, 300 80, 500 40 S 800 0, 1000 40 S 1150 70, 1200 40"
               fill="none"
+              stroke="#b2833a"
+              strokeWidth="1.5"
             />
           </svg>
+        </div>
+      </section>
 
+      <section
+        className="caseificio-gesti"
+        data-tone="light"
+        aria-label="I cinque gesti del caseificio"
+      >
+        <div className="caseificio-gesti-head journey-shell">
+          <p className="caseificio-eyebrow">I gesti</p>
+          <p className="caseificio-counter" aria-hidden="true">
+            <span className="caseificio-current">I</span> — V
+          </p>
+        </div>
+        <div className="caseificio-track">
           {CASEIFICIO.moments.map((m, i) => (
-            <article key={m.label} className="caseificio-node" data-journey-reveal>
-              <div className="caseificio-node-dot" />
-              <div className="caseificio-node-content">
-                <span className="journey-moment-index">0{i + 1}</span>
-                <p className="journey-moment-label">{m.label}</p>
+            <article key={m.label} className="caseificio-panel">
+              <div className="caseificio-form" aria-hidden="true">
+                <span>{ROMAN[i]}</span>
+                <small>Foto da produrre · {m.label}</small>
+              </div>
+              <div className="caseificio-panel-text">
+                <p className="caseificio-panel-label">
+                  {String(i + 1).padStart(2, "0")} · {m.label}
+                </p>
                 <h2>{m.title}</h2>
                 <p>{m.body}</p>
               </div>
             </article>
           ))}
         </div>
+        <div className="caseificio-progress journey-shell" aria-hidden="true">
+          <span className="caseificio-progress-fill" />
+        </div>
       </section>
 
-      <section className="journey-shell journey-next" data-journey-reveal>
-        <p className="journey-kicker">Prossima tappa</p>
-        <Link to={chapterPath(NEXT)} className="journey-next-link">
-          Dal formaggio al <em>banco della macelleria</em>
-          <span aria-hidden="true">→</span>
-        </Link>
-        <p className="journey-next-body">
-          La carne, la brace, il taglio. Un altro ritmo, altre mani, la stessa cura.
-        </p>
+      <section
+        className="journey-next journey-next--caseificio"
+        data-tone="light"
+        data-journey-reveal
+      >
+        <div className="journey-shell">
+          <p className="caseificio-eyebrow">Prossima tappa</p>
+          <Link to={chapterPath(NEXT)} className="journey-next-link">
+            <span className="journey-next-title">
+              Dal formaggio alla <em>macelleria</em>
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <p className="journey-next-body">
+            La carne, la brace, il taglio. Un altro ritmo, altre mani, la stessa cura.
+          </p>
+        </div>
       </section>
 
-      <ChapterNavigation exclude="caseificio" />
+      <ChapterNavigation current="caseificio" compact tone="light" />
     </article>
   );
 }

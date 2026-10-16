@@ -11,6 +11,8 @@ interface Props {
   next?: AnimaId;
   /** Se true usa "chars" (caratteri) invece di "words" (parole). */
   chars?: boolean;
+  /** "center": titolo e intro centrati nell'hero. */
+  align?: "left" | "center";
 }
 
 interface TextRevealOpts {
@@ -75,7 +77,7 @@ function useHeadingReveal({ ref, type, stagger, duration, y, reduced }: TextReve
 }
 
 /** Overlay testuale sopra il Canvas R3F: kicker, titolo, intro, scroll hint. */
-export function HeroOverlay({ chapter, next, chars = false }: Props) {
+export function HeroOverlay({ chapter, next, chars = false, align = "left" }: Props) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const reduced = useReducedMotion();
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
@@ -106,7 +108,7 @@ export function HeroOverlay({ chapter, next, chars = false }: Props) {
 
   return (
     <div
-      className="journey-shell hero-overlay"
+      className={`journey-shell hero-overlay${align === "center" ? " hero-overlay--center" : ""}`}
       style={{
         transform: reduced ? undefined : `translate3d(${tx}px, ${ty}px, 0)`,
         transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",

@@ -1133,3 +1133,74 @@ html {
 .hero-canvas-frame--allevamento .hero-canvas-shade{background:linear-gradient(90deg,rgba(29,30,20,.72) 0%,rgba(29,30,20,.35) 38%,rgba(29,30,20,0) 62%),linear-gradient(180deg,rgba(29,30,20,.5) 0%,rgba(29,30,20,0) 30%,rgba(29,30,20,0) 65%,rgba(29,30,20,.85) 100%)}
 .journey-story--allevamento .hero-overlay .journey-kicker{color:#f1dfb4}
 .journey-story--allevamento .hero-overlay .journey-intro{color:#fbf5e6}
+
+/* ────────────────────────────────────────────────────────────────────────
+   CASEIFICIO v2 — bianco latte, oro, Cormorant Garamond
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-story--caseificio{--cs-latte:#fffdf7;--cs-crema:#f6efe0;--cs-oro:#b2833a;--cs-oro-chiaro:#d9b878;--cs-ink:#3a3226;--cs-font:"Cormorant Garamond",ui-serif,Georgia,serif;background:var(--cs-latte);color:var(--cs-ink)}
+.journey-story--caseificio .journey-chapter-hero{background:#f7f1e3;color:var(--cs-ink)}
+.hero-canvas-frame--caseificio .hero-canvas-shade{background:radial-gradient(ellipse 55% 45% at 50% 48%,rgba(255,253,247,.82) 0%,rgba(255,253,247,.45) 55%,rgba(255,253,247,0) 100%),linear-gradient(180deg,rgba(247,241,227,.7) 0%,rgba(247,241,227,0) 25%,rgba(247,241,227,0) 75%,rgba(247,241,227,.9) 100%)}
+.hero-overlay--center{align-items:center;text-align:center}
+.hero-overlay--center>.journey-text-link{align-self:flex-start}
+.hero-overlay--center .journey-chapter-heading{margin-inline:auto;display:flex;flex-direction:column;align-items:center}
+.hero-overlay--center .journey-hero-bottom{width:100%;text-align:left}
+.journey-story--caseificio .hero-overlay .journey-chapter-heading{text-shadow:none;max-width:900px}
+.journey-story--caseificio .hero-overlay .journey-kicker{color:var(--cs-oro);font-weight:500}
+.journey-story--caseificio .journey-chapter-heading h1{font-family:var(--cs-font);font-weight:500;font-size:clamp(48px,6.4vw,104px);line-height:.98;letter-spacing:-.02em;margin:18px 0 26px;color:var(--cs-ink);text-wrap:balance}
+.journey-story--caseificio .journey-chapter-heading h1 em{font-style:italic;font-weight:400;color:var(--cs-oro)}
+.journey-story--caseificio .hero-overlay .journey-intro{color:#5a4d3c;font-size:18px;max-width:46ch;margin-inline:auto}
+.journey-story--caseificio .hero-overlay .journey-text-link{color:var(--cs-ink)}
+.journey-story--caseificio .journey-hero-bottom{color:var(--cs-oro);border-top-color:#b2833a40}
+
+.caseificio-eyebrow{font-family:var(--font-sans);font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--cs-oro)}
+.caseificio-manifesto{background:var(--cs-latte);padding:140px 0 110px;text-align:center}
+.caseificio-manifesto-text{font-family:var(--cs-font);font-size:clamp(32px,3.6vw,58px);line-height:1.18;letter-spacing:-.01em;max-width:20ch;margin:28px auto 0;color:var(--cs-ink);text-wrap:balance}
+.caseificio-manifesto-word{display:inline}
+.caseificio-thread{display:block;width:min(900px,100%);height:60px;margin:56px auto 0}
+
+.caseificio-gesti{background:var(--cs-crema);padding:96px 0;overflow:hidden}
+.caseificio-gesti-head{display:flex;justify-content:space-between;align-items:baseline}
+.caseificio-counter{font-family:var(--cs-font);font-size:22px;color:#b2833a99}
+.caseificio-current{font-size:40px;color:var(--cs-oro);font-style:italic}
+.caseificio-track{display:grid;gap:48px;padding:48px max(24px,calc((100vw - 1344px)/2))}
+.caseificio-panel{display:grid;grid-template-columns:minmax(220px,420px) 1fr;gap:64px;align-items:center}
+.caseificio-form{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffdf7 0%,#f3e8d0 55%,#e2cfa6 100%);box-shadow:inset 0 -18px 40px rgba(178,131,58,.18),0 30px 60px -30px rgba(90,70,40,.35);border:1px solid #d9b87866;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.caseificio-form span{font-family:var(--cs-font);font-style:italic;font-size:clamp(72px,8vw,128px);line-height:1;color:var(--cs-oro)}
+.caseificio-form small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8a7350;max-width:70%;text-align:center}
+.caseificio-panel-label{font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cs-oro);margin-bottom:16px}
+.caseificio-panel-text h2{font-family:var(--cs-font);font-weight:500;font-size:clamp(32px,3.4vw,54px);line-height:1.05;letter-spacing:-.01em;margin:0 0 22px;color:var(--cs-ink);text-wrap:balance}
+.caseificio-panel-text>p:last-child{font-size:17px;line-height:1.75;color:#5a4d3c;max-width:44ch}
+.caseificio-progress{height:1px;background:#b2833a33;overflow:hidden}
+.caseificio-progress-fill{display:block;height:100%;background:var(--cs-oro);transform:scaleX(0);transform-origin:0 50%}
+/* Modalità orizzontale pinned (solo con animazioni attive) */
+.caseificio-gesti.is-horizontal{height:100svh;padding:96px 0 40px;display:flex;flex-direction:column;justify-content:space-between}
+.caseificio-gesti.is-horizontal .caseificio-track{display:flex;gap:0;width:max-content;padding-block:0;flex:1;align-items:center}
+.caseificio-gesti.is-horizontal .caseificio-panel{width:min(1100px,82vw);flex:none;padding-right:8vw}
+.caseificio-gesti.is-horizontal .caseificio-form{width:min(380px,32vw,52svh)}
+
+.journey-next--caseificio{background:var(--cs-latte);color:var(--cs-ink);padding:110px 0 64px;border-top:1px solid #d9b87866}
+.journey-next--caseificio .journey-next-link{font-family:var(--cs-font);font-weight:500;font-size:clamp(28px,3.8vw,56px);letter-spacing:-.01em;line-height:1.1;border-bottom-color:#b2833a59;color:var(--cs-ink)}
+.journey-next--caseificio .journey-next-link em{color:var(--cs-oro)}
+.journey-next--caseificio .journey-next-link>span:last-child{flex:none;color:var(--cs-oro)}
+.journey-next--caseificio .journey-next-body{color:#5a4d3c;margin-top:24px;max-width:520px}
+.journey-story--caseificio .journey-next--compact{background:var(--cs-latte);color:var(--cs-ink);padding:0 0 56px}
+.journey-story--caseificio .journey-next--compact .journey-chapter-nav{padding-top:32px}
+.journey-story--caseificio .journey-next--compact a{color:var(--cs-ink)}
+.journey-story--caseificio .journey-next--compact .journey-chapter-nav span{color:var(--cs-oro)}
+
+@media (max-width:720px){
+  .journey-story--caseificio .journey-chapter-heading h1{font-size:46px}
+  .journey-story--caseificio .hero-overlay .journey-intro{font-size:16px}
+  .caseificio-manifesto{padding:88px 0 72px}
+  .caseificio-manifesto-text{font-size:30px}
+  .caseificio-panel{grid-template-columns:1fr;gap:28px}
+  .caseificio-form{width:min(240px,62vw);margin-inline:auto}
+  .caseificio-gesti.is-horizontal{padding:84px 0 28px}
+  .caseificio-gesti.is-horizontal .caseificio-panel{width:86vw;padding-right:6vw;gap:20px}
+  .caseificio-gesti.is-horizontal .caseificio-form{width:min(200px,50vw,28svh)}
+  .caseificio-panel-text h2{font-size:28px;margin-bottom:14px}
+  .caseificio-panel-text>p:last-child{font-size:15px}
+  .journey-next--caseificio{padding:72px 0 48px}
+  .journey-next--caseificio .journey-next-link{font-size:clamp(22px,6.4vw,30px)}
+}
+.journey-story--caseificio .journey-next--compact a[aria-current=page]{color:var(--cs-oro)}

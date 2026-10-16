@@ -6,14 +6,16 @@ import type { AnimaId } from "@/data/masseria";
 export function ChapterNavigation({
   current,
   compact = false,
+  tone = "dark",
 }: {
   current: AnimaId;
   compact?: boolean;
+  tone?: "dark" | "light";
 }) {
   const index = JOURNEY.findIndex((c) => c.id === current);
   const next = JOURNEY[(index + 1) % JOURNEY.length];
   return (
-    <section className={`journey-next${compact ? " journey-next--compact" : ""}`} data-tone="dark">
+    <section className={`journey-next${compact ? " journey-next--compact" : ""}`} data-tone={tone}>
       <div className="journey-shell">
         {!compact && (
           <>
