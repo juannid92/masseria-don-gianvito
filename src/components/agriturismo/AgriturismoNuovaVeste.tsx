@@ -165,9 +165,9 @@ export function AgriturismoGalleriaNuova() {
           {/* 3. Piccola e sovrapposta */}
           <div className="md:col-span-3 md:col-start-5 md:-translate-y-48 z-10 flex flex-col gap-6">
             <div className="gallery-img-wrap relative overflow-hidden aspect-[4/5] shadow-2xl">
-              <img src="/images/agriturismo-gallery-03-brace.webp" className="w-full h-full object-cover" alt="Il gesto" />
+              <img src="/images/agriturismo-focaccia.svg" className="w-full h-full object-cover" alt="Focaccia e calzone della masseria" />
             </div>
-            <span className="font-eyebrow text-[10px] tracking-[0.4em] opacity-40">IL GESTO</span>
+            <span className="font-eyebrow text-[10px] tracking-[0.4em] opacity-40">LA FOCACCIA</span>
           </div>
 
           {/* 4. Panoramica a chiusura */}

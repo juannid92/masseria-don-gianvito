@@ -68,11 +68,11 @@ export function AgriLaTavola() {
           <div className="agri-tav-photo-frame">
             <img
               src="/images/agriturismo-tavola-ai.svg"
-              alt="Tavola rustica apparecchiata con orecchiette, carne alla brace, verdure e latticini"
+              alt="Tagliere di antipasti serviti nel cortile della masseria: bruschette, frittelle e olive"
               width={1264} height={848} loading="lazy" decoding="async"
             />
           </div>
-          <figcaption>La tavola della masseria <span>Immagine illustrativa · AI</span></figcaption>
+          <figcaption>La tavola della masseria <span>Antipasti nel cortile</span></figcaption>
         </figure>
       </div>
     </section>
