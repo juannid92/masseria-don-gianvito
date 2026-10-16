@@ -3,7 +3,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "@tanstack/react-router";
-import { ANIME } from "@/data/masseria";
+import { ANIME, MASSERIA } from "@/data/masseria";
 import { useHomeSectionNav } from "@/lib/nav";
 
 export function AgriturismoStoriaNuova() {
@@ -233,8 +233,7 @@ export function AgriturismoDettagliNuovi() {
 
 export function AgriturismoCTANuovo() {
   const goToSection = useHomeSectionNav();
-  const phone = "+39 080 4972322";
-  const mobile = "+39 335 1234567";
+  const phone = `+39 ${MASSERIA.telefono}`;
   const waMessage = encodeURIComponent("Buongiorno Masseria Don Gianvito, vorrei richiedere informazioni per una prenotazione in agriturismo.");
 
   return (
@@ -255,7 +254,7 @@ export function AgriturismoCTANuovo() {
                 PRENOTA UN TAVOLO
               </button>
               <a 
-                href={`https://wa.me/393351234567?text=${waMessage}`}
+                href={`https://wa.me/393339395750?text=${waMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-[72px] px-12 border border-[color:var(--oro-su-scuro)] flex items-center text-[12px] font-eyebrow tracking-[0.4em] hover:bg-[color:var(--oro-su-scuro)]/10 transition-colors"
@@ -268,15 +267,15 @@ export function AgriturismoCTANuovo() {
           <div className="md:col-span-4 flex flex-col gap-12 md:text-right">
             <div>
               <span className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro-su-scuro)] block mb-4">TELEFONO</span>
-              <a href={`tel:${phone}`} className="font-display text-[32px] md:text-[42px] hover:text-[color:var(--oro-su-scuro)] transition-colors">
+              <a href={MASSERIA.telefonoHref} className="font-display text-[32px] md:text-[42px] hover:text-[color:var(--oro-su-scuro)] transition-colors">
                 {phone}
               </a>
             </div>
             <div>
               <span className="font-eyebrow text-[10px] tracking-[0.4em] text-[color:var(--oro-su-scuro)] block mb-4">SOCIAL</span>
               <div className="flex gap-6 md:justify-end">
-                <a href="#" className="opacity-60 hover:opacity-100 transition-opacity">Instagram</a>
-                <a href="#" className="opacity-60 hover:opacity-100 transition-opacity">Facebook</a>
+                <a href={MASSERIA.instagram} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">Instagram</a>
+                <a href={MASSERIA.facebook} target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity">Facebook</a>
               </div>
             </div>
           </div>
