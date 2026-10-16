@@ -31,7 +31,7 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
         const counter = el.querySelector<HTMLElement>(".pinned-current");
         const bar = el.querySelector<HTMLElement>(".pinned-bar-fill");
 
-        gsap.set(cards, { yPercent: (i) => (i === 0 ? 0 : 115), rotate: (i) => (i === 0 ? 0 : 2) });
+        gsap.set(cards, { filter: "brightness(1)", yPercent: (i) => (i === 0 ? 0 : 115), rotate: (i) => (i === 0 ? 0 : 2) });
 
         const tl = gsap.timeline({
           defaults: { ease: "none" },
