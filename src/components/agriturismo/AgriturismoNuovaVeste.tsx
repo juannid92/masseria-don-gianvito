@@ -45,39 +45,57 @@ export function AgriturismoStoriaNuova() {
     return () => ctx.revert();
   }, []);
 
+  const capitoli = [
+    { n: "I", t: "La casa", d: "Le stesse mura, da cinque secoli." },
+    { n: "II", t: "I campi", d: "La terra che dà da mangiare a tutto il resto." },
+    { n: "III", t: "Gli animali", d: "Allevati qui, nutriti qui." },
+    { n: "IV", t: "Il lavoro", d: "Ogni giorno, prima che si apra la tavola." },
+  ];
+
   return (
     <section
       ref={containerRef}
       id="storia-nuova"
-      className="relative py-20 md:py-32 bg-[#e8d5b0] text-[color:var(--carbone)] overflow-hidden"
+      className="relative bg-[color:var(--carminio-scuro)] text-[color:var(--bianco-calce)] overflow-hidden"
     >
-      <div className="absolute inset-y-0 right-0 w-full md:w-[38%] bg-[color:var(--carminio-scuro)] hidden md:block" aria-hidden="true" />
-      <div className="relative mx-auto w-full max-w-[1300px] px-5 md:px-12">
-        <div className="grid md:grid-cols-12 gap-10 md:gap-16 items-center">
-          <div ref={photoRef} className="md:col-span-7 relative">
-            <div className="absolute -left-4 -bottom-4 md:-left-6 md:-bottom-6 w-2/3 h-2/3 border border-[color:var(--oro-antico)]" aria-hidden="true" />
-            <img
-              src="/__l5e/assets-v1/81a5f591-4245-43dc-ad91-f989e8ef9ace/masseria-aerial.jpg"
-              alt="Veduta aerea della Masseria Don Gianvito"
-              className="relative w-full aspect-[4/3] object-cover shadow-[0_30px_60px_-30px_rgba(54,38,25,0.6)]"
-            />
-            <div ref={lineRef} className="hidden" />
-          </div>
-
-          <div className="md:col-span-5 relative md:pl-6">
-            <span className="font-eyebrow text-[11px] tracking-[0.4em] text-[color:var(--carminio)] md:text-[color:var(--oro-su-scuro)] mb-6 block">DAL CINQUECENTO</span>
-            <h2 ref={titleRef} className="font-display text-[clamp(2.25rem,4.2vw,3.75rem)] leading-[1] mb-8 md:text-[color:var(--bianco-latte)]">
-              Dal Cinquecento, la stessa casa nella <em className="not-italic text-[color:var(--carminio)] md:text-[color:var(--oro-su-scuro)]">stessa terra.</em>
+      {/* Foto a tutta larghezza con titolo sul gradiente */}
+      <div ref={photoRef} className="relative h-[70svh] min-h-[460px] md:h-[85svh]">
+        <img
+          src="/__l5e/assets-v1/81a5f591-4245-43dc-ad91-f989e8ef9ace/masseria-aerial.jpg"
+          alt="Veduta aerea della Masseria Don Gianvito"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[color:var(--carminio-scuro)] via-[color:var(--carminio-scuro)]/50 to-transparent" aria-hidden="true" />
+        <div className="absolute bottom-0 left-0 right-0">
+          <div className="mx-auto w-full max-w-[1300px] px-5 md:px-12 pb-10 md:pb-16">
+            <span className="font-eyebrow text-[11px] tracking-[0.4em] text-[color:var(--oro-su-scuro)] mb-5 block">DAL CINQUECENTO</span>
+            <h2 ref={titleRef} className="font-display text-[clamp(2.6rem,7.5vw,7rem)] leading-[0.95] max-w-[14ch]">
+              La stessa casa, <span className="text-[color:var(--oro-su-scuro)]">la stessa terra.</span>
             </h2>
-            <div className="space-y-6 max-w-[420px] md:text-[color:var(--bianco-calce)]">
-              <p className="text-[17px] md:text-[19px] leading-relaxed">
-                La masseria attraversa i secoli conservando il rapporto fra casa, campi, animali e lavoro. Oggi l’Agriturismo è il punto in cui questa storia si apre agli ospiti.
-              </p>
-              <p className="text-[16px] italic border-l-2 border-[color:var(--oro-antico)] pl-5 opacity-80">
-                La tavola arriva dopo tutto il resto: allevamento, caseificio, macelleria e cucina.
-              </p>
-            </div>
           </div>
+        </div>
+      </div>
+
+      {/* Quattro capitoli */}
+      <div className="mx-auto w-full max-w-[1300px] px-5 md:px-12 pt-8 pb-20 md:pb-28">
+        <div ref={lineRef} className="h-px w-full bg-[color:var(--oro-su-scuro)]/60 mb-10" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
+          {capitoli.map((c) => (
+            <div key={c.n}>
+              <span className="font-display text-[44px] md:text-[64px] leading-none text-[color:var(--oro-su-scuro)]/80 block mb-4">{c.n}</span>
+              <h3 className="font-display text-[22px] md:text-[28px] mb-2">{c.t}</h3>
+              <p className="text-[15px] leading-relaxed opacity-70">{c.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-16 md:mt-24 grid md:grid-cols-12 gap-8 items-start">
+          <p className="md:col-span-7 text-[19px] md:text-[24px] leading-relaxed">
+            La masseria attraversa i secoli conservando il rapporto fra casa, campi, animali e lavoro. Oggi l’Agriturismo è il punto in cui questa storia si apre agli ospiti.
+          </p>
+          <p className="md:col-span-4 md:col-start-9 font-display italic text-[22px] md:text-[28px] leading-snug text-[color:var(--oro-su-scuro)]">
+            La tavola arriva dopo tutto il resto: allevamento, caseificio, macelleria e cucina.
+          </p>
         </div>
       </div>
     </section>
