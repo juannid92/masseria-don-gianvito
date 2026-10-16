@@ -1067,3 +1067,69 @@ html {
 }
 
 
+
+/* ────────────────────────────────────────────────────────────────────────
+   ALLEVAMENTO v2 — hero 3D, titolo, card pinned, prossima tappa
+   ──────────────────────────────────────────────────────────────────────── */
+.hero-canvas-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(29,30,20,.55) 0%,rgba(29,30,20,.08) 38%,rgba(29,30,20,.15) 62%,rgba(29,30,20,.82) 100%)}
+.journey-story--allevamento .journey-chapter-heading{max-width:760px}
+.journey-story--allevamento .journey-chapter-heading h1{font-size:clamp(40px,5.4vw,84px);line-height:1.04;letter-spacing:-.04em;margin:20px 0 24px;text-wrap:balance}
+.journey-story--allevamento .journey-intro{max-width:520px}
+.hd-reveal{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
+.hd-inner{display:inline-block;will-change:transform,opacity}
+
+.pinned-stack{position:relative;background:#29291f;color:#faf6ec;padding:96px 0 72px;overflow:hidden}
+.pinned-stack-head,.pinned-stack-foot{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.pinned-counter{font-family:var(--font-display);font-size:20px;color:#dfca9f99}
+.pinned-current{color:#dfca9f;font-size:32px}
+.pinned-stack-deck{display:grid;gap:32px;margin-block:40px}
+.pinned-card{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;background:#34352a;border:1px solid #dfca9f26;border-radius:20px;padding:28px;box-shadow:0 30px 80px -30px rgba(0,0,0,.6);transform-origin:50% 0;will-change:transform}
+.pinned-card-photo{aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#1f2018}
+.pinned-card-photo-inner{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(circle at 30% 25%,#6c6a45 0%,#3c3d2c 55%,#262619 100%)}
+.pinned-card-photo-inner span{font-family:var(--font-display);font-size:clamp(64px,8vw,120px);color:#dfca9f40;line-height:1}
+.pinned-card-photo-inner small{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#dfca9f80}
+.pinned-card-text{padding-right:24px}
+.pinned-card-index{font-family:var(--font-display);font-size:64px;line-height:1;color:#dfca9f}
+.pinned-card-label{margin:18px 0 10px;font-size:12px;letter-spacing:.19em;text-transform:uppercase;color:#dfca9fcc}
+.pinned-card-text h2{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,2.8vw,44px);line-height:1.1;letter-spacing:-.03em;margin:0 0 20px;text-wrap:balance}
+.pinned-card-text>p:last-child{font-size:17px;line-height:1.7;color:#faf6ecc7;max-width:46ch}
+.pinned-dots{display:flex;gap:10px}
+.pinned-dot{width:8px;height:8px;border-radius:50%;background:#dfca9f40;transition:background .3s,transform .3s}
+.pinned-dot.is-active{background:#dfca9f;transform:scale(1.4)}
+.pinned-bar{flex:1;max-width:320px;height:2px;background:#dfca9f26;overflow:hidden}
+.pinned-bar-fill{display:block;height:100%;background:#dfca9f;transform:scaleX(0);transform-origin:0 50%}
+/* Modalità pinned (solo con animazioni attive): card sovrapposte in viewport. */
+.pinned-stack.is-pinned{height:100svh;padding:0;display:flex;flex-direction:column;justify-content:center;gap:0}
+.pinned-stack.is-pinned .pinned-stack-head{padding-top:88px}
+.pinned-stack.is-pinned .pinned-stack-deck{position:relative;flex:1;max-height:620px;margin-block:24px;display:block}
+.pinned-stack.is-pinned .pinned-card{position:absolute;inset:0;height:100%}
+.pinned-stack.is-pinned .pinned-card-photo{aspect-ratio:auto;height:100%}
+.pinned-stack.is-pinned .pinned-stack-foot{padding-bottom:32px}
+
+.journey-next--allevamento{background:#29291f;color:#faf6ec;padding:96px 0 72px;border-top:1px solid #dfca9f26}
+.journey-next--allevamento .journey-kicker{color:#dfca9f}
+.journey-next--allevamento .journey-next-link{font-size:clamp(24px,3.6vw,52px);letter-spacing:-.03em;line-height:1.15;border-bottom-color:#dfca9f4d;flex-wrap:nowrap}
+.journey-next-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.journey-next--allevamento .journey-next-link em{color:#dfca9f}
+.journey-next--allevamento .journey-next-link>span:last-child{flex:none;color:#dfca9f}
+.journey-next--allevamento .journey-next-body{color:#faf6ecb3;margin-top:24px;max-width:520px}
+
+@media (max-width:720px){
+  .journey-story--allevamento .journey-chapter-heading h1{font-size:40px}
+  .pinned-card{grid-template-columns:1fr;gap:20px;padding:16px}
+  .pinned-card-text{padding-right:0}
+  .pinned-card-index{font-size:40px}
+  .pinned-card-text>p:last-child{font-size:15px}
+  .pinned-stack.is-pinned .pinned-stack-head{padding-top:76px}
+  .pinned-stack.is-pinned .pinned-stack-deck{max-height:none;margin-block:16px}
+  .pinned-stack.is-pinned .pinned-card{display:flex;flex-direction:column}
+  .pinned-stack.is-pinned .pinned-card-photo{height:auto;flex:0 0 32%}
+  .pinned-card-text h2{font-size:24px;margin-bottom:12px}
+  .journey-next--allevamento{padding:64px 0 48px}
+  .journey-next--allevamento .journey-next-link{font-size:clamp(20px,6vw,28px)}
+}
+.journey-story--allevamento .journey-next--compact{background:#29291f;padding:0 0 56px}
+.journey-story--allevamento .journey-next--compact .journey-chapter-nav{padding-top:32px}
+.hero-canvas-frame--allevamento .hero-canvas-shade{background:linear-gradient(90deg,rgba(29,30,20,.72) 0%,rgba(29,30,20,.35) 38%,rgba(29,30,20,0) 62%),linear-gradient(180deg,rgba(29,30,20,.5) 0%,rgba(29,30,20,0) 30%,rgba(29,30,20,0) 65%,rgba(29,30,20,.85) 100%)}
+.journey-story--allevamento .hero-overlay .journey-kicker{color:#f1dfb4}
+.journey-story--allevamento .hero-overlay .journey-intro{color:#fbf5e6}

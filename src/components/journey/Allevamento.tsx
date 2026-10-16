@@ -1,18 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { AllevamentoHero } from "./heroes/AllevamentoHero";
 import { HeroOverlay } from "./heroes/shared/HeroOverlay";
 import { chapterPath, JOURNEY, type JourneyChapter } from "@/data/journey";
 import { useJourneyMotion } from "./useJourneyMotion";
 import { ChapterNavigation } from "./ChapterNavigation";
+import { PinnedCardStack } from "./PinnedCardStack";
 
 const ALLEVAMENTO = JOURNEY.find((c) => c.id === "allevamento")!;
 const NEXT = "caseificio" as const;
 
-/** Capitolo Allevamento: layout editoriale alternato con contatore scroll-driven. */
+/** Capitolo Allevamento: hero 3D, contatori, card pinned, prossima tappa. */
 export function Allevamento() {
   const root = useRef<HTMLElement>(null);
   useJourneyMotion(root);
@@ -69,46 +69,26 @@ export function Allevamento() {
         </div>
       </section>
 
-      {/* Momenti editoriali: alternanza left/right. */}
-      <section className="journey-shell journey-story-body">
-        {ALLEVAMENTO.moments.map((m, i) => (
-          <article
-            key={m.label}
-            className={`journey-moment allevamento-moment ${i % 2 === 1 ? "is-right" : "is-left"}`}
-            data-journey-reveal
-          >
-            <div className="allevamento-moment-photo" data-journey-parallax>
-              <span className="allevamento-moment-photo-initials">
-                {m.label
-                  .split(" ")
-                  .map((w) => w[0])
-                  .join("")
-                  .slice(0, 2)}
-              </span>
-            </div>
-            <div className="journey-moment-text">
-              <span className="journey-moment-index">0{i + 1}</span>
-              <p className="journey-moment-label">{m.label}</p>
-              <h2>{m.title}</h2>
-              <p>{m.body}</p>
-            </div>
-          </article>
-        ))}
-      </section>
+      {/* 5 momenti: card impilate in scroll pinned. */}
+      <PinnedCardStack moments={ALLEVAMENTO.moments} kicker="Cinque momenti al pascolo" />
 
       {/* CTA verso il prossimo capitolo. */}
-      <section className="journey-shell journey-next" data-journey-reveal>
-        <p className="journey-kicker">Prossima tappa</p>
-        <Link to={chapterPath(NEXT)} className="journey-next-link">
-          Dalla stalla al <em>caseificio</em>
-          <span aria-hidden="true">→</span>
-        </Link>
-        <p className="journey-next-body">
-          Il latte, appena munto, attraversa il cortile. Qui la storia prende un’altra forma.
-        </p>
+      <section className="journey-next journey-next--allevamento" data-journey-reveal>
+        <div className="journey-shell">
+          <p className="journey-kicker">Prossima tappa</p>
+          <Link to={chapterPath(NEXT)} className="journey-next-link">
+            <span className="journey-next-title">
+              Dalla stalla al <em>caseificio</em>
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <p className="journey-next-body">
+            Il latte, appena munto, attraversa il cortile. Qui la storia prende un’altra forma.
+          </p>
+        </div>
       </section>
 
-      <ChapterNavigation exclude="allevamento" />
+      <ChapterNavigation current="allevamento" compact />
     </article>
   );
 }

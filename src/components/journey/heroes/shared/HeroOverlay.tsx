@@ -29,16 +29,32 @@ function useHeadingReveal({ ref, type, stagger, duration, y, reduced }: TextReve
     const el = ref.current;
     if (!el) return;
     gsap.registerPlugin(ScrollTrigger);
-    const text = el.textContent || "";
-    const html = text
-      .split("")
-      .map((c) =>
-        c === " " || c === "\n"
-          ? c
-          : `<span class="hd-reveal" style="display:inline-block;overflow:hidden"><span class="hd-inner" style="display:inline-block;will-change:transform,opacity">${c}</span></span>`,
-      )
-      .join("");
-    el.innerHTML = html;
+    // Split per PAROLA dentro i nodi di testo: preserva <br>, <em> e
+    // impedisce al browser di spezzare una parola a metà riga.
+    if (!el.dataset.split) {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      const nodes: Text[] = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+      nodes.forEach((node) => {
+        const frag = document.createDocumentFragment();
+        (node.textContent || "").split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            frag.appendChild(document.createTextNode(" "));
+            return;
+          }
+          const outer = document.createElement("span");
+          outer.className = "hd-reveal";
+          const inner = document.createElement("span");
+          inner.className = "hd-inner";
+          inner.textContent = part;
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        });
+        node.replaceWith(frag);
+      });
+      el.dataset.split = "1";
+    }
     const inners = Array.from(el.querySelectorAll<HTMLElement>(".hd-inner"));
     gsap.set(inners, { y, autoAlpha: 0 });
     const tween = gsap.to(inners, {

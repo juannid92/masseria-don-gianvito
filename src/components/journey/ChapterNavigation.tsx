@@ -2,19 +2,30 @@ import { Link } from "@tanstack/react-router";
 import { JOURNEY, chapterPath } from "@/data/journey";
 import type { AnimaId } from "@/data/masseria";
 
-export function ChapterNavigation({ current }: { current: AnimaId }) {
+/** compact: solo indice capitoli (quando la pagina ha già la sua "Prossima tappa"). */
+export function ChapterNavigation({
+  current,
+  compact = false,
+}: {
+  current: AnimaId;
+  compact?: boolean;
+}) {
   const index = JOURNEY.findIndex((c) => c.id === current);
   const next = JOURNEY[(index + 1) % JOURNEY.length];
   return (
-    <section className="journey-next" data-tone="dark">
+    <section className={`journey-next${compact ? " journey-next--compact" : ""}`} data-tone="dark">
       <div className="journey-shell">
-        <p className="journey-kicker">
-          {index === 3 ? "Il viaggio ricomincia" : "Continua il percorso"} · {next.number} / 04
-        </p>
-        <Link className="journey-next-link" to={chapterPath(next.id)}>
-          <span>{next.name}</span>
-          <span aria-hidden="true">↗</span>
-        </Link>
+        {!compact && (
+          <>
+            <p className="journey-kicker">
+              {index === 3 ? "Il viaggio ricomincia" : "Continua il percorso"} · {next.number} / 04
+            </p>
+            <Link className="journey-next-link" to={chapterPath(next.id)}>
+              <span>{next.name}</span>
+              <span aria-hidden="true">↗</span>
+            </Link>
+          </>
+        )}
         <nav aria-label="I capitoli della masseria" className="journey-chapter-nav">
           {JOURNEY.map((c) => (
             <Link
