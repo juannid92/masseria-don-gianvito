@@ -19,50 +19,54 @@ export function Allevamento() {
 
   useGSAP(
     () => {
-      // Contatore "60 ettari · 120 capi · dal 2002" che appare scroll-driven.
-      const counters = gsap.utils.toArray<HTMLElement>(".allevamento-counter");
-      counters.forEach((c) => {
-        const target = Number(c.dataset.count || "0");
-        const obj = { n: 0 };
-        gsap.to(obj, {
-          n: target,
-          duration: 2,
-          ease: "power2.out",
-          scrollTrigger: { trigger: c, start: "top 80%", once: true },
-          onUpdate: () => {
-            c.textContent = String(Math.round(obj.n));
-          },
+      const mm = gsap.matchMedia();
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const counters = gsap.utils.toArray<HTMLElement>(".allevamento-counter-num");
+        counters.forEach((c) => {
+          const target = Number(c.dataset.count || "0");
+          const obj = { n: 0 };
+          c.textContent = "0";
+          gsap.to(obj, {
+            n: target,
+            duration: 2,
+            ease: "power2.out",
+            scrollTrigger: { trigger: c, start: "top 85%", once: true },
+            onUpdate: () => {
+              c.textContent = String(Math.round(obj.n));
+            },
+          });
         });
       });
+      return () => mm.revert();
     },
     { scope: root },
   );
 
   return (
     <article ref={root} className="journey-story journey-story--allevamento">
-      <header className="journey-chapter-hero">
+      <header className="journey-chapter-hero" data-tone="dark">
         <AllevamentoHero />
         <HeroOverlay chapter={ALLEVAMENTO} next={NEXT} />
       </header>
 
       {/* Contatore scroll-driven in un band largo, full-bleed. */}
-      <section className="allevamento-counter-band" data-journey-parallax>
+      <section className="allevamento-counter-band" data-tone="dark" data-journey-parallax>
         <div className="journey-shell allevamento-counter-grid">
           <div className="allevamento-counter-cell">
             <span className="allevamento-counter-num" data-count="60">
-              0
+              60
             </span>
             <span className="allevamento-counter-label">ettari di pascolo aperto</span>
           </div>
           <div className="allevamento-counter-cell">
             <span className="allevamento-counter-num" data-count="120">
-              0
+              120
             </span>
             <span className="allevamento-counter-label">capi tra bovini, ovini, suini</span>
           </div>
           <div className="allevamento-counter-cell">
             <span className="allevamento-counter-num" data-count="2002">
-              0
+              2002
             </span>
             <span className="allevamento-counter-label">in cammino dal</span>
           </div>

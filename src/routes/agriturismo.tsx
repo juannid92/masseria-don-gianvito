@@ -24,7 +24,7 @@ export const Route = createFileRoute("/agriturismo")({
       { property: "og:type", content: "restaurant" },
       {
         property: "og:image",
-        content: getAbsoluteUrl("/images/agriturismo-cinema-02-facciata.webp"),
+        content: getAbsoluteUrl("/images/agriturismo-tavola-ai.svg"),
       },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/agriturismo") }],

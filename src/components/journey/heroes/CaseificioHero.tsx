@@ -6,8 +6,7 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 /* ──────────────────────────────────────────────────────────────────────────
    HERO CASEIFICIO — "Il bianco prende forma".
    Una vasca di latte che respira (shader con onde e cerchi concentrici),
-   gocce che cadono e increspano la superficie, forme di pasta filata
-   (burrata, treccia, nodini) che emergono e ruotano lente, vapore che sale.
+   gocce che cadono e increspano la superficie, vapore tiepido che sale.
    Palette: bianco latte, crema, oro.
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -147,106 +146,6 @@ function MilkDrops({
   );
 }
 
-const MILKY = {
-  color: "#fbf6ea",
-  roughness: 0.42,
-  sheen: 1,
-  sheenColor: "#fff3d6",
-  clearcoat: 0.35,
-  clearcoatRoughness: 0.4,
-};
-
-/** Burrata: sfera morbida con il "nodo" in cima. */
-function Burrata() {
-  return (
-    <group>
-      <mesh castShadow>
-        <sphereGeometry args={[0.95, 48, 36]} />
-        <meshPhysicalMaterial {...MILKY} />
-      </mesh>
-      <mesh position={[0, 0.98, 0]} rotation={[0.2, 0, 0.3]}>
-        <torusGeometry args={[0.16, 0.08, 12, 24]} />
-        <meshPhysicalMaterial {...MILKY} />
-      </mesh>
-      <mesh position={[0, 1.12, 0]} rotation={[0, 0, 0.5]}>
-        <coneGeometry args={[0.13, 0.32, 16]} />
-        <meshPhysicalMaterial {...MILKY} />
-      </mesh>
-    </group>
-  );
-}
-
-/** Treccia: tre fili di pasta filata intrecciati lungo una curva. */
-function Treccia() {
-  const tubes = useMemo(() => {
-    return [0, 1, 2].map((k) => {
-      const pts: THREE.Vector3[] = [];
-      for (let i = 0; i <= 80; i++) {
-        const t = i / 80;
-        const a = t * Math.PI * 6 + (k * Math.PI * 2) / 3;
-        const base = new THREE.Vector3(
-          Math.cos(t * Math.PI * 1.6) * 1.1,
-          (t - 0.5) * 0.4,
-          Math.sin(t * Math.PI * 1.6) * 1.1,
-        );
-        pts.push(
-          base.add(new THREE.Vector3(Math.cos(a) * 0.12, Math.sin(a) * 0.12, Math.cos(a) * 0.06)),
-        );
-      }
-      return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 160, 0.13, 14, false);
-    });
-  }, []);
-  return (
-    <group>
-      {tubes.map((g, i) => (
-        <mesh key={i} geometry={g} castShadow>
-          <meshPhysicalMaterial {...MILKY} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
-/** Nodino: piccolo nodo di pasta filata. */
-function Nodino() {
-  return (
-    <mesh castShadow>
-      <torusKnotGeometry args={[0.32, 0.14, 120, 16, 2, 3]} />
-      <meshPhysicalMaterial {...MILKY} />
-    </mesh>
-  );
-}
-
-function Floating({
-  children,
-  position,
-  speed = 1,
-  phase = 0,
-  reduced,
-  scale = 1,
-}: {
-  children: React.ReactNode;
-  position: [number, number, number];
-  speed?: number;
-  phase?: number;
-  reduced: boolean;
-  scale?: number;
-}) {
-  const ref = useRef<THREE.Group>(null);
-  useFrame((s) => {
-    if (reduced || !ref.current) return;
-    const t = s.clock.elapsedTime * speed + phase;
-    ref.current.position.y = position[1] + Math.sin(t) * 0.18;
-    ref.current.rotation.y = t * 0.25;
-    ref.current.rotation.z = Math.sin(t * 0.7) * 0.12;
-  });
-  return (
-    <group ref={ref} position={position} scale={scale}>
-      {children}
-    </group>
-  );
-}
-
 /** Vapore: sprite morbidi che salgono e svaniscono. */
 function Steam({ count, reduced }: { count: number; reduced: boolean }) {
   const ref = useRef<THREE.Points>(null);
@@ -344,32 +243,6 @@ export function CaseificioHero() {
         <pointLight position={[-4, 2, 2]} intensity={6} color="#e8c47e" distance={12} />
         <MilkSurface reduced={reduced} drops={drops} />
         <MilkDrops reduced={reduced} drops={drops} />
-        <Floating
-          position={isSmall ? [1.1, 2.2, -2] : [3.6, 0.9, -0.5]}
-          reduced={reduced}
-          speed={0.6}
-          scale={isSmall ? 0.55 : 1}
-        >
-          <Burrata />
-        </Floating>
-        <Floating
-          position={isSmall ? [-1.6, -0.1, 0.5] : [-3.8, 0.4, -0.2]}
-          reduced={reduced}
-          speed={0.5}
-          phase={2}
-          scale={0.95}
-        >
-          <Treccia />
-        </Floating>
-        <Floating position={[-1.9, 2.3, -3]} reduced={reduced} speed={0.7} phase={1} scale={0.8}>
-          <Nodino />
-        </Floating>
-        <Floating position={[2.4, 2.6, -3.5]} reduced={reduced} speed={0.8} phase={3.5} scale={0.6}>
-          <Nodino />
-        </Floating>
-        <Floating position={[0.8, -0.3, 2.4]} reduced={reduced} speed={0.9} phase={5} scale={0.45}>
-          <Nodino />
-        </Floating>
         <Steam count={isSmall ? 40 : 80} reduced={reduced} />
         <CameraRig reduced={reduced} />
       </Canvas>

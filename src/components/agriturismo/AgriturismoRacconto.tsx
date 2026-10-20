@@ -3,20 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import aerial from "@/assets/masseria-aerial.asset.json";
 import { MASSERIA, ORARI } from "@/data/masseria";
 
 /* ──────────────────────────────────────────────────────────────────────────
-   AGRITURISMO — il racconto dopo l'hero.
-   1. La casa: la foto aerea si apre da una finestra fino a tutto schermo
-      (nessuna scritta sopra la foto).
-   2. La sera: un quadrante sole→luna gira con lo scroll, il fondo passa
-      dal tramonto alla notte, compaiono le stelle.
-   3. La carta: menù come carta stampata, ogni piatto dice da quale anima
-      della masseria arriva.
-   4. Prenota: orari reali, contatti reali, bottone magnetico.
-   5. Fine del viaggio: le tre anime, ognuna col suo colore e il suo font.
-   I testi sono editoriali e provvisori; dati e orari arrivano da masseria.ts.
+   AGRITURISMO — La Carta, Prenota e Fine del Viaggio.
+   - La carta: menù come carta stampata, ogni piatto indica da quale anima
+     della masseria arriva.
+   - Prenota: orari reali, contatti reali, bottone magnetico.
+   - Fine del viaggio: le altre tre anime, con ritorno alla mappa.
    ────────────────────────────────────────────────────────────────────────── */
 
 function useMotion(
@@ -34,232 +28,7 @@ function useMotion(
   );
 }
 
-/* 1 ─ LA CASA ───────────────────────────────────────────────────────────── */
-export function AgriLaCasa() {
-  const root = useRef<HTMLElement>(null);
-  const [src, setSrc] = useState<string>(aerial.url);
-  const [missing, setMissing] = useState(false);
-  const img = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    if (img.current?.complete && !img.current.naturalWidth) setMissing(true);
-  }, [src]);
-
-  useMotion(root, (el) => {
-    el.classList.add("is-animated");
-    const tl = gsap.timeline({
-      defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: el.querySelector(".agri-casa-pin"),
-        start: "top top",
-        end: "+=160%",
-        pin: true,
-        scrub: 0.8,
-        anticipatePin: 1,
-      },
-    });
-    tl.fromTo(
-      ".agri-casa-window",
-      { clipPath: "inset(24% 30% 24% 30% round 220px)" },
-      { clipPath: "inset(0% 0% 0% 0% round 0px)", duration: 1 },
-      0,
-    )
-      .fromTo(
-        ".agri-casa-window img, .agri-casa-fallback",
-        { scale: 1.35 },
-        { scale: 1, duration: 1 },
-        0,
-      )
-      .fromTo(
-        ".agri-casa-before",
-        { autoAlpha: 1, y: 0 },
-        { autoAlpha: 0, y: -60, duration: 0.35 },
-        0,
-      )
-      .fromTo(".agri-casa-coord", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 }, 0.75);
-
-    gsap.from(el.querySelectorAll(".agri-casa-after .agri-reveal"), {
-      y: 40,
-      autoAlpha: 0,
-      stagger: 0.1,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: { trigger: ".agri-casa-after", start: "top 80%" },
-    });
-    return () => el.classList.remove("is-animated");
-  });
-
-  return (
-    <section ref={root} className="agri-casa" data-tone="dark">
-      <div className="agri-casa-pin">
-        <div className="agri-casa-before">
-          <p className="agri-eyebrow">La casa · dal Cinquecento</p>
-          <p className="agri-casa-statement">
-            La stessa casa,
-            <br />
-            <em>nella stessa terra.</em>
-          </p>
-        </div>
-        <div className="agri-casa-window">
-          {missing ? (
-            <div className="agri-casa-fallback" aria-hidden="true" />
-          ) : (
-            <img
-              ref={img}
-              src={src}
-              alt="La Masseria Don Gianvito vista dall’alto, tra i campi di Noci"
-              onError={() =>
-                src === aerial.url ? setSrc("/images/masseria-aerial.jpg") : setMissing(true)
-              }
-            />
-          )}
-        </div>
-        <p className="agri-casa-coord" aria-hidden="true">
-          {MASSERIA.coordinateLabel} · Noci, Bari
-        </p>
-      </div>
-
-      <div className="agri-shell agri-casa-after">
-        <p className="agri-casa-lead agri-reveal">
-          La masseria attraversa i secoli conservando il rapporto fra casa, campi, animali e lavoro.
-          Oggi l’agriturismo è il punto in cui questa storia si apre agli ospiti.
-        </p>
-        <dl className="agri-facts">
-          <div className="agri-reveal">
-            <dt>Dove</dt>
-            <dd>Campagne di Noci, provinciale per Mottola.</dd>
-          </div>
-          <div className="agri-reveal">
-            <dt>Quando</dt>
-            <dd>Mercoledì–sabato a cena. Domenica e festivi a pranzo.</dd>
-          </div>
-          <div className="agri-reveal">
-            <dt>Come</dt>
-            <dd>Su prenotazione, per telefono o WhatsApp.</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-  );
-}
-
-/* 2 ─ LA SERA ───────────────────────────────────────────────────────────── */
-const SERA = [
-  {
-    label: "Il tramonto",
-    title: "Si arriva a fine giornata.",
-    body: "Il cortile si riempie con calma. La sera in masseria segue il ritmo del lavoro, non quello della fretta.",
-  },
-  {
-    label: "La brace",
-    title: "La brace è già accesa.",
-    body: "Il fuoco viene preparato prima dell’arrivo degli ospiti. La cottura alla brace richiede tempo e attenzione.",
-  },
-  {
-    label: "La tavola",
-    title: "Quello che hai visto arriva in tavola.",
-    body: "Il latte, la carne scelta al banco, i prodotti dei campi: la filiera si chiude in sala, nello stesso luogo in cui comincia.",
-  },
-  {
-    label: "La notte",
-    title: "Poi resta la campagna.",
-    body: "A fine serata si può uscire nel cortile. Intorno ci sono solo campi, e il silenzio fa parte della serata.",
-  },
-];
-
-export function AgriLaSera() {
-  const root = useRef<HTMLElement>(null);
-
-  useMotion(root, (el) => {
-    const dial = el.querySelector(".agri-dial-rotor");
-    const label = el.querySelector<HTMLElement>(".agri-dial-label");
-    // Quadrante e cielo: dal tramonto alla notte lungo tutta la sezione.
-    gsap
-      .timeline({
-        defaults: { ease: "none" },
-        scrollTrigger: { trigger: el, start: "top top", end: "bottom bottom", scrub: 0.6 },
-      })
-      .fromTo(dial, { rotate: 0 }, { rotate: 180 }, 0)
-      .fromTo(
-        el,
-        { "--sky-a": "#5b3524", "--sky-b": "#b06a3c" },
-        { "--sky-a": "#07080d", "--sky-b": "#141826" },
-        0,
-      )
-      .fromTo(".agri-stars", { autoAlpha: 0 }, { autoAlpha: 1 }, 0.55);
-
-    el.querySelectorAll<HTMLElement>(".agri-sera-moment").forEach((m, i) => {
-      gsap.from(m.querySelectorAll(".agri-reveal"), {
-        y: 50,
-        autoAlpha: 0,
-        stagger: 0.1,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: m, start: "top 75%", toggleActions: "play none none reverse" },
-      });
-      ScrollTrigger.create({
-        trigger: m,
-        start: "top center",
-        end: "bottom center",
-        onToggle: (self) => {
-          if (self.isActive && label) label.textContent = SERA[i].label;
-        },
-      });
-    });
-  });
-
-  return (
-    <section ref={root} className="agri-sera" data-tone="dark">
-      <div className="agri-stars" aria-hidden="true" />
-      <div className="agri-shell agri-sera-grid">
-        <aside className="agri-dial" aria-hidden="true">
-          <p className="agri-eyebrow">Una sera alla masseria</p>
-          <div className="agri-dial-face">
-            <svg viewBox="0 0 200 200">
-              <circle
-                cx="100"
-                cy="100"
-                r="92"
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity=".25"
-              />
-              <circle
-                cx="100"
-                cy="100"
-                r="70"
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity=".12"
-                strokeDasharray="2 6"
-              />
-              <line x1="0" y1="100" x2="200" y2="100" stroke="currentColor" strokeOpacity=".35" />
-            </svg>
-            <div className="agri-dial-rotor">
-              <span className="agri-dial-sun" />
-              <span className="agri-dial-moon" />
-            </div>
-            <div className="agri-dial-horizon" />
-          </div>
-          <p className="agri-dial-label">{SERA[0].label}</p>
-        </aside>
-        <div className="agri-sera-list">
-          {SERA.map((m, i) => (
-            <article key={m.label} className="agri-sera-moment">
-              <p className="agri-eyebrow agri-reveal">
-                {String(i + 1).padStart(2, "0")} — {m.label}
-              </p>
-              <h3 className="agri-reveal">{m.title}</h3>
-              <p className="agri-reveal">{m.body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* 3 ─ LA CARTA ──────────────────────────────────────────────────────────── */
+/* 1 ─ LA CARTA ──────────────────────────────────────────────────────────── */
 type Origine = "allevamento" | "caseificio" | "macelleria" | "campi";
 const CARTA: { id: string; title: string; items: { nome: string; nota: string; da: Origine }[] }[] =
   [
@@ -267,27 +36,63 @@ const CARTA: { id: string; title: string; items: { nome: string; nota: string; d
       id: "antipasti",
       title: "Per cominciare",
       items: [
-        { nome: "Latticini del mattino", nota: "Piatto da definire", da: "caseificio" },
-        { nome: "Salumi della casa", nota: "Piatto da definire", da: "macelleria" },
-        { nome: "L’orto di stagione", nota: "Piatto da definire", da: "campi" },
+        {
+          nome: "Latticini del mattino",
+          nota: "Mozzarella, nodini, primo sale e ricotta fresca del caseificio",
+          da: "caseificio",
+        },
+        {
+          nome: "Salumi della casa",
+          nota: "Selezione di salumi lavorati nella macelleria della masseria",
+          da: "macelleria",
+        },
+        {
+          nome: "Focaccia, frittelle e orto",
+          nota: "Farina del grano tenero aziendale e verdure secondo stagione",
+          da: "campi",
+        },
       ],
     },
     {
       id: "brace",
-      title: "Dalla brace",
+      title: "Cucina e brace",
       items: [
-        { nome: "Tagli del banco", nota: "Disponibilità del giorno", da: "macelleria" },
-        { nome: "Bombette e salsiccia", nota: "Piatto da definire", da: "macelleria" },
-        { nome: "Carni dell’allevamento", nota: "Piatto da definire", da: "allevamento" },
+        {
+          nome: "Primi della cucina di casa",
+          nota: "Piatti caldi della tradizione murgiana secondo stagione",
+          da: "campi",
+        },
+        {
+          nome: "Tagli scelti al banco",
+          nota: "Carni dell’azienda cotte alla brace, secondo disponibilità del giorno",
+          da: "macelleria",
+        },
+        {
+          nome: "Bombette e salsiccia alla brace",
+          nota: "Preparazioni del banco cotte lentamente sulla brace",
+          da: "allevamento",
+        },
       ],
     },
     {
       id: "fine",
       title: "Per finire",
       items: [
-        { nome: "Formaggi stagionati", nota: "Piatto da definire", da: "caseificio" },
-        { nome: "Dolce della casa", nota: "Piatto da definire", da: "campi" },
-        { nome: "Frutta di stagione", nota: "Piatto da definire", da: "campi" },
+        {
+          nome: "Formaggi stagionati",
+          nota: "Affinati con attesa nel caseificio aziendale",
+          da: "caseificio",
+        },
+        {
+          nome: "Dolce della casa",
+          nota: "Preparato nella cucina dell’agriturismo",
+          da: "campi",
+        },
+        {
+          nome: "Frutta di stagione",
+          nota: "Raccolta nei terreni intorno alla masseria",
+          da: "campi",
+        },
       ],
     },
   ];
@@ -313,7 +118,7 @@ export function AgriLaCarta() {
     });
     gsap.fromTo(
       ".agri-carta-sheet",
-      { rotate: -2.5, y: 80 },
+      { rotate: -1.5, y: 60 },
       {
         rotate: 0,
         y: 0,
@@ -323,7 +128,6 @@ export function AgriLaCarta() {
     );
   });
 
-  // Ogni cambio di sezione: le righe entrano una dopo l'altra.
   useEffect(() => {
     const rows = root.current?.querySelectorAll(".agri-carta-row");
     if (!rows?.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -373,12 +177,12 @@ export function AgriLaCarta() {
                 <span className={`agri-origine agri-origine--${it.da}`}>
                   {ORIGINE_LABEL[it.da]}
                 </span>
-                <span className="agri-carta-price">€ —</span>
               </li>
             ))}
           </ul>
           <p className="agri-carta-foot">
-            Menù in preparazione: piatti e prezzi saranno inseriti quando confermati dalla masseria.
+            Le proposte della cucina e i tagli al banco seguono il ritmo delle stagioni e la
+            disponibilità quotidiana della masseria.
           </p>
         </div>
       </div>
@@ -386,7 +190,7 @@ export function AgriLaCarta() {
   );
 }
 
-/* 4 ─ PRENOTA ───────────────────────────────────────────────────────────── */
+/* 2 ─ PRENOTA ───────────────────────────────────────────────────────────── */
 export function AgriPrenota() {
   const root = useRef<HTMLElement>(null);
   const btn = useRef<HTMLAnchorElement>(null);
@@ -481,7 +285,7 @@ export function AgriPrenota() {
   );
 }
 
-/* 5 ─ FINE DEL VIAGGIO ──────────────────────────────────────────────────── */
+/* 3 ─ FINE DEL VIAGGIO ──────────────────────────────────────────────────── */
 const ANIME_FINE = [
   {
     n: "01",

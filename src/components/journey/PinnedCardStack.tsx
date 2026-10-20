@@ -81,7 +81,7 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
   );
 
   return (
-    <section ref={root} className="pinned-stack" aria-label="Cinque momenti dell'allevamento">
+    <section ref={root} className="pinned-stack" data-tone="dark" aria-label="Cinque momenti dell'allevamento">
       <div className="pinned-stack-head journey-shell">
         <p className="journey-kicker">{kicker}</p>
         <p className="pinned-counter" aria-hidden="true">
@@ -95,17 +95,11 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
               <div className={"pinned-card-photo-inner" + (m.image ? " journey-photo" : "")}>
                 {m.image ? <>
                   <img src={m.image} alt={m.imageAlt || m.label} width={1264} height={848} loading="lazy" decoding="async" />
-                  <small className="journey-photo-credit">Immagine illustrativa · AI</small>
+                  <small className="journey-photo-credit">{m.label} · Campagne di Noci</small>
                 </> : <><span>
-                  {m.label
-                    .split(" ")
-                    .filter((w) => w.length > 2)
-                    .map((w) => w[0])
-                    .join("")
-                    .slice(0, 2)
-                    .toUpperCase()}
+                  0{i + 1}
                 </span>
-                <small>Foto da produrre · {m.label}</small></>}
+                <small>{m.label} · Masseria Don Gianvito</small></>}
               </div>
             </div>
             <div className="pinned-card-text">

@@ -1135,9 +1135,9 @@ html {
 .journey-story--allevamento .hero-overlay .journey-intro{color:#fbf5e6}
 
 /* ────────────────────────────────────────────────────────────────────────
-   CASEIFICIO v2 — bianco latte, oro, Cormorant Garamond
+   CASEIFICIO v2 — bianco latte, oro, Fraunces
    ──────────────────────────────────────────────────────────────────────── */
-.journey-story--caseificio{--cs-latte:#fffdf7;--cs-crema:#f6efe0;--cs-oro:#b2833a;--cs-oro-chiaro:#d9b878;--cs-ink:#3a3226;--cs-font:"Cormorant Garamond",ui-serif,Georgia,serif;background:var(--cs-latte);color:var(--cs-ink)}
+.journey-story--caseificio{--cs-latte:#fffdf7;--cs-crema:#f6efe0;--cs-oro:#b2833a;--cs-oro-chiaro:#d9b878;--cs-ink:#3a3226;--cs-font:var(--font-display);background:var(--cs-latte);color:var(--cs-ink)}
 .journey-story--caseificio .journey-chapter-hero{background:#f7f1e3;color:var(--cs-ink)}
 .hero-canvas-frame--caseificio .hero-canvas-shade{background:radial-gradient(ellipse 55% 45% at 50% 48%,rgba(255,253,247,.82) 0%,rgba(255,253,247,.45) 55%,rgba(255,253,247,0) 100%),linear-gradient(180deg,rgba(247,241,227,.7) 0%,rgba(247,241,227,0) 25%,rgba(247,241,227,0) 75%,rgba(247,241,227,.9) 100%)}
 .hero-overlay--center{align-items:center;text-align:center}
@@ -1206,16 +1206,16 @@ html {
 .journey-story--caseificio .journey-next--compact a[aria-current=page]{color:var(--cs-oro)}
 
 /* ────────────────────────────────────────────────────────────────────────
-   MACELLERIA v2 — rosso sangue, carbone, osso · Anton + Inter
+   MACELLERIA v2 — rosso sangue, carbone, osso · Fraunces + Inter
    ──────────────────────────────────────────────────────────────────────── */
-.journey-story--macelleria{--mc-sangue:#8a0f14;--mc-sangue-vivo:#b3161d;--mc-scuro:#1a0607;--mc-carbone:#120405;--mc-osso:#f1e6d8;--mc-font:"Anton",Impact,"Arial Narrow",sans-serif;background:var(--mc-carbone);color:var(--mc-osso)}
+.journey-story--macelleria{--mc-sangue:#8a0f14;--mc-sangue-vivo:#b3161d;--mc-scuro:#1a0607;--mc-carbone:#120405;--mc-osso:#f1e6d8;--mc-font:var(--font-display);background:var(--mc-carbone);color:var(--mc-osso)}
 .journey-story--macelleria .journey-chapter-hero{background:var(--mc-carbone);color:var(--mc-osso)}
 .hero-canvas-frame--macelleria .hero-canvas-shade{background:linear-gradient(270deg,rgba(18,4,5,.85) 0%,rgba(18,4,5,.45) 38%,rgba(18,4,5,0) 65%),linear-gradient(180deg,rgba(18,4,5,.6) 0%,rgba(18,4,5,0) 28%,rgba(18,4,5,0) 70%,rgba(18,4,5,.95) 100%)}
 .hero-overlay--right .journey-chapter-heading{margin-left:auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
 .journey-story--macelleria .hero-overlay .journey-chapter-heading{max-width:640px;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 .journey-story--macelleria .hero-overlay .journey-kicker{color:#ff7a6a;font-weight:500}
-.journey-story--macelleria .journey-chapter-heading h1{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(52px,7vw,116px);line-height:.92;letter-spacing:.005em;margin:18px 0 26px;color:var(--mc-osso)}
-.journey-story--macelleria .journey-chapter-heading h1 em{font-style:normal;color:var(--mc-sangue-vivo)}
+.journey-story--macelleria .journey-chapter-heading h1{font-family:var(--mc-font);font-weight:400;font-size:clamp(48px,6.2vw,96px);line-height:.96;letter-spacing:-.035em;margin:18px 0 26px;color:var(--mc-osso)}
+.journey-story--macelleria .journey-chapter-heading h1 em{font-style:italic;color:var(--mc-sangue-vivo)}
 .journey-story--macelleria .hero-overlay .journey-intro{color:#e3d2c2;max-width:42ch;margin-left:auto}
 .journey-story--macelleria .journey-hero-bottom{color:#ff7a6a;border-top-color:#b3161d66}
 .journey-story--macelleria .hero-overlay .journey-text-link{color:var(--mc-osso)}
@@ -1282,9 +1282,9 @@ html {
 }
 
 /* ────────────────────────────────────────────────────────────────────────
-   AGRITURISMO v2 — notte, lino, ambra di candela · Instrument Serif + Inter
+   AGRITURISMO v2 — notte, lino, ambra di candela · Fraunces + Inter
    ──────────────────────────────────────────────────────────────────────── */
-.agri-page{--ag-notte:#100e0b;--ag-lino:#efe7d9;--ag-carta:#f6f1e7;--ag-ambra:#d69a4e;--ag-ink:#1c1814;--ag-muted:#a8998a;--ag-serif:"Instrument Serif",ui-serif,Georgia,serif;background:var(--ag-notte);color:var(--ag-lino)}
+.agri-page{--ag-notte:#100e0b;--ag-lino:#efe7d9;--ag-carta:#f6f1e7;--ag-ambra:#d69a4e;--ag-ink:#1c1814;--ag-muted:#a8998a;--ag-serif:var(--font-display);background:var(--ag-notte);color:var(--ag-lino)}
 .agri-shell{width:min(1240px,calc(100% - 96px));margin-inline:auto}
 .agri-eyebrow{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--ag-ambra)}
 .agri-line{display:block;overflow:hidden;padding-bottom:.06em}
@@ -1317,47 +1317,6 @@ html {
 @media(min-width:768px) and (prefers-reduced-motion:no-preference){.agri-cinema{height:400svh}.agri-cinema-stage{position:sticky;top:0;height:100svh}.agri-scene{position:absolute;inset:0;height:100%;min-height:0}}
 @media(max-width:767px){.agri-rail{display:none}.agri-scene{min-height:88svh}.agri-title{font-size:46px}}
 
-/* La casa */
-.agri-casa{background:var(--ag-notte)}
-.agri-casa-pin{position:relative;height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.agri-casa-before{position:absolute;top:13svh;left:0;right:0;text-align:center;z-index:2;padding-inline:24px}
-.agri-casa-statement{font-family:var(--ag-serif);font-size:clamp(38px,4.6vw,72px);line-height:1.02;margin-top:18px;color:var(--ag-lino)}
-.agri-casa-statement em{color:#e9c99a}
-.agri-casa-window{position:absolute;inset:0;overflow:hidden;background:#1d1812}
-.agri-casa-window img,.agri-casa-fallback{width:100%;height:100%;object-fit:cover;display:block;will-change:transform}
-.agri-casa-fallback{background:radial-gradient(circle at 40% 40%,#4a3b26,#1d1812 70%)}
-.agri-casa:not(.is-animated) .agri-casa-pin{height:auto;flex-direction:column;gap:48px;padding:120px 0 0}
-.agri-casa:not(.is-animated) .agri-casa-before{position:static}
-.agri-casa:not(.is-animated) .agri-casa-window{position:relative;width:100%;aspect-ratio:16/9}
-.agri-casa.is-animated .agri-casa-window{clip-path:inset(24% 30% 24% 30% round 220px)}
-.agri-casa-coord{position:absolute;bottom:28px;right:48px;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#fff;opacity:0;z-index:2;mix-blend-mode:difference}
-.agri-casa:not(.is-animated) .agri-casa-coord{display:none}
-.agri-casa-after{padding:120px 0 140px}
-.agri-casa-lead{font-family:var(--ag-serif);font-size:clamp(28px,2.8vw,42px);line-height:1.22;max-width:30ch;color:var(--ag-lino)}
-.agri-facts{display:grid;grid-template-columns:repeat(3,1fr);margin-top:96px;border-top:1px solid #efe7d926}
-.agri-facts>div{padding:28px 32px 0 0}
-.agri-facts>div+div{padding-left:32px;border-left:1px solid #efe7d926}
-.agri-facts dt{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ag-ambra);margin-bottom:14px}
-.agri-facts dd{font-family:var(--ag-serif);font-size:24px;line-height:1.3;color:var(--ag-lino)}
-
-/* La sera */
-.agri-sera{--sky-a:#5b3524;--sky-b:#b06a3c;position:relative;background:linear-gradient(180deg,var(--sky-a) 0%,var(--sky-b) 120%);padding:140px 0;overflow:hidden}
-.agri-stars{position:absolute;inset:0;opacity:0;pointer-events:none;background-image:radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 28% 42%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 44% 12%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 63% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 82% 14%,#fff 50%,transparent 51%),radial-gradient(1.5px 1.5px at 90% 48%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 8% 66%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 52% 58%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 72% 76%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 36% 86%,#fff 50%,transparent 51%);background-size:420px 420px}
-.agri-sera-grid{position:relative;display:grid;grid-template-columns:minmax(260px,.9fr) 1.4fr;gap:96px}
-.agri-dial{position:sticky;top:18svh;align-self:start;color:var(--ag-lino)}
-.agri-dial-face{position:relative;width:min(300px,100%);aspect-ratio:1;margin-top:36px;overflow:hidden}
-.agri-dial-face svg{position:absolute;inset:0;width:100%;height:100%}
-.agri-dial-rotor{position:absolute;inset:8%;border-radius:50%}
-.agri-dial-sun,.agri-dial-moon{position:absolute;left:50%;width:34px;height:34px;margin-left:-17px;border-radius:50%}
-.agri-dial-sun{top:-17px;background:radial-gradient(circle,#ffd9a0 0%,#e79a4a 70%);box-shadow:0 0 40px 10px rgba(231,154,74,.45)}
-.agri-dial-moon{bottom:-17px;background:#efe7d9;box-shadow:inset -9px -4px 0 0 #b9ad99,0 0 30px 4px rgba(239,231,217,.25)}
-.agri-dial-horizon{position:absolute;left:0;right:0;top:50%;bottom:0;background:linear-gradient(180deg,rgba(16,14,11,.0),rgba(16,14,11,.55) 30%)}
-.agri-dial-label{font-family:var(--ag-serif);font-style:italic;font-size:40px;margin-top:20px;color:var(--ag-lino)}
-.agri-sera-moment{min-height:70svh;display:flex;flex-direction:column;justify-content:center;border-bottom:1px solid #efe7d91f}
-.agri-sera-moment:last-child{border-bottom:0}
-.agri-sera-moment h3{font-family:var(--ag-serif);font-weight:400;font-size:clamp(34px,3.6vw,58px);line-height:1.05;margin:20px 0 24px;max-width:18ch;color:var(--ag-lino)}
-.agri-sera-moment>p:last-child{font-size:17px;line-height:1.75;max-width:46ch;color:#e4d8c6cc}
-
 /* La carta */
 .agri-carta{background:var(--ag-lino);color:var(--ag-ink);padding:140px 0}
 .agri-carta-head{text-align:center;margin-bottom:72px}
@@ -1371,11 +1330,10 @@ html {
 .agri-carta-tabs button[aria-selected=true]{color:var(--ag-ink)}
 .agri-carta-tabs button[aria-selected=true]::after{content:"";position:absolute;left:0;right:0;bottom:-21px;height:2px;background:#9a6527}
 .agri-carta-list{list-style:none;padding:0;margin:0}
-.agri-carta-row{display:grid;grid-template-columns:auto 1fr auto auto;align-items:end;gap:16px;padding:26px 0;border-bottom:1px dashed #1c181426}
-.agri-carta-name{font-family:var(--ag-serif);font-size:clamp(24px,2.2vw,32px);line-height:1.1}
-.agri-carta-note{font-size:13px;color:#1c18148c;margin-top:6px}
-.agri-carta-dots{border-bottom:1px dotted #1c181459;margin-bottom:8px}
-.agri-carta-price{font-family:var(--ag-serif);font-size:24px;min-width:3ch;text-align:right}
+.agri-carta-row{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:16px;padding:26px 0;border-bottom:1px dashed #1c181426}
+.agri-carta-name{font-family:var(--ag-serif);font-size:clamp(22px,2vw,28px);line-height:1.15}
+.agri-carta-note{font-size:14px;color:#1c1814a6;margin-top:6px;line-height:1.5;max-width:52ch}
+.agri-carta-dots{border-bottom:1px dotted #1c181440;margin-bottom:8px;min-width:24px}
 .agri-origine{font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:6px 10px;border-radius:999px;margin-bottom:4px;white-space:nowrap}
 .agri-origine--allevamento{background:#29291f;color:#dfca9f}
 .agri-origine--caseificio{background:#fffdf7;color:#b2833a;border:1px solid #d9b878}
@@ -1417,43 +1375,28 @@ html {
 .agri-fine-row--allevamento .agri-fine-name{font-family:var(--font-display);letter-spacing:-.04em}
 .agri-fine-row--allevamento::before{background:#29291f}
 .agri-fine-row--allevamento:hover{color:#dfca9f}
-.agri-fine-row--caseificio .agri-fine-name{font-family:"Cormorant Garamond",serif;font-weight:500}
+.agri-fine-row--caseificio .agri-fine-name{font-family:var(--font-display);font-style:italic;font-weight:400}
 .agri-fine-row--caseificio::before{background:#fffdf7}
 .agri-fine-row--caseificio:hover{color:#b2833a}
-.agri-fine-row--macelleria .agri-fine-name{font-family:"Anton",sans-serif;text-transform:uppercase}
+.agri-fine-row--macelleria .agri-fine-name{font-family:var(--font-display);letter-spacing:-.03em}
 .agri-fine-row--macelleria::before{background:#8a0f14}
 .agri-fine-row--macelleria:hover{color:#f1e6d8}
 .agri-fine-restart{display:inline-block;margin-top:48px;font-size:14px;letter-spacing:.06em;color:#1c1814b3;text-decoration:underline;text-underline-offset:6px}
 
 @media (max-width:900px){
   .agri-shell{width:calc(100% - 40px)}
-  .agri-facts{grid-template-columns:1fr;margin-top:56px}
-  .agri-facts>div,.agri-facts>div+div{padding:22px 0;border-left:0;border-bottom:1px solid #efe7d926}
-  .agri-sera{padding:80px 0}
-  .agri-sera-grid{grid-template-columns:1fr;gap:0}
-  .agri-dial{top:76px;display:flex;align-items:center;gap:16px;z-index:2;padding:12px 0;background:linear-gradient(180deg,var(--sky-a),transparent)}
-  .agri-dial>.agri-eyebrow{display:none}
-  .agri-dial-face{width:64px;margin-top:0}
-  .agri-dial-sun,.agri-dial-moon{width:12px;height:12px;margin-left:-6px}
-  .agri-dial-sun{top:-6px}.agri-dial-moon{bottom:-6px}
-  .agri-dial-label{font-size:26px;margin-top:0}
-  .agri-sera-moment{min-height:auto;padding:64px 0}
   .agri-prenota{padding:96px 0}
   .agri-prenota-grid{grid-template-columns:1fr;gap:64px}
   .agri-carta,.agri-fine{padding:88px 0}
-  .agri-carta-row{grid-template-columns:1fr auto;row-gap:10px}
+  .agri-carta-row{grid-template-columns:1fr;row-gap:10px}
   .agri-carta-dots{display:none}
   .agri-origine{grid-column:1;justify-self:start}
-  .agri-carta-price{grid-row:1;grid-column:2}
   .agri-fine-row{grid-template-columns:44px 1fr 32px;padding:26px 8px}
   .agri-fine-claim{display:none}
-  .agri-casa-before{top:12svh}
-  .agri-casa-coord{right:20px}
   .agri-magnet{width:150px;height:150px}
 }
 .agri-page{hyphens:manual;-webkit-hyphens:manual}
 .agri-page :is(h1,h2,h3,p){hyphens:manual;-webkit-hyphens:manual}
-.agri-sera{overflow:clip;background:linear-gradient(180deg,var(--ag-notte) 0%,var(--sky-a) 22%,var(--sky-b) 130%)}
 @media (max-width:900px){
   .agri-carta-tabs{gap:14px;flex-wrap:nowrap;justify-content:space-between}
   .agri-carta-tabs button{font-size:17px;white-space:nowrap}
@@ -1464,19 +1407,19 @@ html {
 .agri-tav{background:#17120d;color:#efe7d9;position:relative}
 .agri-tav-pin{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px);align-items:center;padding:110px clamp(20px,5vw,80px) 60px;max-width:1440px;margin-inline:auto}
 .agri-tav-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#d69a4e}
-.agri-tav h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(40px,4.6vw,76px);line-height:1;margin:18px 0 36px;hyphens:none}
+.agri-tav h2{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,4.6vw,76px);line-height:1;margin:18px 0 36px;hyphens:none}
 .agri-tav h2 em{color:#d69a4e}
 .agri-tav ol{list-style:none;padding:0;margin:0;display:grid;gap:4px}
 .agri-tav-step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:12px 0;border-top:1px solid #efe7d91a;opacity:.32;transition:opacity .5s}
 .agri-tav-step.is-on{opacity:1}
 .agri-tav-step>span{font-size:12px;letter-spacing:.2em;color:#d69a4e;padding-top:6px}
-.agri-tav-step h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(22px,1.9vw,30px);hyphens:none}
+.agri-tav-step h3{font-family:var(--font-display);font-weight:400;font-size:clamp(22px,1.9vw,30px);hyphens:none}
 .agri-tav-step p{font-size:15px;line-height:1.55;color:#efe7d9b3;max-height:0;overflow:hidden;transition:max-height .6s ease,margin .6s;hyphens:none}
 .agri-tav-step.is-on p{max-height:90px;margin-top:6px}
 .agri-tav-photo{width:100%;margin:0;min-width:0}
 .agri-tav-photo-frame{overflow:hidden;aspect-ratio:1264/848;background:#35271c}
 .agri-tav-photo img{display:block;width:100%;height:100%;object-fit:cover}
-.agri-tav-photo figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;font-family:"Instrument Serif",Georgia,serif;font-style:italic;font-size:20px;color:#efe7d9}
+.agri-tav-photo figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;font-family:var(--font-display);font-style:italic;font-size:20px;color:#efe7d9}
 .agri-tav-photo figcaption span{font-family:var(--font-sans);font-style:normal;font-size:11px;letter-spacing:.08em;color:#c6b6a3;align-self:center}
 @media (max-width:899px){.agri-tav-pin{grid-template-columns:1fr;padding-top:90px}.agri-tav-step p{max-height:none;margin-top:6px}.agri-tav-step{opacity:1}.agri-tav-photo{grid-row:2}}
 

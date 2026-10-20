@@ -5,8 +5,8 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /* ──────────────────────────────────────────────────────────────────────────
    HERO ALLEVAMENTO — diorama 3D procedurale del pascolo murgiano.
-   Colline, erba al vento (shader instanziato), vacche podoliche, muretti a
-   secco, ulivi, un trullo all'orizzonte, polline nella luce del mattino.
+   Colline, erba al vento (shader instanziato), muretti a secco, ulivi,
+   un trullo all'orizzonte, polline nella luce del mattino.
    La camera respira con il mouse e scende nel pascolo con lo scroll.
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -134,144 +134,6 @@ function WindGrass({ count, reduced }: { count: number; reduced: boolean }) {
         `}
       />
     </mesh>
-  );
-}
-
-/** Vacca podolica stilizzata: mantello grigio chiaro, corna a lira. */
-function Cow({
-  position,
-  rotation,
-  phase,
-  reduced,
-  scale = 1,
-}: {
-  position: [number, number, number];
-  rotation: number;
-  phase: number;
-  reduced: boolean;
-  scale?: number;
-}) {
-  const head = useRef<THREE.Group>(null);
-  const tail = useRef<THREE.Mesh>(null);
-  const coat = "#d8d2c4";
-  const dark = "#4a4339";
-  const horn = "#efe4c8";
-
-  useFrame((state) => {
-    if (reduced) return;
-    const t = state.clock.elapsedTime + phase;
-    // Pascola: abbassa la testa, la rialza, guarda intorno.
-    const graze = (Math.sin(t * 0.45) + 1) / 2;
-    if (head.current) {
-      head.current.rotation.z = -0.15 - graze * 0.75;
-      head.current.rotation.y = Math.sin(t * 0.3) * 0.25 * (1 - graze);
-    }
-    if (tail.current) tail.current.rotation.x = Math.sin(t * 2.1) * 0.35;
-  });
-
-  const legs: [number, number][] = [
-    [0.42, 0.17],
-    [0.42, -0.17],
-    [-0.42, 0.17],
-    [-0.42, -0.17],
-  ];
-
-  return (
-    <group position={position} rotation={[0, rotation, 0]} scale={scale}>
-      <mesh position={[0, 0.82, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
-        <capsuleGeometry args={[0.28, 0.75, 6, 14]} />
-        <meshStandardMaterial color={coat} roughness={0.85} />
-      </mesh>
-      <mesh position={[0.2, 1.02, 0]} castShadow>
-        <sphereGeometry args={[0.24, 14, 10]} />
-        <meshStandardMaterial color={coat} roughness={0.85} />
-      </mesh>
-      {legs.map(([x, z]) => (
-        <mesh key={`${x}${z}`} position={[x, 0.32, z]} castShadow>
-          <cylinderGeometry args={[0.065, 0.05, 0.64, 8]} />
-          <meshStandardMaterial color={coat} roughness={0.9} />
-        </mesh>
-      ))}
-      {legs.map(([x, z]) => (
-        <mesh key={`h${x}${z}`} position={[x, 0.03, z]}>
-          <cylinderGeometry args={[0.06, 0.065, 0.07, 8]} />
-          <meshStandardMaterial color={dark} />
-        </mesh>
-      ))}
-      <group ref={head} position={[0.68, 1.0, 0]}>
-        <mesh position={[0.12, 0, 0]} rotation={[0, 0, -0.6]} castShadow>
-          <capsuleGeometry args={[0.12, 0.16, 4, 10]} />
-          <meshStandardMaterial color={coat} roughness={0.85} />
-        </mesh>
-        <mesh position={[0.3, -0.12, 0]} rotation={[0, 0, -0.9]} castShadow>
-          <capsuleGeometry args={[0.11, 0.22, 4, 10]} />
-          <meshStandardMaterial color="#bdb5a5" roughness={0.85} />
-        </mesh>
-        <mesh position={[0.41, -0.27, 0]}>
-          <sphereGeometry args={[0.09, 10, 8]} />
-          <meshStandardMaterial color={dark} roughness={0.6} />
-        </mesh>
-        {[1, -1].map((side) => (
-          <group key={side}>
-            <mesh position={[0.17, 0.1, 0.13 * side]} rotation={[side * 0.9, 0, 0.5]}>
-              <coneGeometry args={[0.035, 0.38, 6]} />
-              <meshStandardMaterial color={horn} roughness={0.5} />
-            </mesh>
-            <mesh position={[0.1, 0.0, 0.14 * side]} rotation={[side * 1.4, 0, 0]}>
-              <coneGeometry args={[0.06, 0.16, 6]} />
-              <meshStandardMaterial color="#a69c8a" roughness={0.9} />
-            </mesh>
-          </group>
-        ))}
-      </group>
-      <mesh ref={tail} position={[-0.68, 0.72, 0]}>
-        <cylinderGeometry args={[0.02, 0.015, 0.55, 5]} />
-        <meshStandardMaterial color={dark} />
-      </mesh>
-    </group>
-  );
-}
-
-function Herd({ reduced }: { reduced: boolean }) {
-  const walker = useRef<THREE.Group>(null);
-  const cows = useMemo(
-    () =>
-      [
-        [-3.4, 1.4, 0.6, 1],
-        [-1.2, 0.2, -0.4, 1.05],
-        [1.8, 2.2, 2.6, 0.95],
-        [4.6, -1.2, 0.3, 1],
-        [-6.2, -3.5, 1.9, 0.9],
-        [7.5, -4.5, -2.4, 0.85],
-        [0.6, -6, 1.1, 0.8],
-      ].map(([x, z, r, s], i) => ({
-        position: [x, heightAt(x, z), z] as [number, number, number],
-        rotation: r,
-        scale: s,
-        phase: i * 1.9,
-      })),
-    [],
-  );
-
-  // Un capo cammina lentamente lungo il pendio.
-  useFrame((state) => {
-    if (reduced || !walker.current) return;
-    const t = state.clock.elapsedTime * 0.06;
-    const x = -9 + ((t * 10) % 18);
-    const z = 4.2 + Math.sin(t * 3) * 0.6;
-    walker.current.position.set(x, heightAt(x, z), z);
-    walker.current.position.y += Math.abs(Math.sin(state.clock.elapsedTime * 3)) * 0.02;
-  });
-
-  return (
-    <>
-      {cows.map((c, i) => (
-        <Cow key={i} {...c} reduced={reduced} />
-      ))}
-      <group ref={walker}>
-        <Cow position={[0, 0, 0]} rotation={0} phase={4} reduced={reduced} />
-      </group>
-    </>
   );
 }
 
@@ -494,7 +356,6 @@ export function AllevamentoHero() {
         <Terrain />
         <WindGrass count={grass} reduced={reduced} />
         <DryStoneWalls />
-        <Herd reduced={reduced} />
         <OliveTree position={[-8.5, heightAt(-8.5, -0.5), -0.5]} scale={1.15} reduced={reduced} />
         <OliveTree
           position={[9.5, heightAt(9.5, -4), -4]}

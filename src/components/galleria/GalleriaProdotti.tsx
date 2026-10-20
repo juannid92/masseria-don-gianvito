@@ -1,196 +1,234 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-type Categoria = "formaggi" | "carne" | "altro";
+type Categoria = "caseificio" | "macelleria" | "campi";
 
 interface Prodotto {
   id: string;
   nome: string;
   descrizione: string;
+  provenienza: string;
+  lavorazione: string;
   categoria: Categoria;
-  colorePlaceholder: string;
 }
 
 const prodotti: Prodotto[] = [
-  // Formaggi
+  // Caseificio
   {
-    id: "mozza-burr",
-    nome: "Mozzarella",
+    id: "mozzarella",
+    nome: "Mozzarella e Nodini",
     descrizione:
-      "Mozzarella fresca, prodotta nel caseificio della masseria.",
-    categoria: "formaggi",
-    colorePlaceholder: "bg-pietra-200",
+      "Pasta filata a mano ogni mattina dal latte appena munto nella stalla della masseria, servita in acqua di governo tiepida.",
+    provenienza: "Latte aziendale · 0 km",
+    lavorazione: "Filatura mattutina a mano",
+    categoria: "caseificio",
   },
   {
-    id: "burrata",
-    nome: "Burrata Pugliese",
-    descrizione: "Burrata fresca con cuore di stracciatella, lavorata a mano.",
-    categoria: "formaggi",
-    colorePlaceholder: "bg-pietra-200",
+    id: "burrata-treccia",
+    nome: "Burrata e Treccia",
+    descrizione:
+      "Sfoglia sottile di pasta filata con cuore cremoso di stracciatella e panna fresca, chiusa a mano e trecciata.",
+    provenienza: "Latte aziendale · 0 km",
+    lavorazione: "Lavorazione giornaliera",
+    categoria: "caseificio",
   },
   {
-    id: "pecorino",
-    nome: "Pecorino di Fosso",
+    id: "primo-sale",
+    nome: "Primo Sale",
     descrizione:
-      "Formaggio stagionato dal sapore deciso.",
-    categoria: "formaggi",
-    colorePlaceholder: "bg-pietra-200",
+      "Formaggio fresco a pasta tenera dal gusto delicato di latte crudo, messo in fuscella appena cagliato.",
+    provenienza: "Latte aziendale · 0 km",
+    lavorazione: "Cagliata fresca in fuscella",
+    categoria: "caseificio",
   },
   {
-    id: "cacio",
-    nome: "Caciovito Riserva",
+    id: "ricotta-fresca",
+    nome: "Ricotta del Mattino",
     descrizione:
-      "Formaggio a pasta semicotta, lasciato maturare con tempo.",
-    categoria: "formaggi",
-    colorePlaceholder: "bg-pietra-200",
-  },
-  {
-    id: "ricotta",
-    nome: "Ricotta Fresca",
-    descrizione:
-      "Ricotta ottenuta dalla lavorazione del siero.",
-    categoria: "formaggi",
-    colorePlaceholder: "bg-pietra-200",
+      "Ottenuta dall'affioramento del siero caldo di lavorazione, soffice e dolce, servita tiepida o impiegata nei dolci della casa.",
+    provenienza: "Siero del caseificio · 0 km",
+    lavorazione: "Affioramento a caldo",
+    categoria: "caseificio",
   },
   {
     id: "scamorza",
-    nome: "Scamorza Affumicata",
-    descrizione: "Scamorza affumicata, a pasta morbida.",
-    categoria: "formaggi",
-    colorePlaceholder: "bg-pietra-200",
-  },
-  // Carne
-  {
-    id: "pugliese-fasani",
-    nome: "Pugliese Fasani",
-    descrizione: "Carne bovina di allevamento locale, da scegliere al banco.",
-    categoria: "carne",
-    colorePlaceholder: "bg-carminio/20",
-  },
-  {
-    id: "vitello-podolico",
-    nome: "Vitello Podolico",
+    nome: "Scamorza Bianca e Affumicata",
     descrizione:
-      "Carne di vitello, da scegliere al banco secondo disponibilità.",
-    categoria: "carne",
-    colorePlaceholder: "bg-carminio/20",
+      "Pasta filata lasciata riposare a coppie su pertica per alcuni giorni, disponibile naturale o con leggera affumicatura.",
+    provenienza: "Latte aziendale · 0 km",
+    lavorazione: "Breve maturazione su pertica",
+    categoria: "caseificio",
   },
   {
-    id: "cavallo-murge",
-    nome: "Cavallo delle Murge",
-    descrizione: "Carne equina della tradizione pugliese.",
-    categoria: "carne",
-    colorePlaceholder: "bg-carminio/20",
-  },
-  {
-    id: "capretto",
-    nome: "Capretto da Latte",
-    descrizione: "Capretto da latte, carne delicata, secondo disponibilità.",
-    categoria: "carne",
-    colorePlaceholder: "bg-carminio/20",
-  },
-  {
-    id: "agneau",
-    nome: "Agnello Pasquale",
-    descrizione: "Agnello da latte, legato alla tradizione pasquale pugliese.",
-    categoria: "carne",
-    colorePlaceholder: "bg-carminio/20",
-  },
-  {
-    id: "suino-nero",
-    nome: "Suino Nero Siciliano",
-    descrizione: "Salumi e carne di suino, lavorati artigianalmente.",
-    categoria: "carne",
-    colorePlaceholder: "bg-carminio/20",
-  },
-  // Altro
-  {
-    id: "olio-evo",
-    nome: "Olio Extravergine",
+    id: "stagionati",
+    nome: "Caciocavallo e Stagionati",
     descrizione:
-      "Olio extravergine d’oliva.",
-    categoria: "altro",
-    colorePlaceholder: "bg-oro-antico/30",
+      "Formaggi a pasta filata e semicotta affinati lentamente sui ceppi del locale di stagionatura della masseria.",
+    provenienza: "Latte aziendale · 0 km",
+    lavorazione: "Affinamento in masseria",
+    categoria: "caseificio",
   },
+
+  // Macelleria
   {
-    id: "vino-nero",
-    nome: "Negroamaro IGT",
-    descrizione: "Vino rosso pugliese da uve Negroamaro.",
-    categoria: "altro",
-    colorePlaceholder: "bg-oro-antico/30",
-  },
-  {
-    id: "pasta-senatore",
-    nome: "Pasta Senatore Cappelli",
+    id: "bovino-aziendale",
+    nome: "Tagli Bovini (Pezzata Rossa × Frisona)",
     descrizione:
-      "Pasta di grano duro, trafilata al bronzo.",
-    categoria: "altro",
-    colorePlaceholder: "bg-oro-antico/30",
+      "Costate, entrecôte e tagli nobili dai circa 60 capi nati e cresciuti nei nostri recinti e alimentati con i foraggi dei campi.",
+    provenienza: "Allevamento proprio · Noci",
+    lavorazione: "Taglio al banco e frollatura",
+    categoria: "macelleria",
   },
   {
-    id: "legumi-fave",
-    nome: "Fave di Sant'Eramo",
+    id: "bombette",
+    nome: "Bombette della Tradizione",
     descrizione:
-      "Fave secche della tradizione pugliese.",
-    categoria: "altro",
-    colorePlaceholder: "bg-oro-antico/30",
+      "Involtini preparati a mano al banco della macelleria con ripieno di formaggio del caseificio, pronti per il fornello a brace.",
+    provenienza: "Macelleria e caseificio interni",
+    lavorazione: "Preparazione giornaliera a mano",
+    categoria: "macelleria",
   },
   {
-    id: "cotto-mocale",
-    nome: "Cotto Mocale",
+    id: "salsiccia-fresca",
+    nome: "Salsiccia a Punta di Coltello",
     descrizione:
-      "Prosciutto cotto artigianale.",
-    categoria: "altro",
-    colorePlaceholder: "bg-oro-antico/30",
+      "Salsiccia fresca lavorata secondo l'uso di Noci, condita con sale, pepe in grani e aromi semplici per la cottura sulla brace viva.",
+    provenienza: "Macelleria della masseria",
+    lavorazione: "Impasto artigianale",
+    categoria: "macelleria",
   },
   {
-    id: "salamelle",
-    nome: "Salamelle Peperoncino",
+    id: "tagli-brace",
+    nome: "Selezione per il Fornello",
     descrizione:
-      "Salamelle piccanti artigianali, ricetta tradizionale pugliese.",
-    categoria: "altro",
-    colorePlaceholder: "bg-oro-antico/30",
+      "Tagli scelti direttamente al banco della macelleria per l'asporto o per la cottura immediata al fornello nelle sere d'agriturismo.",
+    provenienza: "Allevamento proprio e locale",
+    lavorazione: "Scelta diretta al banco",
+    categoria: "macelleria",
+  },
+  {
+    id: "suini-ovini",
+    nome: "Carni Suine e Ovine",
+    descrizione:
+      "Tagli freschi di suino e agnello della tradizione murgiana, selezionati e preparati secondo la disponibilità della settimana.",
+    provenienza: "Filiera controllata murgiana",
+    lavorazione: "Taglio tradizionale",
+    categoria: "macelleria",
+  },
+  {
+    id: "salumi-masseria",
+    nome: "Salumi Stagionati della Masseria",
+    descrizione:
+      "Capocollo, soppressata e salumi affinati lentamente all'aria fresca dell'altopiano dei trulli, serviti negli antipasti della casa.",
+    provenienza: "Lavorazione in masseria",
+    lavorazione: "Stagionatura naturale",
+    categoria: "macelleria",
+  },
+
+  // Campi e Forno
+  {
+    id: "focaccia-grano",
+    nome: "Focaccia di Grano Tenero Aziendale",
+    descrizione:
+      "Impastata con la farina del grano tenero coltivato nei nostri 120 ettari, a lunga lievitazione e cotta nel forno della masseria.",
+    provenienza: "Grano tenero dei nostri campi",
+    lavorazione: "Forno della masseria",
+    categoria: "campi",
+  },
+  {
+    id: "frittelle-calde",
+    nome: "Frittelle e Panini di Casa",
+    descrizione:
+      "Frittelle gonfie servite calde a inizio pasto e pane casereccio preparato con le farine aziendali.",
+    provenienza: "Grano tenero dei nostri campi",
+    lavorazione: "Impasto del giorno",
+    categoria: "campi",
+  },
+  {
+    id: "ortaggi-campo",
+    nome: "Ortaggi e Verdure di Stagione",
+    descrizione:
+      "Verdure di campo, cicorie, zucchine, peperoni e ortaggi raccolti negli appezzamenti intorno alla masseria secondo il calendario agricolo.",
+    provenienza: "Orto e campi della masseria",
+    lavorazione: "Raccolta di stagione",
+    categoria: "campi",
+  },
+  {
+    id: "sottoli-antipasti",
+    nome: "Conserve e Contorni dell'Orto",
+    descrizione:
+      "Ortaggi grigliati, melanzane, peperoni e preparazioni contadine che accompagnano i latticini e i salumi a centro tavola.",
+    provenienza: "Cucina della masseria",
+    lavorazione: "Ricetta di famiglia",
+    categoria: "campi",
+  },
+  {
+    id: "frutta-stagione",
+    nome: "Frutta dei Campi",
+    descrizione:
+      "Frutta fresca raccolta dagli alberi della tenuta che chiude con semplicità il pasto in agriturismo.",
+    provenienza: "Frutteto aziendale · Noci",
+    lavorazione: "Raccolta a maturazione",
+    categoria: "campi",
+  },
+  {
+    id: "foraggi-cereali",
+    nome: "Foraggi e Cereali (120 Ettari)",
+    descrizione:
+      "Il cuore invisibile della filiera: erbai, fieno e cereali coltivati in proprio per nutrire ogni giorno la mandria della masseria.",
+    provenienza: "120 ettari attorno a Noci",
+    lavorazione: "Coltivazione aziendale",
+    categoria: "campi",
   },
 ];
 
-const PlaceholderImmagine = ({ prodotto }: { prodotto: Prodotto }) => {
-  const iniziali = prodotto.nome
-    .split(" ")
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase();
+const CardProdotto = ({ prodotto, index }: { prodotto: Prodotto; index: number }) => {
+  const accentColor =
+    prodotto.categoria === "caseificio"
+      ? "var(--oro-antico)"
+      : prodotto.categoria === "macelleria"
+        ? "var(--carminio)"
+        : "var(--verde-oliva)";
 
   return (
-    <div
-      className={`${prodotto.colorePlaceholder} relative aspect-[4/3] flex items-center justify-center overflow-hidden`}
-    >
-      <span
-        className="font-display text-4xl font-light tracking-tight opacity-40"
-        style={{ color: "var(--pietra-400)" }}
-      >
-        {iniziali}
-      </span>
-      <span
-        className="absolute bottom-3 right-3 text-xs tracking-wider uppercase opacity-60"
-        style={{ color: "var(--pietra-800)", fontFamily: "var(--font-eyebrow)" }}
-      >
-        {prodotto.categoria}
-      </span>
-    </div>
-  );
-};
+    <article className="group relative flex flex-col justify-between border border-[color:var(--pietra-200)] bg-[color:var(--bianco-calce)] p-6 md:p-8 transition-all duration-300 hover:border-[color:var(--oro-antico)]">
+      <div>
+        <div className="flex items-center justify-between gap-4 mb-5 pb-4 border-b border-[color:var(--pietra-200)]">
+          <span
+            className="font-eyebrow text-[10px] tracking-[0.28em] uppercase"
+            style={{ color: accentColor }}
+          >
+            {prodotto.provenienza}
+          </span>
+          <span
+            className="font-display text-sm italic tabular-nums"
+            style={{ color: "var(--pietra-400)" }}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
 
-const CardProdotto = ({ prodotto }: { prodotto: Prodotto }) => {
-  return (
-    <article className="group border border-pietra-200 bg-bianco-calce overflow-hidden transition-shadow hover:shadow-lg">
-      <PlaceholderImmagine prodotto={prodotto} />
-      <div className="p-5">
-        <h3 className="font-display text-xl font-light tracking-tight text-carbone mb-2">
+        <h3
+          className="font-display text-2xl font-light tracking-tight mb-3"
+          style={{ color: "var(--carbone)" }}
+        >
           {prodotto.nome}
         </h3>
-        <p className="text-sm leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
+
+        <p
+          className="text-[15px] leading-relaxed"
+          style={{ color: "var(--muted-foreground)" }}
+        >
           {prodotto.descrizione}
         </p>
+      </div>
+
+      <div className="mt-6 pt-4 border-t border-[color:var(--pietra-200)]/60 flex items-center justify-between">
+        <span
+          className="font-eyebrow text-[10px] tracking-[0.22em] uppercase"
+          style={{ color: "var(--pietra-800)" }}
+        >
+          {prodotto.lavorazione}
+        </span>
       </div>
     </article>
   );
@@ -199,27 +237,29 @@ const CardProdotto = ({ prodotto }: { prodotto: Prodotto }) => {
 const GrigliaProdotti = ({ prodotti }: { prodotti: Prodotto[] }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {prodotti.map((p) => (
-        <CardProdotto key={p.id} prodotto={p} />
+      {prodotti.map((p, idx) => (
+        <CardProdotto key={p.id} prodotto={p} index={idx} />
       ))}
     </div>
   );
 };
 
-const EtichettaCategoria = ({ categoria }: { categoria: "formaggi" | "carne" | "altro" }) => {
+const EtichettaCategoria = ({ categoria }: { categoria: Categoria }) => {
   const config: Record<Categoria, { label: string; descrizione: string }> = {
-    formaggi: {
-      label: "Formaggi e Latticini",
-      descrizione: "Latticini freschi prodotti nel caseificio della masseria.",
-    },
-    carne: {
-      label: "Carne e Salumi",
+    caseificio: {
+      label: "Il Caseificio in Masseria",
       descrizione:
-        "Carni dell’allevamento e salumi, da scegliere al banco.",
+        "Lavoriamo esclusivamente il latte munto nella nostra stalla: pasta filata a mano, ricotta calda e formaggi affinati in masseria.",
     },
-    altro: {
-      label: "Olio, Vino e Prodotti della Terra",
-      descrizione: "Olio, vino, pasta e legumi della tradizione pugliese.",
+    macelleria: {
+      label: "La Macelleria e il Fornello",
+      descrizione:
+        "Carni dal nostro allevamento di bovini incrocio Pezzata Rossa e Frisona, preparazioni al banco e salumi della tradizione di Noci.",
+    },
+    campi: {
+      label: "I Campi e il Forno (120 Ettari)",
+      descrizione:
+        "Dal grano tenero per la nostra focaccia agli ortaggi, alla frutta e ai foraggi coltivati nei terreni che circondano la masseria.",
     },
   };
 
@@ -229,7 +269,7 @@ const EtichettaCategoria = ({ categoria }: { categoria: "formaggi" | "carne" | "
         className="font-eyebrow text-xs tracking-widest uppercase mb-3"
         style={{ color: "var(--oro-antico)" }}
       >
-        La Nostra Selezione
+        Filiera Corta · Noci
       </p>
       <h2
         className="font-display text-3xl md:text-4xl font-light tracking-tight mb-4"
@@ -237,7 +277,7 @@ const EtichettaCategoria = ({ categoria }: { categoria: "formaggi" | "carne" | "
       >
         {config[categoria].label}
       </h2>
-      <p className="text-base max-w-2xl" style={{ color: "var(--muted-foreground)" }}>
+      <p className="text-base max-w-2xl leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
         {config[categoria].descrizione}
       </p>
     </div>
@@ -245,72 +285,61 @@ const EtichettaCategoria = ({ categoria }: { categoria: "formaggi" | "carne" | "
 };
 
 export function GalleriaProdotti() {
-  const formaggi = prodotti.filter((p) => p.categoria === "formaggi");
-  const carne = prodotti.filter((p) => p.categoria === "carne");
-  const altro = prodotti.filter((p) => p.categoria === "altro");
+  const caseificio = prodotti.filter((p) => p.categoria === "caseificio");
+  const macelleria = prodotti.filter((p) => p.categoria === "macelleria");
+  const campi = prodotti.filter((p) => p.categoria === "campi");
 
   return (
     <section
-      className="py-16 md:py-24 px-4 md:px-8"
+      data-tone="light"
+      className="py-16 md:py-24 px-5 md:px-10"
       style={{ backgroundColor: "var(--pietra-100)" }}
     >
-      <div className="max-w-6xl mx-auto">
-        <Tabs defaultValue="formaggi" className="w-full">
+      <div className="max-w-[1400px] mx-auto">
+        <Tabs defaultValue="caseificio" className="w-full">
           <TabsList
-            className="w-full sm:w-auto flex gap-1 bg-transparent p-0 mb-10 h-auto border-b border-pietra-200 rounded-none"
+            className="w-full sm:w-auto flex flex-wrap gap-1 bg-transparent p-0 mb-12 h-auto border-b border-[color:var(--pietra-200)] rounded-none"
             style={{ backgroundColor: "transparent" }}
           >
             <TabsTrigger
-              value="formaggi"
-              className="pb-4 px-6 data-[state=active]:border-b-2 data-[state=active]:border-oro-antico data-[state=active]:text-oro-antico rounded-none bg-transparent text-pietra-800 hover:text-oro-antico transition-colors"
-              style={
-                {
-                  "--tw-text-opacity": "1",
-                  color: "var(--pietra-800)",
-                } as React.CSSProperties
-              }
+              value="caseificio"
+              className="pb-4 px-6 data-[state=active]:border-b-2 data-[state=active]:border-[color:var(--oro-antico)] data-[state=active]:text-[color:var(--oro-antico)] rounded-none bg-transparent text-[color:var(--pietra-800)] hover:text-[color:var(--oro-antico)] transition-colors"
             >
-              <span className="font-eyebrow text-sm tracking-wider">Formaggi</span>
+              <span className="font-eyebrow text-xs tracking-[0.22em] uppercase">
+                01 · Caseificio
+              </span>
             </TabsTrigger>
             <TabsTrigger
-              value="carne"
-              className="pb-4 px-6 data-[state=active]:border-b-2 data-[state=active]:border-oro-antico data-[state=active]:text-oro-antico rounded-none bg-transparent text-pietra-800 hover:text-oro-antico transition-colors"
-              style={
-                {
-                  "--tw-text-opacity": "1",
-                  color: "var(--pietra-800)",
-                } as React.CSSProperties
-              }
+              value="macelleria"
+              className="pb-4 px-6 data-[state=active]:border-b-2 data-[state=active]:border-[color:var(--oro-antico)] data-[state=active]:text-[color:var(--oro-antico)] rounded-none bg-transparent text-[color:var(--pietra-800)] hover:text-[color:var(--oro-antico)] transition-colors"
             >
-              <span className="font-eyebrow text-sm tracking-wider">Carne</span>
+              <span className="font-eyebrow text-xs tracking-[0.22em] uppercase">
+                02 · Macelleria
+              </span>
             </TabsTrigger>
             <TabsTrigger
-              value="altro"
-              className="pb-4 px-6 data-[state=active]:border-b-2 data-[state=active]:border-oro-antico data-[state=active]:text-oro-antico rounded-none bg-transparent text-pietra-800 hover:text-oro-antico transition-colors"
-              style={
-                {
-                  "--tw-text-opacity": "1",
-                  color: "var(--pietra-800)",
-                } as React.CSSProperties
-              }
+              value="campi"
+              className="pb-4 px-6 data-[state=active]:border-b-2 data-[state=active]:border-[color:var(--oro-antico)] data-[state=active]:text-[color:var(--oro-antico)] rounded-none bg-transparent text-[color:var(--pietra-800)] hover:text-[color:var(--oro-antico)] transition-colors"
             >
-              <span className="font-eyebrow text-sm tracking-wider">Olio, Vino e Altro</span>
+              <span className="font-eyebrow text-xs tracking-[0.22em] uppercase">
+                03 · Campi e Forno
+              </span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="formaggi" className="mt-0">
-            <EtichettaCategoria categoria="formaggi" />
-            <GrigliaProdotti prodotti={formaggi} />
+          <TabsContent value="caseificio" className="mt-0">
+            <EtichettaCategoria categoria="caseificio" />
+            <GrigliaProdotti prodotti={caseificio} />
           </TabsContent>
 
-          <TabsContent value="carne" className="mt-0">
-            <EtichettaCategoria categoria="carne" />
-            <GrigliaProdotti prodotti={carne} />
+          <TabsContent value="macelleria" className="mt-0">
+            <EtichettaCategoria categoria="macelleria" />
+            <GrigliaProdotti prodotti={macelleria} />
           </TabsContent>
 
-          <TabsContent value="altro" className="mt-0">
-            <EtichettaCategoria categoria="altro" />
-            <GrigliaProdotti prodotti={altro} />
+          <TabsContent value="campi" className="mt-0">
+            <EtichettaCategoria categoria="campi" />
+            <GrigliaProdotti prodotti={campi} />
           </TabsContent>
         </Tabs>
       </div>

@@ -119,7 +119,7 @@ export function Macelleria() {
 
   return (
     <article ref={root} className="journey-story journey-story--macelleria">
-      <header className="journey-chapter-hero">
+      <header className="journey-chapter-hero" data-tone="dark">
         <MacelleriaHero />
         <HeroOverlay chapter={MACELLERIA} next={NEXT} align="right" />
       </header>
@@ -137,7 +137,7 @@ export function Macelleria() {
         ))}
       </section>
 
-      <section className="macelleria-stations">
+      <section className="macelleria-stations" data-tone="dark">
         <div className="journey-shell macelleria-stations-grid">
           <aside className="macelleria-bignum" aria-hidden="true">
             <p className="macelleria-eyebrow">Il banco · cinque stazioni</p>
@@ -162,10 +162,10 @@ export function Macelleria() {
                 <div className={"macelleria-station-cut" + (i === 1 ? " macelleria-station-cut--photo journey-photo" : "")} aria-hidden={i === 1 ? undefined : true}>
                   {i === 1 ? <>
                     <img src="/images/macelleria-brace-ai.svg" alt="Bistecche e bombette sulla griglia sopra la brace accesa" width={1264} height={848} loading="lazy" decoding="async" />
-                    <small className="journey-photo-credit">Immagine illustrativa · AI</small>
+                    <small className="journey-photo-credit">Cottura alla brace · Masseria Don Gianvito</small>
                   </> : <>
                     <span>{String(i + 1).padStart(2, "0")}</span>
-                    <small>Foto da produrre · {m.label}</small>
+                    <small>{m.label} · Macelleria della masseria</small>
                   </>}
                 </div>
                 <div className="macelleria-station-text">
@@ -179,7 +179,7 @@ export function Macelleria() {
         </div>
       </section>
 
-      <section className="journey-next journey-next--macelleria" data-journey-reveal>
+      <section className="journey-next journey-next--macelleria" data-tone="dark" data-journey-reveal>
         <div className="journey-shell">
           <p className="macelleria-eyebrow">Prossima tappa</p>
           <Link to={chapterPath(NEXT)} className="journey-next-link">

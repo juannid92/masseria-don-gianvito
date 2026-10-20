@@ -93,9 +93,6 @@ export function AgriturismoCinema() {
               <p className="journey-kicker">04 · Agriturismo / {scene.label}</p>
               {i === 0 ? <h1>{scene.title}</h1> : <h2>{scene.title}</h2>}
               <p>{scene.desc}</p>
-              <span className="journey-cinema-note">
-                Prototipo · fotografia da inserire e testi da validare
-              </span>
             </div>
             <div className="journey-cinema-number" aria-hidden="true">
               0{i + 1} / 04

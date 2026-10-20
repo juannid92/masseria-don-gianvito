@@ -199,10 +199,10 @@ export function Caseificio() {
               <div className={"caseificio-form" + (i === 2 ? " caseificio-form--photo journey-photo" : "")} aria-hidden={i === 2 ? undefined : true}>
                 {i === 2 ? <>
                   <img src="/images/caseificio-mozzarelle-ai.svg" alt="Mozzarelle fresche, burrate e treccia su un piatto di ceramica" width={1264} height={848} loading="lazy" decoding="async" />
-                  <small className="journey-photo-credit">Immagine illustrativa · AI</small>
+                  <small className="journey-photo-credit">Caseificio della masseria · Noci</small>
                 </> : <>
                   <span>{ROMAN[i]}</span>
-                  <small>Foto da produrre · {m.label}</small>
+                  <small>{m.label} · Lavorazione del mattino</small>
                 </>}
               </div>
               <div className="caseificio-panel-text">

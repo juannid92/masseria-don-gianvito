@@ -46,10 +46,12 @@ export function LaTavola() {
         tl.fromTo(el, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4 }, 0.1 + i * 0.15);
       });
 
+      const cleanups: Array<() => void> = [];
+
       // Enhanced: CTA buttons with magnetic effect and glow
       const ctaButtons = root.querySelectorAll<HTMLElement>("a.inline-flex, button");
       ctaButtons.forEach((btn) => {
-        let pos = { x: 0, y: 0 };
+        const pos = { x: 0, y: 0 };
         let target = { x: 0, y: 0 };
         let rafId: number;
 
@@ -70,33 +72,43 @@ export function LaTavola() {
           rafId = requestAnimationFrame(animate);
         };
 
-        const onLeave = () => {
-          target = { x: 0, y: 0 };
-        };
-
-        btn.addEventListener("mouseenter", () => {
+        const onEnter = () => {
           window.addEventListener("mousemove", onMove);
           rafId = requestAnimationFrame(animate);
-          // Scale up slightly
           gsap.to(btn, { scale: 1.02, duration: 0.3 });
-        });
-        btn.addEventListener("mouseleave", () => {
+        };
+
+        const onLeave = () => {
+          target = { x: 0, y: 0 };
           window.removeEventListener("mousemove", onMove);
           cancelAnimationFrame(rafId);
           gsap.to(btn, { x: 0, y: 0, scale: 1, duration: 0.4, ease: "power2.out" });
+        };
+
+        btn.addEventListener("mouseenter", onEnter);
+        btn.addEventListener("mouseleave", onLeave);
+        cleanups.push(() => {
+          btn.removeEventListener("mouseenter", onEnter);
+          btn.removeEventListener("mouseleave", onLeave);
+          window.removeEventListener("mousemove", onMove);
+          cancelAnimationFrame(rafId);
         });
       });
 
       // Enhanced: Text hover effects
       const textElements = root.querySelectorAll<HTMLElement>("h2 span, p");
       textElements.forEach((el) => {
-        el.addEventListener("mouseenter", () => {
-          gsap.to(el, { y: -2, duration: 0.2 });
-        });
-        el.addEventListener("mouseleave", () => {
-          gsap.to(el, { y: 0, duration: 0.3 });
+        const onEnter = () => gsap.to(el, { y: -2, duration: 0.2 });
+        const onLeave = () => gsap.to(el, { y: 0, duration: 0.3 });
+        el.addEventListener("mouseenter", onEnter);
+        el.addEventListener("mouseleave", onLeave);
+        cleanups.push(() => {
+          el.removeEventListener("mouseenter", onEnter);
+          el.removeEventListener("mouseleave", onLeave);
         });
       });
+
+      return () => cleanups.forEach((fn) => fn());
     }, root);
 
     return () => ctx.revert();

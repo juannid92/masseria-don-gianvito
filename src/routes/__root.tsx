@@ -60,29 +60,35 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[color:var(--bianco-calce)] px-4 pt-[var(--page-header-safe-offset)]">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <p className="font-eyebrow text-xs tracking-[0.28em] text-[color:var(--oro-antico)]">
+          Errore imprevisto
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <h1 className="mt-4 font-display text-3xl text-[color:var(--carbone)]">
+          La pagina non si è caricata correttamente
+        </h1>
+        <div className="hairline-oro mx-auto mt-6 max-w-[120px]" />
+        <p className="mt-6 text-[16px] leading-relaxed text-[color:var(--carbone)]/75">
+          Si è verificato un problema durante il caricamento. Puoi riprovare oppure tornare alla
+          pagina principale della masseria.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-4">
           <button
+            type="button"
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="font-eyebrow inline-flex min-h-[48px] items-center justify-center bg-[color:var(--oro-antico)] px-7 text-[11px] tracking-[0.26em] text-[color:var(--carbone)] transition-opacity hover:opacity-90"
           >
-            Try again
+            Riprova
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="font-eyebrow inline-flex min-h-[48px] items-center justify-center border border-[color:var(--oro-antico)] px-7 text-[11px] tracking-[0.26em] text-[color:var(--carbone)] transition-colors hover:bg-[color:var(--oro-antico)]/10"
           >
-            Go home
+            Torna alla Home
           </a>
         </div>
       </div>

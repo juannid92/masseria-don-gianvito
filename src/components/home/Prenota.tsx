@@ -73,6 +73,8 @@ export function Prenota() {
         );
       }
 
+      const cleanups: Array<() => void> = [];
+
       // Enhanced: Phone links with hover glow effect
       const phoneLinks = root.querySelectorAll<HTMLElement>("a[href^='tel']");
       phoneLinks.forEach((link) => {
@@ -92,20 +94,27 @@ export function Prenota() {
         link.style.position = "relative";
         link.appendChild(glow);
 
-        link.addEventListener("mouseenter", () => {
+        const onEnter = () => {
           gsap.to(glow, { opacity: 0.4, duration: 0.3 });
           gsap.to(link, { x: 4, duration: 0.3, ease: "power2.out" });
-        });
-        link.addEventListener("mouseleave", () => {
+        };
+        const onLeave = () => {
           gsap.to(glow, { opacity: 0, duration: 0.3 });
           gsap.to(link, { x: 0, duration: 0.3, ease: "power2.out" });
+        };
+        link.addEventListener("mouseenter", onEnter);
+        link.addEventListener("mouseleave", onLeave);
+        cleanups.push(() => {
+          link.removeEventListener("mouseenter", onEnter);
+          link.removeEventListener("mouseleave", onLeave);
+          glow.remove();
         });
       });
 
       // Enhanced: CTA buttons with magnetic effect
       const ctaButtons = root.querySelectorAll<HTMLElement>("button, a.inline-flex");
       ctaButtons.forEach((btn) => {
-        let pos = { x: 0, y: 0 };
+        const pos = { x: 0, y: 0 };
         let target = { x: 0, y: 0 };
         let rafId: number;
 
@@ -126,18 +135,24 @@ export function Prenota() {
           rafId = requestAnimationFrame(animate);
         };
 
-        const onLeave = () => {
-          target = { x: 0, y: 0 };
-        };
-
-        btn.addEventListener("mouseenter", () => {
+        const onEnter = () => {
           window.addEventListener("mousemove", onMove);
           rafId = requestAnimationFrame(animate);
-        });
-        btn.addEventListener("mouseleave", () => {
+        };
+        const onLeave = () => {
+          target = { x: 0, y: 0 };
           window.removeEventListener("mousemove", onMove);
           cancelAnimationFrame(rafId);
           gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: "power2.out" });
+        };
+
+        btn.addEventListener("mouseenter", onEnter);
+        btn.addEventListener("mouseleave", onLeave);
+        cleanups.push(() => {
+          btn.removeEventListener("mouseenter", onEnter);
+          btn.removeEventListener("mouseleave", onLeave);
+          window.removeEventListener("mousemove", onMove);
+          cancelAnimationFrame(rafId);
         });
       });
 
@@ -156,12 +171,13 @@ export function Prenota() {
           },
         });
 
-        // Hover effect for list items
-        item.addEventListener("mouseenter", () => {
-          gsap.to(item, { x: 8, duration: 0.3, ease: "power2.out" });
-        });
-        item.addEventListener("mouseleave", () => {
-          gsap.to(item, { x: 0, duration: 0.3, ease: "power2.out" });
+        const onEnter = () => gsap.to(item, { x: 8, duration: 0.3, ease: "power2.out" });
+        const onLeave = () => gsap.to(item, { x: 0, duration: 0.3, ease: "power2.out" });
+        item.addEventListener("mouseenter", onEnter);
+        item.addEventListener("mouseleave", onLeave);
+        cleanups.push(() => {
+          item.removeEventListener("mouseenter", onEnter);
+          item.removeEventListener("mouseleave", onLeave);
         });
       });
 
@@ -184,14 +200,24 @@ export function Prenota() {
         link.style.position = "relative";
         link.appendChild(line);
 
-        link.addEventListener("mouseenter", () => {
+        const onEnter = () => {
+          line.style.transformOrigin = "left center";
           line.style.transform = "scaleX(1)";
-        });
-        link.addEventListener("mouseleave", () => {
+        };
+        const onLeave = () => {
           line.style.transformOrigin = "right center";
           line.style.transform = "scaleX(0)";
+        };
+        link.addEventListener("mouseenter", onEnter);
+        link.addEventListener("mouseleave", onLeave);
+        cleanups.push(() => {
+          link.removeEventListener("mouseenter", onEnter);
+          link.removeEventListener("mouseleave", onLeave);
+          line.remove();
         });
       });
+
+      return () => cleanups.forEach((fn) => fn());
     }, root);
 
     return () => ctx.revert();
