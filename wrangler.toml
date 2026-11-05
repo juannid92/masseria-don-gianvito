@@ -1,0 +1,5 @@
+name = "masseria-don-gianvito"
+compatibility_date = "2026-11-05"
+main = "dist/server/server.js"
+assets = { directory = "dist/client", binding = "ASSETS" }
+node_compat = true
