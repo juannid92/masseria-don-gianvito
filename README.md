@@ -1,24 +1,42 @@
 # Masseria Don Gianvito
 
-masseria don gianvito
+Sito web della Masseria Don Gianvito — allevamento, caseificio, macelleria e agriturismo a Noci (BA).
 
-This project was built with [Lovable](https://lovable.dev).
+## Tech Stack
 
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/b9ced753-11d5-4af3-ac37-7a840ad9d45b).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+- **React 19** + **TanStack Start** (SSR)
+- **Vite 8** + **Tailwind CSS v4**
+- **GSAP** + **Lenis** + **Framer Motion** (animazioni e scroll)
+- **Cloudflare Pages** (deploy)
+- **Bun** (package manager e runtime)
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+```sh
+bun install
+bun run dev
+```
+
+Il dev server parte con HMR e SSR. Le animazioni sono attive solo con `prefers-reduced-motion: no-preference`.
+
+## Build & Deploy
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+bun run build      # produce dist/ con preset cloudflare-module
+bun run deploy     # build + wrangler deploy su Cloudflare Pages
 ```
+
+Push su `main` triggera il deploy automatico via GitHub integration su Cloudflare Pages.
+
+## Struttura
+
+- `src/routes/` — routing file-based TanStack Start
+- `src/components/home/` — sezioni home (7 atti)
+- `src/components/journey/` — pagine immersive (4 anime)
+- `src/data/masseria.ts` — unica fonte di verità per dati aziendali
+- `src/config/site.ts` — SEO, OG metadata, URL sito
+- `src/styles.css` — design tokens e stili componenti
+
+## Foto
+
+La foto aerea hero è confermata. Le altre foto sono fornite dal cliente. Foto caseificio in attesa. Vedi `FOTO-DA-PRODURRE.md` per la lista completa degli scatti necessari.
