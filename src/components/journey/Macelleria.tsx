@@ -111,6 +111,47 @@ export function Macelleria() {
             },
           },
         );
+
+        // Galleria pinned: card impilate con pin, ogni scroll porta dentro la foto successiva.
+        const galleryDeck = el.querySelector<HTMLElement>(".macelleria-gallery-pinned-deck");
+        if (galleryDeck) {
+          const cards = gsap.utils.toArray<HTMLElement>(".macelleria-gallery-card", galleryDeck);
+          gsap.set(cards, {
+            yPercent: (i) => (i === 0 ? 0 : 110),
+            rotate: (i) => (i === 0 ? 0 : 2),
+          });
+          const galleryTl = gsap.timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: {
+              trigger: ".macelleria-gallery-pinned",
+              start: "top top",
+              end: () => `+=${window.innerHeight * (cards.length - 1) * 1.05}`,
+              pin: true,
+              scrub: 0.6,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              snap: {
+                snapTo: 1 / (cards.length - 1),
+                duration: 0.5,
+                ease: "power2.inOut",
+                delay: 0.05,
+              },
+            },
+          });
+          cards.forEach((card, i) => {
+            if (i === 0) return;
+            const prev = cards[i - 1];
+            galleryTl
+              .to(card, { yPercent: 0, rotate: 0, duration: 1 }, i - 1)
+              .to(
+                prev,
+                { scale: 0.92, yPercent: -5, filter: "brightness(0.6)", duration: 1 },
+                i - 1,
+              );
+            const inner = card.querySelector(".macelleria-gallery-card-inner");
+            if (inner) galleryTl.fromTo(inner, { scale: 1.2 }, { scale: 1, duration: 1 }, i - 1);
+          });
+        }
       });
       return () => mm.revert();
     },
@@ -157,29 +198,122 @@ export function Macelleria() {
                 rendono diversa la carne di questa masseria.
               </p>
             </header>
-            {MACELLERIA.moments.map((m, i) => (
-              <article key={m.label} className="macelleria-station">
-                <div className={"macelleria-station-cut" + (i === 1 ? " macelleria-station-cut--photo journey-photo" : "")} aria-hidden={i === 1 ? undefined : true}>
-                  {i === 1 ? <>
-                    <img src="/images/macelleria-brace-ai.svg" alt="Bistecche e bombette sulla griglia sopra la brace accesa" width={1264} height={848} loading="lazy" decoding="async" />
-                    <small className="journey-photo-credit">Cottura alla brace · Masseria Don Gianvito</small>
-                  </> : <>
-                    <span>{String(i + 1).padStart(2, "0")}</span>
-                    <small>{m.label} · Macelleria della masseria</small>
-                  </>}
-                </div>
-                <div className="macelleria-station-text">
-                  <p className="macelleria-eyebrow">{m.label}</p>
-                  <h3>{m.title}</h3>
-                  <p>{m.body}</p>
-                </div>
-              </article>
-            ))}
+            {MACELLERIA.moments.map((m, i) => {
+              const photos: Record<number, { src: string; alt: string }> = {
+                0: {
+                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.34.09.jpeg",
+                  alt: "Il banco della macelleria con la carne e i salumi esposti a vista",
+                },
+                1: {
+                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (2).jpeg",
+                  alt: "Bistecche e bombette sulla griglia sopra la brace accesa",
+                },
+                2: {
+                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (1).jpeg",
+                  alt: "Tagli di carne fresca selezionati al banco per brace, forno o padella",
+                },
+                3: {
+                  src: "/images/macelleria/WhatsApp Image 2026-11-04 at 11.11.44.jpeg",
+                  alt: "Chi lavora al banco della macelleria, competenza e ascolto",
+                },
+                4: {
+                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55.jpeg",
+                  alt: "La carne dal banco all'agriturismo, cotta alla brace e servita in sala",
+                },
+              };
+              const photo = photos[i];
+              return (
+                <article key={m.label} className="macelleria-station">
+                  <div
+                    className={
+                      "macelleria-station-cut" +
+                      (photo ? " macelleria-station-cut--photo journey-photo" : "")
+                    }
+                    aria-hidden={photo ? undefined : true}
+                  >
+                    {photo ? (
+                      <>
+                        <img
+                          src={photo.src}
+                          alt={photo.alt}
+                          width={1264}
+                          height={848}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <small className="journey-photo-credit">
+                          {m.label} · Masseria Don Gianvito
+                        </small>
+                      </>
+                    ) : (
+                      <>
+                        <span>{String(i + 1).padStart(2, "0")}</span>
+                        <small>{m.label} · Macelleria della masseria</small>
+                      </>
+                    )}
+                  </div>
+                  <div className="macelleria-station-text">
+                    <p className="macelleria-eyebrow">{m.label}</p>
+                    <h3>{m.title}</h3>
+                    <p>{m.body}</p>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      <section className="journey-next journey-next--macelleria" data-tone="dark" data-journey-reveal>
+      <section className="macelleria-gallery-pinned" data-tone="dark">
+        <div className="journey-shell macelleria-gallery-pinned-head">
+          <p className="macelleria-eyebrow">Dal banco</p>
+          <h2>La carne, a vista.</h2>
+        </div>
+        <div className="macelleria-gallery-pinned-deck journey-shell">
+          {[
+            {
+              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (3).jpeg",
+              alt: "Preparazione dei tagli al banco",
+            },
+            {
+              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (4).jpeg",
+              alt: "Selezione della carne fresca",
+            },
+            {
+              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (5).jpeg",
+              alt: "Dettagli della lavorazione della carne",
+            },
+            {
+              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (1).jpeg",
+              alt: "Tagli freschi esposti sul banco",
+            },
+            {
+              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55.jpeg",
+              alt: "Il banco della macelleria della masseria",
+            },
+          ].map((foto, i) => (
+            <figure key={i} className="macelleria-gallery-card" style={{ zIndex: i + 1 }}>
+              <div className="macelleria-gallery-card-inner journey-photo">
+                <img
+                  src={foto.src}
+                  alt={foto.alt}
+                  width={1264}
+                  height={848}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <small className="journey-photo-credit">{foto.alt}</small>
+              </div>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section
+        className="journey-next journey-next--macelleria"
+        data-tone="dark"
+        data-journey-reveal
+      >
         <div className="journey-shell">
           <p className="macelleria-eyebrow">Prossima tappa</p>
           <Link to={chapterPath(NEXT)} className="journey-next-link">

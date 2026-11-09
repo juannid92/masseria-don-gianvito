@@ -1432,3 +1432,37 @@ html {
 .macelleria-station-cut--photo{padding:0}
 .macelleria-station-cut--photo::before{display:none}
 .macelleria-station-cut--photo>img{object-position:48% 50%}
+
+/* Galleria Agriturismo (tono chiaro) */
+.agri-gallery{background:var(--pietra-100);padding:4rem 0}
+.agri-gallery-header{margin-bottom:2.5rem;text-align:center}
+.agri-gallery-header h2{font-family:var(--mc-font);font-size:clamp(28px,3vw,40px);color:var(--carbone);margin-top:0.5rem}
+.agri-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+@media(max-width:768px){.agri-gallery-grid{grid-template-columns:1fr}}
+.agri-gallery-item{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--pietra-200)}
+.agri-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease}
+.agri-gallery-item:hover img{transform:scale(1.03)}
+
+/* Galleria Macelleria — pinned cards, tono scuro */
+.macelleria-gallery-pinned{background:var(--mc-scuro,#1a1210);min-height:100vh}
+.macelleria-gallery-pinned-head{padding-top:4rem;padding-bottom:2rem}
+.macelleria-gallery-pinned-head h2{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(30px,3.2vw,48px);line-height:1.1;color:#f1e6d8;margin-top:0.75rem}
+.macelleria-gallery-pinned-deck{position:relative;height:80vh;max-height:720px}
+.macelleria-gallery-card{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+.macelleria-gallery-card-inner{width:min(90vw,900px);aspect-ratio:4/3;overflow:hidden;background:#2a1f1c}
+.macelleria-gallery-card-inner img{width:100%;height:100%;object-fit:cover}
+.macelleria-gallery-card-inner .journey-photo-credit{position:absolute;bottom:0;left:0;right:0;padding:1rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#f1e6d8cc;background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);pointer-events:none}
+@media(max-width:768px){.macelleria-gallery-pinned-deck{height:60vh}.macelleria-gallery-card-inner{width:95vw}}
+
+/* Galleria Allevamento (tono scuro, coerente con journey pages) */
+.allevamento-gallery{background:var(--mc-scuro,#1a1210);padding:5rem 0}
+.allevamento-gallery-header{margin-bottom:3rem}
+.allevamento-gallery-header h2{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(30px,3.2vw,48px);line-height:1.1;color:#f1e6d8;margin-top:0.75rem}
+.allevamento-gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.allevamento-gallery-item{position:relative;aspect-ratio:4/3;overflow:hidden;background:#2a1f1c}
+.allevamento-gallery-item--wide{grid-column:span 2}
+.allevamento-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease}
+.allevamento-gallery-item:hover img{transform:scale(1.04)}
+.allevamento-gallery-item .journey-photo-credit{position:absolute;bottom:0;left:0;right:0;padding:0.75rem 1rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#f1e6d8cc;background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);pointer-events:none}
+@media(max-width:900px){.allevamento-gallery-grid{grid-template-columns:repeat(2,1fr)}.allevamento-gallery-item--wide{grid-column:span 2}}
+@media(max-width:600px){.allevamento-gallery-grid{grid-template-columns:1fr}.allevamento-gallery-item--wide{grid-column:span 1}}

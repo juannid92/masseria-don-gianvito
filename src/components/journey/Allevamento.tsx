@@ -74,10 +74,87 @@ export function Allevamento() {
       </section>
 
       {/* 5 momenti: card impilate in scroll pinned. */}
-      <PinnedCardStack moments={ALLEVAMENTO.moments.map((m, i) => i === 0 ? {
-        ...m, image: "/images/allevamento-pascolo-ai.svg",
-        imageAlt: "Bovini al pascolo nelle Murge, tra ulivi e muretti a secco",
-      } : m)} kicker="Cinque passaggi dall’allevamento" />
+      <PinnedCardStack
+        moments={ALLEVAMENTO.moments.map((m, i) => {
+          const photos: Record<number, { image: string; imageAlt: string }> = {
+            0: {
+              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.09.jpeg",
+              imageAlt: "I terreni della masseria tra Noci e Mottola, foraggio e grano tenero",
+            },
+            1: {
+              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.11.jpeg",
+              imageAlt: "Bovini Pezzata Rossa e Frisona nei recinti dell’allevamento",
+            },
+            2: {
+              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.39.jpeg",
+              imageAlt: "I campi della masseria che seguono il ritmo delle stagioni",
+            },
+            3: {
+              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.39.50.jpeg",
+              imageAlt: "Il lavoro quotidiano di chi cura gli animali ogni mattina",
+            },
+            4: {
+              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.27.jpeg",
+              imageAlt:
+                "Dal latte al caseificio, dalla carne alla macelleria: tutto nello stesso luogo",
+            },
+          };
+          return photos[i] ? { ...m, ...photos[i] } : m;
+        })}
+        kicker="Cinque passaggi dall’allevamento"
+      />
+
+      {/* Galleria fotografica Allevamento */}
+      <section className="allevamento-gallery" data-tone="dark" data-journey-reveal>
+        <div className="journey-shell">
+          <header className="allevamento-gallery-header">
+            <p className="journey-kicker">Dai campi</p>
+            <h2>La vita in masseria.</h2>
+          </header>
+          <div className="allevamento-gallery-grid">
+            {[
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.10.jpeg",
+                alt: "I terreni coltivati intorno alla masseria",
+                wide: true,
+              },
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.45.jpeg",
+                alt: "Gli animali nei recinti all'aperto",
+              },
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.39.21.jpeg",
+                alt: "Il lavoro quotidiano nei campi",
+              },
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.39.39.jpeg",
+                alt: "Scorci di vita in allevamento",
+              },
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.11.jpeg",
+                alt: "Il paesaggio delle Murge",
+              },
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.28.jpeg",
+                alt: "Dettagli della campagna",
+                wide: true,
+              },
+              {
+                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.29.jpeg",
+                alt: "L'allevamento nella luce del mattino",
+              },
+            ].map((foto, i) => (
+              <figure
+                key={i}
+                className={`allevamento-gallery-item${foto.wide ? " allevamento-gallery-item--wide" : ""}`}
+              >
+                <img src={foto.src} alt={foto.alt} loading="lazy" decoding="async" />
+                <small className="journey-photo-credit">{foto.alt}</small>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA verso il prossimo capitolo. */}
       <section className="journey-next journey-next--allevamento" data-journey-reveal>
