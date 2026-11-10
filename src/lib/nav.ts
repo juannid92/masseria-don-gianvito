@@ -123,5 +123,5 @@ export function useHomeHashScroll() {
       cancelled = true;
     };
     // location.hash cambia quando l'utente clicca un link con hash o usa back/forward
-  }, [location.pathname, location.hash, router]);
+  }, [location.pathname, location.hash]);
 }
