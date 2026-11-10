@@ -201,23 +201,23 @@ export function Macelleria() {
             {MACELLERIA.moments.map((m, i) => {
               const photos: Record<number, { src: string; alt: string }> = {
                 0: {
-                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.34.09.jpeg",
+                  src: "/images/macelleria/macelleria-banco-esposizione-01.jpeg",
                   alt: "Il banco della macelleria con la carne e i salumi esposti a vista",
                 },
                 1: {
-                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (2).jpeg",
+                  src: "/images/macelleria/macelleria-brace-cottura-01.jpeg",
                   alt: "Bistecche e bombette sulla griglia sopra la brace accesa",
                 },
                 2: {
-                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (1).jpeg",
+                  src: "/images/macelleria/macelleria-tagli-freschi-01.jpeg",
                   alt: "Tagli di carne fresca selezionati al banco per brace, forno o padella",
                 },
                 3: {
-                  src: "/images/macelleria/WhatsApp Image 2026-11-04 at 11.11.44.jpeg",
+                  src: "/images/macelleria/macelleria-banco-lavorazione-01.jpeg",
                   alt: "Chi lavora al banco della macelleria, competenza e ascolto",
                 },
                 4: {
-                  src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55.jpeg",
+                  src: "/images/macelleria/macelleria-banco-sala-01.jpeg",
                   alt: "La carne dal banco all'agriturismo, cotta alla brace e servita in sala",
                 },
               };
@@ -272,23 +272,23 @@ export function Macelleria() {
         <div className="macelleria-gallery-pinned-deck journey-shell">
           {[
             {
-              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (3).jpeg",
+              src: "/images/macelleria/macelleria-preparazione-tagli-01.jpeg",
               alt: "Preparazione dei tagli al banco",
             },
             {
-              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (4).jpeg",
+              src: "/images/macelleria/macelleria-selezione-carne-01.jpeg",
               alt: "Selezione della carne fresca",
             },
             {
-              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (5).jpeg",
+              src: "/images/macelleria/macelleria-lavorazione-dettagli-01.jpeg",
               alt: "Dettagli della lavorazione della carne",
             },
             {
-              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55 (1).jpeg",
+              src: "/images/macelleria/macelleria-tagli-freschi-01.jpeg",
               alt: "Tagli freschi esposti sul banco",
             },
             {
-              src: "/images/macelleria/WhatsApp Image 2026-11-03 at 09.39.55.jpeg",
+              src: "/images/macelleria/macelleria-banco-sala-01.jpeg",
               alt: "Il banco della macelleria della masseria",
             },
           ].map((foto, i) => (
