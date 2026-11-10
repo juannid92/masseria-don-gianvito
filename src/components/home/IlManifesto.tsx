@@ -87,7 +87,12 @@ export function IlManifesto() {
 
         // Eyebrow 01 — ex Framer Motion initial/animate (opacity 0→1, y 8→0, 0.5s easeOut).
         if (eyebrow01)
-          tl.fromTo(eyebrow01, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0);
+          tl.fromTo(
+            eyebrow01,
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            0,
+          );
 
         if (linea) tl.fromTo(linea, { scaleY: 0 }, { scaleY: 1, duration: 0.12 }, "linea");
         righe.forEach((riga, i) => {

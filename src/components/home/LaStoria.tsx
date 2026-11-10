@@ -101,7 +101,10 @@ export function LaStoria() {
         // Eyebrow storia — ex Framer Motion whileInView (opacity 0→1, y 8→0, 0.5s easeOut).
         if (eyebrowStoria)
           gsap.from(eyebrowStoria, {
-            opacity: 0, y: 8, duration: 0.5, ease: "power2.out",
+            opacity: 0,
+            y: 8,
+            duration: 0.5,
+            ease: "power2.out",
             scrollTrigger: { trigger: eyebrowStoria, start: "top 85%", once: true },
           });
 
@@ -220,8 +223,6 @@ export function LaStoria() {
           );
         if (titolo) tl.to(titolo, { opacity: 0.25, y: -28, duration: 0.06 }, "attenua");
 
-
-
         // Indicatore di progresso.
         dots.forEach((dot, i) => {
           const inAt = [0.14, 0.4, 0.68][i];
@@ -231,7 +232,12 @@ export function LaStoria() {
         });
 
         if (chiusura)
-          tl.fromTo(chiusura, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.05 }, "chiusura");
+          tl.fromTo(
+            chiusura,
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.05 },
+            "chiusura",
+          );
         if (handoff) tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.05 }, "handoff");
         if (occhiello03)
           tl.fromTo(occhiello03, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.04 }, 0.96);
@@ -322,7 +328,11 @@ export function LaStoria() {
         </div>
 
         {/* Luce che ruota */}
-        <div aria-hidden data-layer="luce" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          aria-hidden
+          data-layer="luce"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
           <div
             className="absolute inset-[-20%]"
             style={{
@@ -334,7 +344,11 @@ export function LaStoria() {
         </div>
 
         {/* Grana */}
-        <div aria-hidden data-layer="grana" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          aria-hidden
+          data-layer="grana"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
           <div className="grain absolute inset-[-4%] opacity-45" />
         </div>
 
@@ -360,7 +374,9 @@ export function LaStoria() {
           <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.95] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
             <span className="block">Il tempo qui</span>
             <span className="ml-[4%] block md:ml-[9%]">non è passato.</span>
-            <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)] md:ml-[3%]">È rimasto.</span>
+            <span className="ml-[1%] block italic text-[color:var(--oro-su-scuro)] md:ml-[3%]">
+              È rimasto.
+            </span>
           </h2>
         </div>
 
@@ -370,7 +386,10 @@ export function LaStoria() {
           className="relative z-10 flex w-full flex-col [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-max [@media(min-width:900px)]:flex-row [@media(min-width:900px)]:items-center [@media(min-width:900px)]:will-change-transform"
         >
           {/* Spazio d'apertura: il titolo dell'atto occupa la prima schermata */}
-          <div aria-hidden className="hidden [@media(min-width:900px)]:block [@media(min-width:900px)]:w-screen" />
+          <div
+            aria-hidden
+            className="hidden [@media(min-width:900px)]:block [@media(min-width:900px)]:w-screen"
+          />
 
           {MOMENTI.map((m) => (
             <article
@@ -401,7 +420,8 @@ export function LaStoria() {
                   style={{
                     background:
                       "linear-gradient(96deg, color-mix(in oklab, var(--bianco-calce) 13%, transparent) 0%, color-mix(in oklab, var(--pietra-800) 60%, var(--carbone)) 12%, color-mix(in oklab, var(--carbone) 92%, var(--pietra-800)) 78%)",
-                    boxShadow: "-70px 0 140px -40px color-mix(in oklab, var(--carbone) 90%, transparent)",
+                    boxShadow:
+                      "-70px 0 140px -40px color-mix(in oklab, var(--carbone) 90%, transparent)",
                   }}
                 />
                 <span
@@ -413,7 +433,6 @@ export function LaStoria() {
                 />
               </div>
 
-
               {/* Fotografia del luogo (Wikimedia Commons) */}
               <figure className="pointer-events-none absolute inset-0 z-[1] m-0 [@media(min-width:900px)]:inset-y-[10%] [@media(min-width:900px)]:left-auto [@media(min-width:900px)]:right-[5%] [@media(min-width:900px)]:w-[40%]">
                 <img
@@ -423,7 +442,10 @@ export function LaStoria() {
                   decoding="async"
                   className="h-full w-full object-cover opacity-35 [@media(min-width:900px)]:opacity-95"
                 />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[color:var(--carbone)]/70 via-transparent to-transparent" />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-t from-[color:var(--carbone)]/70 via-transparent to-transparent"
+                />
                 <figcaption className="absolute bottom-3 left-3 right-3 hidden text-[10px] tracking-wide text-[color:var(--bianco-calce)]/70 [@media(min-width:900px)]:block">
                   {m.fotoAlt} — foto {m.fotoCredito}
                 </figcaption>

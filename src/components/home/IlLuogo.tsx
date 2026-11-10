@@ -42,8 +42,7 @@ const ANNOTAZIONI: Annotazione[] = [
   {
     id: "cortile",
     occhiello: "IL CORTILE",
-    testo:
-      "Il centro della masseria: da qui si passa per entrare in tutto il resto.",
+    testo: "Il centro della masseria: da qui si passa per entrare in tutto il resto.",
   },
 ];
 
@@ -104,13 +103,41 @@ export function IlLuogo() {
           },
           defaults: { ease: "none" },
         });
-        if (cut) tlA.fromTo(cut, { scaleY: 1, opacity: 1 }, { scaleY: 0.02, opacity: 0, duration: 0.5 }, 0);
-        if (muretto) tlA.fromTo(muretto, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55 }, 0.35);
-        tlA.fromTo(mask, { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: MASK_JOIN, duration: 0.85 }, 0.05);
+        if (cut)
+          tlA.fromTo(
+            cut,
+            { scaleY: 1, opacity: 1 },
+            { scaleY: 0.02, opacity: 0, duration: 0.5 },
+            0,
+          );
+        if (muretto)
+          tlA.fromTo(
+            muretto,
+            { scaleX: 0, opacity: 0 },
+            { scaleX: 1, opacity: 1, duration: 0.55 },
+            0.35,
+          );
+        tlA.fromTo(
+          mask,
+          { clipPath: "inset(0% 50% 0% 50%)" },
+          { clipPath: MASK_JOIN, duration: 0.85 },
+          0.05,
+        );
         // Eyebrow 03 — ex Framer Motion whileInView (opacity 0→1, y 8→0, 0.5s easeOut).
-        if (eyebrow) tlA.fromTo(eyebrow, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.35);
+        if (eyebrow)
+          tlA.fromTo(
+            eyebrow,
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+            0.35,
+          );
         if (righe[0])
-          tlA.fromTo(righe[0], { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35 }, 0.55);
+          tlA.fromTo(
+            righe[0],
+            { yPercent: 110, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.35 },
+            0.55,
+          );
 
         // ── FASE B · SEQUENZA STICKY (riprende dallo stato di giunzione) ──
         const tl = gsap.timeline({
@@ -182,12 +209,9 @@ export function IlLuogo() {
         // ── Fase E · chiusura sul cortile, solco e occhiello 04 ───────────
         // Anticipata: solco e occhiello 04 devono essere COMPLETAMENTE visibili
         // nel 15% finale dello sticky, prima del rilascio.
-        if (rack)
-          tl.fromTo(rack, { opacity: 0 }, { opacity: 1, duration: 0.08 }, 0.7);
-        if (handoff)
-          tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.12 }, 0.72);
-        if (solco)
-          tl.to(solco, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out" }, 0.72);
+        if (rack) tl.fromTo(rack, { opacity: 0 }, { opacity: 1, duration: 0.08 }, 0.7);
+        if (handoff) tl.fromTo(handoff, { opacity: 0 }, { opacity: 1, duration: 0.12 }, 0.72);
+        if (solco) tl.to(solco, { strokeDashoffset: 0, duration: 0.16, ease: "power2.out" }, 0.72);
         if (chiusura)
           tl.fromTo(chiusura, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.06 }, 0.8);
         if (occhiello04)
@@ -289,8 +313,7 @@ export function IlLuogo() {
           aria-hidden
           className="absolute inset-0"
           style={{
-            background:
-              "var(--bianco-calce)",
+            background: "var(--bianco-calce)",
           }}
         />
         <div

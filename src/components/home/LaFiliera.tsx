@@ -66,8 +66,7 @@ const D_MAIN =
   "M 396 0 C 340 220, 180 320, 100 520 C 40 700, 40 900, 120 1080 C 220 1280, 320 1360, 300 1560 C 280 1780, 230 1980, 200 2200";
 const D_LATTE = "M 200 2200 C 180 2380, 140 2560, 132 2760 C 130 2820, 150 2870, 200 2920";
 const D_CARNE = "M 200 2200 C 220 2380, 260 2560, 268 2760 C 270 2820, 250 2870, 200 2920";
-const D_ORO =
-  "M 200 2920 C 200 3040, 200 3160, 200 3300 C 200 3480, 200 3640, 200 3800";
+const D_ORO = "M 200 2920 C 200 3040, 200 3160, 200 3300 C 200 3480, 200 3640, 200 3800";
 
 export function LaFiliera() {
   const reduced = useReducedMotion();
@@ -127,8 +126,12 @@ export function LaFiliera() {
       tl.to(filoWrap, { clipPath: "inset(0% 0% 0% 0%)", duration: 1 }, 0);
 
       // PARALLASSE — solo transform, unico timeline, nessun trigger extra.
-      parallaxSlow.forEach((el) => tl.fromTo(el, { yPercent: 4 }, { yPercent: -4, duration: 1 }, 0));
-      parallaxFast.forEach((el) => tl.fromTo(el, { yPercent: -3 }, { yPercent: 3, duration: 1 }, 0));
+      parallaxSlow.forEach((el) =>
+        tl.fromTo(el, { yPercent: 4 }, { yPercent: -4, duration: 1 }, 0),
+      );
+      parallaxFast.forEach((el) =>
+        tl.fromTo(el, { yPercent: -3 }, { yPercent: 3, duration: 1 }, 0),
+      );
 
       // Luce direzionale che si sposta impercettibilmente lungo lo scroll.
       if (luce) tl.fromTo(luce, { yPercent: -6 }, { yPercent: 6, duration: 1 }, 0);
@@ -138,7 +141,10 @@ export function LaFiliera() {
       const eyebrowFiliera = root.querySelector<HTMLElement>("[data-eyebrow-filiera]");
       if (eyebrowFiliera)
         gsap.from(eyebrowFiliera, {
-          opacity: 0, y: 8, duration: 0.5, ease: "power2.out",
+          opacity: 0,
+          y: 8,
+          duration: 0.5,
+          ease: "power2.out",
           scrollTrigger: { trigger: eyebrowFiliera, start: "top 85%", once: true },
         });
 
@@ -146,7 +152,10 @@ export function LaFiliera() {
       const eyebrowTrasf = root.querySelector<HTMLElement>("[data-eyebrow-trasformazione]");
       if (eyebrowTrasf)
         gsap.from(eyebrowTrasf, {
-          opacity: 0, y: 12, duration: 0.5, ease: "power2.out",
+          opacity: 0,
+          y: 12,
+          duration: 0.5,
+          ease: "power2.out",
           scrollTrigger: { trigger: eyebrowTrasf, start: "top 85%", once: true },
         });
 
@@ -154,13 +163,19 @@ export function LaFiliera() {
       const latte = root.querySelector<HTMLElement>("[data-reveal-latte]");
       if (latte)
         gsap.from(latte, {
-          opacity: 0, x: -20, duration: 0.5, ease: "power2.out",
+          opacity: 0,
+          x: -20,
+          duration: 0.5,
+          ease: "power2.out",
           scrollTrigger: { trigger: latte, start: "top 85%", once: true },
         });
       const carne = root.querySelector<HTMLElement>("[data-reveal-carne]");
       if (carne)
         gsap.from(carne, {
-          opacity: 0, x: 20, duration: 0.5, ease: "power2.out",
+          opacity: 0,
+          x: 20,
+          duration: 0.5,
+          ease: "power2.out",
           scrollTrigger: { trigger: carne, start: "top 85%", once: true },
         });
 
@@ -168,30 +183,42 @@ export function LaFiliera() {
       const eyebrowTavola = root.querySelector<HTMLElement>("[data-eyebrow-tavola]");
       if (eyebrowTavola)
         gsap.from(eyebrowTavola, {
-          opacity: 0, y: 12, duration: 0.5, ease: "power2.out",
+          opacity: 0,
+          y: 12,
+          duration: 0.5,
+          ease: "power2.out",
           scrollTrigger: { trigger: eyebrowTavola, start: "top 85%", once: true },
         });
 
       // NodoBlocco elements (terra, animali) — eyebrow, titolo, testo
       root.querySelectorAll<HTMLElement>("[data-nodo-eyebrow]").forEach((el) => {
         gsap.from(el, {
-          opacity: 0, y: 12, duration: 0.5, ease: "power2.out",
+          opacity: 0,
+          y: 12,
+          duration: 0.5,
+          ease: "power2.out",
           scrollTrigger: { trigger: el, start: "top 85%", once: true },
         });
       });
       root.querySelectorAll<HTMLElement>("[data-nodo-titolo]").forEach((el) => {
         gsap.from(el, {
-          opacity: 0, y: 16, duration: 0.55, ease: "power2.out",
+          opacity: 0,
+          y: 16,
+          duration: 0.55,
+          ease: "power2.out",
           scrollTrigger: { trigger: el, start: "top 85%", once: true },
         });
       });
       root.querySelectorAll<HTMLElement>("[data-nodo-testo]").forEach((el) => {
         gsap.from(el, {
-          opacity: 0, y: 12, duration: 0.6, ease: "power2.out", delay: 0.05,
+          opacity: 0,
+          y: 12,
+          duration: 0.6,
+          ease: "power2.out",
+          delay: 0.05,
           scrollTrigger: { trigger: el, start: "top 85%", once: true },
         });
       });
-
     }, root);
 
     return () => {
@@ -323,14 +350,20 @@ export function LaFiliera() {
           >
             04 — LA FILIERA
           </p>
-          <h2 data-parallax="fast" className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
+          <h2
+            data-parallax="fast"
+            className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10"
+          >
             <span className="block">Dalla terra</span>
             <span className="ml-[3%] block md:ml-[7%]">alla tavola,</span>
             <span className="ml-[1%] block italic text-[color:var(--carbone)] md:ml-[3%]">
               senza uscire.
             </span>
           </h2>
-          <p data-parallax="slow" className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]">
+          <p
+            data-parallax="slow"
+            className="mt-6 max-w-[46ch] text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:mt-8 md:text-[17px]"
+          >
             Ogni passaggio avviene dentro la masseria. Quello che cresce nei campi nutre gli
             animali. Quello che gli animali danno passa dal caseificio e dalla macelleria. Quello
             che ne esce arriva in sala.
@@ -355,7 +388,10 @@ export function LaFiliera() {
           >
             {NODI[2].occhiello}
           </p>
-          <h3 data-parallax="fast" className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
+          <h3
+            data-parallax="fast"
+            className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]"
+          >
             <span className="block">{NODI[2].titolo[0]}</span>
             <span className="ml-[2%] block italic text-[color:var(--carbone)]">
               {NODI[2].titolo[1]}
@@ -402,7 +438,10 @@ export function LaFiliera() {
           >
             {NODI[3].occhiello}
           </p>
-          <h3 data-parallax="fast" className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
+          <h3
+            data-parallax="fast"
+            className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]"
+          >
             <span className="block">{NODI[3].titolo[0]}</span>
             <span className="mt-1 block italic text-[color:var(--carbone)]">
               {NODI[3].titolo[1]}
