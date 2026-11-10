@@ -1,0 +1,139 @@
+/* ────────────────────────────────────────────────────────────────────────
+   ALLEVAMENTO — Contatore scroll-driven + momenti editoriali
+   ──────────────────────────────────────────────────────────────────────── */
+
+.allevamento-counter-band {
+  background: linear-gradient(180deg, #29291f 0%, #1f1a15 100%);
+  color: var(--bianco-calce);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.allevamento-counter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  align-items: end;
+}
+
+.allevamento-counter-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 1px solid #dfca9f33;
+  padding-left: 24px;
+}
+
+.allevamento-counter-cell:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.allevamento-counter-num {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 9vw, 128px);
+  line-height: 1;
+  font-weight: 400;
+  color: #dfca9f;
+  font-variant-numeric: tabular-nums;
+}
+
+.allevamento-counter-label {
+  font-family: var(--font-eyebrow);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #b6a98a;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .allevamento-counter-band { padding: 48px 0; }
+  .allevamento-counter-grid { grid-template-columns: 1fr; gap: 32px; }
+  .allevamento-counter-cell { border-left: none; padding-left: 0; border-top: 1px solid #dfca9f33; padding-top: 24px; }
+  .allevamento-counter-cell:first-child { border-top: none; padding-top: 0; }
+}
+
+.allevamento-moment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 0;
+  border-bottom: 1px solid #e5ddc9;
+}
+
+.allevamento-moment:last-child { border-bottom: none; }
+
+.allevamento-moment.is-right { direction: rtl; }
+.allevamento-moment.is-right > * { direction: ltr; }
+
+.allevamento-moment-photo {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(135deg, #e5ddc9 0%, #b6a98a 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.allevamento-moment-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.3), transparent 50%);
+}
+
+.allevamento-moment-photo-initials {
+  font-family: var(--font-display);
+  font-size: 96px;
+  color: #36261955;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .allevamento-moment { grid-template-columns: 1fr; gap: 24px; padding: 48px 0; }
+  .allevamento-moment.is-right { direction: ltr; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   SHARED: index + label dei momenti
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-moment-index {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  color: #dab873;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+.journey-moment-label {
+  font-family: var(--font-eyebrow);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #8a6018;
+  margin: 0 0 4px;
+}
+.journey-moment-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 4px 0 16px;
+  color: #362619;
+  font-weight: 400;
+}
+.journey-moment-text p {
+  color: #4a3d2c;
+  line-height: 1.65;
+  max-width: 56ch;
+}
+
+
+

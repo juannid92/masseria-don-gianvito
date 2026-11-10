@@ -1,0 +1,58 @@
+/* ────────────────────────────────────────────────────────────────────────
+   HEROES R3F — Sovrapposizione Canvas + testo
+   Il Canvas Three.js occupa l'intero header, il testo fluttua sopra.
+   ──────────────────────────────────────────────────────────────────────── */
+
+.journey-chapter-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hero-canvas-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-canvas-frame canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100svh;
+  padding-top: 120px;
+  padding-bottom: 32px;
+  gap: 64px;
+  pointer-events: none;
+}
+
+.hero-overlay a,
+.hero-overlay p,
+.hero-overlay span,
+.hero-overlay h1,
+.hero-overlay h2 {
+  pointer-events: auto;
+}
+
+.hero-overlay .journey-chapter-heading {
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 720px) {
+  .hero-overlay {
+    min-height: 88svh;
+    padding-top: 96px;
+    gap: 32px;
+  }
+}
+
