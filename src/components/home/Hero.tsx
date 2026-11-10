@@ -168,16 +168,25 @@ export function Hero() {
     >
       <div className="fullscreen-hero-plane">
         {!missing && (
-          <img
-            key={source}
-            ref={image}
-            className="fullscreen-hero-photo"
-            src={source}
-            alt="Vista dall’alto della Masseria Don Gianvito"
-            fetchPriority="high"
-            decoding="async"
-            onError={failImage}
-          />
+          <picture>
+            {source === aerial.url || source === "/images/masseria-aerial.jpg" ? (
+              <source
+                type="image/webp"
+                srcSet="/images/masseria-aerial-800w.webp 800w, /images/masseria-aerial-1200w.webp 1200w, /images/masseria-aerial-1920w.webp 1920w"
+                sizes="100vw"
+              />
+            ) : null}
+            <img
+              key={source}
+              ref={image}
+              className="fullscreen-hero-photo"
+              src={source}
+              alt="Vista dall’alto della Masseria Don Gianvito"
+              fetchPriority="high"
+              decoding="async"
+              onError={failImage}
+            />
+          </picture>
         )}
         <div className="fullscreen-hero-shade" aria-hidden="true" />
         <nav className="fullscreen-hero-pins" aria-label="Esplora le quattro anime della masseria">
