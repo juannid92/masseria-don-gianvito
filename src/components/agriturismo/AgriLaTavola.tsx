@@ -84,7 +84,7 @@ export function AgriLaTavola() {
         <figure className="agri-tav-photo">
           <div className="agri-tav-photo-frame">
             <img
-              src="/images/agriturismo/WhatsApp Image 2026-11-03 at 09.34.06.jpeg"
+              src="/images/agriturismo/agriturismo-antipasti-cortile-01.jpeg"
               alt="Tagliere di antipasti serviti nel cortile della masseria: bruschette, frittelle e olive"
               width={1264}
               height={848}
@@ -107,27 +107,27 @@ export function AgriLaTavola() {
           <div className="agri-gallery-grid">
             {[
               {
-                src: "/images/agriturismo/WhatsApp Image 2026-11-03 at 09.34.08.jpeg",
+                src: "/images/agriturismo/agriturismo-primi-piatti-01.jpeg",
                 alt: "Primi piatti della tradizione",
               },
               {
-                src: "/images/agriturismo/WhatsApp Image 2026-11-03 at 09.34.09.jpeg",
+                src: "/images/agriturismo/agriturismo-carne-brace-01.jpeg",
                 alt: "Carne alla brace",
               },
               {
-                src: "/images/agriturismo/WhatsApp Image 2026-11-03 at 09.39.07.jpeg",
+                src: "/images/agriturismo/agriturismo-cucina-particolare-01.jpeg",
                 alt: "Dettagli della cucina",
               },
               {
-                src: "/images/agriturismo/WhatsApp Image 2026-11-03 at 09.43.07.jpeg",
+                src: "/images/agriturismo/agriturismo-sala-atmosfera-01.jpeg",
                 alt: "Atmosfera in sala",
               },
               {
-                src: "/images/agriturismo/WhatsApp Image 2026-11-03 at 09.43.09.jpeg",
+                src: "/images/agriturismo/agriturismo-convivialita-01.jpeg",
                 alt: "Momenti conviviali",
               },
               {
-                src: "/images/agriturismo/WhatsApp Image 2026-11-03 at 09.43.30.jpeg",
+                src: "/images/agriturismo/agriturismo-presentazione-piatti-01.jpeg",
                 alt: "Presentazione dei piatti",
               },
             ].map((foto, i) => (
