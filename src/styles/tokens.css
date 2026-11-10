@@ -1,0 +1,116 @@
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* ============================================================
+     BRAND — Palette definitiva "Bianco Calce / Oro / Carminio".
+     Fonte unica di verità. Gli alias di transizione crema/marrone/
+     Alias legacy (oliva/bordeaux/terracotta) RIMOSSI dal codice e dalla
+     palette. La palette definitiva è: bianco-calce, oro-antico, carminio,
+     biscotto, biscotto-scuro, carbone (pietra-100/200/400 come sabbie
+     chiare, pietra-800 alias di biscotto-scuro per retro-compatibilità).
+     ============================================================ */
+  --color-pietra-100: var(--pietra-100);
+  --color-pietra-200: var(--pietra-200);
+  --color-pietra-400: var(--pietra-400);
+  --color-pietra-800: var(--pietra-800);
+  --color-biscotto: var(--biscotto);
+  --color-biscotto-scuro: var(--biscotto-scuro);
+  --color-oro-antico: var(--oro-antico);
+  --color-oro-antico-testo: var(--oro-antico-testo);
+  --color-oro-su-scuro: var(--oro-su-scuro);
+  --color-carbone: var(--carbone);
+  --color-bianco-calce: var(--bianco-calce);
+  --color-bianco-latte: var(--bianco-latte);
+  --color-carminio: var(--carminio);
+  --color-carminio-scuro: var(--carminio-scuro);
+
+  /* shadcn semantic */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* Fonts */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-eyebrow: "Oswald", "Inter", sans-serif;
+}
+
+:root {
+  /* Safe area header — UNICA variabile condivisa */
+  --header-offset: 76px;
+  --page-header-safe-offset: calc(var(--header-offset) + 28px);
+  --radius: 0.5rem;
+
+  /* ============================================================
+     PALETTE — "Bianco Calce / Oro / Carminio"
+     Regole di frequenza (tutta la Home):
+     - dominante di sito: bianco-calce
+     - identità: oro-antico (max 2 per atto, di cui max 1 testuale)
+     - accento raro: carminio (max 2 in tutto il sito, in Home solo
+       sul ramo carne della Filiera)
+     - profondità: biscotto-scuro (Storia, Tavola, Footer)
+     - carbone: solo testo di lettura, mai fondo di un intero atto
+     - bordeaux/terracotta: RIMOSSI dalla palette
+     ============================================================ */
+  --pietra-100: #f4f0e6;
+  --pietra-200: #e5ddc9;
+  --pietra-400: #b6a98a;
+  /* Fondo scuro: marrone caldo (biscotto-scuro), zero verde.
+     --pietra-800 è mantenuto come alias per non spezzare i molti riferimenti
+     esistenti, ma punta al nuovo marrone. */
+  --pietra-800: #362619;
+  --biscotto: #d9c19c;         /* marrone caldo chiaro, per superfici/testi accento */
+  --biscotto-scuro: #362619;   /* marrone caldo profondo, fondo scuro del sito */
+  --oro-antico: #b2833a;
+ --oro-antico-testo: #8a6018;  /* testo oro su bianco-calce: 5.17:1 (AA) */
+  --oro-su-scuro: #dab873;   /* testo oro su biscotto-scuro: 7.65:1 (AAA body) */
+  --carbone: #1f1a15;
+
+  --bianco-calce: #faf6ec;    /* dominante, bianco caldo */
+  --bianco-latte: #fffdf7;    /* superfici in evidenza / tratto latte */
+  --carminio: #9b2233;        /* accento raro, testo su chiaro (5.5:1) */
+  --carminio-scuro: #6e1622;  /* fondi profondi o testo che deve tagliare */
+
+  /* === shadcn semantic === */
+  /* Allineati alla gerarchia bianco-calce: fondo dominante bianco caldo,
+     testo carbone, primary oro-antico. */
+  --background: #faf6ec;
+  --foreground: #1f1a15;
+  --card: #faf6ec;
+  --card-foreground: #1f1a15;
+  --popover: #faf6ec;
+  --popover-foreground: #1f1a15;
+  --primary: #b2833a;
+  --primary-foreground: #faf6ec;
+  --secondary: #e5ddc9;
+  --secondary-foreground: #1f1a15;
+  --muted: #e5ddc9;
+  --muted-foreground: #4b4636;
+  --accent: #b2833a;
+  --accent-foreground: #faf6ec;
+  --destructive: #9b2233;
+  --destructive-foreground: #faf6ec;
+  --border: rgba(31, 26, 21, 0.12);
+  --input: rgba(31, 26, 21, 0.12);
+  --ring: #b2833a;
+}
