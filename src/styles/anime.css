@@ -1,0 +1,756 @@
+/* ────────────────────────────────────────────────────────────────────────
+   HEROES R3F — Sovrapposizione Canvas + testo
+   Il Canvas Three.js occupa l'intero header, il testo fluttua sopra.
+   ──────────────────────────────────────────────────────────────────────── */
+
+.journey-chapter-hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.hero-canvas-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-canvas-frame canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100svh;
+  padding-top: 120px;
+  padding-bottom: 32px;
+  gap: 64px;
+  pointer-events: none;
+}
+
+.hero-overlay a,
+.hero-overlay p,
+.hero-overlay span,
+.hero-overlay h1,
+.hero-overlay h2 {
+  pointer-events: auto;
+}
+
+.hero-overlay .journey-chapter-heading {
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 720px) {
+  .hero-overlay {
+    min-height: 88svh;
+    padding-top: 96px;
+    gap: 32px;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   ALLEVAMENTO — Contatore scroll-driven + momenti editoriali
+   ──────────────────────────────────────────────────────────────────────── */
+
+.allevamento-counter-band {
+  background: linear-gradient(180deg, #29291f 0%, #1f1a15 100%);
+  color: var(--bianco-calce);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.allevamento-counter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  align-items: end;
+}
+
+.allevamento-counter-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 1px solid #dfca9f33;
+  padding-left: 24px;
+}
+
+.allevamento-counter-cell:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.allevamento-counter-num {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 9vw, 128px);
+  line-height: 1;
+  font-weight: 400;
+  color: #dfca9f;
+  font-variant-numeric: tabular-nums;
+}
+
+.allevamento-counter-label {
+  font-family: var(--font-eyebrow);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #b6a98a;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .allevamento-counter-band { padding: 48px 0; }
+  .allevamento-counter-grid { grid-template-columns: 1fr; gap: 32px; }
+  .allevamento-counter-cell { border-left: none; padding-left: 0; border-top: 1px solid #dfca9f33; padding-top: 24px; }
+  .allevamento-counter-cell:first-child { border-top: none; padding-top: 0; }
+}
+
+.allevamento-moment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 0;
+  border-bottom: 1px solid #e5ddc9;
+}
+
+.allevamento-moment:last-child { border-bottom: none; }
+
+.allevamento-moment.is-right { direction: rtl; }
+.allevamento-moment.is-right > * { direction: ltr; }
+
+.allevamento-moment-photo {
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(135deg, #e5ddc9 0%, #b6a98a 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.allevamento-moment-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.3), transparent 50%);
+}
+
+.allevamento-moment-photo-initials {
+  font-family: var(--font-display);
+  font-size: 96px;
+  color: #36261955;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .allevamento-moment { grid-template-columns: 1fr; gap: 24px; padding: 48px 0; }
+  .allevamento-moment.is-right { direction: ltr; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   CASEIFICIO — Timeline verticale centrale
+   ──────────────────────────────────────────────────────────────────────── */
+
+.caseificio-timeline-section {
+  padding-block: 96px;
+}
+
+.caseificio-timeline-intro {
+  max-width: 720px;
+  margin-bottom: 80px;
+}
+
+.caseificio-timeline-intro h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 16px 0 24px;
+  color: #362619;
+}
+
+.caseificio-timeline {
+  position: relative;
+  padding-left: 32px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.caseificio-timeline-svg {
+  position: absolute;
+  left: 8px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.caseificio-node {
+  position: relative;
+  padding: 48px 0 48px 32px;
+  border-bottom: 1px solid #e5ddc9;
+}
+
+.caseificio-node:last-child { border-bottom: none; }
+
+.caseificio-node-dot {
+  position: absolute;
+  left: -33px;
+  top: 56px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3a3226;
+  border: 2px solid #dab873;
+  box-shadow: 0 0 0 6px #faf6ec;
+}
+
+.caseificio-node-content h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 8px 0 16px;
+  color: #362619;
+  font-weight: 400;
+}
+
+@media (max-width: 720px) {
+  .caseificio-timeline-section { padding-block: 56px; }
+  .caseificio-timeline-intro { margin-bottom: 48px; }
+  .caseificio-node { padding: 32px 0; }
+  .caseificio-node-dot { top: 40px; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   MACELLERIA — Griglia di card 2-up
+   ──────────────────────────────────────────────────────────────────────── */
+
+.macelleria-intro {
+  max-width: 720px;
+  margin-bottom: 64px;
+}
+
+.macelleria-intro h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  margin: 16px 0 24px;
+  color: var(--bianco-calce);
+}
+
+.macelleria-intro p { color: #d9c19c; }
+
+.macelleria-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.macelleria-card {
+  position: relative;
+  background: rgba(255, 253, 247, 0.04);
+  border: 1px solid #dfca9f25;
+  border-radius: 6px;
+  padding: 40px 32px 48px;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.macelleria-card:hover {
+  transform: translateY(-6px);
+  border-color: #dab87366;
+}
+
+.macelleria-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.macelleria-card-header .journey-moment-index {
+  color: #dab873;
+  font-family: var(--font-display);
+  font-size: 32px;
+}
+
+.macelleria-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--bianco-calce);
+  margin: 0 0 16px;
+  font-weight: 400;
+}
+
+.macelleria-card p {
+  color: #d9c19c;
+  line-height: 1.6;
+}
+
+.macelleria-card-ember {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #ff7a2a 50%, transparent 100%);
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+}
+
+.macelleria-card:hover .macelleria-card-ember { opacity: 1; }
+
+@media (max-width: 720px) {
+  .macelleria-card-grid { grid-template-columns: 1fr; gap: 24px; }
+  .macelleria-card { padding: 32px 24px 40px; }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   SHARED: index + label dei momenti
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-moment-index {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1;
+  color: #dab873;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+.journey-moment-label {
+  font-family: var(--font-eyebrow);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #8a6018;
+  margin: 0 0 4px;
+}
+.journey-moment-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 4px 0 16px;
+  color: #362619;
+  font-weight: 400;
+}
+.journey-moment-text p {
+  color: #4a3d2c;
+  line-height: 1.65;
+  max-width: 56ch;
+}
+
+
+
+/* ────────────────────────────────────────────────────────────────────────
+   ALLEVAMENTO v2 — hero 3D, titolo, card pinned, prossima tappa
+   ──────────────────────────────────────────────────────────────────────── */
+.hero-canvas-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(29,30,20,.55) 0%,rgba(29,30,20,.08) 38%,rgba(29,30,20,.15) 62%,rgba(29,30,20,.82) 100%)}
+.journey-story--allevamento .journey-chapter-heading{max-width:760px}
+.journey-story--allevamento .journey-chapter-heading h1{font-size:clamp(40px,5.4vw,84px);line-height:1.04;letter-spacing:-.04em;margin:20px 0 24px;text-wrap:balance}
+.journey-story--allevamento .journey-intro{max-width:520px}
+.hd-reveal{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
+.hd-inner{display:inline-block;will-change:transform,opacity}
+
+.pinned-stack{position:relative;background:#29291f;color:#faf6ec;padding:96px 0 72px;overflow:hidden}
+.pinned-stack-head,.pinned-stack-foot{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.pinned-counter{font-family:var(--font-display);font-size:20px;color:#dfca9f99}
+.pinned-current{color:#dfca9f;font-size:32px}
+.pinned-stack-deck{display:grid;gap:32px;margin-block:40px}
+.pinned-card{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;background:#34352a;border:1px solid #dfca9f26;border-radius:20px;padding:28px;box-shadow:0 30px 80px -30px rgba(0,0,0,.6);transform-origin:50% 0;will-change:transform}
+.pinned-card-photo{aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#1f2018}
+.pinned-card-photo-inner{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(circle at 30% 25%,#6c6a45 0%,#3c3d2c 55%,#262619 100%)}
+.pinned-card-photo-inner span{font-family:var(--font-display);font-size:clamp(64px,8vw,120px);color:#dfca9f40;line-height:1}
+.pinned-card-photo-inner small{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#dfca9f80}
+.pinned-card-text{padding-right:24px}
+.pinned-card-index{font-family:var(--font-display);font-size:64px;line-height:1;color:#dfca9f}
+.pinned-card-label{margin:18px 0 10px;font-size:12px;letter-spacing:.19em;text-transform:uppercase;color:#dfca9fcc}
+.pinned-card-text h2{font-family:var(--font-display);font-weight:400;font-size:clamp(28px,2.8vw,44px);line-height:1.1;letter-spacing:-.03em;margin:0 0 20px;text-wrap:balance}
+.pinned-card-text>p:last-child{font-size:17px;line-height:1.7;color:#faf6ecc7;max-width:46ch}
+.pinned-dots{display:flex;gap:10px}
+.pinned-dot{width:8px;height:8px;border-radius:50%;background:#dfca9f40;transition:background .3s,transform .3s}
+.pinned-dot.is-active{background:#dfca9f;transform:scale(1.4)}
+.pinned-bar{flex:1;max-width:320px;height:2px;background:#dfca9f26;overflow:hidden}
+.pinned-bar-fill{display:block;height:100%;background:#dfca9f;transform:scaleX(0);transform-origin:0 50%}
+/* Modalità pinned (solo con animazioni attive): card sovrapposte in viewport. */
+.pinned-stack.is-pinned{height:100svh;padding:0;display:flex;flex-direction:column;justify-content:center;gap:0}
+.pinned-stack.is-pinned .pinned-stack-head{padding-top:88px}
+.pinned-stack.is-pinned .pinned-stack-deck{position:relative;flex:1;max-height:620px;margin-block:24px;display:block}
+.pinned-stack.is-pinned .pinned-card{position:absolute;inset:0;height:100%}
+.pinned-stack.is-pinned .pinned-card-photo{aspect-ratio:auto;height:100%}
+.pinned-stack.is-pinned .pinned-stack-foot{padding-bottom:32px}
+
+.journey-next--allevamento{background:#29291f;color:#faf6ec;padding:96px 0 72px;border-top:1px solid #dfca9f26}
+.journey-next--allevamento .journey-kicker{color:#dfca9f}
+.journey-next--allevamento .journey-next-link{font-size:clamp(24px,3.6vw,52px);letter-spacing:-.03em;line-height:1.15;border-bottom-color:#dfca9f4d;flex-wrap:nowrap}
+.journey-next-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.journey-next--allevamento .journey-next-link em{color:#dfca9f}
+.journey-next--allevamento .journey-next-link>span:last-child{flex:none;color:#dfca9f}
+.journey-next--allevamento .journey-next-body{color:#faf6ecb3;margin-top:24px;max-width:520px}
+
+@media (max-width:720px){
+  .journey-story--allevamento .journey-chapter-heading h1{font-size:40px}
+  .pinned-card{grid-template-columns:1fr;gap:20px;padding:16px}
+  .pinned-card-text{padding-right:0}
+  .pinned-card-index{font-size:40px}
+  .pinned-card-text>p:last-child{font-size:15px}
+  .pinned-stack.is-pinned .pinned-stack-head{padding-top:76px}
+  .pinned-stack.is-pinned .pinned-stack-deck{max-height:none;margin-block:16px}
+  .pinned-stack.is-pinned .pinned-card{display:flex;flex-direction:column}
+  .pinned-stack.is-pinned .pinned-card-photo{height:auto;flex:0 0 32%}
+  .pinned-card-text h2{font-size:24px;margin-bottom:12px}
+  .journey-next--allevamento{padding:64px 0 48px}
+  .journey-next--allevamento .journey-next-link{font-size:clamp(20px,6vw,28px)}
+}
+.journey-story--allevamento .journey-next--compact{background:#29291f;padding:0 0 56px}
+.journey-story--allevamento .journey-next--compact .journey-chapter-nav{padding-top:32px}
+.hero-canvas-frame--allevamento .hero-canvas-shade{background:linear-gradient(90deg,rgba(29,30,20,.72) 0%,rgba(29,30,20,.35) 38%,rgba(29,30,20,0) 62%),linear-gradient(180deg,rgba(29,30,20,.5) 0%,rgba(29,30,20,0) 30%,rgba(29,30,20,0) 65%,rgba(29,30,20,.85) 100%)}
+.journey-story--allevamento .hero-overlay .journey-kicker{color:#f1dfb4}
+.journey-story--allevamento .hero-overlay .journey-intro{color:#fbf5e6}
+
+/* ────────────────────────────────────────────────────────────────────────
+   CASEIFICIO v2 — bianco latte, oro, Fraunces
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-story--caseificio{--cs-latte:#fffdf7;--cs-crema:#f6efe0;--cs-oro:#b2833a;--cs-oro-chiaro:#d9b878;--cs-ink:#3a3226;--cs-font:var(--font-display);background:var(--cs-latte);color:var(--cs-ink)}
+.journey-story--caseificio .journey-chapter-hero{background:#f7f1e3;color:var(--cs-ink)}
+.hero-canvas-frame--caseificio .hero-canvas-shade{background:radial-gradient(ellipse 55% 45% at 50% 48%,rgba(255,253,247,.82) 0%,rgba(255,253,247,.45) 55%,rgba(255,253,247,0) 100%),linear-gradient(180deg,rgba(247,241,227,.7) 0%,rgba(247,241,227,0) 25%,rgba(247,241,227,0) 75%,rgba(247,241,227,.9) 100%)}
+.hero-overlay--center{align-items:center;text-align:center}
+.hero-overlay--center>.journey-text-link{align-self:flex-start}
+.hero-overlay--center .journey-chapter-heading{margin-inline:auto;display:flex;flex-direction:column;align-items:center}
+.hero-overlay--center .journey-hero-bottom{width:100%;text-align:left}
+.journey-story--caseificio .hero-overlay .journey-chapter-heading{text-shadow:none;max-width:900px}
+.journey-story--caseificio .hero-overlay .journey-kicker{color:var(--cs-oro);font-weight:500}
+.journey-story--caseificio .journey-chapter-heading h1{font-family:var(--cs-font);font-weight:500;font-size:clamp(48px,6.4vw,104px);line-height:.98;letter-spacing:-.02em;margin:18px 0 26px;color:var(--cs-ink);text-wrap:balance}
+.journey-story--caseificio .journey-chapter-heading h1 em{font-style:italic;font-weight:400;color:var(--cs-oro)}
+.journey-story--caseificio .hero-overlay .journey-intro{color:#5a4d3c;font-size:18px;max-width:46ch;margin-inline:auto}
+.journey-story--caseificio .hero-overlay .journey-text-link{color:var(--cs-ink)}
+.journey-story--caseificio .journey-hero-bottom{color:var(--cs-oro);border-top-color:#b2833a40}
+
+.caseificio-eyebrow{font-family:var(--font-sans);font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--cs-oro)}
+.caseificio-manifesto{background:var(--cs-latte);padding:140px 0 110px;text-align:center}
+.caseificio-manifesto-text{font-family:var(--cs-font);font-size:clamp(32px,3.6vw,58px);line-height:1.18;letter-spacing:-.01em;max-width:20ch;margin:28px auto 0;color:var(--cs-ink);text-wrap:balance}
+.caseificio-manifesto-word{display:inline}
+.caseificio-thread{display:block;width:min(900px,100%);height:60px;margin:56px auto 0}
+
+.caseificio-gesti{background:var(--cs-crema);padding:96px 0;overflow:hidden}
+.caseificio-gesti-head{display:flex;justify-content:space-between;align-items:baseline}
+.caseificio-counter{font-family:var(--cs-font);font-size:22px;color:#b2833a99}
+.caseificio-current{font-size:40px;color:var(--cs-oro);font-style:italic}
+.caseificio-track{display:grid;gap:48px;padding:48px max(24px,calc((100vw - 1344px)/2))}
+.caseificio-panel{display:grid;grid-template-columns:minmax(220px,420px) 1fr;gap:64px;align-items:center}
+.caseificio-form{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffdf7 0%,#f3e8d0 55%,#e2cfa6 100%);box-shadow:inset 0 -18px 40px rgba(178,131,58,.18),0 30px 60px -30px rgba(90,70,40,.35);border:1px solid #d9b87866;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.caseificio-form span{font-family:var(--cs-font);font-style:italic;font-size:clamp(72px,8vw,128px);line-height:1;color:var(--cs-oro)}
+.caseificio-form small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8a7350;max-width:70%;text-align:center}
+.caseificio-panel-label{font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--cs-oro);margin-bottom:16px}
+.caseificio-panel-text h2{font-family:var(--cs-font);font-weight:500;font-size:clamp(32px,3.4vw,54px);line-height:1.05;letter-spacing:-.01em;margin:0 0 22px;color:var(--cs-ink);text-wrap:balance}
+.caseificio-panel-text>p:last-child{font-size:17px;line-height:1.75;color:#5a4d3c;max-width:44ch}
+.caseificio-progress{height:1px;background:#b2833a33;overflow:hidden}
+.caseificio-progress-fill{display:block;height:100%;background:var(--cs-oro);transform:scaleX(0);transform-origin:0 50%}
+/* Modalità orizzontale pinned (solo con animazioni attive) */
+.caseificio-gesti.is-horizontal{height:100svh;padding:96px 0 40px;display:flex;flex-direction:column;justify-content:space-between}
+.caseificio-gesti.is-horizontal .caseificio-track{display:flex;gap:0;width:max-content;padding-block:0;flex:1;align-items:center}
+.caseificio-gesti.is-horizontal .caseificio-panel{width:min(1100px,82vw);flex:none;padding-right:8vw}
+.caseificio-gesti.is-horizontal .caseificio-form{width:min(380px,32vw,52svh)}
+
+.journey-next--caseificio{background:var(--cs-latte);color:var(--cs-ink);padding:110px 0 64px;border-top:1px solid #d9b87866}
+.journey-next--caseificio .journey-next-link{font-family:var(--cs-font);font-weight:500;font-size:clamp(28px,3.8vw,56px);letter-spacing:-.01em;line-height:1.1;border-bottom-color:#b2833a59;color:var(--cs-ink)}
+.journey-next--caseificio .journey-next-link em{color:var(--cs-oro)}
+.journey-next--caseificio .journey-next-link>span:last-child{flex:none;color:var(--cs-oro)}
+.journey-next--caseificio .journey-next-body{color:#5a4d3c;margin-top:24px;max-width:520px}
+.journey-story--caseificio .journey-next--compact{background:var(--cs-latte);color:var(--cs-ink);padding:0 0 56px}
+.journey-story--caseificio .journey-next--compact .journey-chapter-nav{padding-top:32px}
+.journey-story--caseificio .journey-next--compact a{color:var(--cs-ink)}
+.journey-story--caseificio .journey-next--compact .journey-chapter-nav span{color:var(--cs-oro)}
+
+@media (max-width:720px){
+  .journey-story--caseificio .journey-chapter-heading h1{font-size:46px}
+  .journey-story--caseificio .hero-overlay .journey-intro{font-size:16px}
+  .caseificio-manifesto{padding:88px 0 72px}
+  .caseificio-manifesto-text{font-size:30px}
+  .caseificio-panel{grid-template-columns:1fr;gap:28px}
+  .caseificio-form{width:min(240px,62vw);margin-inline:auto}
+  .caseificio-gesti.is-horizontal{padding:84px 0 28px}
+  .caseificio-gesti.is-horizontal .caseificio-panel{width:86vw;padding-right:6vw;gap:20px}
+  .caseificio-gesti.is-horizontal .caseificio-form{width:min(200px,50vw,28svh)}
+  .caseificio-panel-text h2{font-size:28px;margin-bottom:14px}
+  .caseificio-panel-text>p:last-child{font-size:15px}
+  .journey-next--caseificio{padding:72px 0 48px}
+  .journey-next--caseificio .journey-next-link{font-size:clamp(22px,6.4vw,30px)}
+}
+.journey-story--caseificio .journey-next--compact a[aria-current=page]{color:var(--cs-oro)}
+
+/* ────────────────────────────────────────────────────────────────────────
+   MACELLERIA v2 — rosso sangue, carbone, osso · Fraunces + Inter
+   ──────────────────────────────────────────────────────────────────────── */
+.journey-story--macelleria{--mc-sangue:#8a0f14;--mc-sangue-vivo:#b3161d;--mc-scuro:#1a0607;--mc-carbone:#120405;--mc-osso:#f1e6d8;--mc-font:var(--font-display);background:var(--mc-carbone);color:var(--mc-osso)}
+.journey-story--macelleria .journey-chapter-hero{background:var(--mc-carbone);color:var(--mc-osso)}
+.hero-canvas-frame--macelleria .hero-canvas-shade{background:linear-gradient(270deg,rgba(18,4,5,.85) 0%,rgba(18,4,5,.45) 38%,rgba(18,4,5,0) 65%),linear-gradient(180deg,rgba(18,4,5,.6) 0%,rgba(18,4,5,0) 28%,rgba(18,4,5,0) 70%,rgba(18,4,5,.95) 100%)}
+.hero-overlay--right .journey-chapter-heading{margin-left:auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end}
+.journey-story--macelleria .hero-overlay .journey-chapter-heading{max-width:640px;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.journey-story--macelleria .hero-overlay .journey-kicker{color:#ff7a6a;font-weight:500}
+.journey-story--macelleria .journey-chapter-heading h1{font-family:var(--mc-font);font-weight:400;font-size:clamp(48px,6.2vw,96px);line-height:.96;letter-spacing:-.035em;margin:18px 0 26px;color:var(--mc-osso)}
+.journey-story--macelleria .journey-chapter-heading h1 em{font-style:italic;color:var(--mc-sangue-vivo)}
+.journey-story--macelleria .hero-overlay .journey-intro{color:#e3d2c2;max-width:42ch;margin-left:auto}
+.journey-story--macelleria .journey-hero-bottom{color:#ff7a6a;border-top-color:#b3161d66}
+.journey-story--macelleria .hero-overlay .journey-text-link{color:var(--mc-osso)}
+
+.macelleria-eyebrow{font-family:var(--font-sans);font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#ff6b5c}
+
+.macelleria-ribbon{background:var(--mc-osso);color:var(--mc-sangue);padding:36px 0;overflow:hidden;border-block:1px solid #8a0f1433}
+.macelleria-ribbon-row{display:flex;white-space:nowrap;width:max-content;gap:0;will-change:transform}
+.macelleria-ribbon-row+.macelleria-ribbon-row{margin-top:6px;color:transparent;-webkit-text-stroke:1.5px var(--mc-sangue)}
+.macelleria-ribbon-row span{font-family:var(--mc-font);font-size:clamp(56px,8vw,128px);line-height:1;text-transform:uppercase;padding-right:.4em;display:inline-flex;align-items:center;gap:.4em}
+.macelleria-ribbon-row i{font-style:normal;font-family:var(--font-sans);font-size:.3em;color:var(--mc-sangue-vivo);-webkit-text-stroke:0}
+
+.macelleria-stations{background:linear-gradient(180deg,var(--mc-scuro) 0%,var(--mc-carbone) 100%);padding:120px 0 80px}
+.macelleria-stations-grid{display:grid;grid-template-columns:minmax(260px,.8fr) 1.6fr;gap:80px}
+.macelleria-bignum{position:sticky;top:120px;align-self:start;height:calc(100svh - 180px);display:flex;flex-direction:column}
+.macelleria-bignum-window{overflow:hidden;margin-top:24px}
+.macelleria-bignum-value{display:block;font-family:var(--mc-font);font-size:clamp(140px,17vw,280px);line-height:.85;color:var(--mc-sangue-vivo)}
+.macelleria-bignum-label{font-family:var(--mc-font);font-size:28px;text-transform:uppercase;letter-spacing:.02em;margin-top:16px;color:var(--mc-osso)}
+.macelleria-vein{flex:1;width:2px;background:#b3161d26;margin-top:32px;overflow:hidden}
+.macelleria-vein-fill{display:block;width:100%;height:100%;background:var(--mc-sangue-vivo);transform-origin:50% 0;transform:scaleY(0)}
+.macelleria-stations-intro{padding-bottom:72px;border-bottom:1px solid #b3161d40;margin-bottom:24px}
+.macelleria-stations-intro h2{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(40px,4.6vw,76px);line-height:.95;margin:0 0 24px;color:var(--mc-osso)}
+.macelleria-stations-intro p{font-size:18px;line-height:1.7;color:#d9c6b4;max-width:52ch}
+.macelleria-station{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:56px 0;border-bottom:1px solid #b3161d26}
+.macelleria-station:nth-child(odd) .macelleria-station-cut{order:2}
+.macelleria-station-cut{aspect-ratio:4/5;background:linear-gradient(155deg,#5a0b0e 0%,#2a0608 60%,#160304 100%);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:24px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.macelleria-station-cut::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(255,255,255,.025) 22px 23px)}
+.macelleria-station-cut span{font-family:var(--mc-font);font-size:96px;line-height:1;color:#f1e6d822;position:relative}
+.macelleria-station-cut small{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#f1e6d880;position:relative}
+.macelleria-station-text h3{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(30px,2.8vw,46px);line-height:1;margin:14px 0 20px;color:var(--mc-osso)}
+.macelleria-station-text>p:last-child{font-size:17px;line-height:1.75;color:#d9c6b4;max-width:44ch}
+
+.journey-next--macelleria{background:var(--mc-sangue);color:var(--mc-osso);padding:110px 0 64px}
+.journey-next--macelleria .macelleria-eyebrow{color:#ffd6cf}
+.journey-next--macelleria .journey-next-link{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(32px,4.4vw,68px);letter-spacing:.005em;line-height:1;border-bottom-color:#f1e6d84d;color:var(--mc-osso)}
+.journey-next--macelleria .journey-next-link em{font-style:normal;color:var(--mc-carbone)}
+.journey-next--macelleria .journey-next-link>span:last-child{flex:none;font-family:var(--font-sans);color:var(--mc-osso)}
+.journey-next--macelleria .journey-next-body{color:#f6d9d2;margin-top:24px;max-width:520px}
+.journey-story--macelleria .journey-next--compact{background:var(--mc-sangue);padding:0 0 56px;border-top:0}
+.journey-story--macelleria .journey-next--compact .journey-chapter-nav{padding-top:32px;border-top:1px solid #f1e6d833}
+.journey-story--macelleria .journey-next--compact a{color:var(--mc-osso)}
+.journey-story--macelleria .journey-next--compact .journey-chapter-nav span{color:#ffd6cf}
+.journey-story--macelleria .journey-next--compact a[aria-current=page]{color:#fff;border-bottom-color:#fff}
+
+@media (max-width:900px){
+  .macelleria-stations-grid{grid-template-columns:1fr;gap:0}
+  .macelleria-bignum{position:sticky;top:76px;height:auto;flex-direction:row;align-items:center;gap:16px;background:var(--mc-scuro);padding:12px 0;z-index:2;border-bottom:1px solid #b3161d40}
+  .macelleria-bignum .macelleria-eyebrow,.macelleria-vein{display:none}
+  .macelleria-bignum-window{margin-top:0}
+  .macelleria-bignum-value{font-size:56px}
+  .macelleria-bignum-label{margin-top:0;font-size:20px}
+  .macelleria-stations-intro{padding-top:40px}
+}
+@media (max-width:720px){
+  .journey-story--macelleria .journey-chapter-heading h1{font-size:52px}
+  .journey-story--macelleria .hero-overlay .journey-intro{font-size:16px}
+  .macelleria-stations{padding:56px 0}
+  .macelleria-station{grid-template-columns:1fr;gap:24px;padding:40px 0}
+  .macelleria-station:nth-child(odd) .macelleria-station-cut{order:0}
+  .macelleria-station-cut{aspect-ratio:4/3}
+  .macelleria-station-text>p:last-child,.macelleria-stations-intro p{font-size:15px}
+  .journey-next--macelleria{padding:72px 0 48px}
+  .journey-next--macelleria .journey-next-link{font-size:clamp(28px,8vw,40px)}
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   AGRITURISMO v2 — notte, lino, ambra di candela · Fraunces + Inter
+   ──────────────────────────────────────────────────────────────────────── */
+.agri-page{--ag-notte:#100e0b;--ag-lino:#efe7d9;--ag-carta:#f6f1e7;--ag-ambra:#d69a4e;--ag-ink:#1c1814;--ag-muted:#a8998a;--ag-serif:var(--font-display);background:var(--ag-notte);color:var(--ag-lino)}
+.agri-shell{width:min(1240px,calc(100% - 96px));margin-inline:auto}
+.agri-eyebrow{font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.28em;text-transform:uppercase;color:var(--ag-ambra)}
+.agri-line{display:block;overflow:hidden;padding-bottom:.06em}
+.agri-line>span{display:inline-block;will-change:transform}
+
+/* Hero */
+.agri-cinema{background:var(--ag-notte);color:var(--ag-lino)}
+.agri-cinema-stage{position:relative}
+.agri-scene{position:relative;min-height:100svh;overflow:hidden;isolation:isolate;display:flex;align-items:center;justify-content:center}
+.agri-scene>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.agri-scene-light{position:absolute;inset:-10%;z-index:-2;background:radial-gradient(ellipse 45% 35% at 50% 62%,rgba(214,154,78,.38) 0%,rgba(214,154,78,0) 70%),radial-gradient(ellipse 80% 60% at 50% 100%,#2a1d12 0%,var(--ag-notte) 70%)}
+.agri-scene[data-scene="1"] .agri-scene-light{background:radial-gradient(ellipse 40% 30% at 30% 40%,rgba(214,154,78,.32) 0%,transparent 70%),radial-gradient(ellipse 90% 70% at 70% 100%,#2b1f17 0%,var(--ag-notte) 70%)}
+.agri-scene[data-scene="2"] .agri-scene-light{background:radial-gradient(ellipse 35% 45% at 70% 45%,rgba(230,170,90,.30) 0%,transparent 70%),radial-gradient(ellipse 90% 70% at 30% 100%,#261c14 0%,var(--ag-notte) 70%)}
+.agri-scene[data-scene="3"] .agri-scene-light{background:radial-gradient(ellipse 30% 22% at 50% 70%,rgba(255,180,90,.5) 0%,transparent 70%),radial-gradient(ellipse 80% 60% at 50% 100%,#33200f 0%,var(--ag-notte) 72%)}
+.agri-scene-grain{position:absolute;inset:0;z-index:-1;opacity:.12;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.agri-scene-copy{text-align:center;padding:0 24px;max-width:1100px}
+.agri-scene-meta{overflow:hidden;font-family:var(--font-sans);font-size:11px;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ag-ambra)}
+.agri-scene-meta>span{display:inline-block}
+.agri-title{font-family:var(--ag-serif);font-weight:400;font-size:clamp(48px,6.6vw,108px);line-height:1;letter-spacing:-.015em;margin:28px 0;color:var(--ag-lino)}
+.agri-title em{font-style:italic;color:#e9c99a}
+.agri-scene-desc{text-transform:none;letter-spacing:.02em;font-size:16px;font-weight:400;color:var(--ag-muted)}
+.agri-rail{position:absolute;left:0;right:0;bottom:36px;width:min(1240px,calc(100% - 96px));margin-inline:auto;z-index:3}
+.agri-rail-track{height:1px;background:#efe7d926;overflow:hidden}
+.agri-rail-fill{display:block;height:100%;background:var(--ag-ambra);transform:scaleX(0);transform-origin:0 50%}
+.agri-rail ol{display:grid;grid-template-columns:repeat(4,1fr);margin-top:14px;list-style:none;padding:0}
+.agri-rail-step{font-size:12px;letter-spacing:.06em;color:#efe7d966;transition:color .4s}
+.agri-rail-step span{font-family:var(--ag-serif);font-style:italic;font-size:15px;margin-right:6px}
+.agri-rail-step.is-active{color:var(--ag-lino)}
+.agri-rail-step.is-active span{color:var(--ag-ambra)}
+@media(min-width:768px) and (prefers-reduced-motion:no-preference){.agri-cinema{height:400svh}.agri-cinema-stage{position:sticky;top:0;height:100svh}.agri-scene{position:absolute;inset:0;height:100%;min-height:0}}
+@media(max-width:767px){.agri-rail{display:none}.agri-scene{min-height:88svh}.agri-title{font-size:46px}}
+
+/* La carta */
+.agri-carta{background:var(--ag-lino);color:var(--ag-ink);padding:140px 0}
+.agri-carta-head{text-align:center;margin-bottom:72px}
+.agri-carta-head .agri-eyebrow{color:#9a6527}
+.agri-carta-head h2{font-family:var(--ag-serif);font-weight:400;font-size:clamp(44px,5.4vw,88px);line-height:1;margin-top:20px}
+.agri-carta-head em{color:#9a6527}
+.agri-carta-sheet{max-width:920px;margin-inline:auto;background:var(--ag-carta);border:1px solid #1c181414;box-shadow:0 40px 80px -40px rgba(60,40,20,.35);padding:56px clamp(24px,5vw,72px) 40px;transform-origin:50% 0}
+.agri-carta-tabs{display:flex;justify-content:center;gap:clamp(16px,4vw,48px);border-bottom:1px solid #1c181426;padding-bottom:20px;margin-bottom:12px;flex-wrap:wrap}
+.agri-carta-tabs button{font-family:var(--ag-serif);font-size:clamp(22px,2.2vw,30px);color:#1c181473;transition:color .3s;position:relative;padding-bottom:6px}
+.agri-carta-tabs button span{font-family:var(--font-sans);font-size:10px;letter-spacing:.2em;vertical-align:super;margin-right:6px}
+.agri-carta-tabs button[aria-selected=true]{color:var(--ag-ink)}
+.agri-carta-tabs button[aria-selected=true]::after{content:"";position:absolute;left:0;right:0;bottom:-21px;height:2px;background:#9a6527}
+.agri-carta-list{list-style:none;padding:0;margin:0}
+.agri-carta-row{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:16px;padding:26px 0;border-bottom:1px dashed #1c181426}
+.agri-carta-name{font-family:var(--ag-serif);font-size:clamp(22px,2vw,28px);line-height:1.15}
+.agri-carta-note{font-size:14px;color:#1c1814a6;margin-top:6px;line-height:1.5;max-width:52ch}
+.agri-carta-dots{border-bottom:1px dotted #1c181440;margin-bottom:8px;min-width:24px}
+.agri-origine{font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:6px 10px;border-radius:999px;margin-bottom:4px;white-space:nowrap}
+.agri-origine--allevamento{background:#29291f;color:#dfca9f}
+.agri-origine--caseificio{background:#fffdf7;color:#b2833a;border:1px solid #d9b878}
+.agri-origine--macelleria{background:#8a0f14;color:#f1e6d8}
+.agri-origine--campi{background:#e3d8c3;color:#5a4d3c}
+.agri-carta-foot{text-align:center;font-size:12px;color:#1c18148c;margin-top:28px}
+
+/* Prenota */
+.agri-prenota{background:var(--ag-notte);padding:150px 0}
+.agri-prenota-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:96px;align-items:end}
+.agri-prenota-title{font-family:var(--ag-serif);font-weight:400;font-size:clamp(48px,6vw,100px);line-height:.98;margin:24px 0 56px;color:var(--ag-lino)}
+.agri-prenota-title em{color:#e9c99a}
+.agri-prenota-actions{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.agri-magnet{display:inline-flex;align-items:center;justify-content:center;width:180px;height:180px;border-radius:50%;background:var(--ag-ambra);color:var(--ag-notte);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-align:center;padding:24px;transition:background .3s}
+.agri-magnet:hover{background:#e9c99a}
+.agri-prenota-phone{font-size:15px;color:var(--ag-muted);text-decoration:underline;text-underline-offset:6px}
+.agri-orari{list-style:none;padding:0;margin:20px 0 32px;border-top:1px solid #efe7d926}
+.agri-orari li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #efe7d91a;font-size:15px;color:var(--ag-lino)}
+.agri-orari li span:last-child{font-family:var(--ag-serif);font-style:italic;font-size:19px;color:#e9c99a}
+.agri-orari li.is-closed{color:#efe7d966}
+.agri-orari li.is-closed span:last-child{color:#efe7d966}
+.agri-prenota-address{font-size:14px;line-height:1.7;color:var(--ag-muted)}
+.agri-prenota-address a{color:var(--ag-ambra)}
+
+/* Fine viaggio */
+.agri-fine{background:var(--ag-lino);color:var(--ag-ink);padding:140px 0 100px}
+.agri-fine .agri-eyebrow{color:#9a6527}
+.agri-fine-title{font-family:var(--ag-serif);font-weight:400;font-size:clamp(40px,4.8vw,76px);line-height:1.02;margin:20px 0 72px;max-width:16ch}
+.agri-fine-title em{color:#9a6527}
+.agri-fine-list{border-top:1px solid #1c181433}
+.agri-fine-row{position:relative;display:grid;grid-template-columns:80px 1fr 1fr 48px;align-items:center;gap:24px;padding:34px 24px;border-bottom:1px solid #1c181433;overflow:hidden;isolation:isolate;transition:color .5s}
+.agri-fine-row::before{content:"";position:absolute;inset:0;z-index:-1;transform:scaleY(0);transform-origin:50% 100%;transition:transform .6s cubic-bezier(.7,0,.2,1)}
+.agri-fine-row:hover::before,.agri-fine-row:focus-visible::before{transform:scaleY(1)}
+.agri-fine-n{font-family:var(--ag-serif);font-style:italic;font-size:20px;opacity:.6}
+.agri-fine-name{font-size:clamp(36px,4.2vw,68px);line-height:1;transition:letter-spacing .5s}
+.agri-fine-claim{font-size:15px;opacity:.7}
+.agri-fine-arrow{font-size:28px;justify-self:end;transition:transform .4s}
+.agri-fine-row:hover .agri-fine-arrow{transform:translateX(8px)}
+.agri-fine-row--allevamento .agri-fine-name{font-family:var(--font-display);letter-spacing:-.04em}
+.agri-fine-row--allevamento::before{background:#29291f}
+.agri-fine-row--allevamento:hover{color:#dfca9f}
+.agri-fine-row--caseificio .agri-fine-name{font-family:var(--font-display);font-style:italic;font-weight:400}
+.agri-fine-row--caseificio::before{background:#fffdf7}
+.agri-fine-row--caseificio:hover{color:#b2833a}
+.agri-fine-row--macelleria .agri-fine-name{font-family:var(--font-display);letter-spacing:-.03em}
+.agri-fine-row--macelleria::before{background:#8a0f14}
+.agri-fine-row--macelleria:hover{color:#f1e6d8}
+.agri-fine-restart{display:inline-block;margin-top:48px;font-size:14px;letter-spacing:.06em;color:#1c1814b3;text-decoration:underline;text-underline-offset:6px}
+
+@media (max-width:900px){
+  .agri-shell{width:calc(100% - 40px)}
+  .agri-prenota{padding:96px 0}
+  .agri-prenota-grid{grid-template-columns:1fr;gap:64px}
+  .agri-carta,.agri-fine{padding:88px 0}
+  .agri-carta-row{grid-template-columns:1fr;row-gap:10px}
+  .agri-carta-dots{display:none}
+  .agri-origine{grid-column:1;justify-self:start}
+  .agri-fine-row{grid-template-columns:44px 1fr 32px;padding:26px 8px}
+  .agri-fine-claim{display:none}
+  .agri-magnet{width:150px;height:150px}
+}
+.agri-page{hyphens:manual;-webkit-hyphens:manual}
+.agri-page :is(h1,h2,h3,p){hyphens:manual;-webkit-hyphens:manual}
+@media (max-width:900px){
+  .agri-carta-tabs{gap:14px;flex-wrap:nowrap;justify-content:space-between}
+  .agri-carta-tabs button{font-size:17px;white-space:nowrap}
+  .agri-carta-tabs button span{display:none}
+}
+
+/* ───── AGRITURISMO · La tavola (v3) ───── */
+.agri-tav{background:#17120d;color:#efe7d9;position:relative}
+.agri-tav-pin{min-height:100vh;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(32px,5vw,80px);align-items:center;padding:110px clamp(20px,5vw,80px) 60px;max-width:1440px;margin-inline:auto}
+.agri-tav-eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:#d69a4e}
+.agri-tav h2{font-family:var(--font-display);font-weight:400;font-size:clamp(40px,4.6vw,76px);line-height:1;margin:18px 0 36px;hyphens:none}
+.agri-tav h2 em{color:#d69a4e}
+.agri-tav ol{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+.agri-tav-step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:12px 0;border-top:1px solid #efe7d91a;opacity:.32;transition:opacity .5s}
+.agri-tav-step.is-on{opacity:1}
+.agri-tav-step>span{font-size:12px;letter-spacing:.2em;color:#d69a4e;padding-top:6px}
+.agri-tav-step h3{font-family:var(--font-display);font-weight:400;font-size:clamp(22px,1.9vw,30px);hyphens:none}
+.agri-tav-step p{font-size:15px;line-height:1.55;color:#efe7d9b3;max-height:0;overflow:hidden;transition:max-height .6s ease,margin .6s;hyphens:none}
+.agri-tav-step.is-on p{max-height:90px;margin-top:6px}
+.agri-tav-photo{width:100%;margin:0;min-width:0}
+.agri-tav-photo-frame{overflow:hidden;aspect-ratio:1264/848;background:#35271c}
+.agri-tav-photo img{display:block;width:100%;height:100%;object-fit:cover}
+.agri-tav-photo figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:16px;font-family:var(--font-display);font-style:italic;font-size:20px;color:#efe7d9}
+.agri-tav-photo figcaption span{font-family:var(--font-sans);font-style:normal;font-size:11px;letter-spacing:.08em;color:#c6b6a3;align-self:center}
+@media (max-width:899px){.agri-tav-pin{grid-template-columns:1fr;padding-top:90px}.agri-tav-step p{max-height:none;margin-top:6px}.agri-tav-step{opacity:1}.agri-tav-photo{grid-row:2}}
+
+/* Generated editorial photographs: static, compressed and clearly illustrative. */
+.journey-photo{position:relative;overflow:hidden;isolation:isolate}
+.journey-photo>img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.journey-photo>small.journey-photo-credit{position:absolute;left:12px;bottom:12px;z-index:1;font-family:var(--font-sans);font-size:10px;font-style:normal;letter-spacing:.05em;text-transform:none;line-height:1.4;max-width:calc(100% - 24px);color:#fff8ed;background:#17120de6;padding:6px 8px;text-align:left}
+.caseificio-form--photo{border-radius:8px;box-shadow:none}
+.caseificio-form--photo>img{object-position:50% 62%}
+.macelleria-station-cut--photo{padding:0}
+.macelleria-station-cut--photo::before{display:none}
+.macelleria-station-cut--photo>img{object-position:48% 50%}
+
+/* Galleria Agriturismo (tono chiaro) */
+.agri-gallery{background:var(--pietra-100);padding:4rem 0}
+.agri-gallery-header{margin-bottom:2.5rem;text-align:center}
+.agri-gallery-header h2{font-family:var(--mc-font);font-size:clamp(28px,3vw,40px);color:var(--carbone);margin-top:0.5rem}
+.agri-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+@media(max-width:768px){.agri-gallery-grid{grid-template-columns:1fr}}
+.agri-gallery-item{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--pietra-200)}
+.agri-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease}
+.agri-gallery-item:hover img{transform:scale(1.03)}
+
+/* Galleria Macelleria — pinned cards, tono scuro */
+.macelleria-gallery-pinned{background:var(--mc-scuro,#1a1210);min-height:100vh}
+.macelleria-gallery-pinned-head{padding-top:4rem;padding-bottom:2rem}
+.macelleria-gallery-pinned-head h2{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(30px,3.2vw,48px);line-height:1.1;color:#f1e6d8;margin-top:0.75rem}
+.macelleria-gallery-pinned-deck{position:relative;height:80vh;max-height:720px}
+.macelleria-gallery-card{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+.macelleria-gallery-card-inner{width:min(90vw,900px);aspect-ratio:4/3;overflow:hidden;background:#2a1f1c}
+.macelleria-gallery-card-inner img{width:100%;height:100%;object-fit:cover}
+.macelleria-gallery-card-inner .journey-photo-credit{position:absolute;bottom:0;left:0;right:0;padding:1rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#f1e6d8cc;background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);pointer-events:none}
+@media(max-width:768px){.macelleria-gallery-pinned-deck{height:60vh}.macelleria-gallery-card-inner{width:95vw}}
+
+/* Galleria Allevamento (tono scuro, coerente con journey pages) */
+.allevamento-gallery{background:var(--mc-scuro,#1a1210);padding:5rem 0}
+.allevamento-gallery-header{margin-bottom:3rem}
+.allevamento-gallery-header h2{font-family:var(--mc-font);font-weight:400;text-transform:uppercase;font-size:clamp(30px,3.2vw,48px);line-height:1.1;color:#f1e6d8;margin-top:0.75rem}
+.allevamento-gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.allevamento-gallery-item{position:relative;aspect-ratio:4/3;overflow:hidden;background:#2a1f1c}
+.allevamento-gallery-item--wide{grid-column:span 2}
+.allevamento-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease}
+.allevamento-gallery-item:hover img{transform:scale(1.04)}
+.allevamento-gallery-item .journey-photo-credit{position:absolute;bottom:0;left:0;right:0;padding:0.75rem 1rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#f1e6d8cc;background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);pointer-events:none}
+@media(max-width:900px){.allevamento-gallery-grid{grid-template-columns:repeat(2,1fr)}.allevamento-gallery-item--wide{grid-column:span 2}}
+@media(max-width:600px){.allevamento-gallery-grid{grid-template-columns:1fr}.allevamento-gallery-item--wide{grid-column:span 1}}
