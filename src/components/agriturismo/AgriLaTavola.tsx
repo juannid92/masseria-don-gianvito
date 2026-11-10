@@ -84,8 +84,8 @@ export function AgriLaTavola() {
         <figure className="agri-tav-photo">
           <div className="agri-tav-photo-frame">
             <img
-              src="/images/agriturismo/agriturismo-antipasti-cortile-01.jpeg"
-              alt="Tagliere di antipasti serviti nel cortile della masseria: bruschette, frittelle e olive"
+              src="/images/agriturismo/agriturismo-primi-piatti-01.jpeg"
+              alt="Primi piatti della tradizione pugliese serviti in tavola alla Masseria Don Gianvito"
               width={1264}
               height={848}
               loading="lazy"
@@ -93,7 +93,7 @@ export function AgriLaTavola() {
             />
           </div>
           <figcaption>
-            La tavola della masseria <span>Antipasti nel cortile</span>
+            La tavola della masseria <span>I primi della casa</span>
           </figcaption>
         </figure>
       </div>
@@ -107,28 +107,28 @@ export function AgriLaTavola() {
           <div className="agri-gallery-grid">
             {[
               {
-                src: "/images/agriturismo/agriturismo-primi-piatti-01.jpeg",
-                alt: "Primi piatti della tradizione",
+                src: "/images/agriturismo/agriturismo-antipasti-cortile-01.jpeg",
+                alt: "Tagliere di antipasti serviti nel cortile della masseria",
               },
               {
-                src: "/images/agriturismo/agriturismo-carne-brace-01.jpeg",
-                alt: "Carne alla brace",
+                src: "/images/agriturismo/agriturismo-primi-piatti-02.jpeg",
+                alt: "Primi piatti della tradizione pugliese",
               },
               {
-                src: "/images/agriturismo/agriturismo-cucina-particolare-01.jpeg",
-                alt: "Dettagli della cucina",
+                src: "/images/agriturismo/agriturismo-carne-brace-02.jpeg",
+                alt: "Carne della macelleria cotta alla brace",
               },
               {
-                src: "/images/agriturismo/agriturismo-sala-atmosfera-01.jpeg",
-                alt: "Atmosfera in sala",
+                src: "/images/agriturismo/agriturismo-dessert-05.jpeg",
+                alt: "Dolce della casa a fine pasto",
               },
               {
-                src: "/images/agriturismo/agriturismo-convivialita-01.jpeg",
-                alt: "Momenti conviviali",
+                src: "/images/agriturismo/agriturismo-presentazione-piatti-03.jpeg",
+                alt: "Presentazione curata dei piatti in tavola",
               },
               {
-                src: "/images/agriturismo/agriturismo-presentazione-piatti-01.jpeg",
-                alt: "Presentazione dei piatti",
+                src: "/images/agriturismo/agriturismo-sala-panoramica-01.jpeg",
+                alt: "Sala da pranzo panoramica dell'agriturismo",
               },
             ].map((foto, i) => (
               <figure key={i} className="agri-gallery-item">
