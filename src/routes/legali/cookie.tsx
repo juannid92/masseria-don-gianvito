@@ -9,7 +9,8 @@ export const Route = createFileRoute("/legali/cookie")({
       { title: "Cookie Policy — Masseria Don Gianvito" },
       {
         name: "description",
-        content: "Informativa sui cookie e sugli strumenti simili usati dal sito della Masseria Don Gianvito.",
+        content:
+          "Informativa sui cookie e sugli strumenti simili usati dal sito della Masseria Don Gianvito.",
       },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/legali/cookie") }],
@@ -23,9 +24,10 @@ function CookiePage() {
   return (
     <LegalLayout titolo="Cookie Policy" aggiornato="16 ottobre 2026">
       <p>
-        Questa informativa spiega quali cookie e strumenti simili usa il sito, in conformità all’art.
-        122 del Codice privacy, alla direttiva ePrivacy e alle Linee guida cookie del Garante per la
-        protezione dei dati personali (10 giugno 2021). Per i dati personali in generale vedi la{" "}
+        Questa informativa spiega quali cookie e strumenti simili usa il sito, in conformità
+        all’art. 122 del Codice privacy, alla direttiva ePrivacy e alle Linee guida cookie del
+        Garante per la protezione dei dati personali (10 giugno 2021). Per i dati personali in
+        generale vedi la{" "}
         <Link to="/legali/privacy" className="underline underline-offset-4">
           Privacy Policy
         </Link>
@@ -58,7 +60,9 @@ function CookiePage() {
                 <td className={celle}>6 mesi</td>
               </tr>
               <tr>
-                <td className={celle}>Google Maps (terza parte, Google LLC / Google Ireland Ltd)</td>
+                <td className={celle}>
+                  Google Maps (terza parte, Google LLC / Google Ireland Ltd)
+                </td>
                 <td className={celle}>
                   Mostra la mappa con la posizione della masseria. Google riceve il tuo indirizzo IP
                   e può impostare propri cookie.
@@ -88,9 +92,9 @@ function CookiePage() {
           , oppure usa il link «Preferenze cookie» in fondo a ogni pagina.
         </p>
         <p>
-          Puoi anche cancellare i dati salvati o bloccare i cookie dalle impostazioni del tuo browser
-          (Chrome, Firefox, Safari, Edge). Cancellando i dati del sito, ti verrà richiesta di nuovo
-          la scelta.
+          Puoi anche cancellare i dati salvati o bloccare i cookie dalle impostazioni del tuo
+          browser (Chrome, Firefox, Safari, Edge). Cancellando i dati del sito, ti verrà richiesta
+          di nuovo la scelta.
         </p>
       </Sezione>
 

@@ -214,10 +214,7 @@ const CardProdotto = ({ prodotto, index }: { prodotto: Prodotto; index: number }
           {prodotto.nome}
         </h3>
 
-        <p
-          className="text-[15px] leading-relaxed"
-          style={{ color: "var(--muted-foreground)" }}
-        >
+        <p className="text-[15px] leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
           {prodotto.descrizione}
         </p>
       </div>
@@ -277,7 +274,10 @@ const EtichettaCategoria = ({ categoria }: { categoria: Categoria }) => {
       >
         {config[categoria].label}
       </h2>
-      <p className="text-base max-w-2xl leading-relaxed" style={{ color: "var(--muted-foreground)" }}>
+      <p
+        className="text-base max-w-2xl leading-relaxed"
+        style={{ color: "var(--muted-foreground)" }}
+      >
         {config[categoria].descrizione}
       </p>
     </div>

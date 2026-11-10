@@ -31,7 +31,11 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
         const counter = el.querySelector<HTMLElement>(".pinned-current");
         const bar = el.querySelector<HTMLElement>(".pinned-bar-fill");
 
-        gsap.set(cards, { filter: "brightness(1)", yPercent: (i) => (i === 0 ? 0 : 115), rotate: (i) => (i === 0 ? 0 : 2) });
+        gsap.set(cards, {
+          filter: "brightness(1)",
+          yPercent: (i) => (i === 0 ? 0 : 115),
+          rotate: (i) => (i === 0 ? 0 : 2),
+        });
 
         const tl = gsap.timeline({
           defaults: { ease: "none" },
@@ -81,7 +85,12 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
   );
 
   return (
-    <section ref={root} className="pinned-stack" data-tone="dark" aria-label="Cinque momenti dell'allevamento">
+    <section
+      ref={root}
+      className="pinned-stack"
+      data-tone="dark"
+      aria-label="Cinque momenti dell'allevamento"
+    >
       <div className="pinned-stack-head journey-shell">
         <p className="journey-kicker">{kicker}</p>
         <p className="pinned-counter" aria-hidden="true">
@@ -93,13 +102,24 @@ export function PinnedCardStack({ moments, kicker }: { moments: Moment[]; kicker
           <article key={m.label} className="pinned-card" style={{ zIndex: i + 1 }}>
             <div className="pinned-card-photo">
               <div className={"pinned-card-photo-inner" + (m.image ? " journey-photo" : "")}>
-                {m.image ? <>
-                  <img src={m.image} alt={m.imageAlt || m.label} width={1264} height={848} loading="lazy" decoding="async" />
-                  <small className="journey-photo-credit">{m.label} · Campagne di Noci</small>
-                </> : <><span>
-                  0{i + 1}
-                </span>
-                <small>{m.label} · Masseria Don Gianvito</small></>}
+                {m.image ? (
+                  <>
+                    <img
+                      src={m.image}
+                      alt={m.imageAlt || m.label}
+                      width={1264}
+                      height={848}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <small className="journey-photo-credit">{m.label} · Campagne di Noci</small>
+                  </>
+                ) : (
+                  <>
+                    <span>0{i + 1}</span>
+                    <small>{m.label} · Masseria Don Gianvito</small>
+                  </>
+                )}
               </div>
             </div>
             <div className="pinned-card-text">

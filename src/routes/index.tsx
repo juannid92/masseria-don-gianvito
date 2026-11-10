@@ -10,7 +10,6 @@ import { Prenota } from "@/components/home/Prenota";
 import { useHomeHashScroll } from "@/lib/nav";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [

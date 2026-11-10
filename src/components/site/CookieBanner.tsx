@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  chiudiPreferenze,
-  inizializzaConsenso,
-  salvaConsenso,
-  useConsenso,
-} from "@/lib/consent";
+import { chiudiPreferenze, inizializzaConsenso, salvaConsenso, useConsenso } from "@/lib/consent";
 
 const btn =
   "h-11 min-w-[8.5rem] flex-1 border border-[color:var(--oro-su-scuro)] px-5 font-eyebrow text-[11px] tracking-[0.22em] text-[color:var(--bianco-calce)] transition-colors hover:bg-[color:var(--oro-su-scuro)] hover:text-[color:var(--carbone)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--oro-su-scuro)]";
@@ -47,10 +42,13 @@ export function CookieBanner() {
       <p id="cookie-titolo" className="font-display text-[22px] leading-tight">
         La tua privacy
       </p>
-      <p id="cookie-testo" className="mt-3 text-[14px] leading-relaxed text-[color:var(--bianco-calce)]/85">
+      <p
+        id="cookie-testo"
+        className="mt-3 text-[14px] leading-relaxed text-[color:var(--bianco-calce)]/85"
+      >
         Questo sito usa solo strumenti tecnici necessari al funzionamento. Con il tuo consenso
-        carica anche contenuti di terze parti (la mappa di Google Maps), che possono ricevere il
-        tuo indirizzo IP e impostare cookie. Se non scegli, non viene caricato nulla. Puoi cambiare
+        carica anche contenuti di terze parti (la mappa di Google Maps), che possono ricevere il tuo
+        indirizzo IP e impostare cookie. Se non scegli, non viene caricato nulla. Puoi cambiare
         scelta in ogni momento da «Preferenze cookie» in fondo alla pagina. Maggiori informazioni
         nella{" "}
         <Link to="/legali/cookie" className="underline underline-offset-4">
@@ -69,11 +67,13 @@ export function CookieBanner() {
             <div>
               <p className="text-[15px] font-medium">Necessari</p>
               <p className="mt-1 text-[13px] leading-relaxed text-[color:var(--bianco-calce)]/70">
-                Ricordano la tua scelta su questo avviso. Non si possono disattivare e non
-                tracciano la navigazione.
+                Ricordano la tua scelta su questo avviso. Non si possono disattivare e non tracciano
+                la navigazione.
               </p>
             </div>
-            <span className="shrink-0 text-[12px] text-[color:var(--oro-su-scuro)]">Sempre attivi</span>
+            <span className="shrink-0 text-[12px] text-[color:var(--oro-su-scuro)]">
+              Sempre attivi
+            </span>
           </div>
           <div className="flex items-start justify-between gap-4">
             <div>

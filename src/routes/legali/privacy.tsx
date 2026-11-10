@@ -51,11 +51,12 @@ function PrivacyPage() {
       <Sezione titolo="2. Quali dati trattiamo, perché e su quale base">
         <p>
           <strong>a) Dati di navigazione.</strong> I sistemi che ospitano il sito registrano in modo
-          automatico alcuni dati tecnici (indirizzo IP, data e ora della richiesta, pagina richiesta,
-          tipo di browser e di dispositivo). Servono a far funzionare il sito e a garantirne la
-          sicurezza. Base giuridica: legittimo interesse del Titolare (art. 6.1.f GDPR). Non
-          utilizziamo questi dati per profilarti. I tempi di conservazione sono quelli stabiliti dal
-          fornitore di hosting, limitati al tempo strettamente necessario alla sicurezza.
+          automatico alcuni dati tecnici (indirizzo IP, data e ora della richiesta, pagina
+          richiesta, tipo di browser e di dispositivo). Servono a far funzionare il sito e a
+          garantirne la sicurezza. Base giuridica: legittimo interesse del Titolare (art. 6.1.f
+          GDPR). Non utilizziamo questi dati per profilarti. I tempi di conservazione sono quelli
+          stabiliti dal fornitore di hosting, limitati al tempo strettamente necessario alla
+          sicurezza.
         </p>
         <p>
           <strong>b) Richieste di contatto e prenotazioni.</strong> Se ci chiami, ci scrivi su
@@ -67,11 +68,12 @@ function PrivacyPage() {
           obblighi di legge o necessità di tutelare un diritto in sede giudiziaria.
         </p>
         <p>
-          <strong>c) Allergie e intolleranze.</strong> Se nelle note indichi allergie o intolleranze,
-          queste informazioni possono rivelare dati relativi alla salute (art. 9 GDPR). Ti chiediamo
-          di indicarle solo se vuoi che ne teniamo conto. Le useremo esclusivamente per servirti in
-          sicurezza, sulla base del tuo consenso esplicito, che manifesti scrivendole e inviando la
-          richiesta (art. 9.2.a GDPR). Puoi revocarlo in qualsiasi momento.
+          <strong>c) Allergie e intolleranze.</strong> Se nelle note indichi allergie o
+          intolleranze, queste informazioni possono rivelare dati relativi alla salute (art. 9
+          GDPR). Ti chiediamo di indicarle solo se vuoi che ne teniamo conto. Le useremo
+          esclusivamente per servirti in sicurezza, sulla base del tuo consenso esplicito, che
+          manifesti scrivendole e inviando la richiesta (art. 9.2.a GDPR). Puoi revocarlo in
+          qualsiasi momento.
         </p>
         <p>
           <strong>d) Mappa di Google Maps.</strong> La mappa è caricata solo se lo consenti dal
@@ -103,11 +105,7 @@ function PrivacyPage() {
             Cookie Policy
           </Link>
           . Puoi cambiare le tue scelte in qualsiasi momento:{" "}
-          <button
-            type="button"
-            onClick={apriPreferenze}
-            className="underline underline-offset-4"
-          >
+          <button type="button" onClick={apriPreferenze} className="underline underline-offset-4">
             apri le preferenze cookie
           </button>
           .

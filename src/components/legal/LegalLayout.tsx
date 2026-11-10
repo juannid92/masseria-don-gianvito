@@ -20,7 +20,10 @@ export function LegalLayout({
           <p className="mt-6 text-[14px] opacity-60">Ultimo aggiornamento: {aggiornato}</p>
           <div className="mt-10 space-y-10 text-[17px] leading-relaxed opacity-90">{children}</div>
           <div className="pt-12">
-            <Link to="/" className="border-b border-[color:var(--oro-antico)] pb-1 font-eyebrow text-[14px]">
+            <Link
+              to="/"
+              className="border-b border-[color:var(--oro-antico)] pb-1 font-eyebrow text-[14px]"
+            >
               Torna alla Home
             </Link>
           </div>

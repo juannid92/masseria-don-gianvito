@@ -4,7 +4,6 @@
  * Ogni modifica a ragione sociale, indirizzo o P.IVA deve avvenire qui.
  */
 
-
 export const MASSERIA = {
   nome: "Masseria Don Gianvito",
   sopratitolo: "Macelleria · Caseificio · Agriturismo · Allevamento",

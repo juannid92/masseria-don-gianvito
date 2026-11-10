@@ -23,25 +23,22 @@ export function useAnimaReveals(rootRef: React.RefObject<HTMLElement | null>) {
       gruppi.forEach((gruppo) => {
         const elementi = gsap.utils.toArray<HTMLElement>("[data-reveal]", gruppo);
         if (!elementi.length) return;
-        
+
         // Stato iniziale impostato da GSAP per evitare invisibilità senza JS
         gsap.set(elementi, { autoAlpha: 0, y: 12 });
-        
-        gsap.to(
-          elementi,
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            stagger: 0.08,
-            scrollTrigger: {
-              trigger: gruppo,
-              start: "top 92%",
-              once: true,
-            },
+
+        gsap.to(elementi, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: gruppo,
+            start: "top 92%",
+            once: true,
           },
-        );
+        });
       });
     }, root);
 
@@ -94,5 +91,9 @@ export function FotoSegnaposto({
 export function AnimaPagina({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   useAnimaReveals(rootRef);
-  return <div ref={rootRef} className="bg-[color:var(--bianco-calce)]">{children}</div>;
+  return (
+    <div ref={rootRef} className="bg-[color:var(--bianco-calce)]">
+      {children}
+    </div>
+  );
 }

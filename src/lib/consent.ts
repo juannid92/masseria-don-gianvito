@@ -59,5 +59,9 @@ const sottoscrivi = (l: () => void) => {
 const server: Stato = { pronto: false, consenso: null, pannello: false };
 
 export function useConsenso() {
-  return useSyncExternalStore(sottoscrivi, () => stato, () => server);
+  return useSyncExternalStore(
+    sottoscrivi,
+    () => stato,
+    () => server,
+  );
 }
