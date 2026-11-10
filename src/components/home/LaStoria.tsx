@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -96,7 +95,15 @@ export function LaStoria() {
         const chiusura = root.querySelector<HTMLElement>("[data-chiusura]");
         const handoff = root.querySelector<HTMLElement>("[data-handoff]");
         const occhiello03 = root.querySelector<HTMLElement>("[data-occhiello-03]");
+        const eyebrowStoria = root.querySelector<HTMLElement>("[data-eyebrow-storia]");
         const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-dot]"));
+
+        // Eyebrow storia — ex Framer Motion whileInView (opacity 0→1, y 8→0, 0.5s easeOut).
+        if (eyebrowStoria)
+          gsap.from(eyebrowStoria, {
+            opacity: 0, y: 8, duration: 0.5, ease: "power2.out",
+            scrollTrigger: { trigger: eyebrowStoria, start: "top 85%", once: true },
+          });
 
         // Cache riferimenti + offsetLeft: evita querySelector/getProperty per frame.
         const cachedMomenti = MOMENTI.map((m) => {
@@ -343,15 +350,13 @@ export function LaStoria() {
           className="relative z-20 mx-auto w-full max-w-[1600px] pl-10 pr-5 md:pl-20 md:pr-10 [@media(min-width:900px)]:absolute [@media(min-width:900px)]:inset-x-0 [@media(min-width:900px)]:top-0"
           style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
         >
-          <motion.p
-            initial={statico ? false : { opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <p
+            data-eyebrow-storia
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/70 md:text-[11px]"
+            style={{ opacity: statico ? 1 : undefined }}
           >
             02 — LA STORIA
-          </motion.p>
+          </p>
           <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.95] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">
             <span className="block">Il tempo qui</span>
             <span className="ml-[4%] block md:ml-[9%]">non è passato.</span>

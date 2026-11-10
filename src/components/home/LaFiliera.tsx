@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -134,6 +133,65 @@ export function LaFiliera() {
       // Luce direzionale che si sposta impercettibilmente lungo lo scroll.
       if (luce) tl.fromTo(luce, { yPercent: -6 }, { yPercent: 6, duration: 1 }, 0);
 
+      // ── Ex Framer Motion reveals (whileInView → ScrollTrigger once) ──────
+      // Eyebrow filiera header
+      const eyebrowFiliera = root.querySelector<HTMLElement>("[data-eyebrow-filiera]");
+      if (eyebrowFiliera)
+        gsap.from(eyebrowFiliera, {
+          opacity: 0, y: 8, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: eyebrowFiliera, start: "top 85%", once: true },
+        });
+
+      // Eyebrow trasformazione
+      const eyebrowTrasf = root.querySelector<HTMLElement>("[data-eyebrow-trasformazione]");
+      if (eyebrowTrasf)
+        gsap.from(eyebrowTrasf, {
+          opacity: 0, y: 12, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: eyebrowTrasf, start: "top 85%", once: true },
+        });
+
+      // Latte / Carne reveal (x ±20 → 0)
+      const latte = root.querySelector<HTMLElement>("[data-reveal-latte]");
+      if (latte)
+        gsap.from(latte, {
+          opacity: 0, x: -20, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: latte, start: "top 85%", once: true },
+        });
+      const carne = root.querySelector<HTMLElement>("[data-reveal-carne]");
+      if (carne)
+        gsap.from(carne, {
+          opacity: 0, x: 20, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: carne, start: "top 85%", once: true },
+        });
+
+      // Eyebrow tavola
+      const eyebrowTavola = root.querySelector<HTMLElement>("[data-eyebrow-tavola]");
+      if (eyebrowTavola)
+        gsap.from(eyebrowTavola, {
+          opacity: 0, y: 12, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: eyebrowTavola, start: "top 85%", once: true },
+        });
+
+      // NodoBlocco elements (terra, animali) — eyebrow, titolo, testo
+      root.querySelectorAll<HTMLElement>("[data-nodo-eyebrow]").forEach((el) => {
+        gsap.from(el, {
+          opacity: 0, y: 12, duration: 0.5, ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+        });
+      });
+      root.querySelectorAll<HTMLElement>("[data-nodo-titolo]").forEach((el) => {
+        gsap.from(el, {
+          opacity: 0, y: 16, duration: 0.55, ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+        });
+      });
+      root.querySelectorAll<HTMLElement>("[data-nodo-testo]").forEach((el) => {
+        gsap.from(el, {
+          opacity: 0, y: 12, duration: 0.6, ease: "power2.out", delay: 0.05,
+          scrollTrigger: { trigger: el, start: "top 85%", once: true },
+        });
+      });
+
     }, root);
 
     return () => {
@@ -257,16 +315,14 @@ export function LaFiliera() {
           className="flex flex-col pb-16 pt-16 md:pt-24"
           style={{ paddingTop: "calc(var(--page-header-safe-offset) + 3vh)" }}
         >
-          <motion.p
-            initial={statico ? false : { opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <p
+            data-eyebrow-filiera
             data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/85 md:text-[11px]"
+            style={{ opacity: statico ? 1 : undefined }}
           >
             04 — LA FILIERA
-          </motion.p>
+          </p>
           <h2 data-parallax="fast" className="mt-6 max-w-[16ch] font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--carbone)] md:mt-10">
             <span className="block">Dalla terra</span>
             <span className="ml-[3%] block md:ml-[7%]">alla tavola,</span>
@@ -291,16 +347,14 @@ export function LaFiliera() {
           data-node="trasformazione"
           className="relative flex min-h-[110dvh] flex-col justify-center py-24 [@media(min-width:900px)]:min-h-[140dvh]"
         >
-          <motion.p
-            initial={statico ? false : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <p
+            data-eyebrow-trasformazione
             data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
+            style={{ opacity: statico ? 1 : undefined }}
           >
             {NODI[2].occhiello}
-          </motion.p>
+          </p>
           <h3 data-parallax="fast" className="mt-4 max-w-[22ch] font-display text-[clamp(1.9rem,4.4vw,3.4rem)] leading-[1.02] text-[color:var(--carbone)]">
             <span className="block">{NODI[2].titolo[0]}</span>
             <span className="ml-[2%] block italic text-[color:var(--carbone)]">
@@ -308,12 +362,10 @@ export function LaFiliera() {
             </span>
           </h3>
           <div className="mt-10 grid gap-8 md:mt-16 md:grid-cols-2 md:gap-16">
-            <motion.div
-              initial={statico ? false : { opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+            <div
+              data-reveal-latte
               className="max-w-[36ch] md:pl-4"
+              style={{ opacity: statico ? 1 : undefined }}
             >
               <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80">
                 IL LATTE
@@ -321,13 +373,11 @@ export function LaFiliera() {
               <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoLatte}
               </p>
-            </motion.div>
-            <motion.div
-              initial={statico ? false : { opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+            </div>
+            <div
+              data-reveal-carne
               className="max-w-[36ch] justify-self-end md:pr-4"
+              style={{ opacity: statico ? 1 : undefined }}
             >
               <p className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--carminio-scuro)]">
                 LA CARNE
@@ -335,7 +385,7 @@ export function LaFiliera() {
               <p className="mt-3 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]">
                 {NODI[2].testoCarne}
               </p>
-            </motion.div>
+            </div>
           </div>
         </article>
 
@@ -344,16 +394,14 @@ export function LaFiliera() {
           data-node="tavola"
           className="relative flex min-h-[90dvh] flex-col items-center justify-center py-24 text-center"
         >
-          <motion.p
-            initial={statico ? false : { opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
+          <p
+            data-eyebrow-tavola
             data-parallax="slow"
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
+            style={{ opacity: statico ? 1 : undefined }}
           >
             {NODI[3].occhiello}
-          </motion.p>
+          </p>
           <h3 data-parallax="fast" className="mt-4 max-w-[18ch] font-display text-[clamp(2rem,4.8vw,3.8rem)] leading-[1] text-[color:var(--carbone)]">
             <span className="block">{NODI[3].titolo[0]}</span>
             <span className="mt-1 block italic text-[color:var(--carbone)]">
@@ -411,35 +459,29 @@ function NodoBlocco({
       className={`relative flex min-h-[90dvh] flex-col justify-center py-24 ${align}`}
     >
       <div className={lato === "right" ? "max-w-[42ch]" : "max-w-[42ch]"}>
-        <motion.p
-          initial={statico ? false : { opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+        <p
+          data-nodo-eyebrow
           data-parallax="slow"
           className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/80 md:text-[11px]"
+          style={{ opacity: statico ? 1 : undefined }}
         >
           {nodo.occhiello}
-        </motion.p>
-        <motion.h3
-          initial={statico ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
+        </p>
+        <h3
+          data-nodo-titolo
           data-parallax="fast"
           className="mt-4 font-display text-[clamp(2rem,5.2vw,4rem)] leading-[1] text-[color:var(--carbone)]"
+          style={{ opacity: statico ? 1 : undefined }}
         >
           {nodo.titolo[0]}
-        </motion.h3>
-        <motion.p
-          initial={statico ? false : { opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
+        </h3>
+        <p
+          data-nodo-testo
           className="mt-6 text-[16px] leading-relaxed text-[color:var(--carbone)]/85 md:text-[17px]"
+          style={{ opacity: statico ? 1 : undefined }}
         >
           {nodo.testo}
-        </motion.p>
+        </p>
       </div>
     </article>
   );

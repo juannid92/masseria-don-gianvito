@@ -1,6 +1,5 @@
 import { PrototypeImage } from "@/components/journey/PrototypeImage";
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import aerial from "@/assets/masseria-aerial.asset.json";
@@ -108,7 +107,8 @@ export function IlLuogo() {
         if (cut) tlA.fromTo(cut, { scaleY: 1, opacity: 1 }, { scaleY: 0.02, opacity: 0, duration: 0.5 }, 0);
         if (muretto) tlA.fromTo(muretto, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.55 }, 0.35);
         tlA.fromTo(mask, { clipPath: "inset(0% 50% 0% 50%)" }, { clipPath: MASK_JOIN, duration: 0.85 }, 0.05);
-        if (eyebrow) tlA.fromTo(eyebrow, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3 }, 0.35);
+        // Eyebrow 03 — ex Framer Motion whileInView (opacity 0→1, y 8→0, 0.5s easeOut).
+        if (eyebrow) tlA.fromTo(eyebrow, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.35);
         if (righe[0])
           tlA.fromTo(righe[0], { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35 }, 0.55);
 
@@ -403,16 +403,13 @@ export function IlLuogo() {
           className="relative z-30 mx-auto flex h-full max-w-[1600px] flex-col px-5 pb-16 md:px-10 md:pb-20"
           style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
         >
-          <motion.p
+          <p
             data-eyebrow-03
-            initial={statico ? false : { opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
             className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--bianco-calce)]/75 md:text-[11px]"
+            style={{ opacity: vis }}
           >
             03 — IL LUOGO
-          </motion.p>
+          </p>
 
           {/* Titolo, tre righe, reveal per riga da dietro una maschera */}
           <h2 className="mt-6 font-display text-[clamp(2.4rem,6.6vw,5.6rem)] leading-[0.96] text-[color:var(--bianco-calce)] md:mt-10 [@media(max-height:520px)]:mt-3 [@media(max-height:520px)]:text-[clamp(1.8rem,4.4vw,2.6rem)]">

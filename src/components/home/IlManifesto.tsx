@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -33,6 +32,7 @@ export function IlManifesto() {
       const sostegno = root.querySelector<HTMLElement>("[data-sostegno]");
       const handoff = root.querySelector<HTMLElement>("[data-handoff]");
       const occhiello02 = root.querySelector<HTMLElement>("[data-occhiello-02]");
+      const eyebrow01 = root.querySelector<HTMLElement>("[data-eyebrow-01]");
       if (!stage) return;
 
       const mm = gsap.matchMedia();
@@ -84,6 +84,10 @@ export function IlManifesto() {
           .addLabel("attenua", 0.85)
           .addLabel("handoff", 0.92)
           .addLabel("atto02", 1);
+
+        // Eyebrow 01 — ex Framer Motion initial/animate (opacity 0→1, y 8→0, 0.5s easeOut).
+        if (eyebrow01)
+          tl.fromTo(eyebrow01, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0);
 
         if (linea) tl.fromTo(linea, { scaleY: 0 }, { scaleY: 1, duration: 0.12 }, "linea");
         righe.forEach((riga, i) => {
@@ -261,14 +265,13 @@ export function IlManifesto() {
             style={{ paddingTop: "calc(var(--page-header-safe-offset) + 2vh)" }}
           >
             <div className="md:col-span-8 md:col-start-1">
-              <motion.p
-                initial={statico ? false : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+              <p
+                data-eyebrow-01
                 className="font-eyebrow text-[10px] tracking-[0.34em] text-[color:var(--pietra-800)]/85 md:text-[11px]"
+                style={{ opacity: vis }}
               >
                 01 — IL MANIFESTO
-              </motion.p>
+              </p>
 
               <h2 className="mt-8 font-display text-[clamp(2.6rem,7.4vw,6.4rem)] leading-[0.94] text-[color:var(--carbone)] md:mt-12 [@media(max-height:520px)]:mt-4 [@media(max-height:520px)]:text-[clamp(1.9rem,4.6vw,2.9rem)]">
                 <span data-riga className="block" style={{ opacity: vis }}>
