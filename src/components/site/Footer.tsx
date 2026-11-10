@@ -23,7 +23,11 @@ export function Footer() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
           {/* Claim — colonna larga */}
           <div className="lg:col-span-5">
-            <img src="/images/logo-completo.svg" alt="Masseria Don Gianvito — azienda agricola, agriturismo, braceria, macelleria" className="mb-10 h-28 w-auto md:h-36" />
+            <img
+              src="/images/logo-completo.svg"
+              alt="Masseria Don Gianvito — azienda agricola, agriturismo, braceria, macelleria"
+              className="mb-10 h-28 w-auto md:h-36"
+            />
             <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]/90">
               {MASSERIA.sopratitolo}
             </p>
@@ -100,6 +104,7 @@ export function Footer() {
                 className="mt-3 inline-block border-b border-[color:var(--oro-antico)] pb-px font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--oro-su-scuro)]"
               >
                 Apri in Maps
+                <span className="sr-only">(si apre in una nuova scheda)</span>
               </a>
             </div>
 
@@ -109,12 +114,18 @@ export function Footer() {
               </p>
               <ul className="space-y-2 text-[15px] text-[color:var(--bianco-calce)]/85">
                 <li>
-                  <a href={MASSERIA.telefonoHref} className="hover:text-[color:var(--oro-su-scuro)]">
+                  <a
+                    href={MASSERIA.telefonoHref}
+                    className="hover:text-[color:var(--oro-su-scuro)]"
+                  >
                     {MASSERIA.telefono}
                   </a>
                 </li>
                 <li>
-                  <a href={MASSERIA.telefono2Href} className="hover:text-[color:var(--oro-su-scuro)]">
+                  <a
+                    href={MASSERIA.telefono2Href}
+                    className="hover:text-[color:var(--oro-su-scuro)]"
+                  >
                     {MASSERIA.telefono2}
                   </a>
                 </li>
@@ -126,6 +137,7 @@ export function Footer() {
                     className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     WhatsApp
+                    <span className="sr-only">(si apre in una nuova scheda)</span>
                   </a>
                 </li>
                 <li>
@@ -136,6 +148,7 @@ export function Footer() {
                     className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     Instagram
+                    <span className="sr-only">(si apre in una nuova scheda)</span>
                   </a>
                 </li>
                 <li>
@@ -146,6 +159,7 @@ export function Footer() {
                     className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     Facebook
+                    <span className="sr-only">(si apre in una nuova scheda)</span>
                   </a>
                 </li>
               </ul>

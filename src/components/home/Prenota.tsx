@@ -364,6 +364,7 @@ export function Prenota() {
                     className="inline-flex min-h-[44px] items-center border-b border-[color:var(--oro-antico)] font-eyebrow text-[10px] tracking-[0.24em] text-[color:var(--bianco-calce)]"
                   >
                     Apri in Maps
+                    <span className="sr-only">(si apre in una nuova scheda)</span>
                   </a>
                   <a
                     href={MASSERIA.instagram}
@@ -372,6 +373,7 @@ export function Prenota() {
                     className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     Instagram
+                    <span className="sr-only">(si apre in una nuova scheda)</span>
                   </a>
                   <a
                     href={MASSERIA.facebook}
@@ -380,6 +382,7 @@ export function Prenota() {
                     className="inline-flex min-h-[44px] items-center text-[16px] text-[color:var(--bianco-calce)]/80 transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
                     Facebook
+                    <span className="sr-only">(si apre in una nuova scheda)</span>
                   </a>
                 </div>
                 <p className="mt-6 text-[15px] tabular-nums text-[color:var(--bianco-calce)]/70">
