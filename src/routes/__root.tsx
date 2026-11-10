@@ -139,7 +139,7 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Restaurant",
+              "@type": ["Farm", "Restaurant", "Butcher"],
               name: SITE_CONFIG.name,
               description: SITE_CONFIG.description,
               url: SITE_CONFIG.url,
@@ -162,6 +162,7 @@ function RootShell({ children }: { children: ReactNode }) {
               },
               servesCuisine: "Pugliese",
               priceRange: "$$",
+              additionalType: ["Farm", "Butcher"],
             }),
           }}
         />
