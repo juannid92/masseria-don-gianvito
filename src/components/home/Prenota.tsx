@@ -293,7 +293,7 @@ export function Prenota() {
                     href={MASSERIA.telefonoHref}
                     className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
-                    +39 333 939 5750
+                    {MASSERIA.telefono}
                   </a>
                 </li>
                 <li>
@@ -301,7 +301,7 @@ export function Prenota() {
                     href={MASSERIA.telefono2Href}
                     className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--bianco-calce)]"
                   >
-                    +39 333 387 0292
+                    {MASSERIA.telefono2}
                   </a>
                 </li>
                 <li>
@@ -395,6 +395,7 @@ export function Prenota() {
                     title={`Mappa di ${MASSERIA.nome}, ${MASSERIA.indirizzo}`}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
+                    sandbox="allow-scripts allow-same-origin allow-popups"
                     className="absolute inset-0 h-full w-full"
                   />
                 ) : (
@@ -409,7 +410,8 @@ export function Prenota() {
                       Mostra la mappa
                     </span>
                     <span className="max-w-xs text-[15px] leading-relaxed text-[color:var(--bianco-calce)]/75">
-                      La mappa è di Google: caricandola, Google riceve il tuo indirizzo IP e può impostare cookie. Si carica solo dopo il tuo clic o il tuo consenso.
+                      La mappa è di Google: caricandola, Google riceve il tuo indirizzo IP e può
+                      impostare cookie. Si carica solo dopo il tuo clic o il tuo consenso.
                     </span>
                   </button>
                 )}

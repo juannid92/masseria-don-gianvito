@@ -9,7 +9,7 @@ export const SITE_CONFIG = {
   title: "Masseria Don Gianvito — Dalla terra alla tavola",
   description:
     "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
-  ogImage: "/images/logo-completo.svg",
+  ogImage: "/images/og-image.png",
   themeColor: "#f4f0e6",
   twitterCard: "summary_large_image",
 } as const;

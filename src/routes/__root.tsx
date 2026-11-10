@@ -167,6 +167,12 @@ function RootShell({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded focus:bg-[color:var(--oro-antico)] focus:px-4 focus:py-2 focus:text-[color:var(--terra-cotta)] focus:font-display focus:text-sm focus:no-underline"
+        >
+          Salta al contenuto principale
+        </a>
         {children}
         <Scripts />
       </body>
@@ -183,7 +189,7 @@ function RootComponent() {
         <RouteAtmosphere />
         <Header />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <main className="relative">
+        <main id="main-content" className="relative">
           <Outlet />
         </main>
         <Footer />

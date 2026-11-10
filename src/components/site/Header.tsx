@@ -18,6 +18,7 @@ export function Header() {
   const [tone, setTone] = useState<"dark" | "light">("dark");
   const drawerRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const goToSection = useHomeSectionNav(() => {
     setOpen(false);
     setDrawer(false);
@@ -66,11 +67,52 @@ export function Header() {
 
   useEffect(() => {
     if (!open) return;
+    // Focus first menuitem on open
+    const items = menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+    items?.[0]?.focus();
     const onClick = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setOpen(false);
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        triggerRef.current?.focus();
+        return;
+      }
+      const els = Array.from(
+        menuRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [],
+      );
+      if (!els.length) return;
+      const idx = els.indexOf(document.activeElement as HTMLElement);
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        els[(idx + 1) % els.length]?.focus();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        els[(idx - 1 + els.length) % els.length]?.focus();
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        els[0]?.focus();
+      } else if (e.key === "End") {
+        e.preventDefault();
+        els[els.length - 1]?.focus();
+      } else if (e.key === "Tab") {
+        // Close menu and restore focus to trigger on Tab out
+        e.preventDefault();
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("keydown", onKeyDown);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -134,26 +176,35 @@ export function Header() {
       style={{ height: "var(--header-offset)" }}
     >
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-5 md:px-10">
-        <Link to="/" className="group flex items-center gap-3 leading-none" aria-label={MASSERIA.nome}>
-          <img src="/images/logo-emblema.svg" alt="" aria-hidden="true" className="h-9 w-auto md:h-11" />
+        <Link
+          to="/"
+          className="group flex items-center gap-3 leading-none"
+          aria-label={MASSERIA.nome}
+        >
+          <img
+            src="/images/logo-emblema.svg"
+            alt=""
+            aria-hidden="true"
+            className="h-9 w-auto md:h-11"
+          />
           <span className="flex flex-col leading-none">
-          <span
-            className="font-eyebrow text-[9px] tracking-[0.34em] transition-colors"
-            style={{ color: oroText }}
-          >
-            Noci · Puglia
-          </span>
-          <span
-            className={cn(
-              "font-display text-[15px] md:text-[17px] leading-tight transition-colors",
-              textStrong,
-            )}
-          >
-            Masseria{" "}
-            <em className="not-italic" style={{ color: oroText }}>
-              Don Gianvito
-            </em>
-          </span>
+            <span
+              className="font-eyebrow text-[9px] tracking-[0.34em] transition-colors"
+              style={{ color: oroText }}
+            >
+              Noci · Puglia
+            </span>
+            <span
+              className={cn(
+                "font-display text-[15px] md:text-[17px] leading-tight transition-colors",
+                textStrong,
+              )}
+            >
+              Masseria{" "}
+              <em className="not-italic" style={{ color: oroText }}>
+                Don Gianvito
+              </em>
+            </span>
           </span>
         </Link>
 
@@ -194,6 +245,7 @@ export function Header() {
           </Link>
           <div className="relative" ref={menuRef}>
             <button
+              ref={triggerRef}
               type="button"
               aria-expanded={open}
               aria-haspopup="true"
@@ -215,6 +267,8 @@ export function Header() {
                   <Link
                     key={a.id}
                     to={a.to}
+                    role="menuitem"
+                    tabIndex={-1}
                     className="flex flex-col gap-1 px-4 py-3 transition-colors hover:bg-white/5"
                   >
                     <span className="font-eyebrow text-[9px] text-[color:var(--oro-su-scuro)]">

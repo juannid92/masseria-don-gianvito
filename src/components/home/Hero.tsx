@@ -114,12 +114,17 @@ export function Hero() {
     return () => media.revert();
   }, []);
 
-  // Mouse parallax effect for the hero
+  // Mouse parallax effect for the hero — respects reduced-motion and touch devices
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (prefersReducedMotion || !hasFinePointer) return;
+
     const rootEl = root.current;
     if (!rootEl) return;
 
     let rafId: number;
+    let active = true;
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
@@ -131,6 +136,7 @@ export function Hero() {
     };
 
     const animate = () => {
+      if (!active) return;
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
 
@@ -146,6 +152,7 @@ export function Hero() {
     rafId = requestAnimationFrame(animate);
 
     return () => {
+      active = false;
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(rafId);
     };
