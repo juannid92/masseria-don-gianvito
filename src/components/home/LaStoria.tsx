@@ -26,7 +26,7 @@ type Momento = {
 const MOMENTI: Momento[] = [
   {
     id: "pietra",
-    foto: "/images/storia-pietra.svg",
+    foto: "/images/storia-pietra.jpg",
     fotoAlt: "Arco a Mottola",
     fotoCredito: "Stefano Piepoli e Carmine Lentini · pubblico dominio",
     n: "01",
@@ -37,7 +37,7 @@ const MOMENTI: Momento[] = [
   },
   {
     id: "lavoro",
-    foto: "/images/storia-lavoro.svg",
+    foto: "/images/storia-lavoro.jpg",
     fotoAlt: "Masseria Pantano, Murgia",
     fotoCredito: "PietroAmendolara.it · CC BY-SA 4.0",
     n: "02",
@@ -48,7 +48,7 @@ const MOMENTI: Momento[] = [
   },
   {
     id: "famiglia",
-    foto: "/images/storia-famiglia.svg",
+    foto: "/images/storia-famiglia.jpg",
     fotoAlt: "Trulli della Murgia",
     fotoCredito: "Acquario51 · CC BY-SA 4.0",
     n: "03",

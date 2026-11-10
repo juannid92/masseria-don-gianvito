@@ -76,8 +76,8 @@ export function AgriturismoStoriaNuova() {
           alt="Veduta della Masseria Don Gianvito nelle campagne di Noci"
           className="absolute inset-0 w-full h-full object-cover"
           onError={() => {
-            if (imgSrc !== "/images/storia-lavoro.svg") {
-              setImgSrc("/images/storia-lavoro.svg");
+            if (imgSrc !== "/images/storia-lavoro.jpg") {
+              setImgSrc("/images/storia-lavoro.jpg");
             }
           }}
         />

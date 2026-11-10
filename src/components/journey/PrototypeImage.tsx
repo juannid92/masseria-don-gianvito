@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ImgHTMLAttributes } from "react";
 
-const FALLBACK_SRC = "/images/storia-lavoro.svg";
+const FALLBACK_SRC = "/images/storia-lavoro.jpg";
 
 /** Handle asset failures that occur before React hydration as well as afterwards. */
 export function PrototypeImage({ src, alt, ...props }: ImgHTMLAttributes<HTMLImageElement>) {
@@ -28,7 +28,9 @@ export function PrototypeImage({ src, alt, ...props }: ImgHTMLAttributes<HTMLIma
   }, [currentSrc]);
 
   if (missing) {
-    return <div className={`${props.className ?? ""} journey-image-unavailable`} aria-hidden="true" />;
+    return (
+      <div className={`${props.className ?? ""} journey-image-unavailable`} aria-hidden="true" />
+    );
   }
 
   return <img {...props} ref={image} src={currentSrc} alt={alt ?? ""} onError={handleFail} />;

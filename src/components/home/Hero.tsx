@@ -16,7 +16,7 @@ export function Hero() {
 
   const failImage = () => {
     if (source === aerial.url) setSource("/images/masseria-aerial.jpg");
-    else if (source === "/images/masseria-aerial.jpg") setSource("/images/storia-lavoro.svg");
+    else if (source === "/images/masseria-aerial.jpg") setSource("/images/storia-lavoro.jpg");
     else setMissing(true);
   };
 
@@ -24,7 +24,7 @@ export function Hero() {
     // The original request may fail before React hydrates the page.
     if (image.current?.complete && !image.current.naturalWidth) {
       if (source === aerial.url) setSource("/images/masseria-aerial.jpg");
-      else if (source === "/images/masseria-aerial.jpg") setSource("/images/storia-lavoro.svg");
+      else if (source === "/images/masseria-aerial.jpg") setSource("/images/storia-lavoro.jpg");
       else setMissing(true);
     }
   }, [source]);

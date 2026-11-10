@@ -24,7 +24,7 @@ export const Route = createFileRoute("/prodotti")({
           "Dal caseificio alla macelleria e ai campi: i prodotti autentici della filiera di Masseria Don Gianvito a Noci.",
       },
       { property: "og:url", content: getAbsoluteUrl("/prodotti") },
-      { property: "og:image", content: getAbsoluteUrl("/images/caseificio-mozzarelle-ai.svg") },
+      { property: "og:image", content: getAbsoluteUrl("/images/caseificio-mozzarelle-ai.jpg") },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/prodotti") }],
   }),

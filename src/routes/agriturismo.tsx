@@ -24,7 +24,7 @@ export const Route = createFileRoute("/agriturismo")({
       { property: "og:type", content: "restaurant" },
       {
         property: "og:image",
-        content: getAbsoluteUrl("/images/agriturismo-tavola-ai.svg"),
+        content: getAbsoluteUrl("/images/agriturismo-tavola-ai.jpg"),
       },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/agriturismo") }],
