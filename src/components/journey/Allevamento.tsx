@@ -78,23 +78,23 @@ export function Allevamento() {
         moments={ALLEVAMENTO.moments.map((m, i) => {
           const photos: Record<number, { image: string; imageAlt: string }> = {
             0: {
-              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.09.jpeg",
+              image: "/images/masseria/allevamento-terreni-masseria-01.jpeg",
               imageAlt: "I terreni della masseria tra Noci e Mottola, foraggio e grano tenero",
             },
             1: {
-              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.11.jpeg",
+              image: "/images/masseria/allevamento-bovini-recinti-01.jpeg",
               imageAlt: "Bovini Pezzata Rossa e Frisona nei recinti dell’allevamento",
             },
             2: {
-              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.39.jpeg",
+              image: "/images/masseria/allevamento-campi-stagioni-01.jpeg",
               imageAlt: "I campi della masseria che seguono il ritmo delle stagioni",
             },
             3: {
-              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.39.50.jpeg",
+              image: "/images/masseria/allevamento-cura-animali-01.jpeg",
               imageAlt: "Il lavoro quotidiano di chi cura gli animali ogni mattina",
             },
             4: {
-              image: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.27.jpeg",
+              image: "/images/masseria/allevamento-filiera-integrata-01.jpeg",
               imageAlt:
                 "Dal latte al caseificio, dalla carne alla macelleria: tutto nello stesso luogo",
             },
@@ -114,33 +114,33 @@ export function Allevamento() {
           <div className="allevamento-gallery-grid">
             {[
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.10.jpeg",
+                src: "/images/masseria/allevamento-campi-coltivati-01.jpeg",
                 alt: "I terreni coltivati intorno alla masseria",
                 wide: true,
               },
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.34.45.jpeg",
+                src: "/images/masseria/allevamento-animali-recinti-01.jpeg",
                 alt: "Gli animali nei recinti all'aperto",
               },
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.39.21.jpeg",
+                src: "/images/masseria/allevamento-lavoro-campi-01.jpeg",
                 alt: "Il lavoro quotidiano nei campi",
               },
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.39.39.jpeg",
+                src: "/images/masseria/allevamento-vita-allevamento-01.jpeg",
                 alt: "Scorci di vita in allevamento",
               },
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.11.jpeg",
+                src: "/images/masseria/allevamento-paesaggio-murge-02.jpeg",
                 alt: "Il paesaggio delle Murge",
               },
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.28.jpeg",
+                src: "/images/masseria/allevamento-dettagli-campagna-03.jpeg",
                 alt: "Dettagli della campagna",
                 wide: true,
               },
               {
-                src: "/images/masseria/WhatsApp Image 2026-11-03 at 09.43.29.jpeg",
+                src: "/images/masseria/allevamento-luce-mattino-02.jpeg",
                 alt: "L'allevamento nella luce del mattino",
               },
             ].map((foto, i) => (
