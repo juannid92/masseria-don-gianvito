@@ -65,16 +65,16 @@ function AgriturismoPage() {
           }),
         }}
       />
-    <AnimaPagina>
-      <AgriturismoCinema />
-      <div id="next-section" className="agri-page">
-        <AgriturismoStoriaNuova />
-        <AgriLaTavola />
-        <AgriLaCarta />
-        <AgriPrenota />
-        <AgriFineViaggio />
-      </div>
-    </AnimaPagina>
+      <AnimaPagina>
+        <AgriturismoCinema />
+        <div id="next-section" className="agri-page">
+          <AgriturismoStoriaNuova />
+          <AgriLaTavola />
+          <AgriLaCarta />
+          <AgriPrenota />
+          <AgriFineViaggio />
+        </div>
+      </AnimaPagina>
     </>
   );
 }

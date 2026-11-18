@@ -9,12 +9,11 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
-import { RouteAtmosphere } from "@/components/journey/RouteAtmosphere";
+import { AnimationShell } from "@/components/site/AnimationShell";
 
 import appCss from "../styles.css?url";
 import fontsCss from "../fonts.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { ScrollProvider } from "@/components/site/ScrollProvider";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { CookieBanner } from "@/components/site/CookieBanner";
@@ -211,8 +210,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ScrollProvider>
-        <RouteAtmosphere />
+      <AnimationShell>
         <Header />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <main id="main-content" className="relative">
@@ -220,7 +218,7 @@ function RootComponent() {
         </main>
         <Footer />
         <CookieBanner />
-      </ScrollProvider>
+      </AnimationShell>
     </QueryClientProvider>
   );
 }
