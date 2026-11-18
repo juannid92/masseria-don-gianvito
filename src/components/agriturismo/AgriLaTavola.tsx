@@ -1,16 +1,11 @@
-import { useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import { useState } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
-
-/* Fotografia della tavola e racconto della cena sincronizzato allo scroll. */
+/* Fotografia della tavola: la foto cambia al passaggio del mouse sul titolo corrispondente. */
 const TEMPI = [
   {
     n: "01",
     t: "Si apparecchia",
-    d: "Il tavolo è pronto all’arrivo degli ospiti.",
+    d: "Il tavolo è pronto all'arrivo degli ospiti.",
     img: "/images/agriturismo/tavola-si-apparecchia-01.jpeg",
     alt: "Tavola apparecchiata nella sala della masseria",
     caption: "La sala pronta ad accogliere",
@@ -50,49 +45,10 @@ const TEMPI = [
 ];
 
 export function AgriLaTavola() {
-  const root = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useGSAP(
-    () => {
-      const el = root.current!;
-      const steps = gsap.utils.toArray<HTMLElement>(".agri-tav-step", el);
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduce || window.innerWidth < 900) {
-        steps.forEach((s) => s.classList.add("is-on"));
-        return;
-      }
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: el,
-          start: "top top",
-          end: "+=" + window.innerHeight * 4,
-          pin: ".agri-tav-pin",
-          scrub: 0.6,
-          onUpdate: (st) => {
-            const t = st.progress * tl.duration();
-            const i = Math.max(0, Math.min(TEMPI.length - 1, Math.floor((t + 0.3) / 1.4)));
-            steps.forEach((s, k) => s.classList.toggle("is-on", k === i));
-            setActiveIndex(i);
-          },
-        },
-      });
-      tl.fromTo(
-        ".agri-tav-photo img",
-        { scale: 1.02 },
-        {
-          scale: 1.12,
-          duration: TEMPI.length * 1.4,
-          ease: "none",
-        },
-      );
-      tl.to({}, { duration: 0.8 });
-    },
-    { scope: root },
-  );
-
   return (
-    <section ref={root} className="agri-tav" data-tone="dark" id="la-tavola">
+    <section className="agri-tav" data-tone="dark" id="la-tavola">
       <div className="agri-tav-pin">
         <div className="agri-tav-text">
           <p className="agri-tav-eyebrow">La sala · Una cena in cinque tempi</p>
@@ -103,7 +59,12 @@ export function AgriLaTavola() {
           </h2>
           <ol>
             {TEMPI.map((s, i) => (
-              <li key={s.n} className={"agri-tav-step" + (i === 0 ? " is-on" : "")}>
+              <li
+                key={s.n}
+                className={"agri-tav-step" + (i === activeIndex ? " is-on" : "")}
+                onMouseEnter={() => setActiveIndex(i)}
+                onFocus={() => setActiveIndex(i)}
+              >
                 <span>{s.n}</span>
                 <div>
                   <h3>{s.t}</h3>
@@ -136,7 +97,8 @@ export function AgriLaTavola() {
             ))}
           </div>
           <figcaption>
-            La tavola della masseria <span>{TEMPI[activeIndex].caption}</span>
+            La tavola della masseria{" "}
+            <span>{TEMPI[activeIndex].caption}</span>
           </figcaption>
         </figure>
       </div>
@@ -175,7 +137,12 @@ export function AgriLaTavola() {
               },
             ].map((foto, i) => (
               <figure key={i} className="agri-tav-gallery-item">
-                <img src={foto.src} alt={foto.alt} loading="lazy" decoding="async" />
+                <img
+                  src={foto.src}
+                  alt={foto.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
               </figure>
             ))}
           </div>
