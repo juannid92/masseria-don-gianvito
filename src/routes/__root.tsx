@@ -134,6 +134,9 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="it">
       <head>
         <HeadContent />
+        {/* Preload critical assets to unblock rendering */}
+        <link rel="preload" as="style" href="/assets/fonts-Cm6gl5G-.css" />
+        <link rel="preload" as="image" href="/images/masseria-aerial-800w.webp" type="image/webp" />
         {/* Google Tag Manager */}
         <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KGG4P46D" />
         <script

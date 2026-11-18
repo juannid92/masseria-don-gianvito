@@ -26,6 +26,8 @@ export function Footer() {
             <img
               src="/images/logo-completo.svg"
               alt="Masseria Don Gianvito — azienda agricola, agriturismo, braceria, macelleria"
+              width={900}
+              height={534}
               className="mb-10 h-28 w-auto md:h-36"
             />
             <p className="font-eyebrow text-[9px] tracking-[0.34em] text-[color:var(--oro-su-scuro)]/90">
