@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -7,19 +7,51 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Fotografia della tavola e racconto della cena sincronizzato allo scroll. */
 const TEMPI = [
-  { n: "01", t: "Si apparecchia", d: "Il tavolo è pronto all’arrivo degli ospiti." },
+  {
+    n: "01",
+    t: "Si apparecchia",
+    d: "Il tavolo è pronto all’arrivo degli ospiti.",
+    img: "/images/agriturismo/agriturismo-sala-panoramica-01.jpeg",
+    alt: "Tavola apparecchiata nella sala panoramica della masseria",
+    caption: "La sala pronta ad accogliere",
+  },
   {
     n: "02",
     t: "Gli antipasti",
     d: "Latticini, salumi e verdure: si portano al centro, da dividere.",
+    img: "/images/agriturismo/agriturismo-antipasti-cortile-01.jpeg",
+    alt: "Tagliere di antipasti serviti nel cortile della masseria",
+    caption: "Antipasti della casa",
   },
-  { n: "03", t: "I primi", d: "Primi piatti della cucina di casa, serviti caldi." },
-  { n: "04", t: "La brace", d: "La carne della macelleria della masseria, cotta alla brace." },
-  { n: "05", t: "Il dolce", d: "Si chiude con il dolce della casa." },
+  {
+    n: "03",
+    t: "I primi",
+    d: "Primi piatti della cucina di casa, serviti caldi.",
+    img: "/images/agriturismo/agriturismo-primi-piatti-01.jpeg",
+    alt: "Primi piatti della tradizione pugliese serviti in tavola",
+    caption: "I primi della casa",
+  },
+  {
+    n: "04",
+    t: "La brace",
+    d: "La carne della macelleria della masseria, cotta alla brace.",
+    img: "/images/agriturismo/agriturismo-carne-brace-01.jpeg",
+    alt: "Carne della macelleria cotta alla brace",
+    caption: "La brace della masseria",
+  },
+  {
+    n: "05",
+    t: "Il dolce",
+    d: "Si chiude con il dolce della casa.",
+    img: "/images/agriturismo/agriturismo-dessert-03.jpeg",
+    alt: "Dolce della casa a fine pasto",
+    caption: "Il dolce della casa",
+  },
 ];
 
 export function AgriLaTavola() {
   const root = useRef<HTMLElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useGSAP(
     () => {
@@ -41,6 +73,7 @@ export function AgriLaTavola() {
             const t = st.progress * tl.duration();
             const i = Math.max(0, Math.min(TEMPI.length - 1, Math.floor((t + 0.3) / 1.4)));
             steps.forEach((s, k) => s.classList.toggle("is-on", k === i));
+            setActiveIndex(i);
           },
         },
       });
@@ -83,17 +116,27 @@ export function AgriLaTavola() {
 
         <figure className="agri-tav-photo">
           <div className="agri-tav-photo-frame">
-            <img
-              src="/images/agriturismo/agriturismo-primi-piatti-01.jpeg"
-              alt="Primi piatti della tradizione pugliese serviti in tavola alla Masseria Don Gianvito"
-              width={1264}
-              height={848}
-              loading="lazy"
-              decoding="async"
-            />
+            {TEMPI.map((tempo, i) => (
+              <img
+                key={tempo.n}
+                src={tempo.img}
+                alt={tempo.alt}
+                width={1264}
+                height={848}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+                className={i === activeIndex ? "is-active" : ""}
+                style={{
+                  position: i === 0 ? "relative" : "absolute",
+                  inset: i === 0 ? undefined : 0,
+                  opacity: i === activeIndex ? 1 : 0,
+                  transition: "opacity 0.4s ease",
+                }}
+              />
+            ))}
           </div>
           <figcaption>
-            La tavola della masseria <span>I primi della casa</span>
+            La tavola della masseria <span>{TEMPI[activeIndex].caption}</span>
           </figcaption>
         </figure>
       </div>
