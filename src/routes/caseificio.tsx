@@ -22,5 +22,37 @@ export const Route = createFileRoute("/caseificio")({
 });
 
 function CaseificioPage() {
-  return <Caseificio />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Caseificio Masseria Don Gianvito",
+            description:
+              "Caseificio artigianale a Noci: il latte lavorato ogni mattina a pochi metri dalle stalle.",
+            url: getAbsoluteUrl("/caseificio"),
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "SP237 ex SS377 per Mottola km 6,5, Zona C 76",
+              addressLocality: "Noci",
+              addressRegion: "BA",
+              postalCode: "70015",
+              addressCountry: "IT",
+            },
+            geo: {
+              "@type": "GeoCoordinates",
+              latitude: 40.642739,
+              longitude: 17.0426,
+            },
+            telephone: "+393339395750",
+            additionalType: "DairyStore",
+          }),
+        }}
+      />
+      <Caseificio />
+    </>
+  );
 }

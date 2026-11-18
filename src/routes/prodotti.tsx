@@ -34,6 +34,30 @@ export const Route = createFileRoute("/prodotti")({
 function ProdottiPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "Prodotti Masseria Don Gianvito",
+            description:
+              "Mozzarelle, nodini, primo sale, ricotta, formaggi stagionati, tagli bovini aziendali Pezzata Rossa × Frisona, salumi, focaccia di grano tenero e ortaggi dei campi a Noci.",
+            url: getAbsoluteUrl("/prodotti"),
+            numberOfItems: 8,
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Mozzarella artigianale" },
+              { "@type": "ListItem", position: 2, name: "Nodini" },
+              { "@type": "ListItem", position: 3, name: "Primo sale" },
+              { "@type": "ListItem", position: 4, name: "Ricotta fresca" },
+              { "@type": "ListItem", position: 5, name: "Formaggi stagionati" },
+              { "@type": "ListItem", position: 6, name: "Tagli bovini Pezzata Rossa × Frisona" },
+              { "@type": "ListItem", position: 7, name: "Salumi della masseria" },
+              { "@type": "ListItem", position: 8, name: "Focaccia e ortaggi dei campi" },
+            ],
+          }),
+        }}
+      />
       {/* Hero della pagina */}
       <section
         data-tone="dark"

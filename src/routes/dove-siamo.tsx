@@ -60,9 +60,8 @@ function DoveSiamoPage() {
         </h1>
         <div className="hairline-oro mx-auto mt-8 max-w-[120px]" />
         <p className="mt-10 text-lg leading-relaxed text-[color:var(--carbone)]/80">
-          La Masseria Don Gianvito si trova sulla SP237 ex SS377 per Mottola,
-          al km 6,5, in Zona C 76, a Noci (BA). Siamo nel cuore della Murgia
-          barese, tra Alberobello e Martina Franca.
+          La Masseria Don Gianvito si trova sulla SP237 ex SS377 per Mottola, al km 6,5, in Zona C
+          76, a Noci (BA). Siamo nel cuore della Murgia barese, tra Alberobello e Martina Franca.
         </p>
         <div className="mt-12 rounded-lg bg-[color:var(--pietra-100)] p-8 text-left">
           <h2 className="font-display text-2xl text-[color:var(--carbone)]">Indirizzo</h2>

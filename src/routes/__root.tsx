@@ -134,6 +134,14 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="it">
       <head>
         <HeadContent />
+        {/* Google Tag Manager */}
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KGG4P46D" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());`,
+          }}
+        />
+        {/* End Google Tag Manager */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -168,6 +176,17 @@ function RootShell({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KGG4P46D"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+            title="GTM noscript"
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded focus:bg-[color:var(--oro-antico)] focus:px-4 focus:py-2 focus:text-[color:var(--terra-cotta)] focus:font-display focus:text-sm focus:no-underline"
