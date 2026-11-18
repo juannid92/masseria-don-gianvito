@@ -196,30 +196,9 @@ export function Caseificio() {
         <div className="caseificio-track">
           {CASEIFICIO.moments.map((m, i) => (
             <article key={m.label} className="caseificio-panel">
-              <div
-                className={
-                  "caseificio-form" + (i === 2 ? " caseificio-form--photo journey-photo" : "")
-                }
-                aria-hidden={i === 2 ? undefined : true}
-              >
-                {i === 2 ? (
-                  <>
-                    <img
-                      src="/images/caseificio-mozzarelle-ai.jpg"
-                      alt="Mozzarelle fresche, burrate e treccia su un piatto di ceramica"
-                      width={1264}
-                      height={848}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <small className="journey-photo-credit">Caseificio della masseria · Noci</small>
-                  </>
-                ) : (
-                  <>
-                    <span>{ROMAN[i]}</span>
-                    <small>{m.label} · Lavorazione del mattino</small>
-                  </>
-                )}
+              <div className="caseificio-form" aria-hidden="true">
+                <span>{ROMAN[i]}</span>
+                <small>{m.label} · Lavorazione del mattino</small>
               </div>
               <div className="caseificio-panel-text">
                 <p className="caseificio-panel-label">
@@ -237,13 +216,13 @@ export function Caseificio() {
       </section>
 
       {/* Galleria Caseificio */}
-      <section className="agri-gallery" data-tone="light">
+      <section className="caseificio-gallery" data-tone="light">
         <div className="journey-shell">
-          <header className="agri-gallery-header">
+          <header className="caseificio-gallery-header">
             <p className="caseificio-eyebrow">Il banco</p>
             <h2>I formaggi della masseria.</h2>
           </header>
-          <div className="agri-gallery-grid">
+          <div className="caseificio-gallery-grid">
             {[
               {
                 src: "/images/caseificio/caseificio-formaggi-freschi-01.jpeg",
@@ -282,7 +261,7 @@ export function Caseificio() {
                 alt: "Panoramica del punto vendita Masseria Don Gianvito",
               },
             ].map((foto, i) => (
-              <figure key={i} className="agri-gallery-item">
+              <figure key={i} className="caseificio-gallery-item">
                 <img src={foto.src} alt={foto.alt} loading="lazy" decoding="async" />
               </figure>
             ))}
