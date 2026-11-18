@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-/* Fotografia della tavola: la foto cambia al passaggio del mouse sul titolo corrispondente. */
+/* Fotografia della tavola: la foto cambia al passaggio del mouse o al click sul titolo corrispondente. */
 const TEMPI = [
   {
     n: "01",
@@ -46,6 +46,7 @@ const TEMPI = [
 
 export function AgriLaTavola() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const active = TEMPI[activeIndex];
 
   return (
     <section className="agri-tav" data-tone="dark" id="la-tavola">
@@ -63,7 +64,16 @@ export function AgriLaTavola() {
                 key={s.n}
                 className={"agri-tav-step" + (i === activeIndex ? " is-on" : "")}
                 onMouseEnter={() => setActiveIndex(i)}
+                onClick={() => setActiveIndex(i)}
                 onFocus={() => setActiveIndex(i)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveIndex(i);
+                  }
+                }}
               >
                 <span>{s.n}</span>
                 <div>
@@ -77,28 +87,19 @@ export function AgriLaTavola() {
 
         <figure className="agri-tav-photo">
           <div className="agri-tav-photo-frame">
-            {TEMPI.map((tempo, i) => (
-              <img
-                key={tempo.n}
-                src={tempo.img}
-                alt={tempo.alt}
-                width={1264}
-                height={848}
-                loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
-                className={i === activeIndex ? "is-active" : ""}
-                style={{
-                  position: i === 0 ? "relative" : "absolute",
-                  inset: i === 0 ? undefined : 0,
-                  opacity: i === activeIndex ? 1 : 0,
-                  transition: "opacity 0.4s ease",
-                }}
-              />
-            ))}
+            <img
+              key={active.n}
+              src={active.img}
+              alt={active.alt}
+              width={1264}
+              height={848}
+              loading="eager"
+              decoding="async"
+              style={{ display: "block", width: "100%", height: "100%", objectFit: "cover" }}
+            />
           </div>
           <figcaption>
-            La tavola della masseria{" "}
-            <span>{TEMPI[activeIndex].caption}</span>
+            La tavola della masseria <span>{active.caption}</span>
           </figcaption>
         </figure>
       </div>
@@ -137,12 +138,7 @@ export function AgriLaTavola() {
               },
             ].map((foto, i) => (
               <figure key={i} className="agri-tav-gallery-item">
-                <img
-                  src={foto.src}
-                  alt={foto.alt}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src={foto.src} alt={foto.alt} loading="lazy" decoding="async" />
               </figure>
             ))}
           </div>
