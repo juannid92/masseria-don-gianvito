@@ -56,10 +56,10 @@ export function AgriturismoStoriaNuova() {
   }, []);
 
   const capitoli = [
-    { n: "I", t: "La casa", d: "Le stesse mura, da cinque secoli." },
-    { n: "II", t: "I campi", d: "La terra che dà da mangiare a tutto il resto." },
-    { n: "III", t: "Gli animali", d: "Allevati qui, nutriti qui." },
-    { n: "IV", t: "Il lavoro", d: "Ogni giorno, prima che si apra la tavola." },
+    { n: "I", t: "La casa", d: "Le stesse mura, da cinque secoli.", img: "/images/masseria/masseria-aerial-1200w.webp", alt: "Vista aerea della Masseria Don Gianvito" },
+    { n: "II", t: "I campi", d: "La terra che dà da mangiare a tutto il resto.", img: "/images/masseria/allevamento-campi-coltivati-01.jpeg", alt: "Campi coltivati intorno alla masseria" },
+    { n: "III", t: "Gli animali", d: "Allevati qui, nutriti qui.", img: "/images/masseria/allevamento-animali-recinti-01.jpeg", alt: "Animali allevati nei recinti della masseria" },
+    { n: "IV", t: "Il lavoro", d: "Ogni giorno, prima che si apra la tavola.", img: "/images/masseria/allevamento-lavoro-campi-01.jpeg", alt: "Lavoro quotidiano nei campi della masseria" },
   ];
 
   return (
@@ -107,6 +107,9 @@ export function AgriturismoStoriaNuova() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10">
           {capitoli.map((c) => (
             <div key={c.n}>
+              <div className="aspect-[4/3] overflow-hidden mb-4 bg-[color:var(--carminio-scuro)]/40">
+                <img src={c.img} alt={c.alt} loading="lazy" decoding="async" className="w-full h-full object-cover opacity-80" />
+              </div>
               <span className="font-display text-[44px] md:text-[64px] leading-none text-[color:var(--oro-su-scuro)]/80 block mb-4">
                 {c.n}
               </span>
