@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 export const Route = createFileRoute("/chi-siamo")({
   head: () => ({
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/chi-siamo")({
 function ChiSiamoPage() {
   return (
     <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Chi Siamo" }]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

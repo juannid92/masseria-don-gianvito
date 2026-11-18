@@ -30,8 +30,7 @@ function MacelleriaPage() {
             "@context": "https://schema.org",
             "@type": ["LocalBusiness", "ButcherShop"],
             name: "Macelleria Masseria Don Gianvito",
-            description:
-              "Macelleria con banco a vista: i tagli della masseria scelti guardando.",
+            description: "Macelleria con banco a vista: i tagli della masseria scelti guardando.",
             url: getAbsoluteUrl("/macelleria"),
             address: {
               "@type": "PostalAddress",

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getAbsoluteUrl } from "@/config/site";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 const FAQ_ITEMS = [
   {
@@ -57,6 +58,7 @@ export const Route = createFileRoute("/faq")({
 function FaqPage() {
   return (
     <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

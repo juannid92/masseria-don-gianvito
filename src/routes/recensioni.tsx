@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getAbsoluteUrl } from "@/config/site";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 const RECENSIONI = [
   {
@@ -49,6 +50,7 @@ export const Route = createFileRoute("/recensioni")({
 function RecensioniPage() {
   return (
     <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Recensioni" }]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
