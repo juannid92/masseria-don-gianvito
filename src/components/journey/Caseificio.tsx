@@ -236,6 +236,60 @@ export function Caseificio() {
         </div>
       </section>
 
+      {/* Galleria Caseificio */}
+      <section className="agri-gallery" data-tone="light">
+        <div className="journey-shell">
+          <header className="agri-gallery-header">
+            <p className="caseificio-eyebrow">Il banco</p>
+            <h2>I formaggi della masseria.</h2>
+          </header>
+          <div className="agri-gallery-grid">
+            {[
+              {
+                src: "/images/caseificio/caseificio-formaggi-freschi-01.jpeg",
+                alt: "Mozzarelle, burrate e formaggi freschi in esposizione",
+              },
+              {
+                src: "/images/caseificio/caseificio-caciocavallo-provola-01.jpeg",
+                alt: "Caciocavallo e provola appesi nel banco frigo",
+              },
+              {
+                src: "/images/caseificio/caseificio-vetrina-formaggi-01.jpeg",
+                alt: "Vetrina con formaggi stagionati e cartellini dei prezzi",
+              },
+              {
+                src: "/images/caseificio/caseificio-salumi-formaggi-01.jpeg",
+                alt: "Salumi e formaggi esposti su piatti di ceramica decorata",
+              },
+              {
+                src: "/images/caseificio/caseificio-interno-negozio-01.jpeg",
+                alt: "Interno del negozio con scaffali di pasta e taralli",
+              },
+              {
+                src: "/images/caseificio/caseificio-lavorazione-01.jpeg",
+                alt: "Lavorazione dei formaggi nel laboratorio della masseria",
+              },
+              {
+                src: "/images/caseificio/caseificio-banco-esposizione-01.jpeg",
+                alt: "Banco frigo con ricotta, stracciatella e primo sale",
+              },
+              {
+                src: "/images/caseificio/caseificio-interno-completo-01.jpeg",
+                alt: "Vista completa dell'interno con arco in pietra e bilancia",
+              },
+              {
+                src: "/images/caseificio/caseificio-panoramica-01.jpeg",
+                alt: "Panoramica del punto vendita Masseria Don Gianvito",
+              },
+            ].map((foto, i) => (
+              <figure key={i} className="agri-gallery-item">
+                <img src={foto.src} alt={foto.alt} loading="lazy" decoding="async" />
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section
         className="journey-next journey-next--caseificio"
         data-tone="light"
