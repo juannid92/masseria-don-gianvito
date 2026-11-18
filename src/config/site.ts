@@ -4,7 +4,7 @@
  */
 
 export const SITE_CONFIG = {
-  url: "https://masseriadongianvito.it",
+  url: "https://www.masseriadongianvito.it",
   name: "Masseria Don Gianvito",
   title: "Masseria Don Gianvito — Dalla terra alla tavola",
   description:

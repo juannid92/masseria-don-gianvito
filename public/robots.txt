@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://masseriadongianvito.it/sitemap.xml
+Sitemap: https://www.masseriadongianvito.it/sitemap.xml
