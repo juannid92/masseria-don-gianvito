@@ -98,40 +98,40 @@ export function AgriLaTavola() {
         </figure>
       </div>
       {/* Galleria Piatti Agriturismo */}
-      <section className="agri-gallery" data-tone="light">
+      <section className="agri-tav-gallery" data-tone="light">
         <div className="journey-shell">
-          <header className="agri-gallery-header">
-            <p className="agri-eyebrow">I nostri piatti</p>
+          <header className="agri-tav-gallery-header">
+            <p className="agri-tav-eyebrow">I nostri piatti</p>
             <h2>Dalla terra alla tavola.</h2>
           </header>
-          <div className="agri-gallery-grid">
+          <div className="agri-tav-gallery-grid">
             {[
               {
                 src: "/images/agriturismo/agriturismo-antipasti-cortile-01.jpeg",
-                alt: "Tagliere di antipasti serviti nel cortile della masseria",
+                alt: "Carpaccio con scaglie e salsa gialla nel cortile",
               },
               {
-                src: "/images/agriturismo/agriturismo-primi-piatti-02.jpeg",
-                alt: "Primi piatti della tradizione pugliese",
+                src: "/images/agriturismo/agriturismo-primi-piatti-03.jpeg",
+                alt: "Orecchiette fresche con cime di rapa",
               },
               {
-                src: "/images/agriturismo/agriturismo-carne-brace-02.jpeg",
-                alt: "Carne della macelleria cotta alla brace",
+                src: "/images/agriturismo/agriturismo-primi-piatti-04.jpeg",
+                alt: "Pasta fatta in casa con sugo della masseria",
               },
               {
-                src: "/images/agriturismo/agriturismo-dessert-05.jpeg",
-                alt: "Dolce della casa a fine pasto",
+                src: "/images/agriturismo/agriturismo-carne-brace-01.jpeg",
+                alt: "Costata di manzo sulla brace ardente",
               },
               {
-                src: "/images/agriturismo/agriturismo-presentazione-piatti-03.jpeg",
-                alt: "Presentazione curata dei piatti in tavola",
+                src: "/images/agriturismo/agriturismo-dessert-03.jpeg",
+                alt: "Dolce della casa con crema e frutta fresca",
               },
               {
-                src: "/images/agriturismo/agriturismo-sala-panoramica-01.jpeg",
-                alt: "Sala da pranzo panoramica dell'agriturismo",
+                src: "/images/agriturismo/agriturismo-convivialita-01.jpeg",
+                alt: "Momenti di convivialità intorno alla tavola",
               },
             ].map((foto, i) => (
-              <figure key={i} className="agri-gallery-item">
+              <figure key={i} className="agri-tav-gallery-item">
                 <img src={foto.src} alt={foto.alt} loading="lazy" decoding="async" />
               </figure>
             ))}

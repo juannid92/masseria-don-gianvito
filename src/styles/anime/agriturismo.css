@@ -226,15 +226,16 @@
 .macelleria-station-cut--photo::before{display:none}
 .macelleria-station-cut--photo>img{object-position:48% 50%}
 
-/* Galleria Agriturismo (tono chiaro) */
-.agri-gallery{background:var(--pietra-100);padding:4rem 0}
-.agri-gallery-header{margin-bottom:2.5rem;text-align:center}
-.agri-gallery-header h2{font-family:var(--mc-font);font-size:clamp(28px,3vw,40px);color:var(--carbone);margin-top:0.5rem}
-.agri-gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
-@media(max-width:768px){.agri-gallery-grid{grid-template-columns:1fr}}
-.agri-gallery-item{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--pietra-200)}
-.agri-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease}
-.agri-gallery-item:hover img{transform:scale(1.03)}
+/* Galleria Agriturismo — La Tavola (tono scuro, coerente con agri-tav) */
+.agri-tav-gallery{background:var(--pietra-100);padding:5rem 0}
+.agri-tav-gallery-header{text-align:center;margin-bottom:3rem}
+.agri-tav-gallery-header h2{font-family:var(--font-display);font-weight:400;font-size:clamp(32px,3.6vw,52px);line-height:1.05;letter-spacing:-.03em;color:var(--carbone);margin-top:.75rem}
+.agri-tav-gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.agri-tav-gallery-item{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--pietra-200)}
+.agri-tav-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.agri-tav-gallery-item:hover img{transform:scale(1.04)}
+@media(max-width:900px){.agri-tav-gallery-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.agri-tav-gallery-grid{grid-template-columns:1fr}.agri-tav-gallery{padding:3.5rem 0}}
 
 /* Galleria Macelleria — pinned cards, tono scuro */
 .macelleria-gallery-pinned{background:var(--mc-scuro,#1a1210);min-height:100vh}

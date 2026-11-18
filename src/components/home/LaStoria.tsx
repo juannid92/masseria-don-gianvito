@@ -26,9 +26,9 @@ type Momento = {
 const MOMENTI: Momento[] = [
   {
     id: "pietra",
-    foto: "/images/storia-pietra.jpg",
-    fotoAlt: "Arco a Mottola",
-    fotoCredito: "Stefano Piepoli e Carmine Lentini · pubblico dominio",
+    foto: "/images/masseria-aerial.jpg",
+    fotoAlt: "Vista aerea della Masseria Don Gianvito",
+    fotoCredito: "Masseria Don Gianvito",
     n: "01",
     occhiello: "IL CINQUECENTO",
     titolo: ["Prima di tutto,", "c'era la pietra."],
