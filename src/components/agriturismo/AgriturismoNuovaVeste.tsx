@@ -1,14 +1,14 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import aerial from "@/assets/masseria-aerial.asset.json";
+
+const HERO_IMG = "/images/masseria-aerial.jpg";
 
 export function AgriturismoStoriaNuova() {
   const containerRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
-  const [imgSrc, setImgSrc] = useState<string>(aerial.url);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -56,10 +56,34 @@ export function AgriturismoStoriaNuova() {
   }, []);
 
   const capitoli = [
-    { n: "I", t: "La casa", d: "Le stesse mura, da cinque secoli.", img: "/images/masseria/masseria-aerial-1200w.webp", alt: "Vista aerea della Masseria Don Gianvito" },
-    { n: "II", t: "I campi", d: "La terra che dà da mangiare a tutto il resto.", img: "/images/masseria/allevamento-campi-coltivati-01.jpeg", alt: "Campi coltivati intorno alla masseria" },
-    { n: "III", t: "Gli animali", d: "Allevati qui, nutriti qui.", img: "/images/masseria/allevamento-animali-recinti-01.jpeg", alt: "Animali allevati nei recinti della masseria" },
-    { n: "IV", t: "Il lavoro", d: "Ogni giorno, prima che si apra la tavola.", img: "/images/masseria/allevamento-lavoro-campi-01.jpeg", alt: "Lavoro quotidiano nei campi della masseria" },
+    {
+      n: "I",
+      t: "La casa",
+      d: "Le stesse mura, da cinque secoli.",
+      img: HERO_IMG,
+      alt: "Vista aerea della Masseria Don Gianvito",
+    },
+    {
+      n: "II",
+      t: "I campi",
+      d: "La terra che dà da mangiare a tutto il resto.",
+      img: "/images/masseria/allevamento-campi-coltivati-01.jpeg",
+      alt: "Campi coltivati intorno alla masseria",
+    },
+    {
+      n: "III",
+      t: "Gli animali",
+      d: "Allevati qui, nutriti qui.",
+      img: "/images/masseria/allevamento-bovini-recinti-01.jpeg",
+      alt: "Bovini allevati nei recinti della masseria",
+    },
+    {
+      n: "IV",
+      t: "Il lavoro",
+      d: "Ogni giorno, prima che si apra la tavola.",
+      img: "/images/masseria/allevamento-lavoro-campi-01.jpeg",
+      alt: "Lavoro quotidiano nei campi della masseria",
+    },
   ];
 
   return (
@@ -72,14 +96,9 @@ export function AgriturismoStoriaNuova() {
       {/* Foto a tutta larghezza con titolo sul gradiente */}
       <div ref={photoRef} className="relative h-[70svh] min-h-[460px] md:h-[85svh]">
         <img
-          src={imgSrc}
-          alt="Veduta della Masseria Don Gianvito nelle campagne di Noci"
+          src={HERO_IMG}
+          alt="Veduta aerea della Masseria Don Gianvito nelle campagne di Noci"
           className="absolute inset-0 w-full h-full object-cover"
-          onError={() => {
-            if (imgSrc !== "/images/storia-lavoro.jpg") {
-              setImgSrc("/images/storia-lavoro.jpg");
-            }
-          }}
         />
         <div
           className="absolute inset-0 bg-gradient-to-t from-[color:var(--carminio-scuro)] via-[color:var(--carminio-scuro)]/50 to-transparent"
@@ -108,7 +127,13 @@ export function AgriturismoStoriaNuova() {
           {capitoli.map((c) => (
             <div key={c.n}>
               <div className="aspect-[4/3] overflow-hidden mb-4 bg-[color:var(--carminio-scuro)]/40">
-                <img src={c.img} alt={c.alt} loading="lazy" decoding="async" className="w-full h-full object-cover opacity-80" />
+                <img
+                  src={c.img}
+                  alt={c.alt}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover opacity-80"
+                />
               </div>
               <span className="font-display text-[44px] md:text-[64px] leading-none text-[color:var(--oro-su-scuro)]/80 block mb-4">
                 {c.n}
@@ -119,14 +144,32 @@ export function AgriturismoStoriaNuova() {
           ))}
         </div>
 
-        <div className="mt-16 md:mt-24 grid md:grid-cols-12 gap-8 items-start">
+        <div className="mt-16 md:mt-24 grid md:grid-cols-12 gap-8 items-center">
+          <div className="md:col-span-5 aspect-[4/3] overflow-hidden bg-[color:var(--carminio-scuro)]/40">
+            <img
+              src="/images/agriturismo/agriturismo-sala-panoramica-01.jpeg"
+              alt="Sala panoramica dell'agriturismo Masseria Don Gianvito"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
           <p className="md:col-span-7 text-[19px] md:text-[24px] leading-relaxed">
             La masseria attraversa i secoli conservando il rapporto fra casa, campi, animali e
             lavoro. Oggi l’Agriturismo è il punto in cui questa storia si apre agli ospiti.
           </p>
-          <p className="md:col-span-4 md:col-start-9 font-display italic text-[22px] md:text-[28px] leading-snug text-[color:var(--oro-su-scuro)]">
+          <p className="md:col-span-4 md:col-start-5 font-display italic text-[22px] md:text-[28px] leading-snug text-[color:var(--oro-su-scuro)]">
             La tavola arriva dopo tutto il resto: allevamento, caseificio, macelleria e cucina.
           </p>
+          <div className="md:col-span-8 aspect-[4/3] overflow-hidden bg-[color:var(--carminio-scuro)]/40">
+            <img
+              src="/images/agriturismo/agriturismo-convivialita-01.jpeg"
+              alt="Momenti di convivialità alla tavola della masseria"
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
         </div>
       </div>
     </section>
