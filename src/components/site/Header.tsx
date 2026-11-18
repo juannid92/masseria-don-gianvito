@@ -185,8 +185,6 @@ export function Header() {
             src="/images/logo-emblema.svg"
             alt=""
             aria-hidden="true"
-            width={750}
-            height={435}
             className="h-9 w-auto md:h-11"
           />
           <span className="flex flex-col leading-none">
