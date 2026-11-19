@@ -147,14 +147,12 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": ["Farm", "Restaurant", "Butcher"],
+              "@type": ["LocalBusiness", "Farm", "Restaurant", "Butcher"],
               name: SITE_CONFIG.name,
               description: SITE_CONFIG.description,
               url: SITE_CONFIG.url,
-              telephone: [
-                `tel:+39${MASSERIA.telefono.replace(/\s/g, "")}`,
-                `tel:+39${MASSERIA.telefono2.replace(/\s/g, "")}`,
-              ],
+              image: "https://www.masseriadongianvito.it/images/masseria-luogo.jpg",
+              telephone: ["+393339395750", "+393333870292"],
               address: {
                 "@type": "PostalAddress",
                 streetAddress: MASSERIA.indirizzo,

@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
-import * as THREE from "three";
 import type { AnimaId } from "@/data/masseria";
 
-// Shared renderer — single WebGL context for all 4 pins.
-let sharedRenderer: THREE.WebGLRenderer | null = null;
+// Dynamic import of three — only loaded when this component mounts (homepage only).
+// shortcut: three is ~664KB; lazy-loading avoids it on 12/13 pages. Upgrade to React.lazy wrapper if SSR hydration issues arise.
+type ThreeModule = typeof import("three");
+let threeModule: ThreeModule | null = null;
+
+async function loadThree(): Promise<ThreeModule> {
+  if (!threeModule) {
+    threeModule = await import("three");
+  }
+  return threeModule;
+}
+
+// Shared renderer — single WebGL context for all pins.
+let sharedRenderer: InstanceType<ThreeModule["WebGLRenderer"]> | null = null;
 let rendererRefCount = 0;
 
-function getSharedRenderer(): THREE.WebGLRenderer {
+function getSharedRenderer(THREE: ThreeModule) {
   if (!sharedRenderer) {
     sharedRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     sharedRenderer.setPixelRatio(2);
@@ -30,7 +41,7 @@ function releaseSharedRenderer() {
 
 // ── Icon builders ──────────────────────────────────────────────────────────────
 
-function buildAllevamento(scene: THREE.Scene) {
+function buildAllevamento(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
   const bodyMat = new THREE.MeshStandardMaterial({ color: 0xf5f0e8, roughness: 0.7 });
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.35, 0.6, 8, 16), bodyMat);
   body.rotation.z = Math.PI / 2;
@@ -84,7 +95,7 @@ function buildAllevamento(scene: THREE.Scene) {
   scene.add(s2);
 }
 
-function buildCaseificio(scene: THREE.Scene) {
+function buildCaseificio(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
   const shape = new THREE.Shape();
   shape.moveTo(0, 0);
   shape.lineTo(0.7, 0);
@@ -127,7 +138,7 @@ function buildCaseificio(scene: THREE.Scene) {
   scene.add(rind);
 }
 
-function buildMacelleria(scene: THREE.Scene) {
+function buildMacelleria(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
   const bladeShape = new THREE.Shape();
   bladeShape.moveTo(0, 0);
   bladeShape.lineTo(0.6, 0.02);
@@ -180,7 +191,7 @@ function buildMacelleria(scene: THREE.Scene) {
   }
 }
 
-function buildAgriturismo(scene: THREE.Scene) {
+function buildAgriturismo(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
   const plate = new THREE.Mesh(
     new THREE.CylinderGeometry(0.4, 0.38, 0.04, 32),
     new THREE.MeshStandardMaterial({ color: 0xf8f4ec, roughness: 0.3, metalness: 0.05 }),
@@ -244,7 +255,7 @@ function buildAgriturismo(scene: THREE.Scene) {
   scene.add(garnish);
 }
 
-function buildBottega(scene: THREE.Scene) {
+function buildBottega(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
   // Shopping bag body
   const bagMat = new THREE.MeshStandardMaterial({ color: 0x2d5a3d, roughness: 0.6 });
   const body = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.6, 0.25), bagMat);
@@ -288,7 +299,10 @@ function buildBottega(scene: THREE.Scene) {
 
 type PinId = AnimaId | "bottega";
 
-const BUILDERS: Record<PinId, (scene: THREE.Scene) => void> = {
+const BUILDERS: Record<
+  PinId,
+  (THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) => void
+> = {
   allevamento: buildAllevamento,
   caseificio: buildCaseificio,
   macelleria: buildMacelleria,
@@ -308,33 +322,43 @@ export function HeroPin3D({ id, numero, nome }: HeroPin3DProps) {
   const [iconSrc, setIconSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    const renderer = getSharedRenderer();
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 10);
-    camera.position.set(0, 0.3, 1.8);
-    camera.lookAt(0, 0, 0);
+    let cancelled = false;
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const dir = new THREE.DirectionalLight(0xfff5e0, 1.2);
-    dir.position.set(2, 3, 2);
-    scene.add(dir);
-    const fill = new THREE.DirectionalLight(0xe0e8ff, 0.4);
-    fill.position.set(-2, 1, -1);
-    scene.add(fill);
+    (async () => {
+      const THREE = await loadThree();
+      if (cancelled) return;
 
-    BUILDERS[id](scene);
-    renderer.render(scene, camera);
-    setIconSrc(renderer.domElement.toDataURL("image/png"));
+      const renderer = getSharedRenderer(THREE);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 10);
+      camera.position.set(0, 0.3, 1.8);
+      camera.lookAt(0, 0, 0);
 
-    scene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.geometry.dispose();
-        const mats = Array.isArray(child.material) ? child.material : [child.material];
-        mats.forEach((m) => m.dispose());
-      }
-    });
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      const dir = new THREE.DirectionalLight(0xfff5e0, 1.2);
+      dir.position.set(2, 3, 2);
+      scene.add(dir);
+      const fill = new THREE.DirectionalLight(0xe0e8ff, 0.4);
+      fill.position.set(-2, 1, -1);
+      scene.add(fill);
 
-    return () => releaseSharedRenderer();
+      BUILDERS[id](THREE, scene);
+      renderer.render(scene, camera);
+      setIconSrc(renderer.domElement.toDataURL("image/png"));
+
+      scene.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          child.geometry.dispose();
+          const mats = Array.isArray(child.material) ? child.material : [child.material];
+          mats.forEach((m) => m.dispose());
+        }
+      });
+    })();
+
+    return () => {
+      cancelled = true;
+      releaseSharedRenderer();
+    };
   }, [id]);
 
   return (

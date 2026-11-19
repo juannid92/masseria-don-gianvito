@@ -29,7 +29,7 @@ function AllevamentoPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": ["LocalBusiness", "FarmAction"],
+            "@type": ["LocalBusiness", "Farm"],
             name: "Allevamento Masseria Don Gianvito",
             description:
               "L'allevamento della Masseria Don Gianvito a Noci: animali cresciuti negli stessi campi che li nutrono.",

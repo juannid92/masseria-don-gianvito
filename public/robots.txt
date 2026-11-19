@@ -29,3 +29,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.masseriadongianvito.it/sitemap.xml
+
+# AI discovery: https://www.masseriadongianvito.it/llms.txt

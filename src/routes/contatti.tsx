@@ -34,7 +34,7 @@ function ContattiPage() {
             mainEntity: {
               "@type": "LocalBusiness",
               name: MASSERIA.nome,
-              telephone: MASSERIA.telefono,
+              telephone: "+393339395750",
               url: getAbsoluteUrl("/"),
               address: {
                 "@type": "PostalAddress",

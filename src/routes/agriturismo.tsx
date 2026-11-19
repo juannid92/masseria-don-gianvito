@@ -62,6 +62,12 @@ function AgriturismoPage() {
               longitude: 17.0426,
             },
             telephone: "+393339395750",
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.8",
+              reviewCount: "4",
+              bestRating: "5",
+            },
           }),
         }}
       />

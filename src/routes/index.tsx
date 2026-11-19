@@ -49,6 +49,35 @@ function HomePage() {
   return (
     <>
       <HomeHashHandler />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Masseria Don Gianvito",
+              url: "https://www.masseriadongianvito.it",
+              logo: "https://www.masseriadongianvito.it/images/logo-emblema.svg",
+              sameAs: [
+                "https://facebook.com/masseriadongianvito",
+                "https://instagram.com/masseria_don_gianvito",
+              ],
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
+              name: "Masseria Don Gianvito",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.8",
+                reviewCount: "4",
+                bestRating: "5",
+              },
+            },
+          ]),
+        }}
+      />
       <Hero />
       <IlManifesto />
       <LaStoria />
