@@ -81,8 +81,8 @@ export function AgriturismoStoriaNuova() {
       n: "IV",
       t: "Il lavoro",
       d: "Ogni giorno, prima che si apra la tavola.",
-      img: "/images/masseria/allevamento-lavoro-campi-01.jpeg",
-      alt: "Lavoro quotidiano nei campi della masseria",
+      img: "/images/agriturismo-cinquecento-punto4.jpg",
+      alt: "Trattore e seminatrice al lavoro nei campi della masseria",
     },
   ];
 
