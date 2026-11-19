@@ -17,6 +17,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { CookieBanner } from "@/components/site/CookieBanner";
+import { StickyContactBar } from "@/components/site/StickyContactBar";
 import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
 
@@ -212,6 +213,7 @@ function RootComponent() {
         </main>
         <Footer />
         <CookieBanner />
+        <StickyContactBar />
       </AnimationShell>
     </QueryClientProvider>
   );
