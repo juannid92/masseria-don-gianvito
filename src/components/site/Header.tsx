@@ -292,17 +292,17 @@ export function Header() {
             )}
           </div>
 
-          <button
-            type="button"
-            onClick={() => goToSection("prenota")}
-            className="h-[36px] px-6 font-eyebrow text-[9px] tracking-[0.22em] transition-colors border hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)]"
+          <Link
+            to="/agriturismo"
+            hash="prenota"
+            className="h-[36px] px-6 font-eyebrow text-[9px] tracking-[0.22em] transition-colors border hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)] flex items-center"
             style={{
               color: oroText,
               borderColor: `color-mix(in oklab, ${oroText} 50%, transparent)`,
             }}
           >
             Prenota
-          </button>
+          </Link>
         </nav>
 
         {/* Mobile */}
@@ -382,12 +382,14 @@ export function Header() {
                 {a.nome}
               </Link>
             ))}
-            <button
-              onClick={() => goToSection("prenota")}
-              className="mt-8 h-14 border border-[color:var(--oro-antico)] font-eyebrow text-[11px] text-[color:var(--oro-su-scuro)]"
+            <Link
+              to="/agriturismo"
+              hash="prenota"
+              onClick={() => setDrawer(false)}
+              className="mt-8 h-14 border border-[color:var(--oro-antico)] font-eyebrow text-[11px] text-[color:var(--oro-su-scuro)] flex items-center justify-center"
             >
               PRENOTA
-            </button>
+            </Link>
           </nav>
         </div>
       )}
