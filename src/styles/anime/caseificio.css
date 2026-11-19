@@ -9,7 +9,7 @@
 .caseificio-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .caseificio-gallery-item:hover img{transform:scale(1.04)}
 @media(max-width:900px){.caseificio-gallery-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.caseificio-gallery-grid{grid-template-columns:1fr}.caseificio-gallery{padding:3.5rem 0}}
+@media(max-width:600px){.caseificio-gallery-grid{grid-template-columns:1fr;gap:.75rem}.caseificio-gallery{padding:3rem 0}.caseificio-gallery-item{aspect-ratio:3/2}}
 
 /* ────────────────────────────────────────────────────────────────────────
    CASEIFICIO — Timeline verticale centrale

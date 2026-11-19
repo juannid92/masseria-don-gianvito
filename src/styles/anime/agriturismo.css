@@ -235,7 +235,7 @@
 .agri-tav-gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .agri-tav-gallery-item:hover img{transform:scale(1.04)}
 @media(max-width:900px){.agri-tav-gallery-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.agri-tav-gallery-grid{grid-template-columns:1fr}.agri-tav-gallery{padding:3.5rem 0}}
+@media(max-width:600px){.agri-tav-gallery-grid{grid-template-columns:1fr;gap:.75rem}.agri-tav-gallery{padding:3rem 0}.agri-tav-gallery-item{aspect-ratio:3/2}}
 
 /* Galleria Macelleria — pinned cards, tono scuro */
 .macelleria-gallery-pinned{background:var(--mc-scuro,#1a1210);min-height:100vh}
@@ -259,4 +259,4 @@
 .allevamento-gallery-item:hover img{transform:scale(1.04)}
 .allevamento-gallery-item .journey-photo-credit{position:absolute;bottom:0;left:0;right:0;padding:0.75rem 1rem;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#f1e6d8cc;background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);pointer-events:none}
 @media(max-width:900px){.allevamento-gallery-grid{grid-template-columns:repeat(2,1fr)}.allevamento-gallery-item--wide{grid-column:span 2}}
-@media(max-width:600px){.allevamento-gallery-grid{grid-template-columns:1fr}.allevamento-gallery-item--wide{grid-column:span 1}}
+@media(max-width:600px){.allevamento-gallery-grid{grid-template-columns:1fr;gap:.75rem}.allevamento-gallery-item--wide{grid-column:span 1}.allevamento-gallery-item{aspect-ratio:3/2}.allevamento-gallery{padding:3rem 0}}

@@ -3,7 +3,6 @@ import { Link } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import aerial from "@/assets/masseria-aerial.asset.json";
-import { MASSERIA } from "@/data/masseria";
 import { PIN_ANIME } from "@/data/pin-anime";
 import { HeroPin3D } from "./HeroPin3D";
 
@@ -229,22 +228,6 @@ export function Hero() {
           <br />
           nello stesso luogo, a Noci.
         </p>
-        <div className="fullscreen-hero-cta">
-          <a
-            href={MASSERIA.whatsappPrenota}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fullscreen-hero-btn fullscreen-hero-btn--primary"
-          >
-            Prenota su WhatsApp
-          </a>
-          <a
-            href={MASSERIA.telefonoHref}
-            className="fullscreen-hero-btn fullscreen-hero-btn--secondary"
-          >
-            Chiama {MASSERIA.telefono}
-          </a>
-        </div>
       </div>
 
       <div className="fullscreen-hero-bottom">
