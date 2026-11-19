@@ -13,17 +13,19 @@
 .fullscreen-hero-pin-dot{display:grid;place-items:center;width:46px;height:46px;border:1px solid #e4c98e;border-radius:50%;background:rgba(23,24,18,.72);backdrop-filter:blur(6px);font:13px/1 var(--font-sans);box-shadow:0 0 0 7px #dfca9f12;transition:background .2s,color .2s,box-shadow .2s}
 .fullscreen-hero-pin-label{font:14px/1.5 var(--font-sans);white-space:nowrap;padding:5px 10px;background:rgba(23,24,18,.82);backdrop-filter:blur(6px)}
 .fullscreen-hero-pin:hover .fullscreen-hero-pin-dot,.fullscreen-hero-pin:focus-visible .fullscreen-hero-pin-dot{background:#dfca9f;color:#201e18;box-shadow:0 0 0 10px #dfca9f30}
-/* Pin 3D con icone rappresentative */
-.hero-pin-3d{position:relative;width:52px;height:52px;perspective:600px}
-.hero-pin-3d-object{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s ease}
-.fullscreen-hero-pin:hover .hero-pin-3d-object{transform:rotateY(180deg)}
-.hero-pin-3d-face{position:absolute;inset:0;display:grid;place-items:center;border-radius:50%;backface-visibility:hidden;background:rgba(23,24,18,.72);backdrop-filter:blur(6px);border:1px solid #e4c98e;box-shadow:0 0 0 7px #dfca9f12}
-.hero-pin-3d-face svg{width:26px;height:26px;color:#faf6ec}
-.hero-pin-3d-icon{width:48px;height:48px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
-.hero-pin-3d-face--front{z-index:2}
-.hero-pin-3d-face--back{transform:rotateY(180deg);background:#dfca9f;font:13px/1 var(--font-sans);color:#201e18}
-.hero-pin-3d-shadow{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:32px;height:8px;border-radius:50%;background:rgba(0,0,0,.35);filter:blur(4px);pointer-events:none}
-.fullscreen-hero-pin:hover .hero-pin-3d-face--front{border-color:#dfca9f;box-shadow:0 0 0 10px #dfca9f30}
+/* Pin marker mappa 3D — nessun cerchio, nessun sfondo */
+.hero-pin-marker{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.hero-pin-icon-wrap{position:relative;z-index:2;transition:transform .3s ease}
+.hero-pin-marker:hover .hero-pin-icon-wrap{transform:translateY(-6px) scale(1.08)}
+.hero-pin-icon{width:56px;height:56px;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45)) drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+.hero-pin-pulse{position:absolute;top:50%;left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;border:2px solid #dfca9f;opacity:0;z-index:1;animation:hero-pin-pulse 2.4s ease-out infinite}
+.hero-pin-pulse--delayed{animation-delay:1.2s}
+@keyframes hero-pin-pulse{0%{transform:scale(.6);opacity:.7}100%{transform:scale(2.2);opacity:0}}
+.hero-pin-label{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font:600 11px/1 var(--font-sans);letter-spacing:.12em;color:#dfca9f;opacity:0;transition:opacity .25s ease;white-space:nowrap;text-shadow:0 1px 4px rgba(0,0,0,.6);z-index:3}
+.hero-pin-marker:hover .hero-pin-label{opacity:1}
+.hero-pin-ground-shadow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:36px;height:10px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.4) 0%,transparent 70%);filter:blur(3px);pointer-events:none;z-index:0;transition:transform .3s ease,opacity .3s ease}
+.hero-pin-marker:hover .hero-pin-ground-shadow{transform:translateX(-50%) scale(1.15);opacity:.7}
+@media(prefers-reduced-motion:reduce){.hero-pin-pulse{animation:none;opacity:.3}.hero-pin-icon-wrap,.hero-pin-ground-shadow,.hero-pin-label{transition:none}}
 /* Hero CTA buttons */
 .fullscreen-hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 .fullscreen-hero-btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 28px;font:500 13px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;border-radius:2px;text-decoration:none;transition:background .2s,color .2s,border-color .2s}
