@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import aerial from "@/assets/masseria-aerial.asset.json";
 import { PIN_ANIME } from "@/data/pin-anime";
+import { HeroPin3D } from "./HeroPin3D";
 
 /** Full-bleed photograph, overlaid title and direct links: no separate map/card. */
 export function Hero() {
@@ -205,7 +206,7 @@ export function Hero() {
                 } as CSSProperties
               }
             >
-              <span className="fullscreen-hero-pin-dot">{pin.numero}</span>
+              <HeroPin3D id={pin.id} numero={pin.numero} nome={pin.nome} />
               <span className="fullscreen-hero-pin-label">
                 {pin.nome}
                 <span aria-hidden="true"> ↗</span>

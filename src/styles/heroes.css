@@ -13,6 +13,16 @@
 .fullscreen-hero-pin-dot{display:grid;place-items:center;width:46px;height:46px;border:1px solid #e4c98e;border-radius:50%;background:rgba(23,24,18,.72);backdrop-filter:blur(6px);font:13px/1 var(--font-sans);box-shadow:0 0 0 7px #dfca9f12;transition:background .2s,color .2s,box-shadow .2s}
 .fullscreen-hero-pin-label{font:14px/1.5 var(--font-sans);white-space:nowrap;padding:5px 10px;background:rgba(23,24,18,.82);backdrop-filter:blur(6px)}
 .fullscreen-hero-pin:hover .fullscreen-hero-pin-dot,.fullscreen-hero-pin:focus-visible .fullscreen-hero-pin-dot{background:#dfca9f;color:#201e18;box-shadow:0 0 0 10px #dfca9f30}
+/* Pin 3D con icone rappresentative */
+.hero-pin-3d{position:relative;width:52px;height:52px;perspective:600px}
+.hero-pin-3d-object{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .4s ease}
+.fullscreen-hero-pin:hover .hero-pin-3d-object{transform:rotateY(180deg)}
+.hero-pin-3d-face{position:absolute;inset:0;display:grid;place-items:center;border-radius:50%;backface-visibility:hidden;background:rgba(23,24,18,.72);backdrop-filter:blur(6px);border:1px solid #e4c98e;box-shadow:0 0 0 7px #dfca9f12}
+.hero-pin-3d-face svg{width:26px;height:26px;color:#faf6ec}
+.hero-pin-3d-face--front{z-index:2}
+.hero-pin-3d-face--back{transform:rotateY(180deg);background:#dfca9f;font:13px/1 var(--font-sans);color:#201e18}
+.hero-pin-3d-shadow{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:32px;height:8px;border-radius:50%;background:rgba(0,0,0,.35);filter:blur(4px);pointer-events:none}
+.fullscreen-hero-pin:hover .hero-pin-3d-face--front{border-color:#dfca9f;box-shadow:0 0 0 10px #dfca9f30}
 .fullscreen-hero :is(a,button):focus-visible{outline:2px solid #faf6ec;outline-offset:5px}
 .fullscreen-hero-bottom{position:absolute;bottom:32px;left:clamp(24px,3.5vw,64px);right:clamp(24px,3.5vw,64px);z-index:2;display:flex;align-items:center;justify-content:space-between;gap:32px;font:13px/1.6 var(--font-sans);color:#f0eadf}
 .fullscreen-hero-scroll{display:inline-flex;align-items:center;gap:24px;min-height:44px;padding:8px 0;color:#faf6ec}
