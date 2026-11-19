@@ -37,6 +37,8 @@
 /* Sticky contact bar */
 .sticky-contact-bar{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;gap:0;background:rgba(23,24,18,.92);backdrop-filter:blur(10px);border-top:1px solid #dfca9f30;padding:env(safe-area-inset-bottom,0)}
 .sticky-contact-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 16px;font:500 13px/1 var(--font-sans);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:background .2s}
+.sticky-contact-btn--bottega{color:#2d5a3d;border-right:1px solid #dfca9f20;font-weight:700}
+.sticky-contact-btn--bottega:hover,.sticky-contact-btn--bottega:focus-visible{background:#2d5a3d18}
 .sticky-contact-btn--whatsapp{color:#25d366;border-right:1px solid #dfca9f20}
 .sticky-contact-btn--whatsapp:hover,.sticky-contact-btn--whatsapp:focus-visible{background:#25d36618}
 .sticky-contact-btn--phone{color:#dfca9f}
