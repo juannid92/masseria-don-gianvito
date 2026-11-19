@@ -3,7 +3,8 @@ import { Link } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import aerial from "@/assets/masseria-aerial.asset.json";
-import { PIN_ANIME, MASSERIA } from "@/data/masseria";
+import { MASSERIA } from "@/data/masseria";
+import { PIN_ANIME } from "@/data/pin-anime";
 import { HeroPin3D } from "./HeroPin3D";
 
 /** Full-bleed photograph, overlaid title and direct links: no separate map/card. */
