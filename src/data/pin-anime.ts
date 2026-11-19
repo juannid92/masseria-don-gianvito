@@ -14,12 +14,12 @@ export interface PinCoord {
 }
 
 export interface PinAnima {
-  id: AnimaId;
+  id: AnimaId | "bottega";
   numero: string;
   nome: string;
   descrizione: string;
   invito: string;
-  to: "/allevamento" | "/caseificio" | "/macelleria" | "/agriturismo";
+  to: "/allevamento" | "/caseificio" | "/macelleria" | "/agriturismo" | "/bottega";
   d: PinCoord;
   t: PinCoord;
   m: PinCoord;
@@ -91,5 +91,20 @@ export const PIN_ANIME: PinAnima[] = [
     lato: "right",
     tinta: "var(--oro-antico)",
     profondita: 1.3,
+  },
+  {
+    id: "bottega",
+    numero: "05",
+    nome: "Bottega",
+    descrizione: "Prodotti tipici della Masseria con consegna a domicilio.",
+    invito: "Ordina ora",
+    to: "/bottega",
+    d: { x: 72, y: 58, off: { dx: 44, dy: -26 } },
+    t: { x: 70, y: 58, off: { dx: 34, dy: -24 } },
+    m: { x: 68, y: 62, off: { dx: -30, dy: 20 } },
+    s: { x: 70, y: 56, off: { dx: 28, dy: 0 } },
+    lato: "right",
+    tinta: "var(--bottega-forest-green)",
+    profondita: 1.6,
   },
 ];

@@ -61,7 +61,12 @@ function buildAllevamento(scene: THREE.Scene) {
 
   const legMat = new THREE.MeshStandardMaterial({ color: 0xd4c4a8, roughness: 0.8 });
   const legGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.35, 8);
-  for (const [x, y, z] of [[-0.2, -0.35, -0.15], [-0.2, -0.35, 0.15], [0.2, -0.35, -0.15], [0.2, -0.35, 0.15]]) {
+  for (const [x, y, z] of [
+    [-0.2, -0.35, -0.15],
+    [-0.2, -0.35, 0.15],
+    [0.2, -0.35, -0.15],
+    [0.2, -0.35, 0.15],
+  ]) {
     const leg = new THREE.Mesh(legGeo, legMat);
     leg.position.set(x, y, z);
     scene.add(leg);
@@ -85,15 +90,29 @@ function buildCaseificio(scene: THREE.Scene) {
   shape.lineTo(0.7, 0);
   shape.lineTo(0.7, 0.45);
   shape.lineTo(0, 0);
-  const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.35, bevelEnabled: true, bevelThickness: 0.03, bevelSize: 0.03, bevelSegments: 3 });
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.35,
+    bevelEnabled: true,
+    bevelThickness: 0.03,
+    bevelSize: 0.03,
+    bevelSegments: 3,
+  });
   geo.center();
-  const wedge = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xf0d060, roughness: 0.4, metalness: 0.05 }));
+  const wedge = new THREE.Mesh(
+    geo,
+    new THREE.MeshStandardMaterial({ color: 0xf0d060, roughness: 0.4, metalness: 0.05 }),
+  );
   wedge.rotation.y = -0.3;
   scene.add(wedge);
 
   const holeMat = new THREE.MeshStandardMaterial({ color: 0xd4b030, roughness: 0.5 });
   const holeGeo = new THREE.SphereGeometry(0.04, 10, 10);
-  for (const [x, y, z] of [[0.08, 0.05, 0.1], [-0.1, -0.02, 0.05], [0.15, -0.05, -0.08], [-0.05, 0.08, -0.05]]) {
+  for (const [x, y, z] of [
+    [0.08, 0.05, 0.1],
+    [-0.1, -0.02, 0.05],
+    [0.15, -0.05, -0.08],
+    [-0.05, 0.08, -0.05],
+  ]) {
     const h = new THREE.Mesh(holeGeo, holeMat);
     h.position.set(x, y, z);
     scene.add(h);
@@ -116,9 +135,18 @@ function buildMacelleria(scene: THREE.Scene) {
   bladeShape.lineTo(0.6, 0.14);
   bladeShape.lineTo(0, 0.12);
   bladeShape.lineTo(0, 0);
-  const bladeGeo = new THREE.ExtrudeGeometry(bladeShape, { depth: 0.03, bevelEnabled: true, bevelThickness: 0.005, bevelSize: 0.005, bevelSegments: 2 });
+  const bladeGeo = new THREE.ExtrudeGeometry(bladeShape, {
+    depth: 0.03,
+    bevelEnabled: true,
+    bevelThickness: 0.005,
+    bevelSize: 0.005,
+    bevelSegments: 2,
+  });
   bladeGeo.center();
-  const blade = new THREE.Mesh(bladeGeo, new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.15, metalness: 0.9 }));
+  const blade = new THREE.Mesh(
+    bladeGeo,
+    new THREE.MeshStandardMaterial({ color: 0xc0c0c0, roughness: 0.15, metalness: 0.9 }),
+  );
   blade.position.set(0.1, 0.1, 0);
   blade.rotation.z = 0.15;
   scene.add(blade);
@@ -139,7 +167,11 @@ function buildMacelleria(scene: THREE.Scene) {
   guard.position.set(-0.1, 0.02, 0);
   scene.add(guard);
 
-  const rivetMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.2, metalness: 0.9 });
+  const rivetMat = new THREE.MeshStandardMaterial({
+    color: 0xd4af37,
+    roughness: 0.2,
+    metalness: 0.9,
+  });
   const rivetGeo = new THREE.SphereGeometry(0.015, 8, 8);
   for (let i = 0; i < 3; i++) {
     const r = new THREE.Mesh(rivetGeo, rivetMat);
@@ -164,7 +196,11 @@ function buildAgriturismo(scene: THREE.Scene) {
   rim.position.y = -0.08;
   scene.add(rim);
 
-  const cutleryMat = new THREE.MeshStandardMaterial({ color: 0xb8b8b8, roughness: 0.15, metalness: 0.85 });
+  const cutleryMat = new THREE.MeshStandardMaterial({
+    color: 0xb8b8b8,
+    roughness: 0.15,
+    metalness: 0.85,
+  });
 
   const forkHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.012, 0.45, 8), cutleryMat);
   forkHandle.rotation.z = 0.25;
@@ -192,27 +228,78 @@ function buildAgriturismo(scene: THREE.Scene) {
   knifeHandle.position.set(0.22, 0.08, 0);
   scene.add(knifeHandle);
 
-  const food = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.6 }));
+  const food = new THREE.Mesh(
+    new THREE.SphereGeometry(0.08, 12, 12),
+    new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.6 }),
+  );
   food.position.set(0, -0.06, 0);
   food.scale.y = 0.6;
   scene.add(food);
 
-  const garnish = new THREE.Mesh(new THREE.SphereGeometry(0.04, 8, 8), new THREE.MeshStandardMaterial({ color: 0x4a7c3f, roughness: 0.5 }));
+  const garnish = new THREE.Mesh(
+    new THREE.SphereGeometry(0.04, 8, 8),
+    new THREE.MeshStandardMaterial({ color: 0x4a7c3f, roughness: 0.5 }),
+  );
   garnish.position.set(0.1, -0.06, 0.05);
   scene.add(garnish);
 }
 
-const BUILDERS: Record<AnimaId, (scene: THREE.Scene) => void> = {
+function buildBottega(scene: THREE.Scene) {
+  // Shopping bag body
+  const bagMat = new THREE.MeshStandardMaterial({ color: 0x2d5a3d, roughness: 0.6 });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.6, 0.25), bagMat);
+  body.position.y = -0.1;
+  scene.add(body);
+
+  // Bag top fold
+  const fold = new THREE.Mesh(
+    new THREE.BoxGeometry(0.55, 0.08, 0.25),
+    new THREE.MeshStandardMaterial({ color: 0x245030, roughness: 0.65 }),
+  );
+  fold.position.y = 0.24;
+  scene.add(fold);
+
+  // Handle — torus arc
+  const handle = new THREE.Mesh(
+    new THREE.TorusGeometry(0.16, 0.025, 8, 24, Math.PI),
+    new THREE.MeshStandardMaterial({ color: 0x9b1b30, roughness: 0.4, metalness: 0.1 }),
+  );
+  handle.rotation.x = Math.PI / 2;
+  handle.position.set(0, 0.38, 0);
+  scene.add(handle);
+
+  // Label/tag on front
+  const tag = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.2, 0.12),
+    new THREE.MeshStandardMaterial({ color: 0xf5efe0, roughness: 0.5 }),
+  );
+  tag.position.set(0, -0.05, 0.126);
+  scene.add(tag);
+
+  // Small heart/detail on tag
+  const detail = new THREE.Mesh(
+    new THREE.SphereGeometry(0.03, 8, 8),
+    new THREE.MeshStandardMaterial({ color: 0x9b1b30, roughness: 0.4 }),
+  );
+  detail.scale.set(1, 0.8, 0.3);
+  detail.position.set(0, -0.05, 0.14);
+  scene.add(detail);
+}
+
+type PinId = AnimaId | "bottega";
+
+const BUILDERS: Record<PinId, (scene: THREE.Scene) => void> = {
   allevamento: buildAllevamento,
   caseificio: buildCaseificio,
   macelleria: buildMacelleria,
   agriturismo: buildAgriturismo,
+  bottega: buildBottega,
 };
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
 interface HeroPin3DProps {
-  id: AnimaId;
+  id: PinId;
   numero: string;
   nome: string;
 }
@@ -259,7 +346,14 @@ export function HeroPin3D({ id, numero, nome }: HeroPin3DProps) {
       {/* 3D icon — no background, no circle */}
       <div className="hero-pin-icon-wrap">
         {iconSrc && (
-          <img src={iconSrc} alt="" aria-hidden="true" width={64} height={64} className="hero-pin-icon" />
+          <img
+            src={iconSrc}
+            alt=""
+            aria-hidden="true"
+            width={64}
+            height={64}
+            className="hero-pin-icon"
+          />
         )}
       </div>
 

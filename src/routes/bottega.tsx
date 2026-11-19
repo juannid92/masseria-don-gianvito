@@ -9,6 +9,7 @@ import {
   type CategoriaBottega,
   type ProdottoBottega,
 } from "@/data/bottega";
+import "@/styles/bottega.css";
 
 export const Route = createFileRoute("/bottega")({
   head: () => ({
@@ -27,14 +28,6 @@ export const Route = createFileRoute("/bottega")({
   }),
   component: BottegaPage,
 });
-
-// ── Palette Bottega (OAT MILK / FOREST GREEN / RED RUBY) ───────────────────────
-const BOTTEGA_COLORS = {
-  oatMilk: "#f5efe0",
-  forestGreen: "#2d5a3d",
-  redRuby: "#9b1b30",
-  cream: "#faf6ec",
-} as const;
 
 // ── Carrello state ─────────────────────────────────────────────────────────────
 type CartItem = { id: string; qty: number };
@@ -121,10 +114,7 @@ function BottegaPage() {
   const getQty = (id: string) => cart.find((item) => item.id === id)?.qty ?? 0;
 
   return (
-    <div
-      className="min-h-screen pt-[var(--page-header-safe-offset)]"
-      style={{ backgroundColor: BOTTEGA_COLORS.oatMilk }}
-    >
+    <div className="bg-[color:var(--bottega-oat-milk)] min-h-screen pt-[var(--page-header-safe-offset)]">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Bottega" }]} />
 
       {/* JSON-LD Store */}
@@ -162,202 +152,130 @@ function BottegaPage() {
         }}
       />
 
-      {/* Header sezione */}
-      <section className="mx-auto max-w-5xl px-6 py-16 text-center">
-        <p
-          className="font-eyebrow text-xs tracking-[0.28em] uppercase"
-          style={{ color: BOTTEGA_COLORS.forestGreen }}
-        >
-          Consegna a domicilio
-        </p>
-        <h1
-          className="mt-4 font-display text-4xl md:text-6xl"
-          style={{ color: BOTTEGA_COLORS.forestGreen }}
-        >
+      {/* Hero editoriale */}
+      <section className="bottega-hero">
+        <p className="bottega-hero-kicker">Consegna a domicilio · Noci e dintorni</p>
+        <h1 className="bottega-hero-title">
           La Bottega
           <br />
-          <em style={{ color: BOTTEGA_COLORS.redRuby }}>della Masseria</em>
+          <em>della Masseria</em>
         </h1>
-        <div
-          className="mx-auto mt-8 h-px w-24"
-          style={{ backgroundColor: BOTTEGA_COLORS.forestGreen, opacity: 0.3 }}
-        />
-        <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-[color:var(--carbone)]/80">
-          Carne dei nostri allevamenti, formaggi del caseificio interno, salumi stagionati,
-          farine macinate a pietra e legumi della Murgia. Scegli i prodotti, componi il tuo
-          ordine e ricevilo a casa. Ogni prodotto è disponibile anche singolarmente: chiedi
-          informazioni e ci accordiamo sulla consegna.
+        <p className="bottega-hero-desc">
+          Carne dei nostri allevamenti, formaggi del caseificio interno, salumi stagionati, farine
+          macinate a pietra e legumi della Murgia. Componi il tuo ordine e ricevilo a casa.
         </p>
       </section>
 
-      {/* Filtri categoria */}
-      <nav className="mx-auto max-w-5xl px-6 pb-8">
-        <div className="flex flex-wrap justify-center gap-2">
+      {/* Filtri categoria — tabs minimali */}
+      <nav className="bottega-filters">
+        <button
+          onClick={() => setActiveCategory("tutti")}
+          className="bottega-filter-tab"
+          data-active={activeCategory === "tutti"}
+        >
+          Tutti
+        </button>
+        {CATEGORIE_BOTTEGA.map((cat) => (
           <button
-            onClick={() => setActiveCategory("tutti")}
-            className="bottega-filter-btn"
-            data-active={activeCategory === "tutti"}
-            style={{
-              "--btn-bg": BOTTEGA_COLORS.forestGreen,
-              "--btn-text": BOTTEGA_COLORS.cream,
-              "--btn-border": BOTTEGA_COLORS.forestGreen,
-            } as React.CSSProperties}
+            key={cat.id}
+            onClick={() => setActiveCategory(cat.id)}
+            className="bottega-filter-tab"
+            data-active={activeCategory === cat.id}
           >
-            Tutti
+            {cat.nome}
           </button>
-          {CATEGORIE_BOTTEGA.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className="bottega-filter-btn"
-              data-active={activeCategory === cat.id}
-              style={{
-                "--btn-bg": BOTTEGA_COLORS.forestGreen,
-                "--btn-text": BOTTEGA_COLORS.cream,
-                "--btn-border": BOTTEGA_COLORS.forestGreen,
-              } as React.CSSProperties}
-            >
-              {cat.nome}
-            </button>
-          ))}
-        </div>
+        ))}
       </nav>
 
-      {/* Griglia prodotti */}
-      <section className="mx-auto max-w-5xl px-6 pb-24">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredProducts.map((product) => {
-            const qty = getQty(product.id);
-            return (
-              <article
-                key={product.id}
-                className="bottega-card group relative overflow-hidden rounded-sm border transition-shadow hover:shadow-lg"
-                style={{
-                  backgroundColor: BOTTEGA_COLORS.cream,
-                  borderColor: `${BOTTEGA_COLORS.forestGreen}20`,
-                }}
-              >
-                <div className="p-6">
-                  {/* Badge categoria */}
-                  <span
-                    className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider"
-                    style={{
-                      backgroundColor: `${BOTTEGA_COLORS.forestGreen}12`,
-                      color: BOTTEGA_COLORS.forestGreen,
-                    }}
-                  >
-                    {CATEGORIE_BOTTEGA.find((c) => c.id === product.categoria)?.nome}
-                  </span>
+      {/* Griglia prodotti editoriale */}
+      <section className="bottega-grid pb-32">
+        {filteredProducts.map((product) => {
+          const qty = getQty(product.id);
+          return (
+            <article key={product.id} className="bottega-product">
+              {/* Immagine protagonista */}
+              <div className="bottega-product-img-wrap">
+                <span className="bottega-product-badge">
+                  {CATEGORIE_BOTTEGA.find((c) => c.id === product.categoria)?.nome}
+                </span>
+                <img
+                  src={product.immagine}
+                  alt={product.nome}
+                  className="bottega-product-img"
+                  loading="lazy"
+                />
+              </div>
 
-                  <h2
-                    className="mt-3 font-display text-xl leading-tight"
-                    style={{ color: BOTTEGA_COLORS.forestGreen }}
-                  >
-                    {product.nome}
-                  </h2>
+              {/* Info prodotto */}
+              <div className="bottega-product-info">
+                <h2 className="bottega-product-name">{product.nome}</h2>
+                <p className="bottega-product-desc">{product.descrizione}</p>
 
-                  <p className="mt-2 text-sm leading-relaxed text-[color:var(--carbone)]/70">
-                    {product.descrizione}
-                  </p>
-
-                  {/* Prezzo */}
-                  <div className="mt-4 flex items-baseline gap-1">
+                <div className="bottega-product-footer">
+                  <div>
                     {product.prezzo != null ? (
                       <>
-                        <span
-                          className="font-display text-2xl font-semibold"
-                          style={{ color: BOTTEGA_COLORS.redRuby }}
-                        >
-                          €{product.prezzo}
-                        </span>
-                        <span className="text-sm text-[color:var(--carbone)]/50">
-                          / {product.unita}
-                        </span>
+                        <span className="bottega-product-price">€{product.prezzo}</span>
+                        <span className="bottega-product-unit">/ {product.unita}</span>
                       </>
                     ) : (
-                      <span className="text-sm italic text-[color:var(--carbone)]/50">
-                        Su richiesta
-                      </span>
+                      <span className="bottega-product-unit italic">Su richiesta</span>
                     )}
                   </div>
 
                   {/* Azioni */}
-                  <div className="mt-5 flex flex-col gap-2">
-                    {qty === 0 ? (
+                  {qty === 0 ? (
+                    <div className="bottega-product-actions">
+                      <button onClick={() => addToCart(product.id)} className="bottega-btn-add">
+                        Aggiungi
+                      </button>
+                      <a
+                        href={buildWhatsappInfo(product)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bottega-btn-info"
+                      >
+                        Info
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="bottega-qty-controls">
+                      <button
+                        onClick={() => removeFromCart(product.id)}
+                        className="bottega-qty-btn"
+                        aria-label={`Rimuovi uno ${product.nome}`}
+                      >
+                        −
+                      </button>
+                      <span className="bottega-qty-value">{qty}</span>
                       <button
                         onClick={() => addToCart(product.id)}
-                        className="bottega-add-btn w-full rounded-sm py-3 text-sm font-semibold uppercase tracking-wider transition-colors"
-                        style={{
-                          backgroundColor: BOTTEGA_COLORS.forestGreen,
-                          color: BOTTEGA_COLORS.cream,
-                        }}
+                        className="bottega-qty-btn"
+                        aria-label={`Aggiungi uno ${product.nome}`}
                       >
-                        Aggiungi al carrello
+                        +
                       </button>
-                    ) : (
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => removeFromCart(product.id)}
-                          className="flex h-9 w-9 items-center justify-center rounded-sm text-lg font-bold transition-colors"
-                          style={{
-                            backgroundColor: `${BOTTEGA_COLORS.forestGreen}15`,
-                            color: BOTTEGA_COLORS.forestGreen,
-                          }}
-                          aria-label={`Rimuovi uno ${product.nome}`}
-                        >
-                          −
-                        </button>
-                        <span
-                          className="min-w-[2ch] text-center font-display text-lg font-semibold"
-                          style={{ color: BOTTEGA_COLORS.forestGreen }}
-                        >
-                          {qty}
-                        </span>
-                        <button
-                          onClick={() => addToCart(product.id)}
-                          className="flex h-9 w-9 items-center justify-center rounded-sm text-lg font-bold transition-colors"
-                          style={{
-                            backgroundColor: BOTTEGA_COLORS.forestGreen,
-                            color: BOTTEGA_COLORS.cream,
-                          }}
-                          aria-label={`Aggiungi uno ${product.nome}`}
-                        >
-                          +
-                        </button>
-                      </div>
-                    )}
-
-                    {/* Chiedi info sul singolo prodotto */}
-                    <a
-                      href={buildWhatsappInfo(product)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block w-full rounded-sm border py-2.5 text-center text-xs font-semibold uppercase tracking-wider transition-colors hover:bg-[color:var(--carbone)]/5"
-                      style={{
-                        borderColor: `${BOTTEGA_COLORS.forestGreen}30`,
-                        color: BOTTEGA_COLORS.forestGreen,
-                      }}
-                    >
-                      Chiedi info su WhatsApp
-                    </a>
-                  </div>
+                    </div>
+                  )}
                 </div>
-              </article>
-            );
-          })}
-        </div>
+              </div>
+            </article>
+          );
+        })}
       </section>
 
-      {/* Floating cart summary */}
+      {/* Disclaimer */}
+      <div className="bottega-disclaimer mb-24">
+        I prezzi indicati sono indicativi e soggetti a variazione. Conferma prezzo e disponibilità
+        via WhatsApp o chiamata prima dell'ordine. Le foto sono illustrative.
+      </div>
+
+      {/* Floating cart FAB */}
       {cartCount > 0 && (
-        <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2">
+        <div className="fixed bottom-20 left-1/2 z-40">
           <button
             onClick={() => setShowCart(!showCart)}
-            className="bottega-cart-fab flex items-center gap-3 rounded-full px-6 py-3 shadow-xl transition-transform hover:scale-105"
-            style={{
-              backgroundColor: BOTTEGA_COLORS.redRuby,
-              color: BOTTEGA_COLORS.cream,
-            }}
+            className="bottega-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--bottega-red-ruby)] px-7 py-3.5 text-[color:var(--bottega-cream)] shadow-xl transition-transform hover:scale-105"
           >
             <svg
               viewBox="0 0 24 24"
@@ -366,15 +284,15 @@ function BottegaPage() {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              width="20"
-              height="20"
+              width="18"
+              height="18"
               aria-hidden="true"
             >
               <circle cx="9" cy="21" r="1" />
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
             </svg>
-            <span className="font-semibold">
+            <span className="font-eyebrow text-xs tracking-widest uppercase">
               {cartCount} {cartCount === 1 ? "prodotto" : "prodotti"}
             </span>
             <span className="font-display text-lg">€{cartTotal.toFixed(2)}</span>
@@ -389,15 +307,9 @@ function BottegaPage() {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowCart(false)}
           />
-          <div
-            className="relative w-full max-w-md rounded-t-xl p-6 shadow-2xl sm:rounded-xl"
-            style={{ backgroundColor: BOTTEGA_COLORS.cream }}
-          >
-            <div className="mb-4 flex items-center justify-between">
-              <h3
-                className="font-display text-xl font-semibold"
-                style={{ color: BOTTEGA_COLORS.forestGreen }}
-              >
+          <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--bottega-cream)] p-8 shadow-2xl sm:rounded-xl">
+            <div className="mb-6 flex items-center justify-between">
+              <h3 className="font-display text-2xl text-[color:var(--bottega-forest-green)]">
                 Il tuo ordine
               </h3>
               <button
@@ -409,19 +321,19 @@ function BottegaPage() {
               </button>
             </div>
 
-            <ul className="max-h-60 space-y-3 overflow-y-auto">
+            <ul className="max-h-60 space-y-4 overflow-y-auto">
               {cart.map((item) => {
                 const p = PRODOTTI_BOTTEGA.find((pr) => pr.id === item.id);
                 if (!p) return null;
                 return (
                   <li key={item.id} className="flex items-center justify-between text-sm">
                     <div>
-                      <span className="font-medium" style={{ color: BOTTEGA_COLORS.forestGreen }}>
+                      <span className="font-display text-base text-[color:var(--bottega-forest-green)]">
                         {p.nome}
                       </span>
-                      <span className="ml-2 text-[color:var(--carbone)]/50">× {item.qty}</span>
+                      <span className="ml-2 text-[color:var(--carbone)]/40">× {item.qty}</span>
                     </div>
-                    <span style={{ color: BOTTEGA_COLORS.redRuby }}>
+                    <span className="font-display text-[color:var(--bottega-red-ruby)]">
                       €{((p.prezzo ?? 0) * item.qty).toFixed(2)}
                     </span>
                   </li>
@@ -429,19 +341,13 @@ function BottegaPage() {
               })}
             </ul>
 
-            <div
-              className="my-4 h-px"
-              style={{ backgroundColor: `${BOTTEGA_COLORS.forestGreen}20` }}
-            />
+            <div className="my-6 h-px bg-[color:var(--bottega-forest-green)]/10" />
 
-            <div className="mb-6 flex items-center justify-between">
-              <span className="font-semibold" style={{ color: BOTTEGA_COLORS.forestGreen }}>
+            <div className="mb-8 flex items-center justify-between">
+              <span className="font-eyebrow text-xs tracking-widest uppercase text-[color:var(--bottega-forest-green)]">
                 Totale stimato
               </span>
-              <span
-                className="font-display text-2xl font-bold"
-                style={{ color: BOTTEGA_COLORS.redRuby }}
-              >
+              <span className="font-display text-3xl text-[color:var(--bottega-red-ruby)]">
                 €{cartTotal.toFixed(2)}
               </span>
             </div>
@@ -450,71 +356,24 @@ function BottegaPage() {
               href={buildWhatsappOrder(cart, PRODOTTI_BOTTEGA)}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full rounded-sm py-3.5 text-center text-sm font-bold uppercase tracking-wider transition-opacity hover:opacity-90"
-              style={{
-                backgroundColor: BOTTEGA_COLORS.forestGreen,
-                color: BOTTEGA_COLORS.cream,
-              }}
+              className="block w-full bg-[color:var(--bottega-forest-green)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--bottega-cream)] transition-opacity hover:opacity-90"
             >
               Ordina su WhatsApp
             </a>
 
             <a
               href={MASSERIA.telefonoHref}
-              className="mt-3 block w-full rounded-sm border py-3 text-center text-sm font-semibold uppercase tracking-wider transition-colors hover:bg-[color:var(--carbone)]/5"
-              style={{
-                borderColor: `${BOTTEGA_COLORS.forestGreen}30`,
-                color: BOTTEGA_COLORS.forestGreen,
-              }}
+              className="mt-3 block w-full border border-[color:var(--bottega-forest-green)]/20 py-3.5 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--bottega-forest-green)] transition-colors hover:bg-[color:var(--carbone)]/5"
             >
               Oppure chiama {MASSERIA.telefono}
             </a>
 
-            <p className="mt-4 text-center text-xs text-[color:var(--carbone)]/50">
-              Prezzo e disponibilità da confermare. Consegna a domicilio nella zona di Noci e dintorni.
+            <p className="mt-5 text-center text-xs text-[color:var(--carbone)]/40">
+              Prezzo e disponibilità da confermare. Consegna a domicilio nella zona di Noci.
             </p>
           </div>
         </div>
       )}
-
-      {/* CSS inline per i componenti Bottega */}
-      <style>{`
-        .bottega-filter-btn {
-          padding: 8px 20px;
-          border-radius: 999px;
-          border: 1px solid var(--btn-border);
-          background: transparent;
-          color: var(--btn-bg);
-          font-family: var(--font-sans);
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-        .bottega-filter-btn[data-active="true"],
-        .bottega-filter-btn:hover {
-          background: var(--btn-bg);
-          color: var(--btn-text);
-        }
-        .bottega-card {
-          transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
-        .bottega-card:hover {
-          transform: translateY(-2px);
-        }
-        .bottega-add-btn:hover {
-          opacity: 0.9;
-        }
-        .bottega-cart-fab {
-          animation: bottega-fab-enter 0.3s ease-out;
-        }
-        @keyframes bottega-fab-enter {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }

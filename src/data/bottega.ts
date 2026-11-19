@@ -4,12 +4,7 @@
  * via WhatsApp o chiamata prima della consegna a domicilio.
  */
 
-export type CategoriaBottega =
-  | "carne"
-  | "formaggi"
-  | "salumi"
-  | "farina"
-  | "legumi";
+export type CategoriaBottega = "carne" | "formaggi" | "salumi" | "farina" | "legumi";
 
 export interface ProdottoBottega {
   id: string;
@@ -22,6 +17,8 @@ export interface ProdottoBottega {
   unita: string;
   /** Disponibile per la consegna a domicilio. */
   consegna: boolean;
+  /** Percorso immagine prodotto (placeholder se non disponibile). */
+  immagine: string;
 }
 
 export const CATEGORIE_BOTTEGA: { id: CategoriaBottega; nome: string }[] = [
@@ -38,10 +35,12 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     id: "bistecca-costata",
     nome: "Bistecca di costata",
     categoria: "carne",
-    descrizione: "Taglio pregiato di bovino adulto allevato in masseria, frollatura minima 15 giorni.",
+    descrizione:
+      "Taglio pregiato di bovino adulto allevato in masseria, frollatura minima 15 giorni.",
     prezzo: 28,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "filetto-bovino",
@@ -51,6 +50,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 38,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "tagliata-controfiletto",
@@ -60,6 +60,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 26,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "braciole-manzo",
@@ -69,6 +70,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 22,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "salsiccia-punta-coltello",
@@ -78,6 +80,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 14,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "hamburger-masseria",
@@ -87,6 +90,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 18,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "agnello-coscia",
@@ -96,6 +100,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 16,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
   {
     id: "capocollo-fresco",
@@ -105,6 +110,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 12,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/carne-placeholder.jpg",
   },
 
   // ── FORMAGGI E LATTICINI ───────────────────────────────────────────────
@@ -116,6 +122,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 12,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/formaggi-placeholder.jpg",
   },
   {
     id: "burrata",
@@ -125,6 +132,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 16,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/formaggi-placeholder.jpg",
   },
   {
     id: "ricotta-fresca",
@@ -134,6 +142,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 8,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/formaggi-placeholder.jpg",
   },
   {
     id: "caciocavallo-stagionato",
@@ -143,6 +152,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 18,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/formaggi-placeholder.jpg",
   },
   {
     id: "scamorza-affumicata",
@@ -152,6 +162,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 14,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/formaggi-placeholder.jpg",
   },
   {
     id: "primo-sale",
@@ -161,6 +172,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 10,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/formaggi-placeholder.jpg",
   },
 
   // ── SALUMI ─────────────────────────────────────────────────────────────
@@ -172,6 +184,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 24,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/salumi-placeholder.jpg",
   },
   {
     id: "soppressata",
@@ -181,6 +194,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 20,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/salumi-placeholder.jpg",
   },
   {
     id: "pancetta-tesa",
@@ -190,6 +204,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 18,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/salumi-placeholder.jpg",
   },
   {
     id: "guanciale",
@@ -199,6 +214,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 22,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/salumi-placeholder.jpg",
   },
 
   // ── FARINE ─────────────────────────────────────────────────────────────
@@ -210,6 +226,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 3,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/farina-placeholder.jpg",
   },
   {
     id: "farina-grano-duro-senatore",
@@ -219,6 +236,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 4,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/farina-placeholder.jpg",
   },
   {
     id: "semola-rimacinata",
@@ -228,6 +246,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 3,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/farina-placeholder.jpg",
   },
 
   // ── LEGUMI ─────────────────────────────────────────────────────────────
@@ -239,6 +258,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 5,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/legumi-placeholder.jpg",
   },
   {
     id: "fave-barese",
@@ -248,6 +268,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 5,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/legumi-placeholder.jpg",
   },
   {
     id: "lenticchie-murgia",
@@ -257,6 +278,7 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 6,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/legumi-placeholder.jpg",
   },
   {
     id: "cicerchie",
@@ -266,5 +288,6 @@ export const PRODOTTI_BOTTEGA: ProdottoBottega[] = [
     prezzo: 7,
     unita: "kg",
     consegna: true,
+    immagine: "/images/bottega/legumi-placeholder.jpg",
   },
 ];

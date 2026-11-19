@@ -82,6 +82,17 @@ export function Footer() {
                   <span className="text-[13px] text-[color:var(--bianco-calce)]/55">{a.claim}</span>
                 </li>
               ))}
+              <li>
+                <Link
+                  to="/bottega"
+                  className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                >
+                  Bottega
+                </Link>
+                <span className="text-[13px] text-[color:var(--bianco-calce)]/55">
+                  Prodotti tipici
+                </span>
+              </li>
             </ul>
           </nav>
 
