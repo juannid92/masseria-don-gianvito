@@ -26,36 +26,36 @@ type Momento = {
 const MOMENTI: Momento[] = [
   {
     id: "pietra",
-    foto: "/images/masseria-aerial.jpg",
-    fotoAlt: "Vista aerea della Masseria Don Gianvito",
+    foto: "/images/storia-terreno.jpg",
+    fotoAlt: "I campi coltivati della Masseria Don Gianvito lungo la provinciale per Mottola",
     fotoCredito: "Masseria Don Gianvito",
     n: "01",
-    occhiello: "IL CINQUECENTO",
-    titolo: ["Prima di tutto,", "c'era la pietra."],
+    occhiello: "PRIMA DI TUTTO",
+    titolo: ["C'era solo", "la terra."],
     testo:
-      "La masseria risale al Cinquecento. Muri spessi, volte basse, cortile chiuso: costruita per resistere e per lavorare.",
+      "Prima degli edifici, prima degli animali, c'era questo terreno. Terra rossa della Murgia, muretti a secco, campi di foraggio e grano. È da qui che è iniziato tutto: dalla terra che sostiene ogni cosa.",
   },
   {
     id: "lavoro",
-    foto: "/images/storia-lavoro.jpg",
-    fotoAlt: "Masseria Pantano, Murgia",
-    fotoCredito: "PietroAmendolara.it · CC BY-SA 4.0",
+    foto: "/images/storia-allevamento.jpg",
+    fotoAlt: "L'allevamento di bovini della Masseria Don Gianvito",
+    fotoCredito: "Masseria Don Gianvito",
     n: "02",
-    occhiello: "LA TERRA",
-    titolo: ["Poi è arrivato", "il lavoro."],
+    occhiello: "POI GLI ANIMALI",
+    titolo: ["Poi è arrivato", "l'allevamento."],
     testo:
-      "Campi, foraggio, grano tenero, ortaggi e frutta. La terra intorno alla masseria non è un paesaggio: è ciò che tiene in piedi tutto il resto.",
+      "Bovini allevati allo stato brado nei pascoli della masseria, nutriti con il foraggio dei nostri campi. L'allevamento è diventato il cuore dell'azienda: da qui nascono la carne, il latte e tutto ciò che ne deriva.",
   },
   {
     id: "famiglia",
-    foto: "/images/storia-famiglia.jpg",
-    fotoAlt: "Trulli della Murgia",
-    fotoCredito: "Acquario51 · CC BY-SA 4.0",
+    foto: "/images/storia-masseria.jpg",
+    fotoAlt: "La Masseria Don Gianvito oggi: allevamento, caseificio, macelleria e agriturismo",
+    fotoCredito: "Masseria Don Gianvito",
     n: "03",
     occhiello: "OGGI",
-    titolo: ["Oggi la masseria", "è un’azienda."],
+    titolo: ["Oggi è la Masseria", "Don Gianvito."],
     testo:
-      "Dal 2002 la masseria è iscritta alla Camera di Commercio come società agricola. Allevamento, caseificio, macelleria e agriturismo sono nati uno dopo l'altro, nello stesso luogo.",
+      "Dal 2002 siamo una società agricola iscritta alla Camera di Commercio. Allevamento, caseificio, macelleria e agriturismo vivono nello stesso luogo: dalla terra al piatto, senza intermediari.",
   },
 ];
 

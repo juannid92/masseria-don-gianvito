@@ -5,6 +5,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import aerial from "@/assets/masseria-aerial.asset.json";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
+/** Foto autentica della masseria fornita dall'utente per la sezione 03 — Il Luogo. */
+const LUOGO_PHOTO = "/images/masseria-luogo.jpg";
+
 /**
  * ATTO 03 — IL LUOGO.
  * Firma: STICKY · MASCHERA CHE SI APRE · DEPTH CROP.
@@ -364,19 +367,19 @@ export function IlLuogo() {
             style={{ opacity: 0.9 }}
           >
             <PrototypeImage
-              src={aerial.url}
+              src={LUOGO_PHOTO}
               alt=""
-              className="h-full w-full object-cover object-[30%_35%]"
+              className="h-full w-full object-cover object-center"
               style={{ filter: "saturate(0.92) contrast(0.96) brightness(0.98)" }}
               decoding="async"
             />
           </div>
-          {/* Livello vicino: crop largo, decentrato sul campo (non sugli edifici) */}
+          {/* Livello vicino: foto autentica della masseria fornita dall'utente */}
           <div data-photo className="absolute inset-0 will-change-transform">
             <PrototypeImage
-              src={aerial.url}
-              alt="Vista aerea dei campi e del cortile della Masseria Don Gianvito, lungo la provinciale per Mottola"
-              className="h-full w-full object-cover object-[28%_42%]"
+              src={LUOGO_PHOTO}
+              alt="Vista aerea della Masseria Don Gianvito con i campi coltivati e il cortile centrale"
+              className="h-full w-full object-cover object-[50%_40%] [@media(max-width:899px)]:object-[50%_35%]"
               style={{ filter: "saturate(1.02) contrast(1.02) brightness(1.02)" }}
               decoding="async"
             />
