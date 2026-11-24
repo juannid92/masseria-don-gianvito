@@ -11,20 +11,20 @@ import {
 } from "@/data/bottega";
 import "@/styles/bottega.css";
 
-export const Route = createFileRoute("/bottega")({
+export const Route = createFileRoute("/market")({
   head: () => ({
     meta: [
       { title: "Market — Prodotti Tipici · Masseria Don Gianvito" },
       {
         name: "description",
         content:
-          "Carne, formaggi, salumi, farine e legumi della Masseria Don Gianvito. Ordina per la consegna a domicilio o chiedi informazioni su ogni prodotto.",
+          "Carne, formaggi, salumi, farine e panificio della Masseria Don Gianvito. Ordina per la consegna a domicilio o chiedi informazioni su ogni prodotto.",
       },
       { property: "og:title", content: "Market — Prodotti Tipici · Masseria Don Gianvito" },
-      { property: "og:url", content: getAbsoluteUrl("/bottega") },
+      { property: "og:url", content: getAbsoluteUrl("/market") },
       { property: "og:type", content: "website" },
     ],
-    links: [{ rel: "canonical", href: getAbsoluteUrl("/bottega") }],
+    links: [{ rel: "canonical", href: getAbsoluteUrl("/market") }],
   }),
   component: MarketPage,
 });
@@ -138,7 +138,7 @@ function MarketPage() {
             name: "Market — Masseria Don Gianvito",
             description:
               "Prodotti tipici della Masseria: carne, formaggi, salumi, farine e legumi con consegna a domicilio.",
-            url: getAbsoluteUrl("/bottega"),
+            url: getAbsoluteUrl("/market"),
             telephone: "+393339395750",
             address: {
               "@type": "PostalAddress",
@@ -242,8 +242,8 @@ function MarketPage() {
 
       {/* Disclaimer */}
       <div className="market-disclaimer mb-24">
-        I prezzi indicati sono al kg e soggetti a variazione. Conferma prezzo e disponibilità
-        via WhatsApp o chiamata prima dell'ordine.
+        I prezzi indicati sono al kg e soggetti a variazione. Conferma prezzo e disponibilità via
+        WhatsApp o chiamata prima dell'ordine.
       </div>
 
       {/* Floating cart FAB */}
@@ -385,8 +385,20 @@ function MarketItem({
           )}
           {qty === 0 ? (
             <div className="market-item-actions">
-              <button onClick={onAdd} className="market-btn-add" aria-label={`Aggiungi ${product.nome}`}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
+              <button
+                onClick={onAdd}
+                className="market-btn-add"
+                aria-label={`Aggiungi ${product.nome}`}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  width="18"
+                  height="18"
+                  aria-hidden="true"
+                >
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
@@ -398,7 +410,15 @@ function MarketItem({
                 className="market-btn-info"
                 aria-label={`Info su ${product.nome}`}
               >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                >
                   <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
                 </svg>
               </a>

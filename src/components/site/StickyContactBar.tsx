@@ -6,9 +6,9 @@ export function StickyContactBar() {
   return (
     <div className="sticky-contact-bar" role="complementary" aria-label="Contatti rapidi">
       <Link
-        to="/bottega"
+        to="/market"
         className="sticky-contact-btn sticky-contact-btn--bottega"
-        aria-label="Vai alla Bottega"
+        aria-label="Vai al Market"
       >
         <svg
           viewBox="0 0 24 24"

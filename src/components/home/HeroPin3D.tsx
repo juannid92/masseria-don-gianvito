@@ -297,7 +297,7 @@ function buildBottega(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene
   scene.add(detail);
 }
 
-type PinId = AnimaId | "bottega";
+type PinId = AnimaId | "market";
 
 const BUILDERS: Record<
   PinId,
@@ -307,7 +307,7 @@ const BUILDERS: Record<
   caseificio: buildCaseificio,
   macelleria: buildMacelleria,
   agriturismo: buildAgriturismo,
-  bottega: buildBottega,
+  market: buildBottega,
 };
 
 // ── Component ──────────────────────────────────────────────────────────────────

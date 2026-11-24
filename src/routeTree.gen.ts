@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RecensioniRouteImport } from './routes/recensioni'
 import { Route as ProdottiRouteImport } from './routes/prodotti'
+import { Route as MarketRouteImport } from './routes/market'
 import { Route as MacelleriaRouteImport } from './routes/macelleria'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DoveSiamoRouteImport } from './routes/dove-siamo'
+import { Route as ContattiRouteImport } from './routes/contatti'
+import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as CaseificioRouteImport } from './routes/caseificio'
 import { Route as BraceriaRouteImport } from './routes/braceria'
 import { Route as AllevamentoRouteImport } from './routes/allevamento'
@@ -19,14 +25,44 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as LegaliPrivacyRouteImport } from './routes/legali/privacy'
 import { Route as LegaliCookieRouteImport } from './routes/legali/cookie'
 
+const RecensioniRoute = RecensioniRouteImport.update({
+  id: '/recensioni',
+  path: '/recensioni',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProdottiRoute = ProdottiRouteImport.update({
   id: '/prodotti',
   path: '/prodotti',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarketRoute = MarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MacelleriaRoute = MacelleriaRouteImport.update({
   id: '/macelleria',
   path: '/macelleria',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoveSiamoRoute = DoveSiamoRouteImport.update({
+  id: '/dove-siamo',
+  path: '/dove-siamo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContattiRoute = ContattiRouteImport.update({
+  id: '/contatti',
+  path: '/contatti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChiSiamoRoute = ChiSiamoRouteImport.update({
+  id: '/chi-siamo',
+  path: '/chi-siamo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaseificioRoute = CaseificioRouteImport.update({
@@ -71,8 +107,14 @@ export interface FileRoutesByFullPath {
   '/allevamento': typeof AllevamentoRoute
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
+  '/chi-siamo': typeof ChiSiamoRoute
+  '/contatti': typeof ContattiRoute
+  '/dove-siamo': typeof DoveSiamoRoute
+  '/faq': typeof FaqRoute
   '/macelleria': typeof MacelleriaRoute
+  '/market': typeof MarketRoute
   '/prodotti': typeof ProdottiRoute
+  '/recensioni': typeof RecensioniRoute
   '/legali/cookie': typeof LegaliCookieRoute
   '/legali/privacy': typeof LegaliPrivacyRoute
 }
@@ -82,8 +124,14 @@ export interface FileRoutesByTo {
   '/allevamento': typeof AllevamentoRoute
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
+  '/chi-siamo': typeof ChiSiamoRoute
+  '/contatti': typeof ContattiRoute
+  '/dove-siamo': typeof DoveSiamoRoute
+  '/faq': typeof FaqRoute
   '/macelleria': typeof MacelleriaRoute
+  '/market': typeof MarketRoute
   '/prodotti': typeof ProdottiRoute
+  '/recensioni': typeof RecensioniRoute
   '/legali/cookie': typeof LegaliCookieRoute
   '/legali/privacy': typeof LegaliPrivacyRoute
 }
@@ -94,8 +142,14 @@ export interface FileRoutesById {
   '/allevamento': typeof AllevamentoRoute
   '/braceria': typeof BraceriaRoute
   '/caseificio': typeof CaseificioRoute
+  '/chi-siamo': typeof ChiSiamoRoute
+  '/contatti': typeof ContattiRoute
+  '/dove-siamo': typeof DoveSiamoRoute
+  '/faq': typeof FaqRoute
   '/macelleria': typeof MacelleriaRoute
+  '/market': typeof MarketRoute
   '/prodotti': typeof ProdottiRoute
+  '/recensioni': typeof RecensioniRoute
   '/legali/cookie': typeof LegaliCookieRoute
   '/legali/privacy': typeof LegaliPrivacyRoute
 }
@@ -107,8 +161,14 @@ export interface FileRouteTypes {
     | '/allevamento'
     | '/braceria'
     | '/caseificio'
+    | '/chi-siamo'
+    | '/contatti'
+    | '/dove-siamo'
+    | '/faq'
     | '/macelleria'
+    | '/market'
     | '/prodotti'
+    | '/recensioni'
     | '/legali/cookie'
     | '/legali/privacy'
   fileRoutesByTo: FileRoutesByTo
@@ -118,8 +178,14 @@ export interface FileRouteTypes {
     | '/allevamento'
     | '/braceria'
     | '/caseificio'
+    | '/chi-siamo'
+    | '/contatti'
+    | '/dove-siamo'
+    | '/faq'
     | '/macelleria'
+    | '/market'
     | '/prodotti'
+    | '/recensioni'
     | '/legali/cookie'
     | '/legali/privacy'
   id:
@@ -129,8 +195,14 @@ export interface FileRouteTypes {
     | '/allevamento'
     | '/braceria'
     | '/caseificio'
+    | '/chi-siamo'
+    | '/contatti'
+    | '/dove-siamo'
+    | '/faq'
     | '/macelleria'
+    | '/market'
     | '/prodotti'
+    | '/recensioni'
     | '/legali/cookie'
     | '/legali/privacy'
   fileRoutesById: FileRoutesById
@@ -141,14 +213,27 @@ export interface RootRouteChildren {
   AllevamentoRoute: typeof AllevamentoRoute
   BraceriaRoute: typeof BraceriaRoute
   CaseificioRoute: typeof CaseificioRoute
+  ChiSiamoRoute: typeof ChiSiamoRoute
+  ContattiRoute: typeof ContattiRoute
+  DoveSiamoRoute: typeof DoveSiamoRoute
+  FaqRoute: typeof FaqRoute
   MacelleriaRoute: typeof MacelleriaRoute
+  MarketRoute: typeof MarketRoute
   ProdottiRoute: typeof ProdottiRoute
+  RecensioniRoute: typeof RecensioniRoute
   LegaliCookieRoute: typeof LegaliCookieRoute
   LegaliPrivacyRoute: typeof LegaliPrivacyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/recensioni': {
+      id: '/recensioni'
+      path: '/recensioni'
+      fullPath: '/recensioni'
+      preLoaderRoute: typeof RecensioniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prodotti': {
       id: '/prodotti'
       path: '/prodotti'
@@ -156,11 +241,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdottiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/market': {
+      id: '/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof MarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/macelleria': {
       id: '/macelleria'
       path: '/macelleria'
       fullPath: '/macelleria'
       preLoaderRoute: typeof MacelleriaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dove-siamo': {
+      id: '/dove-siamo'
+      path: '/dove-siamo'
+      fullPath: '/dove-siamo'
+      preLoaderRoute: typeof DoveSiamoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contatti': {
+      id: '/contatti'
+      path: '/contatti'
+      fullPath: '/contatti'
+      preLoaderRoute: typeof ContattiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chi-siamo': {
+      id: '/chi-siamo'
+      path: '/chi-siamo'
+      fullPath: '/chi-siamo'
+      preLoaderRoute: typeof ChiSiamoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/caseificio': {
@@ -221,8 +341,14 @@ const rootRouteChildren: RootRouteChildren = {
   AllevamentoRoute: AllevamentoRoute,
   BraceriaRoute: BraceriaRoute,
   CaseificioRoute: CaseificioRoute,
+  ChiSiamoRoute: ChiSiamoRoute,
+  ContattiRoute: ContattiRoute,
+  DoveSiamoRoute: DoveSiamoRoute,
+  FaqRoute: FaqRoute,
   MacelleriaRoute: MacelleriaRoute,
+  MarketRoute: MarketRoute,
   ProdottiRoute: ProdottiRoute,
+  RecensioniRoute: RecensioniRoute,
   LegaliCookieRoute: LegaliCookieRoute,
   LegaliPrivacyRoute: LegaliPrivacyRoute,
 }

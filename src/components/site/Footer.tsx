@@ -84,10 +84,10 @@ export function Footer() {
               ))}
               <li>
                 <Link
-                  to="/bottega"
+                  to="/market"
                   className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
                 >
-                  Bottega
+                  Market
                 </Link>
                 <span className="text-[13px] text-[color:var(--bianco-calce)]/55">
                   Prodotti tipici

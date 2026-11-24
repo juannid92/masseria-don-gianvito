@@ -244,13 +244,13 @@ export function Header() {
             Prodotti
           </Link>
           <Link
-            to="/bottega"
+            to="/market"
             className={cn(
               "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
               textSoft,
             )}
           >
-            Bottega
+            Market
           </Link>
           <div className="relative" ref={menuRef}>
             <button
@@ -366,11 +366,11 @@ export function Header() {
               Prodotti
             </Link>
             <Link
-              to="/bottega"
+              to="/market"
               onClick={() => setDrawer(false)}
               className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
             >
-              Bottega
+              Market
             </Link>
             <div className="h-px bg-white/10 my-4" />
             {ANIME.map((a) => (
