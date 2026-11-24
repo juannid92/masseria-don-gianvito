@@ -1,0 +1,3 @@
+# Market page redirect (renamed from /bottega)
+/bottega /market 301
+/bottega/* /market/:splat 301
