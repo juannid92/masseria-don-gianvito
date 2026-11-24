@@ -97,12 +97,6 @@
   --market-heading-font: var(--font-display);  /* Fraunces serif */
   --market-body-font: var(--font-sans);        /* Inter sans */
 
-  /* ── MARKET — Legacy aliases (removed in Task 4) ─────────── */
-  --market-oat-milk: var(--market-bg);
-  --market-forest-green: var(--market-accent);
-  --market-red-ruby: var(--market-accent);
-  --market-cream: var(--market-surface);
-
   /* === shadcn semantic === */
   /* Allineati alla gerarchia bianco-calce: fondo dominante bianco caldo,
      testo carbone, primary oro-antico. */

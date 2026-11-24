@@ -251,7 +251,7 @@ function MarketPage() {
         <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2">
           <button
             onClick={() => setShowCart(!showCart)}
-            className="market-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--market-red-ruby)] px-7 py-3.5 text-[color:var(--market-cream)] shadow-xl transition-transform hover:scale-105"
+            className="market-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--market-accent)] px-7 py-3.5 text-[color:var(--market-surface)] shadow-xl transition-transform hover:scale-105"
           >
             <svg
               viewBox="0 0 24 24"
@@ -283,14 +283,14 @@ function MarketPage() {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowCart(false)}
           />
-          <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--market-cream)] p-8 shadow-2xl sm:rounded-xl">
+          <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--market-surface)] p-8 shadow-2xl sm:rounded-xl">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="font-display text-2xl text-[color:var(--market-forest-green)]">
+              <h3 className="font-display text-2xl text-[color:var(--market-text)]">
                 Il tuo ordine
               </h3>
               <button
                 onClick={() => setShowCart(false)}
-                className="text-2xl leading-none text-[color:var(--carbone)]/40 hover:text-[color:var(--carbone)]"
+                className="text-2xl leading-none text-[color:var(--market-text-muted)]/40 hover:text-[color:var(--market-text)]"
                 aria-label="Chiudi carrello"
               >
                 ×
@@ -304,12 +304,12 @@ function MarketPage() {
                 return (
                   <li key={item.id} className="flex items-center justify-between text-sm">
                     <div>
-                      <span className="font-display text-base text-[color:var(--market-forest-green)]">
+                      <span className="font-display text-base text-[color:var(--market-text)]">
                         {p.nome}
                       </span>
-                      <span className="ml-2 text-[color:var(--carbone)]/40">× {item.qty}</span>
+                      <span className="ml-2 text-[color:var(--market-text-muted)]/40">× {item.qty}</span>
                     </div>
-                    <span className="font-display text-[color:var(--market-red-ruby)]">
+                    <span className="font-display text-[color:var(--market-accent)]">
                       €{((p.prezzo ?? 0) * item.qty).toFixed(2)}
                     </span>
                   </li>
@@ -317,13 +317,13 @@ function MarketPage() {
               })}
             </ul>
 
-            <div className="my-6 h-px bg-[color:var(--market-forest-green)]/10" />
+            <div className="my-6 h-px bg-[color:var(--market-accent)]/10" />
 
             <div className="mb-8 flex items-center justify-between">
-              <span className="font-eyebrow text-xs tracking-widest uppercase text-[color:var(--market-forest-green)]">
+              <span className="font-eyebrow text-xs tracking-widest uppercase text-[color:var(--market-text)]">
                 Totale stimato
               </span>
-              <span className="font-display text-3xl text-[color:var(--market-red-ruby)]">
+              <span className="font-display text-3xl text-[color:var(--market-accent)]">
                 €{cartTotal.toFixed(2)}
               </span>
             </div>
@@ -332,19 +332,19 @@ function MarketPage() {
               href={buildWhatsappOrder(cart, PRODOTTI_MARKET)}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full bg-[color:var(--market-forest-green)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-cream)] transition-opacity hover:opacity-90"
+              className="block w-full bg-[color:var(--market-accent)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-surface)] transition-opacity hover:opacity-90"
             >
               Ordina su WhatsApp
             </a>
 
             <a
               href={MASSERIA.telefonoHref}
-              className="mt-3 block w-full border border-[color:var(--market-forest-green)]/20 py-3.5 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-forest-green)] transition-colors hover:bg-[color:var(--carbone)]/5"
+              className="mt-3 block w-full border border-[color:var(--market-accent)]/20 py-3.5 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-text)] transition-colors hover:bg-[color:var(--market-text-muted)]/5"
             >
               Oppure chiama {MASSERIA.telefono}
             </a>
 
-            <p className="mt-5 text-center text-xs text-[color:var(--carbone)]/40">
+            <p className="mt-5 text-center text-xs text-[color:var(--market-text-muted)]/40">
               Prezzo e disponibilità da confermare. Consegna a domicilio nella zona di Noci.
             </p>
           </div>
@@ -371,6 +371,16 @@ function MarketItem({
 }) {
   return (
     <article className="market-item">
+      <div className="market-item-image">
+        <img
+          src={product.immagine}
+          alt={product.nome}
+          loading="lazy"
+          decoding="async"
+          width={400}
+          height={300}
+        />
+      </div>
       <div className="market-item-main">
         <div className="market-item-info">
           <h3 className="market-item-name">{product.nome}</h3>
