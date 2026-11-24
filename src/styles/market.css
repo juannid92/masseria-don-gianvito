@@ -1,16 +1,17 @@
 /* ============================================================
-   MARKET — Design Pulito & Attraente
-   Palette: --market-oat-milk, --market-forest-green,
-            --market-red-ruby, --market-cream
-   Layout: lista compatta uniforme, niente card asimmetriche
+   MARKET — Warm Premium Design System
+   Tokens: --market-bg, --market-surface, --market-text,
+           --market-text-muted, --market-accent, --market-accent-hover,
+           --market-border, --market-heading-font, --market-body-font
+   Layout: photo-first card grid at all breakpoints
    ============================================================ */
 
 /* ── Page wrapper ─────────────────────────────────────────── */
 .market-page {
-  background: var(--market-oat-milk);
+  background: var(--market-bg);
 }
 
-/* ── Hero Market ──────────────────────────────────────────── */
+/* ── Hero ─────────────────────────────────────────────────── */
 .market-hero {
   position: relative;
   padding: clamp(64px, 10vw, 120px) clamp(20px, 5vw, 80px) clamp(48px, 6vw, 80px);
@@ -28,44 +29,44 @@
   height: 160%;
   background: radial-gradient(
     ellipse at 50% 30%,
-    color-mix(in oklab, var(--market-forest-green) 6%, transparent) 0%,
+    color-mix(in oklab, var(--market-accent) 6%, transparent) 0%,
     transparent 55%
   );
   pointer-events: none;
 }
 
 .market-hero-kicker {
-  font-family: var(--font-eyebrow);
+  font-family: var(--market-body-font);
   font-size: 11px;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--market-forest-green);
-  opacity: 0.7;
+  color: var(--market-accent);
+  opacity: 0.8;
 }
 
 .market-hero-title {
   margin-top: 16px;
-  font-family: var(--font-display);
+  font-family: var(--market-heading-font);
   font-size: clamp(42px, 7vw, 80px);
   line-height: 0.95;
-  color: var(--market-forest-green);
+  color: var(--market-text);
 }
 
 .market-hero-title em {
   font-style: normal;
-  color: var(--market-red-ruby);
+  color: var(--market-accent);
 }
 
 .market-hero-desc {
   margin: 24px auto 0;
   max-width: 480px;
+  font-family: var(--market-body-font);
   font-size: 16px;
   line-height: 1.7;
-  color: var(--carbone);
-  opacity: 0.7;
+  color: var(--market-text-muted);
 }
 
-/* ── Filtri categoria ─────────────────────────────────────── */
+/* ── Filter tabs ──────────────────────────────────────────── */
 .market-filters {
   display: flex;
   justify-content: center;
@@ -78,39 +79,38 @@
 .market-filter-tab {
   padding: 10px 22px;
   background: none;
-  border: 1px solid transparent;
-  border-radius: 100px;
-  font-family: var(--font-eyebrow);
-  font-size: 10px;
-  letter-spacing: 0.16em;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  font-family: var(--market-body-font);
+  font-size: 11px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--carbone);
-  opacity: 0.5;
+  color: var(--market-text-muted);
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, border-color 0.25s ease;
 }
 
 .market-filter-tab:hover {
-  opacity: 0.8;
-  border-color: color-mix(in oklab, var(--market-forest-green) 20%, transparent);
+  color: var(--market-text);
+  border-bottom-color: var(--market-border);
 }
 
 .market-filter-tab[data-active="true"] {
-  opacity: 1;
-  color: var(--market-cream);
-  background: var(--market-forest-green);
-  border-color: var(--market-forest-green);
+  color: var(--market-accent);
+  border-bottom-color: var(--market-accent);
+  font-weight: 600;
 }
 
-/* ── Lista prodotti ───────────────────────────────────────── */
+/* ── Product list grid ────────────────────────────────────── */
 .market-list {
   padding: 0 clamp(20px, 5vw, 80px);
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .market-category-group {
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
 .market-category-group:last-child {
@@ -118,37 +118,60 @@
 }
 
 .market-category-title {
-  font-family: var(--font-display);
+  font-family: var(--market-heading-font);
   font-size: clamp(24px, 3vw, 32px);
-  color: var(--market-forest-green);
-  margin-bottom: 20px;
+  color: var(--market-text);
+  margin-bottom: 24px;
   padding-bottom: 12px;
-  border-bottom: 2px solid var(--market-red-ruby);
+  border-bottom: 2px solid var(--market-accent);
   display: inline-block;
 }
 
 .market-items {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
-/* ── Singolo prodotto — riga uniforme ─────────────────────── */
+/* ── Product card ─────────────────────────────────────────── */
 .market-item {
-  background: var(--market-cream);
-  transition: background 0.2s ease;
+  background: var(--market-surface);
+  border: 1px solid var(--market-border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .market-item:hover {
-  background: color-mix(in oklab, var(--market-cream) 85%, var(--market-forest-green) 3%);
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--market-text) 8%, transparent);
+  transform: translateY(-2px);
 }
 
+/* Image container — always visible at every breakpoint */
+.market-item-image {
+  width: 100%;
+  min-height: 180px;
+  background: var(--market-border);
+  overflow: hidden;
+}
+
+.market-item-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body below image */
 .market-item-main {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 24px;
-  gap: 16px;
+  flex-direction: column;
+  padding: 20px;
+  gap: 12px;
+  flex: 1;
 }
 
 .market-item-info {
@@ -157,62 +180,67 @@
 }
 
 .market-item-name {
-  font-family: var(--font-display);
+  font-family: var(--market-heading-font);
   font-size: 18px;
-  line-height: 1.2;
-  color: var(--market-forest-green);
+  line-height: 1.25;
+  color: var(--market-text);
   margin: 0;
 }
 
 .market-item-desc {
+  font-family: var(--market-body-font);
   font-size: 13px;
-  line-height: 1.5;
-  color: var(--carbone);
-  opacity: 0.55;
-  margin: 4px 0 0;
-  white-space: nowrap;
+  line-height: 1.55;
+  color: var(--market-text-muted);
+  margin: 6px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .market-item-right {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-shrink: 0;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--market-border);
 }
 
 .market-item-price-block {
-  text-align: right;
-  min-width: 60px;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
 }
 
 .market-item-price {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--market-red-ruby);
+  font-family: var(--market-heading-font);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--market-accent);
 }
 
 .market-item-unit {
+  font-family: var(--market-body-font);
   font-size: 12px;
-  color: var(--carbone);
-  opacity: 0.4;
+  color: var(--market-text-muted);
 }
 
-/* ── Azioni ───────────────────────────────────────────────── */
+/* ── Action buttons ───────────────────────────────────────── */
 .market-item-actions {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .market-btn-add {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
-  background: var(--market-forest-green);
-  color: var(--market-cream);
+  background: var(--market-accent);
+  color: var(--market-surface);
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -220,29 +248,30 @@
 }
 
 .market-btn-add:hover {
-  background: var(--market-red-ruby);
+  background: var(--market-accent-hover);
   transform: scale(1.08);
 }
 
 .market-btn-info {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: grid;
   place-items: center;
   background: transparent;
-  border: 1px solid color-mix(in oklab, var(--market-forest-green) 25%, transparent);
+  border: 1px solid var(--market-border);
   border-radius: 50%;
-  color: var(--market-forest-green);
+  color: var(--market-text-muted);
   text-decoration: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .market-btn-info:hover {
-  border-color: var(--market-forest-green);
-  background: color-mix(in oklab, var(--market-forest-green) 8%, transparent);
+  border-color: var(--market-accent);
+  color: var(--market-accent);
+  background: color-mix(in oklab, var(--market-accent) 6%, transparent);
 }
 
-/* ── Quantità nel carrello (inline) ───────────────────────── */
+/* ── Quantity controls (inline in card) ───────────────────── */
 .market-qty-controls {
   display: flex;
   align-items: center;
@@ -250,12 +279,12 @@
 }
 
 .market-qty-btn {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
-  background: var(--market-forest-green);
-  color: var(--market-cream);
+  background: var(--market-accent);
+  color: var(--market-surface);
   border: none;
   border-radius: 50%;
   font-size: 16px;
@@ -265,14 +294,14 @@
 }
 
 .market-qty-btn:hover {
-  background: var(--market-red-ruby);
+  background: var(--market-accent-hover);
 }
 
 .market-qty-value {
-  font-family: var(--font-display);
-  font-size: 17px;
+  font-family: var(--market-heading-font);
+  font-size: 18px;
   font-weight: 600;
-  color: var(--market-forest-green);
+  color: var(--market-text);
   min-width: 2ch;
   text-align: center;
 }
@@ -283,14 +312,14 @@
   padding: 20px 32px;
   max-width: 560px;
   text-align: center;
+  font-family: var(--market-body-font);
   font-size: 13px;
   line-height: 1.6;
-  color: var(--carbone);
-  opacity: 0.45;
-  border-top: 1px solid color-mix(in oklab, var(--market-forest-green) 10%, transparent);
+  color: var(--market-text-muted);
+  border-top: 1px solid var(--market-border);
 }
 
-/* ── FAB carrello ─────────────────────────────────────────── */
+/* ── Cart FAB ─────────────────────────────────────────────── */
 .market-cart-fab {
   animation: market-fab-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -306,11 +335,23 @@
   }
 }
 
-/* ── Responsive tablet ────────────────────────────────────── */
+/* ── Responsive tablet (≤767px): 2-column grid ───────────── */
 @media (max-width: 767px) {
+  .market-items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .market-item-image {
+    min-height: 160px;
+  }
+
+  .market-item-image img {
+    min-height: 160px;
+  }
+
   .market-item-main {
-    padding: 14px 18px;
-    gap: 12px;
+    padding: 16px;
   }
 
   .market-item-name {
@@ -322,46 +363,48 @@
   }
 
   .market-item-price {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .market-btn-add,
   .market-btn-info {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
 
   .market-qty-btn {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     font-size: 14px;
   }
 }
 
-/* ── Responsive mobile ────────────────────────────────────── */
+/* ── Responsive mobile (≤480px): single column, full-width cards ── */
 @media (max-width: 480px) {
+  .market-items {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .market-item-image {
+    min-height: 160px;
+  }
+
+  .market-item-image img {
+    min-height: 160px;
+  }
+
   .market-item-main {
-    flex-wrap: wrap;
-    padding: 14px 16px;
-    gap: 10px;
-  }
-
-  .market-item-info {
-    flex-basis: 100%;
-  }
-
-  .market-item-desc {
-    white-space: normal;
+    padding: 16px;
   }
 
   .market-item-right {
-    width: 100%;
-    justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .market-filter-tab {
     padding: 8px 16px;
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .market-category-title {
@@ -379,6 +422,10 @@
   .market-cart-fab {
     transition: none;
     animation: none;
+  }
+
+  .market-item:hover {
+    transform: none;
   }
 
   .market-btn-add:hover {
