@@ -4,40 +4,40 @@ import { getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 import {
-  PRODOTTI_BOTTEGA,
-  CATEGORIE_BOTTEGA,
-  type CategoriaBottega,
-  type ProdottoBottega,
+  PRODOTTI_MARKET,
+  CATEGORIE_MARKET,
+  type CategoriaMarket,
+  type ProdottoMarket,
 } from "@/data/bottega";
 import "@/styles/bottega.css";
 
 export const Route = createFileRoute("/bottega")({
   head: () => ({
     meta: [
-      { title: "Bottega — Prodotti Tipici · Masseria Don Gianvito" },
+      { title: "Market — Prodotti Tipici · Masseria Don Gianvito" },
       {
         name: "description",
         content:
           "Carne, formaggi, salumi, farine e legumi della Masseria Don Gianvito. Ordina per la consegna a domicilio o chiedi informazioni su ogni prodotto.",
       },
-      { property: "og:title", content: "Bottega — Prodotti Tipici · Masseria Don Gianvito" },
+      { property: "og:title", content: "Market — Prodotti Tipici · Masseria Don Gianvito" },
       { property: "og:url", content: getAbsoluteUrl("/bottega") },
       { property: "og:type", content: "website" },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/bottega") }],
   }),
-  component: BottegaPage,
+  component: MarketPage,
 });
 
 // ── Carrello state ─────────────────────────────────────────────────────────────
 type CartItem = { id: string; qty: number };
 
-function buildWhatsappOrder(items: CartItem[], products: ProdottoBottega[]) {
+function buildWhatsappOrder(items: CartItem[], products: ProdottoMarket[]) {
   const lines = items
     .map((item) => {
       const p = products.find((pr) => pr.id === item.id);
       if (!p) return null;
-      const prezzo = p.prezzo != null ? `€${p.prezzo}/${p.unita}` : "su richiesta";
+      const prezzo = p.prezzo != null ? `€${p.prezzo}/kg` : "su richiesta";
       return `• ${p.nome} × ${item.qty} (${prezzo})`;
     })
     .filter(Boolean);
@@ -48,7 +48,7 @@ function buildWhatsappOrder(items: CartItem[], products: ProdottoBottega[]) {
   }, 0);
 
   const msg = [
-    `Buongiorno, vorrei ordinare dalla Bottega della Masseria Don Gianvito:`,
+    `Buongiorno, vorrei ordinare dal Market della Masseria Don Gianvito:`,
     ``,
     ...lines,
     ``,
@@ -60,30 +60,30 @@ function buildWhatsappOrder(items: CartItem[], products: ProdottoBottega[]) {
   return `${MASSERIA.whatsapp.split("?")[0]}?text=${encodeURIComponent(msg)}`;
 }
 
-function buildWhatsappInfo(product: ProdottoBottega) {
-  const msg = `Buongiorno, vorrei informazioni su "${product.nome}" dalla Bottega della Masseria Don Gianvito. Prezzo, disponibilità e consegna a domicilio. Grazie!`;
+function buildWhatsappInfo(product: ProdottoMarket) {
+  const msg = `Buongiorno, vorrei informazioni su "${product.nome}" dal Market della Masseria Don Gianvito. Prezzo, disponibilità e consegna a domicilio. Grazie!`;
   return `${MASSERIA.whatsapp.split("?")[0]}?text=${encodeURIComponent(msg)}`;
 }
 
 // ── Componente ─────────────────────────────────────────────────────────────────
 
-function BottegaPage() {
-  const [activeCategory, setActiveCategory] = useState<CategoriaBottega | "tutti">("tutti");
+function MarketPage() {
+  const [activeCategory, setActiveCategory] = useState<CategoriaMarket | "tutti">("tutti");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
 
   const filteredProducts = useMemo(
     () =>
       activeCategory === "tutti"
-        ? PRODOTTI_BOTTEGA
-        : PRODOTTI_BOTTEGA.filter((p) => p.categoria === activeCategory),
+        ? PRODOTTI_MARKET
+        : PRODOTTI_MARKET.filter((p) => p.categoria === activeCategory),
     [activeCategory],
   );
 
   const cartTotal = useMemo(
     () =>
       cart.reduce((sum, item) => {
-        const p = PRODOTTI_BOTTEGA.find((pr) => pr.id === item.id);
+        const p = PRODOTTI_MARKET.find((pr) => pr.id === item.id);
         return sum + (p?.prezzo ?? 0) * item.qty;
       }, 0),
     [cart],
@@ -113,9 +113,20 @@ function BottegaPage() {
 
   const getQty = (id: string) => cart.find((item) => item.id === id)?.qty ?? 0;
 
+  // Raggruppa prodotti per categoria quando filtro è "tutti"
+  const groupedProducts = useMemo(() => {
+    if (activeCategory !== "tutti") return null;
+    const groups: Record<string, ProdottoMarket[]> = {};
+    for (const cat of CATEGORIE_MARKET) {
+      const items = PRODOTTI_MARKET.filter((p) => p.categoria === cat.id);
+      if (items.length > 0) groups[cat.id] = items;
+    }
+    return groups;
+  }, [activeCategory]);
+
   return (
-    <div className="bg-[color:var(--bottega-oat-milk)] min-h-screen pt-[var(--page-header-safe-offset)]">
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Bottega" }]} />
+    <div className="market-page min-h-screen pt-[var(--page-header-safe-offset)]">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Market" }]} />
 
       {/* JSON-LD Store */}
       <script
@@ -124,11 +135,11 @@ function BottegaPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Store",
-            name: "Bottega — Masseria Don Gianvito",
+            name: "Market — Masseria Don Gianvito",
             description:
               "Prodotti tipici della Masseria: carne, formaggi, salumi, farine e legumi con consegna a domicilio.",
             url: getAbsoluteUrl("/bottega"),
-            telephone: MASSERIA.telefono,
+            telephone: "+393339395750",
             address: {
               "@type": "PostalAddress",
               streetAddress: MASSERIA.indirizzo,
@@ -139,12 +150,13 @@ function BottegaPage() {
             },
             hasOfferCatalog: {
               "@type": "OfferCatalog",
-              name: "Prodotti della Bottega",
-              itemListElement: PRODOTTI_BOTTEGA.map((p) => ({
+              name: "Prodotti del Market",
+              itemListElement: PRODOTTI_MARKET.map((p) => ({
                 "@type": "Offer",
                 itemOffered: { "@type": "Product", name: p.nome, description: p.descrizione },
                 price: p.prezzo,
                 priceCurrency: "EUR",
+                unitCode: "KGM",
                 availability: "https://schema.org/InStock",
               })),
             },
@@ -152,34 +164,34 @@ function BottegaPage() {
         }}
       />
 
-      {/* Hero editoriale */}
-      <section className="bottega-hero">
-        <p className="bottega-hero-kicker">Consegna a domicilio · Noci e dintorni</p>
-        <h1 className="bottega-hero-title">
-          La Bottega
+      {/* Hero */}
+      <section className="market-hero">
+        <p className="market-hero-kicker">Consegna a domicilio · Noci e dintorni</p>
+        <h1 className="market-hero-title">
+          Il Market
           <br />
           <em>della Masseria</em>
         </h1>
-        <p className="bottega-hero-desc">
+        <p className="market-hero-desc">
           Carne dei nostri allevamenti, formaggi del caseificio interno, salumi stagionati, farine
           macinate a pietra e legumi della Murgia. Componi il tuo ordine e ricevilo a casa.
         </p>
       </section>
 
-      {/* Filtri categoria — tabs minimali */}
-      <nav className="bottega-filters">
+      {/* Filtri categoria */}
+      <nav className="market-filters">
         <button
           onClick={() => setActiveCategory("tutti")}
-          className="bottega-filter-tab"
+          className="market-filter-tab"
           data-active={activeCategory === "tutti"}
         >
           Tutti
         </button>
-        {CATEGORIE_BOTTEGA.map((cat) => (
+        {CATEGORIE_MARKET.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
-            className="bottega-filter-tab"
+            className="market-filter-tab"
             data-active={activeCategory === cat.id}
           >
             {cat.nome}
@@ -187,95 +199,59 @@ function BottegaPage() {
         ))}
       </nav>
 
-      {/* Griglia prodotti editoriale */}
-      <section className="bottega-grid pb-32">
-        {filteredProducts.map((product) => {
-          const qty = getQty(product.id);
-          return (
-            <article key={product.id} className="bottega-product">
-              {/* Immagine protagonista */}
-              <div className="bottega-product-img-wrap">
-                <span className="bottega-product-badge">
-                  {CATEGORIE_BOTTEGA.find((c) => c.id === product.categoria)?.nome}
-                </span>
-                <img
-                  src={product.immagine}
-                  alt={product.nome}
-                  className="bottega-product-img"
-                  loading="lazy"
-                />
-              </div>
-
-              {/* Info prodotto */}
-              <div className="bottega-product-info">
-                <h2 className="bottega-product-name">{product.nome}</h2>
-                <p className="bottega-product-desc">{product.descrizione}</p>
-
-                <div className="bottega-product-footer">
-                  <div>
-                    {product.prezzo != null ? (
-                      <>
-                        <span className="bottega-product-price">€{product.prezzo}</span>
-                        <span className="bottega-product-unit">/ {product.unita}</span>
-                      </>
-                    ) : (
-                      <span className="bottega-product-unit italic">Su richiesta</span>
-                    )}
-                  </div>
-
-                  {/* Azioni */}
-                  {qty === 0 ? (
-                    <div className="bottega-product-actions">
-                      <button onClick={() => addToCart(product.id)} className="bottega-btn-add">
-                        Aggiungi
-                      </button>
-                      <a
-                        href={buildWhatsappInfo(product)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bottega-btn-info"
-                      >
-                        Info
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="bottega-qty-controls">
-                      <button
-                        onClick={() => removeFromCart(product.id)}
-                        className="bottega-qty-btn"
-                        aria-label={`Rimuovi uno ${product.nome}`}
-                      >
-                        −
-                      </button>
-                      <span className="bottega-qty-value">{qty}</span>
-                      <button
-                        onClick={() => addToCart(product.id)}
-                        className="bottega-qty-btn"
-                        aria-label={`Aggiungi uno ${product.nome}`}
-                      >
-                        +
-                      </button>
-                    </div>
-                  )}
+      {/* Lista prodotti */}
+      <section className="market-list pb-32">
+        {groupedProducts ? (
+          // Vista raggruppata per categoria
+          Object.entries(groupedProducts).map(([catId, products]) => {
+            const catName = CATEGORIE_MARKET.find((c) => c.id === catId)?.nome ?? catId;
+            return (
+              <div key={catId} className="market-category-group">
+                <h2 className="market-category-title">{catName}</h2>
+                <div className="market-items">
+                  {products.map((product) => (
+                    <MarketItem
+                      key={product.id}
+                      product={product}
+                      qty={getQty(product.id)}
+                      onAdd={() => addToCart(product.id)}
+                      onRemove={() => removeFromCart(product.id)}
+                      onInfo={() => buildWhatsappInfo(product)}
+                    />
+                  ))}
                 </div>
               </div>
-            </article>
-          );
-        })}
+            );
+          })
+        ) : (
+          // Vista filtrata per singola categoria
+          <div className="market-items">
+            {filteredProducts.map((product) => (
+              <MarketItem
+                key={product.id}
+                product={product}
+                qty={getQty(product.id)}
+                onAdd={() => addToCart(product.id)}
+                onRemove={() => removeFromCart(product.id)}
+                onInfo={() => buildWhatsappInfo(product)}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Disclaimer */}
-      <div className="bottega-disclaimer mb-24">
-        I prezzi indicati sono indicativi e soggetti a variazione. Conferma prezzo e disponibilità
-        via WhatsApp o chiamata prima dell'ordine. Le foto sono illustrative.
+      <div className="market-disclaimer mb-24">
+        I prezzi indicati sono al kg e soggetti a variazione. Conferma prezzo e disponibilità
+        via WhatsApp o chiamata prima dell'ordine.
       </div>
 
       {/* Floating cart FAB */}
       {cartCount > 0 && (
-        <div className="fixed bottom-20 left-1/2 z-40">
+        <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2">
           <button
             onClick={() => setShowCart(!showCart)}
-            className="bottega-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--bottega-red-ruby)] px-7 py-3.5 text-[color:var(--bottega-cream)] shadow-xl transition-transform hover:scale-105"
+            className="market-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--bottega-red-ruby)] px-7 py-3.5 text-[color:var(--bottega-cream)] shadow-xl transition-transform hover:scale-105"
           >
             <svg
               viewBox="0 0 24 24"
@@ -323,7 +299,7 @@ function BottegaPage() {
 
             <ul className="max-h-60 space-y-4 overflow-y-auto">
               {cart.map((item) => {
-                const p = PRODOTTI_BOTTEGA.find((pr) => pr.id === item.id);
+                const p = PRODOTTI_MARKET.find((pr) => pr.id === item.id);
                 if (!p) return null;
                 return (
                   <li key={item.id} className="flex items-center justify-between text-sm">
@@ -353,7 +329,7 @@ function BottegaPage() {
             </div>
 
             <a
-              href={buildWhatsappOrder(cart, PRODOTTI_BOTTEGA)}
+              href={buildWhatsappOrder(cart, PRODOTTI_MARKET)}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full bg-[color:var(--bottega-forest-green)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--bottega-cream)] transition-opacity hover:opacity-90"
@@ -375,5 +351,79 @@ function BottegaPage() {
         </div>
       )}
     </div>
+  );
+}
+
+// ── Singolo prodotto — riga compatta e uniforme ────────────────────────────────
+
+function MarketItem({
+  product,
+  qty,
+  onAdd,
+  onRemove,
+  onInfo,
+}: {
+  product: ProdottoMarket;
+  qty: number;
+  onAdd: () => void;
+  onRemove: () => void;
+  onInfo: () => string;
+}) {
+  return (
+    <article className="market-item">
+      <div className="market-item-main">
+        <div className="market-item-info">
+          <h3 className="market-item-name">{product.nome}</h3>
+          <p className="market-item-desc">{product.descrizione}</p>
+        </div>
+        <div className="market-item-right">
+          {product.prezzo != null && (
+            <div className="market-item-price-block">
+              <span className="market-item-price">€{product.prezzo}</span>
+              <span className="market-item-unit">/kg</span>
+            </div>
+          )}
+          {qty === 0 ? (
+            <div className="market-item-actions">
+              <button onClick={onAdd} className="market-btn-add" aria-label={`Aggiungi ${product.nome}`}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </button>
+              <a
+                href={onInfo()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="market-btn-info"
+                aria-label={`Info su ${product.nome}`}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16" aria-hidden="true">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg>
+              </a>
+            </div>
+          ) : (
+            <div className="market-qty-controls">
+              <button
+                onClick={onRemove}
+                className="market-qty-btn"
+                aria-label={`Rimuovi uno ${product.nome}`}
+              >
+                −
+              </button>
+              <span className="market-qty-value">{qty}</span>
+              <button
+                onClick={onAdd}
+                className="market-qty-btn"
+                aria-label={`Aggiungi uno ${product.nome}`}
+              >
+                +
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }

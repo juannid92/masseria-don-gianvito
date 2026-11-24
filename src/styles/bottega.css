@@ -1,33 +1,40 @@
 /* ============================================================
-   BOTTEGA — Design Editoriale
+   MARKET — Design Pulito & Attraente
    Palette: --bottega-oat-milk, --bottega-forest-green,
             --bottega-red-ruby, --bottega-cream
+   Layout: lista compatta uniforme, niente card asimmetriche
    ============================================================ */
 
-/* ── Hero Bottega ─────────────────────────────────────────── */
-.bottega-hero {
+/* ── Page wrapper ─────────────────────────────────────────── */
+.market-page {
+  background: var(--bottega-oat-milk);
+}
+
+/* ── Hero Market ──────────────────────────────────────────── */
+.market-hero {
   position: relative;
-  padding: clamp(80px, 12vw, 160px) clamp(20px, 5vw, 80px);
+  padding: clamp(64px, 10vw, 120px) clamp(20px, 5vw, 80px) clamp(48px, 6vw, 80px);
   text-align: center;
   overflow: hidden;
 }
 
-.bottega-hero::before {
+.market-hero::before {
   content: "";
   position: absolute;
-  top: -40%;
-  left: -20%;
-  width: 140%;
-  height: 180%;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 160%;
   background: radial-gradient(
-    ellipse at 30% 20%,
-    color-mix(in oklab, var(--bottega-forest-green) 8%, transparent) 0%,
-    transparent 60%
+    ellipse at 50% 30%,
+    color-mix(in oklab, var(--bottega-forest-green) 6%, transparent) 0%,
+    transparent 55%
   );
   pointer-events: none;
 }
 
-.bottega-hero-kicker {
+.market-hero-kicker {
   font-family: var(--font-eyebrow);
   font-size: 11px;
   letter-spacing: 0.32em;
@@ -36,309 +43,261 @@
   opacity: 0.7;
 }
 
-.bottega-hero-title {
-  margin-top: 20px;
+.market-hero-title {
+  margin-top: 16px;
   font-family: var(--font-display);
-  font-size: clamp(48px, 8vw, 96px);
-  line-height: 0.92;
+  font-size: clamp(42px, 7vw, 80px);
+  line-height: 0.95;
   color: var(--bottega-forest-green);
 }
 
-.bottega-hero-title em {
+.market-hero-title em {
   font-style: normal;
   color: var(--bottega-red-ruby);
-  display: inline-block;
-  transform: rotate(-1.5deg);
-  transform-origin: left center;
 }
 
-.bottega-hero-desc {
-  margin: 32px auto 0;
-  max-width: 520px;
-  font-size: 17px;
+.market-hero-desc {
+  margin: 24px auto 0;
+  max-width: 480px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--carbone);
-  opacity: 0.75;
-}
-
-/* ── Filtri categoria — linea orizzontale elegante ──────── */
-.bottega-filters {
-  display: flex;
-  justify-content: center;
-  gap: 0;
-  padding: 0 clamp(20px, 5vw, 80px);
-  margin-bottom: 64px;
-  border-bottom: 1px solid color-mix(in oklab, var(--bottega-forest-green) 15%, transparent);
-}
-
-.bottega-filter-tab {
-  position: relative;
-  padding: 16px 28px;
-  background: none;
-  border: none;
-  font-family: var(--font-eyebrow);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--carbone);
-  opacity: 0.45;
-  cursor: pointer;
-  transition: opacity 0.3s ease, color 0.3s ease;
-}
-
-.bottega-filter-tab:hover {
   opacity: 0.7;
 }
 
-.bottega-filter-tab[data-active="true"] {
-  opacity: 1;
-  color: var(--bottega-forest-green);
-}
-
-.bottega-filter-tab[data-active="true"]::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--bottega-red-ruby);
-}
-
-/* ── Griglia prodotti — layout editoriale asimmetrico ───── */
-.bottega-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 24px;
+/* ── Filtri categoria ─────────────────────────────────────── */
+.market-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
   padding: 0 clamp(20px, 5vw, 80px);
-  max-width: 1400px;
+  margin-bottom: 48px;
+}
+
+.market-filter-tab {
+  padding: 10px 22px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  font-family: var(--font-eyebrow);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--carbone);
+  opacity: 0.5;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.market-filter-tab:hover {
+  opacity: 0.8;
+  border-color: color-mix(in oklab, var(--bottega-forest-green) 20%, transparent);
+}
+
+.market-filter-tab[data-active="true"] {
+  opacity: 1;
+  color: var(--bottega-cream);
+  background: var(--bottega-forest-green);
+  border-color: var(--bottega-forest-green);
+}
+
+/* ── Lista prodotti ───────────────────────────────────────── */
+.market-list {
+  padding: 0 clamp(20px, 5vw, 80px);
+  max-width: 900px;
   margin: 0 auto;
 }
 
-/* Card base — occupa 4 colonne su desktop */
-.bottega-product {
-  grid-column: span 4;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  cursor: default;
+.market-category-group {
+  margin-bottom: 48px;
 }
 
-/* Varianti di layout per ritmo visivo */
-.bottega-product:nth-child(5n + 1) {
-  grid-column: span 5;
+.market-category-group:last-child {
+  margin-bottom: 0;
 }
 
-.bottega-product:nth-child(5n + 2) {
-  grid-column: span 4;
-}
-
-.bottega-product:nth-child(5n + 3) {
-  grid-column: span 3;
-}
-
-.bottega-product:nth-child(5n + 4) {
-  grid-column: span 4;
-}
-
-.bottega-product:nth-child(5n + 5) {
-  grid-column: span 5;
-}
-
-/* Immagine — protagonista, aspect ratio variabile */
-.bottega-product-img-wrap {
-  position: relative;
-  overflow: hidden;
-  background: var(--bottega-oat-milk);
-}
-
-.bottega-product:nth-child(odd) .bottega-product-img-wrap {
-  aspect-ratio: 4 / 5;
-}
-
-.bottega-product:nth-child(even) .bottega-product-img-wrap {
-  aspect-ratio: 3 / 2;
-}
-
-.bottega-product-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.bottega-product:hover .bottega-product-img {
-  transform: scale(1.04);
-}
-
-/* Overlay categoria sull'immagine */
-.bottega-product-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  padding: 6px 14px;
-  background: var(--bottega-cream);
-  font-family: var(--font-eyebrow);
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--bottega-forest-green);
-  z-index: 2;
-}
-
-/* Contenuto sotto l'immagine */
-.bottega-product-info {
-  padding: 20px 4px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bottega-product-name {
+.market-category-title {
   font-family: var(--font-display);
-  font-size: clamp(20px, 2.2vw, 28px);
-  line-height: 1.1;
+  font-size: clamp(24px, 3vw, 32px);
   color: var(--bottega-forest-green);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--bottega-red-ruby);
+  display: inline-block;
 }
 
-.bottega-product-desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--carbone);
-  opacity: 0.65;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.market-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.bottega-product-footer {
+/* ── Singolo prodotto — riga uniforme ─────────────────────── */
+.market-item {
+  background: var(--bottega-cream);
+  transition: background 0.2s ease;
+}
+
+.market-item:hover {
+  background: color-mix(in oklab, var(--bottega-cream) 85%, var(--bottega-forest-green) 3%);
+}
+
+.market-item-main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
-  gap: 12px;
+  padding: 18px 24px;
+  gap: 16px;
 }
 
-.bottega-product-price {
+.market-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.market-item-name {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--bottega-forest-green);
+  margin: 0;
+}
+
+.market-item-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--carbone);
+  opacity: 0.55;
+  margin: 4px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.market-item-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.market-item-price-block {
+  text-align: right;
+  min-width: 60px;
+}
+
+.market-item-price {
+  font-family: var(--font-display);
+  font-size: 20px;
   font-weight: 500;
   color: var(--bottega-red-ruby);
 }
 
-.bottega-product-unit {
-  font-size: 13px;
+.market-item-unit {
+  font-size: 12px;
   color: var(--carbone);
   opacity: 0.4;
-  margin-left: 2px;
 }
 
-/* Azioni — compaiono su hover/focus */
-.bottega-product-actions {
+/* ── Azioni ───────────────────────────────────────────────── */
+.market-item-actions {
   display: flex;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  gap: 6px;
 }
 
-.bottega-product:hover .bottega-product-actions,
-.bottega-product:focus-within .bottega-product-actions {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.bottega-btn-add {
-  padding: 10px 20px;
-  background: var(--bottega-forest-green);
-  color: var(--bottega-cream);
-  border: none;
-  font-family: var(--font-eyebrow);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.bottega-btn-add:hover {
-  background: var(--bottega-red-ruby);
-}
-
-.bottega-btn-info {
-  padding: 10px 16px;
-  background: transparent;
-  border: 1px solid color-mix(in oklab, var(--bottega-forest-green) 30%, transparent);
-  color: var(--bottega-forest-green);
-  font-family: var(--font-eyebrow);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.bottega-btn-info:hover {
-  border-color: var(--bottega-forest-green);
-  background: color-mix(in oklab, var(--bottega-forest-green) 6%, transparent);
-}
-
-/* Quantità nel carrello (inline) */
-.bottega-qty-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.bottega-qty-btn {
-  width: 32px;
-  height: 32px;
+.market-btn-add {
+  width: 36px;
+  height: 36px;
   display: grid;
   place-items: center;
   background: var(--bottega-forest-green);
   color: var(--bottega-cream);
   border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.market-btn-add:hover {
+  background: var(--bottega-red-ruby);
+  transform: scale(1.08);
+}
+
+.market-btn-info {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid color-mix(in oklab, var(--bottega-forest-green) 25%, transparent);
+  border-radius: 50%;
+  color: var(--bottega-forest-green);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.market-btn-info:hover {
+  border-color: var(--bottega-forest-green);
+  background: color-mix(in oklab, var(--bottega-forest-green) 8%, transparent);
+}
+
+/* ── Quantità nel carrello (inline) ───────────────────────── */
+.market-qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.market-qty-btn {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--bottega-forest-green);
+  color: var(--bottega-cream);
+  border: none;
+  border-radius: 50%;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
-.bottega-qty-btn:hover {
+.market-qty-btn:hover {
   background: var(--bottega-red-ruby);
 }
 
-.bottega-qty-value {
+.market-qty-value {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--bottega-forest-green);
   min-width: 2ch;
   text-align: center;
 }
 
-/* ── Disclaimer ──────────────────────────────────────────── */
-.bottega-disclaimer {
-  margin: 80px auto 0;
+/* ── Disclaimer ───────────────────────────────────────────── */
+.market-disclaimer {
+  margin: 64px auto 0;
   padding: 20px 32px;
-  max-width: 600px;
+  max-width: 560px;
   text-align: center;
   font-size: 13px;
   line-height: 1.6;
   color: var(--carbone);
-  opacity: 0.5;
-  border-top: 1px solid color-mix(in oklab, var(--bottega-forest-green) 12%, transparent);
+  opacity: 0.45;
+  border-top: 1px solid color-mix(in oklab, var(--bottega-forest-green) 10%, transparent);
 }
 
-/* ── FAB carrello ────────────────────────────────────────── */
-.bottega-cart-fab {
-  animation: bottega-fab-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* ── FAB carrello ─────────────────────────────────────────── */
+.market-cart-fab {
+  animation: market-fab-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes bottega-fab-enter {
+@keyframes market-fab-enter {
   from {
-    transform: translate(-50%, 24px);
+    transform: translate(-50%, 20px);
     opacity: 0;
   }
   to {
@@ -347,71 +306,82 @@
   }
 }
 
-/* ── Responsive ──────────────────────────────────────────── */
-@media (max-width: 1023px) {
-  .bottega-grid {
-    grid-template-columns: repeat(6, 1fr);
+/* ── Responsive tablet ────────────────────────────────────── */
+@media (max-width: 767px) {
+  .market-item-main {
+    padding: 14px 18px;
+    gap: 12px;
   }
 
-  .bottega-product,
-  .bottega-product:nth-child(n) {
-    grid-column: span 3;
+  .market-item-name {
+    font-size: 16px;
   }
 
-  .bottega-product:nth-child(odd) .bottega-product-img-wrap,
-  .bottega-product:nth-child(even) .bottega-product-img-wrap {
-    aspect-ratio: 4 / 3;
+  .market-item-desc {
+    font-size: 12px;
+  }
+
+  .market-item-price {
+    font-size: 18px;
+  }
+
+  .market-btn-add,
+  .market-btn-info {
+    width: 32px;
+    height: 32px;
+  }
+
+  .market-qty-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
   }
 }
 
-@media (max-width: 639px) {
-  .bottega-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .bottega-product,
-  .bottega-product:nth-child(n) {
-    grid-column: span 1;
-  }
-
-  .bottega-product:nth-child(odd) .bottega-product-img-wrap {
-    aspect-ratio: 4 / 5;
-  }
-
-  .bottega-product:nth-child(even) .bottega-product-img-wrap {
-    aspect-ratio: 16 / 9;
-  }
-
-  .bottega-product-actions {
-    opacity: 1;
-    transform: none;
-  }
-
-  .bottega-filter-tab {
-    padding: 12px 16px;
-    font-size: 10px;
-  }
-
-  .bottega-filters {
+/* ── Responsive mobile ────────────────────────────────────── */
+@media (max-width: 480px) {
+  .market-item-main {
     flex-wrap: wrap;
-    gap: 0;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .market-item-info {
+    flex-basis: 100%;
+  }
+
+  .market-item-desc {
+    white-space: normal;
+  }
+
+  .market-item-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .market-filter-tab {
+    padding: 8px 16px;
+    font-size: 9px;
+  }
+
+  .market-category-title {
+    font-size: 22px;
   }
 }
 
-/* ── Reduced motion ──────────────────────────────────────── */
+/* ── Reduced motion ───────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .bottega-product-img,
-  .bottega-product-actions,
-  .bottega-filter-tab,
-  .bottega-btn-add,
-  .bottega-btn-info,
-  .bottega-cart-fab {
+  .market-item,
+  .market-btn-add,
+  .market-btn-info,
+  .market-qty-btn,
+  .market-filter-tab,
+  .market-cart-fab {
     transition: none;
     animation: none;
   }
 
-  .bottega-product:hover .bottega-product-img {
+  .market-btn-add:hover {
     transform: none;
   }
 }
