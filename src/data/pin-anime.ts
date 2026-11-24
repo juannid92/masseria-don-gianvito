@@ -104,7 +104,7 @@ export const PIN_ANIME: PinAnima[] = [
     m: { x: 68, y: 62, off: { dx: -30, dy: 20 } },
     s: { x: 70, y: 56, off: { dx: 28, dy: 0 } },
     lato: "right",
-    tinta: "var(--market-forest-green)",
+    tinta: "var(--market-accent)",
     profondita: 1.6,
   },
 ];

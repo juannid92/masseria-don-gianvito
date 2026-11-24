@@ -255,46 +255,45 @@ function buildAgriturismo(THREE: ThreeModule, scene: InstanceType<ThreeModule["S
   scene.add(garnish);
 }
 
-function buildBottega(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
-  // Shopping bag body
-  const bagMat = new THREE.MeshStandardMaterial({ color: 0x2d5a3d, roughness: 0.6 });
-  const body = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.6, 0.25), bagMat);
-  body.position.y = -0.1;
+function buildMarket(THREE: ThreeModule, scene: InstanceType<ThreeModule["Scene"]>) {
+  // Warm brown bag body — wider & shorter so it reads as a shopping bag at 64px
+  const bagMat = new THREE.MeshStandardMaterial({ color: 0xa0522d, roughness: 0.7 });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.5, 0.3), bagMat);
+  body.position.y = -0.15;
   scene.add(body);
 
-  // Bag top fold
-  const fold = new THREE.Mesh(
-    new THREE.BoxGeometry(0.55, 0.08, 0.25),
-    new THREE.MeshStandardMaterial({ color: 0x245030, roughness: 0.65 }),
+  // Open/folded top rim — darker strip to suggest an opening
+  const rim = new THREE.Mesh(
+    new THREE.BoxGeometry(0.72, 0.06, 0.32),
+    new THREE.MeshStandardMaterial({ color: 0x8b4513, roughness: 0.75 }),
   );
-  fold.position.y = 0.24;
-  scene.add(fold);
+  rim.position.y = 0.12;
+  scene.add(rim);
 
-  // Handle — torus arc
+  // Thick handle arc — visible at small render size
   const handle = new THREE.Mesh(
-    new THREE.TorusGeometry(0.16, 0.025, 8, 24, Math.PI),
-    new THREE.MeshStandardMaterial({ color: 0x9b1b30, roughness: 0.4, metalness: 0.1 }),
+    new THREE.TorusGeometry(0.18, 0.04, 8, 20, Math.PI),
+    new THREE.MeshStandardMaterial({ color: 0x6b3410, roughness: 0.5, metalness: 0.05 }),
   );
   handle.rotation.x = Math.PI / 2;
-  handle.position.set(0, 0.38, 0);
+  handle.position.set(0, 0.28, 0);
   scene.add(handle);
 
-  // Label/tag on front
-  const tag = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.2, 0.12),
-    new THREE.MeshStandardMaterial({ color: 0xf5efe0, roughness: 0.5 }),
+  // Cream front panel — contrasting label area for depth
+  const panel = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.38, 0.26),
+    new THREE.MeshStandardMaterial({ color: 0xfaf3e0, roughness: 0.4 }),
   );
-  tag.position.set(0, -0.05, 0.126);
-  scene.add(tag);
+  panel.position.set(0, -0.12, 0.151);
+  scene.add(panel);
 
-  // Small heart/detail on tag
-  const detail = new THREE.Mesh(
-    new THREE.SphereGeometry(0.03, 8, 8),
-    new THREE.MeshStandardMaterial({ color: 0x9b1b30, roughness: 0.4 }),
+  // Accent stripe on panel — warm red-brown brand mark
+  const stripe = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.28, 0.04),
+    new THREE.MeshStandardMaterial({ color: 0xb5451b, roughness: 0.45 }),
   );
-  detail.scale.set(1, 0.8, 0.3);
-  detail.position.set(0, -0.05, 0.14);
-  scene.add(detail);
+  stripe.position.set(0, -0.12, 0.153);
+  scene.add(stripe);
 }
 
 type PinId = AnimaId | "market";
@@ -307,7 +306,7 @@ const BUILDERS: Record<
   caseificio: buildCaseificio,
   macelleria: buildMacelleria,
   agriturismo: buildAgriturismo,
-  market: buildBottega,
+  market: buildMarket,
 };
 
 // ── Component ──────────────────────────────────────────────────────────────────
