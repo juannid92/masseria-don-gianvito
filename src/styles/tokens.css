@@ -86,11 +86,16 @@
   --carminio: #9b2233;        /* accento raro, testo su chiaro (5.5:1) */
   --carminio-scuro: #6e1622;  /* fondi profondi o testo che deve tagliare */
 
-  /* === MARKET — Palette dedicata (OAT MILK / FOREST GREEN / RED RUBY) === */
-  --market-oat-milk: #f5efe0;
-  --market-forest-green: #2d5a3d;
-  --market-red-ruby: #9b1b30;
-  --market-cream: #faf6ec;
+  /* ── MARKET — Premium Artisan Food Shop ─────────────────── */
+  --market-bg: #faf8f4;           /* warm ivory background */
+  --market-surface: #ffffff;      /* clean white card surface */
+  --market-text: #2c2420;         /* warm dark brown primary text */
+  --market-text-muted: #7a6e64;   /* muted warm gray secondary text */
+  --market-accent: #a0522d;       /* sienna/terracotta for prices & CTAs */
+  --market-accent-hover: #8b4226; /* darker sienna on hover */
+  --market-border: #e8e0d4;       /* subtle warm border */
+  --market-heading-font: var(--font-display);  /* Fraunces serif */
+  --market-body-font: var(--font-sans);        /* Inter sans */
 
   /* === shadcn semantic === */
   /* Allineati alla gerarchia bianco-calce: fondo dominante bianco caldo,
