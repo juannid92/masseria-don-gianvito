@@ -8,8 +8,8 @@ import {
   CATEGORIE_MARKET,
   type CategoriaMarket,
   type ProdottoMarket,
-} from "@/data/bottega";
-import "@/styles/bottega.css";
+} from "@/data/market";
+import "@/styles/market.css";
 
 export const Route = createFileRoute("/market")({
   head: () => ({
@@ -251,7 +251,7 @@ function MarketPage() {
         <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2">
           <button
             onClick={() => setShowCart(!showCart)}
-            className="market-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--bottega-red-ruby)] px-7 py-3.5 text-[color:var(--bottega-cream)] shadow-xl transition-transform hover:scale-105"
+            className="market-cart-fab flex items-center gap-3 rounded-full bg-[color:var(--market-red-ruby)] px-7 py-3.5 text-[color:var(--market-cream)] shadow-xl transition-transform hover:scale-105"
           >
             <svg
               viewBox="0 0 24 24"
@@ -283,9 +283,9 @@ function MarketPage() {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setShowCart(false)}
           />
-          <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--bottega-cream)] p-8 shadow-2xl sm:rounded-xl">
+          <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--market-cream)] p-8 shadow-2xl sm:rounded-xl">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="font-display text-2xl text-[color:var(--bottega-forest-green)]">
+              <h3 className="font-display text-2xl text-[color:var(--market-forest-green)]">
                 Il tuo ordine
               </h3>
               <button
@@ -304,12 +304,12 @@ function MarketPage() {
                 return (
                   <li key={item.id} className="flex items-center justify-between text-sm">
                     <div>
-                      <span className="font-display text-base text-[color:var(--bottega-forest-green)]">
+                      <span className="font-display text-base text-[color:var(--market-forest-green)]">
                         {p.nome}
                       </span>
                       <span className="ml-2 text-[color:var(--carbone)]/40">× {item.qty}</span>
                     </div>
-                    <span className="font-display text-[color:var(--bottega-red-ruby)]">
+                    <span className="font-display text-[color:var(--market-red-ruby)]">
                       €{((p.prezzo ?? 0) * item.qty).toFixed(2)}
                     </span>
                   </li>
@@ -317,13 +317,13 @@ function MarketPage() {
               })}
             </ul>
 
-            <div className="my-6 h-px bg-[color:var(--bottega-forest-green)]/10" />
+            <div className="my-6 h-px bg-[color:var(--market-forest-green)]/10" />
 
             <div className="mb-8 flex items-center justify-between">
-              <span className="font-eyebrow text-xs tracking-widest uppercase text-[color:var(--bottega-forest-green)]">
+              <span className="font-eyebrow text-xs tracking-widest uppercase text-[color:var(--market-forest-green)]">
                 Totale stimato
               </span>
-              <span className="font-display text-3xl text-[color:var(--bottega-red-ruby)]">
+              <span className="font-display text-3xl text-[color:var(--market-red-ruby)]">
                 €{cartTotal.toFixed(2)}
               </span>
             </div>
@@ -332,14 +332,14 @@ function MarketPage() {
               href={buildWhatsappOrder(cart, PRODOTTI_MARKET)}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full bg-[color:var(--bottega-forest-green)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--bottega-cream)] transition-opacity hover:opacity-90"
+              className="block w-full bg-[color:var(--market-forest-green)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-cream)] transition-opacity hover:opacity-90"
             >
               Ordina su WhatsApp
             </a>
 
             <a
               href={MASSERIA.telefonoHref}
-              className="mt-3 block w-full border border-[color:var(--bottega-forest-green)]/20 py-3.5 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--bottega-forest-green)] transition-colors hover:bg-[color:var(--carbone)]/5"
+              className="mt-3 block w-full border border-[color:var(--market-forest-green)]/20 py-3.5 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-forest-green)] transition-colors hover:bg-[color:var(--carbone)]/5"
             >
               Oppure chiama {MASSERIA.telefono}
             </a>

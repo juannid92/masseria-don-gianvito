@@ -86,11 +86,11 @@
   --carminio: #9b2233;        /* accento raro, testo su chiaro (5.5:1) */
   --carminio-scuro: #6e1622;  /* fondi profondi o testo che deve tagliare */
 
-  /* === BOTTEGA — Palette dedicata (OAT MILK / FOREST GREEN / RED RUBY) === */
-  --bottega-oat-milk: #f5efe0;
-  --bottega-forest-green: #2d5a3d;
-  --bottega-red-ruby: #9b1b30;
-  --bottega-cream: #faf6ec;
+  /* === MARKET — Palette dedicata (OAT MILK / FOREST GREEN / RED RUBY) === */
+  --market-oat-milk: #f5efe0;
+  --market-forest-green: #2d5a3d;
+  --market-red-ruby: #9b1b30;
+  --market-cream: #faf6ec;
 
   /* === shadcn semantic === */
   /* Allineati alla gerarchia bianco-calce: fondo dominante bianco caldo,

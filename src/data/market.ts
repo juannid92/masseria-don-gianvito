@@ -36,7 +36,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Taglio pregiato di bovino adulto allevato in masseria.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "filetto-bovino",
@@ -45,7 +45,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Il taglio più tenero, ideale per cotture rapide alla brace.",
     prezzo: 30,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "braciole-manzo-pronte",
@@ -54,7 +54,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Fettine sottili da involtino, tradizione pugliese.",
     prezzo: 22,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "salsiccia-maiale-nero",
@@ -63,7 +63,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Macinata grossa di suino nero, condita con sale e pepe.",
     prezzo: 9,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "capocollo-fresco",
@@ -72,7 +72,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Taglio intero di suino allevato in masseria, ideale per arrosti.",
     prezzo: 12,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "hamburger-masseria",
@@ -81,7 +81,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Blend di bovino adulto, pronto per la brace.",
     prezzo: 11,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "agnello",
@@ -90,7 +90,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Agnello locale, tagli misti da arrosto o spezzatino.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "salsiccia-vitello",
@@ -99,7 +99,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salsiccia fresca di vitello, macinata fine.",
     prezzo: 10,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "bombette",
@@ -108,7 +108,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Involtini di carne tradizionali pugliesi, ripieni a scelta.",
     prezzo: 16,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "costata-maiale",
@@ -117,7 +117,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Costata di suino con osso, perfetta per la griglia.",
     prezzo: 7,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "lonza-maiale",
@@ -126,7 +126,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Taglio magro di suino, versatile per arrosti e fettine.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "pancetta-maiale",
@@ -135,7 +135,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pancetta fresca di suino, ideale per arrosti e brasati.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "prosciutto-maiale",
@@ -144,7 +144,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Coscia di suino intera, da cuocere al forno lentamente.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "fettine-vitello",
@@ -153,7 +153,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Fettine sottili di vitello, tenere e versatili.",
     prezzo: 16,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "costata-disossata-reale",
@@ -162,7 +162,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Taglio di bovino senza osso, saporito e succoso.",
     prezzo: 18,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "spezzatino-senza-osso",
@@ -171,7 +171,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Bocconcini di bovino scelti, ideali per stufati e brasati.",
     prezzo: 10,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "macinato-tritato",
@@ -180,7 +180,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Carne bovina macinata fresca, per ragù e polpette.",
     prezzo: 10,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "pollo",
@@ -189,7 +189,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pollo intero o a pezzi, allevamento locale.",
     prezzo: 8.5,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "coniglio",
@@ -198,7 +198,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Coniglio intero o a pezzi, allevamento locale.",
     prezzo: 8.5,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "faraona",
@@ -207,7 +207,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Faraona intera, carne saporita e magra.",
     prezzo: 10,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "tacchino",
@@ -216,7 +216,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Tacchino intero o a fette, leggero e versatile.",
     prezzo: 10,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
   {
     id: "spezzatino-con-osso",
@@ -225,7 +225,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Bocconcini di bovino con osso, perfetti per brodi e stufati.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/bottega/carne-placeholder.jpg",
+    immagine: "/images/market/carne-placeholder.jpg",
   },
 
   // ── FORMAGGI E LATTICINI ───────────────────────────────────────────────
@@ -236,7 +236,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Filatura a mano dal latte delle nostre vacche, prodotta ogni mattina.",
     prezzo: 9.5,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "burrata-burratine",
@@ -245,7 +245,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Sacca di mozzarella ripiena di stracciatella e panna fresca.",
     prezzo: 12,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "ricotta-fresca",
@@ -254,7 +254,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Ricotta di siero vaccino, cremosa e delicata, prodotta giornalmente.",
     prezzo: 6.5,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "caciocavallo-fresco",
@@ -263,7 +263,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pasta filata fresca, sapore dolce e consistenza morbida.",
     prezzo: 10.5,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "caciocavallo-stagionato",
@@ -272,7 +272,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Stagionatura in grotta naturale della masseria, sapore intenso.",
     prezzo: 14,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "primo-sale",
@@ -281,7 +281,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio fresco a pasta molle, leggero e versatile.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "mozzarelle",
@@ -290,7 +290,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Mozzarelle di varie pezzature, filatura tradizionale.",
     prezzo: 9.5,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "formaggio-fresco",
@@ -299,7 +299,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio a pasta fresca, delicato e cremoso.",
     prezzo: 12,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "formaggio-stagionato",
@@ -308,7 +308,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio a pasta dura stagionato, sapore deciso.",
     prezzo: 14,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "ricotta-forte",
@@ -317,7 +317,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Ricotta fermentata tradizionale pugliese, in barattolo.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "cacio-ricotta-misto",
@@ -326,7 +326,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio misto vaccino-ovino, sapore equilibrato.",
     prezzo: 15,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
   {
     id: "stracciatella",
@@ -335,7 +335,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Stracciatella di mozzarella fresca, cremosa e filante.",
     prezzo: 11,
     consegna: true,
-    immagine: "/images/bottega/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggi-placeholder.jpg",
   },
 
   // ── SALUMI ─────────────────────────────────────────────────────────────
@@ -346,7 +346,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Stagionatura 4 mesi, speziato con vino cotto e pepe.",
     prezzo: 26,
     consegna: true,
-    immagine: "/images/bottega/salumi-placeholder.jpg",
+    immagine: "/images/market/salumi-placeholder.jpg",
   },
   {
     id: "salame-dolce",
@@ -355,7 +355,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salame a grana media, sapore delicato e aromatico.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/bottega/salumi-placeholder.jpg",
+    immagine: "/images/market/salumi-placeholder.jpg",
   },
   {
     id: "salame-piccante",
@@ -364,7 +364,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salame con peperoncino, sapore deciso e persistente.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/bottega/salumi-placeholder.jpg",
+    immagine: "/images/market/salumi-placeholder.jpg",
   },
 
   // ── FARINE ─────────────────────────────────────────────────────────────
@@ -375,7 +375,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Varietà antica di grano duro coltivata in masseria, ideale per pasta.",
     prezzo: 3.5,
     consegna: true,
-    immagine: "/images/bottega/farina-placeholder.jpg",
+    immagine: "/images/market/farina-placeholder.jpg",
   },
   {
     id: "semola-rimacinata-senatore-cappelli",
@@ -384,7 +384,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Semola rimacinata di varietà antica, perfetta per pane e focacce.",
     prezzo: 3.5,
     consegna: true,
-    immagine: "/images/bottega/farina-placeholder.jpg",
+    immagine: "/images/market/farina-placeholder.jpg",
   },
 
   // ── PANIFICIO ────────────────────────────────────────────────────────────
@@ -395,7 +395,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pane di semola rimacinata, crosta dorata e mollica soffice.",
     prezzo: 3.5,
     consegna: true,
-    immagine: "/images/bottega/panificio-placeholder.jpg",
+    immagine: "/images/market/panificio-placeholder.jpg",
   },
   {
     id: "casereccio",
@@ -404,7 +404,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pane casereccio tradizionale, lievitazione lenta.",
     prezzo: 3,
     consegna: true,
-    immagine: "/images/bottega/panificio-placeholder.jpg",
+    immagine: "/images/market/panificio-placeholder.jpg",
   },
   {
     id: "focaccia-tipo-pizza",
@@ -413,7 +413,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Focaccia condita come una pizza, pomodoro e origano.",
     prezzo: 12,
     consegna: true,
-    immagine: "/images/bottega/panificio-placeholder.jpg",
+    immagine: "/images/market/panificio-placeholder.jpg",
   },
   {
     id: "focaccia-farcita",
@@ -422,7 +422,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Focaccia ripiena con salumi e formaggi della masseria.",
     prezzo: 14,
     consegna: true,
-    immagine: "/images/bottega/panificio-placeholder.jpg",
+    immagine: "/images/market/panificio-placeholder.jpg",
   },
   {
     id: "focaccia-barese-ruota",
@@ -431,7 +431,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Focaccia barese tradizionale con pomodorini e olive, formato ruota.",
     prezzo: 6,
     consegna: true,
-    immagine: "/images/bottega/panificio-placeholder.jpg",
+    immagine: "/images/market/panificio-placeholder.jpg",
   },
   {
     id: "focaccia-integrale-ruota",
@@ -440,6 +440,6 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Focaccia integrale con pomodorini e olive, formato ruota.",
     prezzo: 7,
     consegna: true,
-    immagine: "/images/bottega/panificio-placeholder.jpg",
+    immagine: "/images/market/panificio-placeholder.jpg",
   },
 ];
