@@ -4,7 +4,7 @@
  * via WhatsApp o chiamata prima della consegna a domicilio.
  */
 
-export type CategoriaMarket = "carne" | "formaggi" | "salumi" | "farina" | "legumi";
+export type CategoriaMarket = "carne" | "formaggi" | "salumi" | "farina" | "panificio";
 
 export interface ProdottoMarket {
   id: string;
@@ -24,7 +24,7 @@ export const CATEGORIE_MARKET: { id: CategoriaMarket; nome: string }[] = [
   { id: "formaggi", nome: "Formaggi" },
   { id: "salumi", nome: "Salumi" },
   { id: "farina", nome: "Farine" },
-  { id: "legumi", nome: "Legumi" },
+  { id: "panificio", nome: "Panificio" },
 ];
 
 export const PRODOTTI_MARKET: ProdottoMarket[] = [
@@ -405,41 +405,59 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     immagine: "/images/bottega/farina-placeholder.jpg",
   },
 
-  // ── LEGUMI ─────────────────────────────────────────────────────────────
+  // ── PANIFICIO ────────────────────────────────────────────────────────────
   {
-    id: "ceci-noci",
-    nome: "Ceci di Noci",
-    categoria: "legumi",
-    descrizione: "Coltivati nei terreni della masseria, piccoli e saporiti, ammollo 12h.",
-    prezzo: 5,
+    id: "pane-semola",
+    nome: "Pane di semola",
+    categoria: "panificio",
+    descrizione: "Pane di semola rimacinata, crosta dorata e mollica soffice.",
+    prezzo: 3.5,
     consegna: true,
-    immagine: "/images/bottega/legumi-placeholder.jpg",
+    immagine: "/images/bottega/panificio-placeholder.jpg",
   },
   {
-    id: "fave-barese",
-    nome: "Fave baresi",
-    categoria: "legumi",
-    descrizione: "Fave secche decorticate della Murgia, base della purea tradizionale.",
-    prezzo: 5,
+    id: "casereccio",
+    nome: "Casereccio",
+    categoria: "panificio",
+    descrizione: "Pane casereccio tradizionale, lievitazione lenta.",
+    prezzo: 3,
     consegna: true,
-    immagine: "/images/bottega/legumi-placeholder.jpg",
+    immagine: "/images/bottega/panificio-placeholder.jpg",
   },
   {
-    id: "lenticchie-murgia",
-    nome: "Lenticchie della Murgia",
-    categoria: "legumi",
-    descrizione: "Lenticchie piccole a cottura rapida, sapore terroso e delicato.",
+    id: "focaccia-tipo-pizza",
+    nome: "Focaccia tipo pizza",
+    categoria: "panificio",
+    descrizione: "Focaccia condita come una pizza, pomodoro e origano.",
+    prezzo: 12,
+    consegna: true,
+    immagine: "/images/bottega/panificio-placeholder.jpg",
+  },
+  {
+    id: "focaccia-farcita",
+    nome: "Focaccia farcita",
+    categoria: "panificio",
+    descrizione: "Focaccia ripiena con salumi e formaggi della masseria.",
+    prezzo: 14,
+    consegna: true,
+    immagine: "/images/bottega/panificio-placeholder.jpg",
+  },
+  {
+    id: "focaccia-barese-ruota",
+    nome: "Focaccia barese ruota",
+    categoria: "panificio",
+    descrizione: "Focaccia barese tradizionale con pomodorini e olive, formato ruota.",
     prezzo: 6,
     consegna: true,
-    immagine: "/images/bottega/legumi-placeholder.jpg",
+    immagine: "/images/bottega/panificio-placeholder.jpg",
   },
   {
-    id: "cicerchie",
-    nome: "Cicerchie",
-    categoria: "legumi",
-    descrizione: "Legume antico della tradizione murgiana, da zuppe e minestre.",
+    id: "focaccia-integrale-ruota",
+    nome: "Focaccia integrale ruota",
+    categoria: "panificio",
+    descrizione: "Focaccia integrale con pomodorini e olive, formato ruota.",
     prezzo: 7,
     consegna: true,
-    immagine: "/images/bottega/legumi-placeholder.jpg",
+    immagine: "/images/bottega/panificio-placeholder.jpg",
   },
 ];
