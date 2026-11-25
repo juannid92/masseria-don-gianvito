@@ -307,7 +307,9 @@ function MarketPage() {
                       <span className="font-display text-base text-[color:var(--market-text)]">
                         {p.nome}
                       </span>
-                      <span className="ml-2 text-[color:var(--market-text-muted)]/40">× {item.qty}</span>
+                      <span className="ml-2 text-[color:var(--market-text-muted)]/40">
+                        × {item.qty}
+                      </span>
                     </div>
                     <span className="font-display text-[color:var(--market-accent)]">
                       €{((p.prezzo ?? 0) * item.qty).toFixed(2)}
