@@ -1,0 +1,395 @@
+/* ============================================================
+   APPUNTAMENTI — locandine dei menù (pagina /eventi)
+   Palette: pergamena #f3eee2 · carbone #17140f · oro #dfca9f
+   ============================================================ */
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/cormorant-garamond-normal.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/cormorant-garamond-italic.woff2) format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/plus-jakarta-sans-normal.woff2) format("woff2");
+}
+
+.ev-page {
+  --ev-bg: #f3eee2;
+  --ev-ink: #17140f;
+  --ev-ink-soft: #5b5446;
+  --ev-gold: #dfca9f;
+  --ev-gold-deep: #9a7b3f;
+  --ev-line: rgba(23, 20, 15, 0.14);
+  --ev-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --ev-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  background: var(--ev-bg);
+  color: var(--ev-ink);
+  font-family: var(--ev-sans);
+  min-height: 100vh;
+  padding-top: var(--page-header-safe-offset, 96px);
+}
+
+/* ── Intro ─────────────────────────────────────────────── */
+.ev-intro {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 104px) clamp(20px, 5vw, 64px) clamp(32px, 4vw, 56px);
+}
+.ev-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ev-gold-deep);
+}
+.ev-title {
+  margin-top: 18px;
+  font-family: var(--ev-serif);
+  font-weight: 500;
+  font-size: clamp(54px, 9.5vw, 132px);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+}
+.ev-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ev-gold-deep);
+}
+.ev-lead {
+  margin-top: 28px;
+  max-width: 560px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ev-ink-soft);
+}
+
+/* ── Selettore + locandina ─────────────────────────────── */
+.ev-stage {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: clamp(28px, 5vw, 72px);
+  align-items: start;
+}
+
+.ev-tabs {
+  position: sticky;
+  top: calc(var(--page-header-safe-offset, 96px) + 16px);
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--ev-line);
+}
+.ev-tab {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  padding: 22px 4px;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ev-line);
+  cursor: pointer;
+  color: var(--ev-ink-soft);
+  transition: color 0.25s ease, padding 0.25s ease;
+}
+.ev-tab:hover {
+  color: var(--ev-ink);
+}
+.ev-tab-num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+}
+.ev-tab-name {
+  font-family: var(--ev-serif);
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 500;
+  line-height: 1;
+}
+.ev-tab-date {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ev-tab[aria-selected="true"] {
+  color: var(--ev-ink);
+  padding-left: 14px;
+  box-shadow: inset 3px 0 0 var(--ev-gold-deep);
+}
+
+/* Locandina */
+.ev-poster-wrap {
+  perspective: 1400px;
+}
+.ev-poster {
+  position: relative;
+  background: #17140f;
+  color: #f6f0e0;
+  padding: clamp(14px, 2.2vw, 26px);
+  box-shadow: 0 40px 80px -30px rgba(23, 20, 15, 0.55), 0 12px 24px -12px rgba(23, 20, 15, 0.35);
+  animation: ev-poster-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ev-poster-frame {
+  position: relative;
+  border: 1px solid rgba(223, 202, 159, 0.55);
+  padding: clamp(28px, 5vw, 64px) clamp(22px, 5vw, 64px) clamp(26px, 4vw, 48px);
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(223, 202, 159, 0.1), transparent 60%),
+    #17140f;
+}
+.ev-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--ev-gold);
+}
+.ev-corner--tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.ev-corner--tr { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.ev-corner--bl { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.ev-corner--br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+
+.ev-poster-brand {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--ev-gold);
+}
+.ev-poster-rule {
+  width: 56px;
+  height: 1px;
+  margin: 18px auto;
+  background: var(--ev-gold);
+  opacity: 0.7;
+}
+.ev-poster-type {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(246, 240, 224, 0.62);
+}
+.ev-poster-name {
+  margin-top: 10px;
+  text-align: center;
+  font-family: var(--ev-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(56px, 9vw, 112px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--ev-gold);
+}
+.ev-poster-date {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(246, 240, 224, 0.8);
+}
+
+.ev-courses {
+  margin: clamp(32px, 5vw, 56px) auto 0;
+  max-width: 560px;
+  list-style: none;
+  padding: 0;
+}
+.ev-course {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 6px 10px;
+  padding: 16px 0;
+  border-top: 1px solid rgba(223, 202, 159, 0.2);
+  animation: ev-line-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 70ms + 160ms);
+}
+.ev-course:last-child {
+  border-bottom: 1px solid rgba(223, 202, 159, 0.2);
+}
+.ev-course-num {
+  font-family: var(--ev-serif);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.1;
+  color: var(--ev-gold);
+}
+.ev-course-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(246, 240, 224, 0.55);
+}
+.ev-course-text {
+  grid-column: 2;
+  font-family: var(--ev-serif);
+  font-size: clamp(20px, 2.2vw, 24px);
+  line-height: 1.25;
+  color: #f6f0e0;
+}
+
+.ev-price {
+  margin-top: clamp(28px, 4vw, 44px);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  color: var(--ev-gold);
+}
+.ev-price-value {
+  font-family: var(--ev-serif);
+  font-weight: 500;
+  font-size: clamp(64px, 10vw, 104px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums;
+}
+.ev-price-unit {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(246, 240, 224, 0.7);
+}
+.ev-poster-note {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(246, 240, 224, 0.5);
+}
+
+/* ── Prenota ───────────────────────────────────────────── */
+.ev-book {
+  max-width: 1180px;
+  margin: clamp(56px, 8vw, 112px) auto 0;
+  padding: 0 clamp(20px, 5vw, 64px) clamp(72px, 10vw, 140px);
+}
+.ev-book-inner {
+  border-top: 1px solid var(--ev-line);
+  padding-top: clamp(32px, 5vw, 56px);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: end;
+}
+.ev-book-title {
+  font-family: var(--ev-serif);
+  font-weight: 500;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.ev-book-title em {
+  font-style: italic;
+  color: var(--ev-gold-deep);
+}
+.ev-book-text {
+  margin-top: 16px;
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ev-ink-soft);
+}
+.ev-book-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ev-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 28px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.ev-btn--solid {
+  background: var(--ev-ink);
+  color: #f6f0e0;
+  border: 1px solid var(--ev-ink);
+}
+.ev-btn--solid:hover {
+  background: var(--ev-gold-deep);
+  border-color: var(--ev-gold-deep);
+}
+.ev-btn--ghost {
+  color: var(--ev-ink);
+  border: 1px solid var(--ev-ink);
+}
+.ev-btn--ghost:hover {
+  background: var(--ev-ink);
+  color: #f6f0e0;
+}
+
+@keyframes ev-poster-in {
+  from { opacity: 0; transform: translateY(18px) rotateX(2deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes ev-line-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 880px) {
+  .ev-stage {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .ev-tabs {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    border-top: 0;
+    gap: 8px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .ev-tabs::-webkit-scrollbar { display: none; }
+  .ev-tab {
+    flex: 0 0 auto;
+    grid-template-columns: auto;
+    gap: 2px;
+    padding: 12px 18px;
+    border: 1px solid var(--ev-line);
+    border-radius: 999px;
+  }
+  .ev-tab-num, .ev-tab-date { display: none; }
+  .ev-tab-name { font-size: 22px; }
+  .ev-tab[aria-selected="true"] {
+    padding-left: 18px;
+    box-shadow: none;
+    background: var(--ev-ink);
+    color: #f6f0e0;
+    border-color: var(--ev-ink);
+  }
+  .ev-book-inner { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ev-poster, .ev-course { animation: none; }
+}

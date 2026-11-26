@@ -1,28 +1,24 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarDays, MessageCircle, Phone, UtensilsCrossed } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { MessageCircle, Phone } from "lucide-react";
 import { getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
-
-const EVENTI_WHATSAPP_URL =
-  `${MASSERIA.whatsapp}?text=` +
-  encodeURIComponent(
-    "Buongiorno, vorrei ricevere informazioni sui prossimi eventi e menù dedicati alla Masseria Don Gianvito e verificare la disponibilità per ___ persone. Grazie.",
-  );
+import "@/styles/eventi.css";
 
 export const Route = createFileRoute("/eventi")({
   head: () => ({
     meta: [
-      { title: "Eventi e Menù — Masseria Don Gianvito" },
+      { title: "Appuntamenti e Menù — Masseria Don Gianvito" },
       {
         name: "description",
         content:
-          "Eventi in masseria, pranzi delle feste, serate a tema dalla nostra filiera e menù dedicati a Noci. Prenota su WhatsApp o telefonicamente al 333 387 0292.",
+          "Menù di Natale, Santo Stefano, Capodanno e pranzo della domenica alla Masseria Don Gianvito di Noci. Prenota su WhatsApp o chiamando il 333 387 0292.",
       },
-      { property: "og:title", content: "Eventi e Menù — Masseria Don Gianvito" },
+      { property: "og:title", content: "Appuntamenti e Menù — Masseria Don Gianvito" },
       {
         property: "og:description",
         content:
-          "Scopri gli eventi e i menù stagionali di Masseria Don Gianvito a Noci e prenota tramite WhatsApp o chiamata diretta.",
+          "Le locandine dei menù delle feste e del pranzo domenicale della Masseria Don Gianvito, a Noci.",
       },
       { property: "og:url", content: getAbsoluteUrl("/eventi") },
     ],
@@ -31,153 +27,171 @@ export const Route = createFileRoute("/eventi")({
   component: EventiPage,
 });
 
-const OCCASIONI = [
+type Portata = { titolo: string; testo: string };
+type Appuntamento = {
+  id: string;
+  nome: string;
+  data: string;
+  tipo: string;
+  prezzo: number;
+  portate: Portata[];
+  nota?: string;
+};
+
+const ARROSTO = "Salsiccia di vitello, salsiccia di maiale, bombette e agnello";
+const BEVANDE_FESTE = "Acqua, vino, birra, coca-cola e aranciata · caffè o amaro";
+
+const festa = (id: string, nome: string, data: string, prezzo: number): Appuntamento => ({
+  id,
+  nome,
+  data,
+  tipo: "Menù pranzo",
+  prezzo,
+  portate: [
+    { titolo: "Antipasti", testo: "Assaggi della casa, caldi e freddi: undici piccole portate" },
+    { titolo: "Primi", testo: "Due primi impiattati, accompagnati da crudité" },
+    { titolo: "Secondo", testo: `Arrosto misto: ${ARROSTO.toLowerCase()}` },
+    { titolo: "Contorni", testo: "Insalata verde e patate arrosto" },
+    { titolo: "Frutta", testo: "Frutta di stagione" },
+    { titolo: "Dolci", testo: "Dolci natalizi" },
+    { titolo: "Bevande", testo: BEVANDE_FESTE },
+  ],
+});
+
+const APPUNTAMENTI: Appuntamento[] = [
+  festa("natale", "Natale", "25 dicembre", 60),
+  festa("santo-stefano", "Santo Stefano", "26 dicembre", 50),
+  festa("capodanno", "Capodanno", "1 gennaio", 60),
   {
-    kicker: "01 · Ricorrenze",
-    titolo: "Pranzi delle Feste",
-    descrizione:
-      "Pasqua, Pasquetta, Natale, Santo Stefano, Capodanno e feste di stagione: giornate pensate attorno alla grande tavola della Masseria con menù dedicati.",
-    nota: "Menù stagionale pubblicato prima di ogni ricorrenza",
-  },
-  {
-    kicker: "02 · Filiera",
-    titolo: "Serate a Tema",
-    descrizione:
-      "Appuntamenti speciali dedicati ai tagli della nostra macelleria, ai formaggi freschi del caseificio e alle preparazioni della cucina contadina.",
-    nota: "Su prenotazione fino ad esaurimento posti",
-  },
-  {
-    kicker: "03 · Su misura",
-    titolo: "Cerimonie e Tavolate",
-    descrizione:
-      "Comunioni, battesimi, compleanni e incontri conviviali immersi nella campagna di Noci, con proposte costruite sui prodotti dell'azienda agricola.",
-    nota: "Menù concordato direttamente con la Masseria",
+    id: "domenica",
+    nome: "Domenica",
+    data: "Ogni domenica a pranzo",
+    tipo: "Menù pranzo",
+    prezzo: 40,
+    portate: [
+      { titolo: "Antipasti", testo: "Assaggi della casa, caldi e freddi: undici piccole portate" },
+      { titolo: "Primi", testo: "Due assaggi di primo, accompagnati da crudité" },
+      { titolo: "Secondo", testo: `Arrosto misto: ${ARROSTO.toLowerCase()}` },
+      { titolo: "Contorni", testo: "Insalata verde e patate arrosto" },
+      { titolo: "Frutta", testo: "Frutta di stagione impiattata" },
+      { titolo: "Dolci", testo: "Dolcetti della casa" },
+      { titolo: "Bevande", testo: "Acqua, vino, coca-cola, aranciata e birra" },
+    ],
   },
 ];
 
+const ROMANI = ["I", "II", "III", "IV", "V", "VI", "VII"];
+
+function whatsappFor(a: Appuntamento) {
+  const msg = `Buongiorno, vorrei prenotare per il "${a.nome}" (${a.data}) alla Masseria Don Gianvito. Siamo in ___ persone. Grazie.`;
+  return `${MASSERIA.whatsapp.split("?")[0]}?text=${encodeURIComponent(msg)}`;
+}
+
 function EventiPage() {
+  const [activeId, setActiveId] = useState(APPUNTAMENTI[0].id);
+  const active = APPUNTAMENTI.find((a) => a.id === activeId) ?? APPUNTAMENTI[0];
+
   return (
-    <main className="mx-auto max-w-5xl px-6 pb-24 pt-28 md:px-10 md:pt-36">
-      <header className="border-b border-[color:var(--carbone)]/12 pb-10">
-        <p className="font-sans text-[11px] uppercase tracking-[0.22em] text-[color:var(--oro-scuro)]">
-          Masseria Don Gianvito · Noci
-        </p>
-        <h1 className="mt-3 font-display text-4xl font-light tracking-tight text-[color:var(--carbone)] md:text-6xl">
-          Eventi e <em>Menù</em>
+    <main className="ev-page">
+      <header className="ev-intro">
+        <p className="ev-kicker">Masseria Don Gianvito · Noci</p>
+        <h1 className="ev-title">
+          Appuntamenti
+          <br />
+          <em>&amp; menù</em>
         </h1>
-        <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[color:var(--carbone)]/78">
-          Qui raccogliamo gli appuntamenti speciali della Masseria, i menù dedicati alle
-          ricorrenze e le informazioni rapide per riservare il tuo tavolo con la cucina
-          della nostra filiera.
+        <p className="ev-lead">
+          Le tavole delle feste e il pranzo della domenica. Scegli l'appuntamento, leggi il menù e
+          prenota con un messaggio o una telefonata.
         </p>
       </header>
 
-      <section aria-labelledby="eventi-occasioni" className="mt-12">
-        <div className="flex items-center gap-3">
-          <CalendarDays className="h-4 w-4 text-[color:var(--oro-scuro)]" aria-hidden="true" />
-          <h2
-            id="eventi-occasioni"
-            className="font-sans text-xs uppercase tracking-[0.2em] text-[color:var(--oro-scuro)]"
-          >
-            Gli appuntamenti in Masseria
-          </h2>
-        </div>
-
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {OCCASIONI.map((item) => (
-            <article
-              key={item.titolo}
-              className="flex flex-col justify-between border border-[color:var(--carbone)]/12 bg-[color:var(--bianco-calce)]/70 p-7"
+      <section className="ev-stage" aria-label="Menù degli appuntamenti">
+        <div className="ev-tabs" role="tablist" aria-label="Scegli l'appuntamento">
+          {APPUNTAMENTI.map((a, i) => (
+            <button
+              key={a.id}
+              type="button"
+              role="tab"
+              id={`tab-${a.id}`}
+              aria-selected={a.id === activeId}
+              aria-controls="ev-poster"
+              className="ev-tab"
+              onClick={() => setActiveId(a.id)}
             >
-              <div>
-                <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-[color:var(--oro-scuro)]">
-                  {item.kicker}
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-normal text-[color:var(--carbone)]">
-                  {item.titolo}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[color:var(--carbone)]/78">
-                  {item.descrizione}
-                </p>
-              </div>
-              <p className="mt-6 border-t border-[color:var(--carbone)]/10 pt-4 font-sans text-xs text-[color:var(--carbone)]/65">
-                {item.nota}
-              </p>
-            </article>
+              <span className="ev-tab-num">0{i + 1}</span>
+              <span className="ev-tab-name">{a.nome}</span>
+              <span className="ev-tab-date">{a.id === "domenica" ? "Ogni settimana" : a.data}</span>
+            </button>
           ))}
         </div>
+
+        <div className="ev-poster-wrap">
+          <article
+            key={active.id}
+            id="ev-poster"
+            role="tabpanel"
+            aria-labelledby={`tab-${active.id}`}
+            className="ev-poster"
+          >
+            <div className="ev-poster-frame">
+              <span className="ev-corner ev-corner--tl" />
+              <span className="ev-corner ev-corner--tr" />
+              <span className="ev-corner ev-corner--bl" />
+              <span className="ev-corner ev-corner--br" />
+
+              <p className="ev-poster-brand">Masseria Don Gianvito</p>
+              <div className="ev-poster-rule" />
+              <p className="ev-poster-type">{active.tipo}</p>
+              <h2 className="ev-poster-name">{active.nome}</h2>
+              <p className="ev-poster-date">{active.data}</p>
+
+              <ol className="ev-courses">
+                {active.portate.map((p, i) => (
+                  <li key={p.titolo} className="ev-course" style={{ ["--i" as string]: i }}>
+                    <span className="ev-course-num">{ROMANI[i]}</span>
+                    <span className="ev-course-title">{p.titolo}</span>
+                    <span className="ev-course-text">{p.testo}</span>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="ev-price">
+                <span className="ev-price-value">€ {active.prezzo}</span>
+                <span className="ev-price-unit">a persona · adulti</span>
+              </div>
+              <p className="ev-poster-note">Prenotazione obbligatoria</p>
+            </div>
+          </article>
+        </div>
       </section>
 
-      <section
-        aria-labelledby="eventi-menu"
-        className="mt-14 border border-[color:var(--carbone)]/12 bg-[color:var(--bianco-calce)] p-8 md:p-10"
-      >
-        <div className="flex items-center gap-3">
-          <UtensilsCrossed className="h-4 w-4 text-[color:var(--oro-scuro)]" aria-hidden="true" />
-          <h2
-            id="eventi-menu"
-            className="font-sans text-xs uppercase tracking-[0.2em] text-[color:var(--oro-scuro)]"
-          >
-            Menù degli eventi
-          </h2>
-        </div>
-        <p className="mt-4 font-display text-2xl font-light text-[color:var(--carbone)] md:text-3xl">
-          I menù dei prossimi appuntamenti vengono aggiornati prima di ogni data.
-        </p>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-[color:var(--carbone)]/76">
-          Ogni evento nasce con portate legate alla stagione, alle carni del nostro allevamento
-          e ai latticini del caseificio. Contattaci su WhatsApp o telefonicamente per ricevere
-          il menù del giorno o della ricorrenza che ti interessa e segnalare eventuali intolleranze.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/agriturismo"
-            className="inline-flex min-h-[44px] items-center font-sans text-xs uppercase tracking-[0.18em] text-[color:var(--carbone)] underline decoration-[color:var(--oro-antico)] underline-offset-4 transition-colors hover:text-[color:var(--oro-scuro)]"
-          >
-            Scopri l&apos;agriturismo e gli orari ordinari &rarr;
-          </Link>
-        </div>
-      </section>
-
-      <section
-        aria-labelledby="eventi-prenota"
-        className="mt-14 border border-[color:var(--carbone)]/15 bg-[color:var(--nero-oliva)] p-8 text-[color:var(--bianco-calce)] md:p-12"
-      >
-        <p className="font-sans text-[11px] uppercase tracking-[0.22em] text-[color:var(--oro-antico)]">
-          Modalità di prenotazione
-        </p>
-        <h2
-          id="eventi-prenota"
-          className="mt-3 font-display text-3xl font-light tracking-tight md:text-4xl"
-        >
-          Prenota il tuo tavolo per un evento
-        </h2>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-[color:var(--bianco-calce)]/80">
-          La prenotazione è sempre obbligatoria. Puoi scriverci direttamente su WhatsApp
-          oppure chiamare il numero unico della Masseria:{" "}
-          <strong className="font-medium text-[color:var(--bianco-calce)]">
-            {MASSERIA.telefono}
-          </strong>
-          .
-        </p>
-
-        <div className="mt-8 flex flex-wrap gap-4">
-          <a
-            href={EVENTI_WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[48px] items-center gap-2.5 bg-[color:var(--oro-antico)] px-6 py-3 font-sans text-xs font-medium uppercase tracking-[0.16em] text-[color:var(--nero-oliva)] transition-colors hover:bg-[#e5d2a7]"
-          >
-            <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            Prenota su WhatsApp
-          </a>
-          <a
-            href={MASSERIA.telefonoHref}
-            className="inline-flex min-h-[48px] items-center gap-2.5 border border-[color:var(--bianco-calce)]/40 px-6 py-3 font-sans text-xs font-medium uppercase tracking-[0.16em] text-[color:var(--bianco-calce)] transition-colors hover:border-[color:var(--oro-antico)] hover:text-[color:var(--oro-antico)]"
-          >
-            <Phone className="h-4 w-4" aria-hidden="true" />
-            Chiama {MASSERIA.telefono}
-          </a>
+      <section className="ev-book" aria-labelledby="ev-book-title">
+        <div className="ev-book-inner">
+          <div>
+            <h2 id="ev-book-title" className="ev-book-title">
+              Riserva il tuo <em>posto a tavola</em>
+            </h2>
+            <p className="ev-book-text">
+              Scrivici su WhatsApp o chiama il {MASSERIA.telefono}. Indicaci l'appuntamento e il
+              numero di persone: ti confermiamo la disponibilità.
+            </p>
+          </div>
+          <div className="ev-book-actions">
+            <a
+              href={whatsappFor(active)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ev-btn ev-btn--solid"
+            >
+              <MessageCircle size={16} aria-hidden="true" />
+              Prenota {active.nome}
+            </a>
+            <a href={MASSERIA.telefonoHref} className="ev-btn ev-btn--ghost">
+              <Phone size={16} aria-hidden="true" />
+              Chiama
+            </a>
+          </div>
         </div>
       </section>
     </main>
