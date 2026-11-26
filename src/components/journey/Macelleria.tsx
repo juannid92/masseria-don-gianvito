@@ -201,15 +201,15 @@ export function Macelleria() {
             {MACELLERIA.moments.map((m, i) => {
               const photos: Record<number, { src: string; alt: string }> = {
                 0: {
-                  src: "/images/macelleria/macelleria-banco-esposizione-01.jpeg",
+                  src: "/images/macelleria/macelleria-banco-esposizione-01.webp",
                   alt: "Il banco della macelleria con la carne e i salumi esposti a vista",
                 },
                 1: {
-                  src: "/images/macelleria/macelleria-brace-cottura-01.jpeg",
+                  src: "/images/macelleria/macelleria-brace-cottura-01.webp",
                   alt: "Bistecche e bombette sulla griglia sopra la brace accesa",
                 },
                 2: {
-                  src: "/images/macelleria/macelleria-tagli-freschi-01.jpeg",
+                  src: "/images/macelleria/macelleria-tagli-freschi-01.webp",
                   alt: "Tagli di carne fresca selezionati al banco per brace, forno o padella",
                 },
                 3: {
@@ -217,7 +217,7 @@ export function Macelleria() {
                   alt: "Chi lavora al banco della macelleria, competenza e ascolto",
                 },
                 4: {
-                  src: "/images/macelleria/macelleria-banco-sala-01.jpeg",
+                  src: "/images/macelleria/macelleria-banco-sala-01.webp",
                   alt: "La carne dal banco all'agriturismo, cotta alla brace e servita in sala",
                 },
               };
