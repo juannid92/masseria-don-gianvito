@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getAbsoluteUrl } from "@/config/site";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 
@@ -13,6 +13,12 @@ export const Route = createFileRoute("/chi-siamo")({
           "La storia della Masseria Don Gianvito: dal Cinquecento a oggi, una famiglia che alleva, produce e cucina nella Murgia di Noci.",
       },
       { property: "og:title", content: "Chi Siamo — Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "La storia della Masseria Don Gianvito: dal Cinquecento a oggi, una famiglia che alleva, produce e cucina nella Murgia di Noci.",
+      },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
       { property: "og:url", content: getAbsoluteUrl("/chi-siamo") },
       { property: "og:type", content: "website" },
     ],
@@ -23,7 +29,7 @@ export const Route = createFileRoute("/chi-siamo")({
 
 function ChiSiamoPage() {
   return (
-    <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+    <div data-tone="light" className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Chi Siamo" }]} />
       <script
         type="application/ld+json"

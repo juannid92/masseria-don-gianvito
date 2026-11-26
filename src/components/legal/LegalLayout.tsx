@@ -13,7 +13,7 @@ export function LegalLayout({
 }) {
   return (
     <AnimaPagina>
-      <section className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)] text-[color:var(--carbone)]">
+      <section data-tone="light" className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)] text-[color:var(--carbone)]">
         <div className="mx-auto max-w-[800px] px-5 py-16 md:py-24">
           <h1 className="font-display text-[3rem] leading-none">{titolo}</h1>
           <div className="hairline-oro mt-8 max-w-[200px]" />

@@ -1,6 +1,6 @@
 # Masseria Don Gianvito
 
-> Masseria storica del Cinquecento a Noci (Puglia, Italia). Allevamento bovino, caseificio artigianale, macelleria, agriturismo con cucina km0 e bottega online con consegna a domicilio.
+> Masseria storica del Cinquecento a Noci (Puglia, Italia). Allevamento bovino, caseificio artigianale, macelleria, agriturismo con cucina km0, appuntamenti festivi e market online con consegna a domicilio.
 
 ## Informazioni chiave
 - Indirizzo: SP237 ex SS377 per Mottola km 6,5, Zona C 76, 70015 Noci (BA), Italia
@@ -23,21 +23,31 @@
 
 ## Pagine principali
 - [Homepage](https://www.masseriadongianvito.it/): Panoramica delle 4 attività della masseria
-- [Agriturismo](https://www.masseriadongianvito.it/agriturismo): Ristorante con cucina territoriale, esperienza serale
+- [Agriturismo](https://www.masseriadongianvito.it/agriturismo): Ristorante con cucina territoriale, esperienza serale e pranzi festivi
+- [Appuntamenti & Menù](https://www.masseriadongianvito.it/eventi): Locandine e menù delle festività (Natale, Santo Stefano, Capodanno) e del pranzo della domenica
+- [Market](https://www.masseriadongianvito.it/market): Catalogo prodotti con ordinazione WhatsApp e consegna a domicilio
+- [Prodotti](https://www.masseriadongianvito.it/prodotti): Panoramica produzioni casearie, carni e agricole
 - [Allevamento](https://www.masseriadongianvito.it/allevamento): Allevamento bovino brado e semibrado
 - [Caseificio](https://www.masseriadongianvito.it/caseificio): Produzione giornaliera di formaggi freschi e stagionati
 - [Macelleria](https://www.masseriadongianvito.it/macelleria): Tagli di carne bovina locale, filiera corta
-- [Bottega](https://www.masseriadongianvito.it/bottega): Catalogo prodotti con ordinazione WhatsApp e consegna a domicilio
-- [Prodotti](https://www.masseriadongianvito.it/prodotti): Panoramica produzioni casearie e alimentari
 - [Chi Siamo](https://www.masseriadongianvito.it/chi-siamo): Storia della famiglia e della masseria dal Cinquecento
-- [Recensioni](https://www.masseriadongianvito.it/recensioni): Recensioni dei clienti
 - [Dove Siamo](https://www.masseriadongianvito.it/dove-siamo): Mappa e indicazioni stradali
+- [Contatti](https://www.masseriadongianvito.it/contatti): Recapiti diretti, orari e prenotazioni
+- [FAQ](https://www.masseriadongianvito.it/faq): Domande frequenti su prenotazioni, orari, intolleranze e servizi
+- [Recensioni](https://www.masseriadongianvito.it/recensioni): Recensioni dei clienti
 
-## Ordinare dalla Bottega
-La Bottega offre prodotti della masseria (carne, formaggi, salumi, farina, legumi) con ordinazione via WhatsApp e consegna a domicilio nella zona di Noci e dintorni. I prezzi sono indicativi e vanno confermati al momento dell'ordine.
+## Appuntamenti e Menù in Agriturismo
+La Masseria propone menù dedicati per le festività e per ogni domenica a pranzo (prenotazione obbligatoria al +39 333 387 0292 o via WhatsApp):
+- **Pranzo di Natale (25 dicembre)** — €60 a persona (adulti)
+- **Pranzo di Santo Stefano (26 dicembre)** — €50 a persona (adulti)
+- **Pranzo di Capodanno (1 gennaio)** — €60 a persona (adulti)
+- **Pranzo della Domenica (ogni settimana)** — €40 a persona (adulti)
 
-## Visitare l'Agriturismo
-L'agriturismo offre cene con menu territoriale basato sui prodotti della masseria. Prenotazione obbligatoria via telefono o WhatsApp. Aperto mercoledì-sabato a cena, domenica e festivi a pranzo. Lunedì e martedì chiuso.
+## Ordinare dal Market
+Il Market offre prodotti della masseria con ordinazione via WhatsApp e consegna a domicilio nella zona di Noci e dintorni:
+- **Carne e pronti alla brace**: Bombette della Masseria (13 gusti selezionabili, incluse varianti senza glutine e senza formaggio), Costata di vitello, Braciole pronte, Spiedino misto, Filetti lardati, Girelle con capocollo stagionato e formaggio, Calippo, Gnummirelli, Hamburger, Polpette, Polpettine, tagli di bovino, suino, agnello e avicoli.
+- **Formaggi e latticini**: Mozzarella, fiori di latte, burrata, stracciatella, ricotta fresca, caciocavallo fresco e stagionato in grotta, primo sale, ricotta forte, cacio ricotta misto.
+- **Salumi, farine e panificio**: Capocollo stagionato, salame dolce e piccante, semola dura e rimacinata Senatore Cappelli, pane e focacce pugliesi.
 
 ## Attività
 1. **Allevamento** — Allevamento bovino brado e semibrado sulla Murgia

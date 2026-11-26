@@ -1,6 +1,6 @@
 /* ============================================================
    APPUNTAMENTI — locandine dei menù (pagina /eventi)
-   Palette: pergamena #f3eee2 · carbone #17140f · oro #dfca9f
+   Palette 60/30/10: perla #f8f6f2 · marrone wood #2a180e · rame brace #c84b28 / #e86a42
    ============================================================ */
 
 @font-face {
@@ -26,15 +26,19 @@
 }
 
 .ev-page {
-  --ev-bg: #f3eee2;
-  --ev-ink: #17140f;
-  --ev-ink-soft: #5b5446;
-  --ev-gold: #dfca9f;
-  --ev-gold-deep: #9a7b3f;
-  --ev-line: rgba(23, 20, 15, 0.14);
+  --ev-bg: #f1f0ed;
+  --ev-ink: #1e120a;
+  --ev-ink-soft: #6e5848;
+  --ev-gold: #e86a42;
+  --ev-gold-deep: #c84b28;
+  --ev-line: rgba(42, 24, 14, 0.14);
   --ev-serif: "Cormorant Garamond", "Times New Roman", serif;
   --ev-sans: "Plus Jakarta Sans", system-ui, sans-serif;
-  background: var(--ev-bg);
+  background-color: var(--ev-bg);
+  background-image:
+    radial-gradient(ellipse 80% 55% at 16% 6%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 68%),
+    radial-gradient(ellipse 65% 50% at 88% 84%, rgba(232, 106, 66, 0.055) 0%, rgba(232, 106, 66, 0) 65%),
+    linear-gradient(180deg, #f7f6f4 0%, #eeece8 52%, #f5f4f1 100%);
   color: var(--ev-ink);
   font-family: var(--ev-sans);
   min-height: 100vh;
@@ -139,19 +143,19 @@
 }
 .ev-poster {
   position: relative;
-  background: #17140f;
-  color: #f6f0e0;
+  background: #2a180e;
+  color: #f8f6f2;
   padding: clamp(14px, 2.2vw, 26px);
-  box-shadow: 0 40px 80px -30px rgba(23, 20, 15, 0.55), 0 12px 24px -12px rgba(23, 20, 15, 0.35);
+  box-shadow: 0 40px 80px -30px rgba(42, 24, 14, 0.55), 0 12px 24px -12px rgba(42, 24, 14, 0.35);
   animation: ev-poster-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .ev-poster-frame {
   position: relative;
-  border: 1px solid rgba(223, 202, 159, 0.55);
+  border: 1px solid rgba(232, 106, 66, 0.55);
   padding: clamp(28px, 5vw, 64px) clamp(22px, 5vw, 64px) clamp(26px, 4vw, 48px);
   background:
-    radial-gradient(120% 80% at 50% 0%, rgba(223, 202, 159, 0.1), transparent 60%),
-    #17140f;
+    radial-gradient(120% 80% at 50% 0%, rgba(232, 106, 66, 0.14), transparent 60%),
+    #2a180e;
 }
 .ev-corner {
   position: absolute;
@@ -217,12 +221,12 @@
   grid-template-columns: 44px 1fr;
   gap: 6px 10px;
   padding: 16px 0;
-  border-top: 1px solid rgba(223, 202, 159, 0.2);
+  border-top: 1px solid rgba(248, 246, 242, 0.16);
   animation: ev-line-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(var(--i) * 70ms + 160ms);
 }
 .ev-course:last-child {
-  border-bottom: 1px solid rgba(223, 202, 159, 0.2);
+  border-bottom: 1px solid rgba(248, 246, 242, 0.16);
 }
 .ev-course-num {
   font-family: var(--ev-serif);
@@ -328,13 +332,13 @@
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 .ev-btn--solid {
-  background: var(--ev-ink);
-  color: #f6f0e0;
-  border: 1px solid var(--ev-ink);
+  background: #c84b28;
+  color: #fdfcfa;
+  border: 1px solid #c84b28;
 }
 .ev-btn--solid:hover {
-  background: var(--ev-gold-deep);
-  border-color: var(--ev-gold-deep);
+  background: #a8391a;
+  border-color: #a8391a;
 }
 .ev-btn--ghost {
   color: var(--ev-ink);

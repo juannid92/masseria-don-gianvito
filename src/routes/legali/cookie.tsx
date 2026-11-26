@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalLayout, Sezione } from "@/components/legal/LegalLayout";
-import { getAbsoluteUrl } from "@/config/site";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { apriPreferenze } from "@/lib/consent";
 
 export const Route = createFileRoute("/legali/cookie")({
@@ -12,6 +12,15 @@ export const Route = createFileRoute("/legali/cookie")({
         content:
           "Informativa sui cookie e sugli strumenti simili usati dal sito della Masseria Don Gianvito.",
       },
+      { property: "og:title", content: "Cookie Policy — Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "Informativa sui cookie e sugli strumenti simili usati dal sito della Masseria Don Gianvito.",
+      },
+      { property: "og:url", content: getAbsoluteUrl("/legali/cookie") },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/legali/cookie") }],
   }),

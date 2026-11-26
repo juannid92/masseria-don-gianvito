@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { LegalLayout, Sezione } from "@/components/legal/LegalLayout";
 import { MASSERIA } from "@/data/masseria";
-import { getAbsoluteUrl } from "@/config/site";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { apriPreferenze } from "@/lib/consent";
 
 export const Route = createFileRoute("/legali/privacy")({
@@ -13,6 +13,15 @@ export const Route = createFileRoute("/legali/privacy")({
         content:
           "Informativa sul trattamento dei dati personali ai sensi degli artt. 13 e 14 del Regolamento UE 2016/679 (GDPR).",
       },
+      { property: "og:title", content: "Privacy Policy — Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "Informativa sul trattamento dei dati personali ai sensi degli artt. 13 e 14 del Regolamento UE 2016/679 (GDPR).",
+      },
+      { property: "og:url", content: getAbsoluteUrl("/legali/privacy") },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/legali/privacy") }],
   }),

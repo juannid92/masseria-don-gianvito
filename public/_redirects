@@ -1,3 +1,5 @@
-# Market page redirect (renamed from /bottega)
+# Redirects permanenti (Cloudflare Pages)
 /bottega /market 301
 /bottega/* /market/:splat 301
+/braceria /agriturismo 301
+/appuntamenti /eventi 301

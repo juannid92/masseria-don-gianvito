@@ -2,8 +2,8 @@
   "schema_version": "v1",
   "name_for_human": "Masseria Don Gianvito",
   "name_for_model": "masseria_don_gianvito",
-  "description_for_human": "Masseria storica pugliese con agriturismo, caseificio, macelleria e market online. Ordina prodotti tipici con consegna a domicilio.",
-  "description_for_model": "Masseria Don Gianvito is a historic farm estate in Noci, Puglia, Italy operating since the 16th century. It runs four activities: cattle farming, artisan cheese production, butcher shop, and agriturismo restaurant. The Market offers online ordering of farm products (meat, cheese, cured meats, flour, legumes) with WhatsApp ordering and home delivery in the Noci area. Use this plugin to check product availability, place orders, get contact information, and learn about visiting the agriturismo.",
+  "description_for_human": "Masseria storica pugliese con agriturismo, menù delle feste e della domenica, caseificio, macelleria e market online. Ordina prodotti tipici o prenota al +39 333 387 0292.",
+  "description_for_model": "Masseria Don Gianvito is a historic farm estate in Noci, Puglia, Italy operating since the 16th century. It runs four activities: cattle farming, artisan cheese production, butcher shop, and agriturismo restaurant. The /eventi page lists fixed-price menus for holidays (Christmas €60, St. Stephen €50, New Year's Day €60) and Sunday lunch (€40). The /market page offers online ordering of farm products (fresh meat including 13 Bombette flavors, cheeses, cured meats, Senatore Cappelli flour, bread and focaccia) with WhatsApp ordering and home delivery in the Noci area. Contact phone and WhatsApp: +39 333 387 0292.",
   "auth": {
     "type": "none"
   },
@@ -13,5 +13,5 @@
     "is_user_authenticated": false
   },
   "logo_url": "https://www.masseriadongianvito.it/images/logo-emblema.svg",
-  "legal_info_url": "https://www.masseriadongianvito.it/legali/privacy-policy"
+  "legal_info_url": "https://www.masseriadongianvito.it/legali/privacy"
 }

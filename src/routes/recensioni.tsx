@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getAbsoluteUrl } from "@/config/site";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 const RECENSIONI = [
@@ -39,6 +39,12 @@ export const Route = createFileRoute("/recensioni")({
           "Cosa dicono i nostri ospiti: recensioni e opinioni sull'agriturismo, il caseificio e la macelleria della Masseria Don Gianvito a Noci.",
       },
       { property: "og:title", content: "Recensioni — Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "Cosa dicono i nostri ospiti: recensioni e opinioni sull'agriturismo, il caseificio e la macelleria della Masseria Don Gianvito a Noci.",
+      },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
       { property: "og:url", content: getAbsoluteUrl("/recensioni") },
       { property: "og:type", content: "website" },
     ],
@@ -49,7 +55,7 @@ export const Route = createFileRoute("/recensioni")({
 
 function RecensioniPage() {
   return (
-    <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+    <div data-tone="light" className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Recensioni" }]} />
       <script
         type="application/ld+json"

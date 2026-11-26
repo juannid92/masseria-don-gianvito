@@ -22,8 +22,28 @@ export const Route = createFileRoute("/market")({
           "Carne, formaggi, salumi, farine e panificio della Masseria Don Gianvito. Ordina per la consegna a domicilio o chiedi informazioni su ogni prodotto.",
       },
       { property: "og:title", content: "Market — Prodotti Tipici · Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "Carne dei nostri allevamenti, formaggi del caseificio interno, salumi stagionati, farine e panificio con consegna a domicilio a Noci e dintorni.",
+      },
       { property: "og:url", content: getAbsoluteUrl("/market") },
       { property: "og:type", content: "website" },
+      {
+        property: "og:image",
+        content: getAbsoluteUrl("/images/market/bombetta-classica.webp"),
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Market — Prodotti Tipici · Masseria Don Gianvito" },
+      {
+        name: "twitter:description",
+        content:
+          "Ordina carne, bombette in 13 gusti, formaggi del caseificio e prodotti tipici della Masseria Don Gianvito con consegna a domicilio.",
+      },
+      {
+        name: "twitter:image",
+        content: getAbsoluteUrl("/images/market/bombetta-classica.webp"),
+      },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/market") }],
   }),
@@ -147,7 +167,7 @@ function MarketPage() {
   }, [activeCategory]);
 
   return (
-    <div className="market-page min-h-screen pt-[var(--page-header-safe-offset)]">
+    <div className="market-page min-h-screen pt-[var(--page-header-safe-offset)]" data-tone="light">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Market" }]} />
 
       {/* JSON-LD Store */}
@@ -159,8 +179,9 @@ function MarketPage() {
             "@type": "Store",
             name: "Market — Masseria Don Gianvito",
             description:
-              "Prodotti tipici della Masseria: carne, formaggi, salumi, farine e legumi con consegna a domicilio.",
+              "Prodotti tipici della Masseria: carne, formaggi, salumi, farine e panificio con consegna a domicilio.",
             url: getAbsoluteUrl("/market"),
+            image: getAbsoluteUrl("/images/market/bombetta-classica.webp"),
             telephone: "+393333870292",
             address: {
               "@type": "PostalAddress",
@@ -175,9 +196,13 @@ function MarketPage() {
               name: "Prodotti del Market",
               itemListElement: PRODOTTI_MARKET.map((p) => ({
                 "@type": "Offer",
-                itemOffered: { "@type": "Product", name: p.nome, description: p.descrizione },
-                price: p.prezzo,
-                priceCurrency: "EUR",
+                itemOffered: {
+                  "@type": "Product",
+                  name: p.nome,
+                  description: p.descrizione,
+                  image: getAbsoluteUrl(p.immagine),
+                },
+                ...(p.prezzo != null ? { price: p.prezzo, priceCurrency: "EUR" } : {}),
                 unitCode: "KGM",
                 availability: "https://schema.org/InStock",
               })),

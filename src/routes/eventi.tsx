@@ -21,6 +21,22 @@ export const Route = createFileRoute("/eventi")({
           "Le locandine dei menù delle feste e del pranzo domenicale della Masseria Don Gianvito, a Noci.",
       },
       { property: "og:url", content: getAbsoluteUrl("/eventi") },
+      { property: "og:type", content: "website" },
+      {
+        property: "og:image",
+        content: getAbsoluteUrl("/images/agriturismo-tavola-ai.jpg"),
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Appuntamenti e Menù — Masseria Don Gianvito" },
+      {
+        name: "twitter:description",
+        content:
+          "Menù di Natale (€60), Santo Stefano (€50), Capodanno (€60) e pranzo della domenica (€40) alla Masseria Don Gianvito a Noci.",
+      },
+      {
+        name: "twitter:image",
+        content: getAbsoluteUrl("/images/agriturismo-tavola-ai.jpg"),
+      },
     ],
     links: [{ rel: "canonical", href: getAbsoluteUrl("/eventi") }],
   }),
@@ -92,7 +108,40 @@ function EventiPage() {
   const active = APPUNTAMENTI.find((a) => a.id === activeId) ?? APPUNTAMENTI[0];
 
   return (
-    <main className="ev-page">
+    <main className="ev-page" data-tone="light">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Menu",
+            name: "Menù degli Appuntamenti — Masseria Don Gianvito",
+            url: getAbsoluteUrl("/eventi"),
+            inLanguage: "it",
+            provider: {
+              "@type": "Restaurant",
+              name: MASSERIA.nome,
+              telephone: "+393333870292",
+              url: getAbsoluteUrl("/"),
+            },
+            hasMenuSection: APPUNTAMENTI.map((a) => ({
+              "@type": "MenuSection",
+              name: `${a.tipo} ${a.nome} (${a.data})`,
+              offers: {
+                "@type": "Offer",
+                price: String(a.prezzo),
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+              },
+              hasMenuItem: a.portate.map((p) => ({
+                "@type": "MenuItem",
+                name: p.titolo,
+                description: p.testo,
+              })),
+            })),
+          }),
+        }}
+      />
       <header className="ev-intro">
         <p className="ev-kicker">Masseria Don Gianvito · Noci</p>
         <h1 className="ev-title">

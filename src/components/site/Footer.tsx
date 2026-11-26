@@ -84,6 +84,17 @@ export function Footer() {
               ))}
               <li>
                 <Link
+                  to="/prodotti"
+                  className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                >
+                  Prodotti
+                </Link>
+                <span className="text-[13px] text-[color:var(--bianco-calce)]/55">
+                  Le nostre produzioni
+                </span>
+              </li>
+              <li>
+                <Link
                   to="/market"
                   className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
                 >
@@ -98,10 +109,10 @@ export function Footer() {
                   to="/eventi"
                   className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
                 >
-                  Eventi e Menù
+                  Appuntamenti &amp; Menù
                 </Link>
                 <span className="text-[13px] text-[color:var(--bianco-calce)]/55">
-                  Ricorrenze &amp; prenotazioni
+                  Ricorrenze &amp; pranzo della domenica
                 </span>
               </li>
             </ul>
@@ -188,7 +199,22 @@ export function Footer() {
             </span>
             <span className="tabular-nums">P.IVA / CF {MASSERIA.piva}</span>
           </div>
-          <div className="flex gap-6">
+          <div className="flex flex-wrap gap-6">
+            <Link to="/chi-siamo" className="hover:text-[color:var(--oro-su-scuro)]">
+              Chi Siamo
+            </Link>
+            <Link to="/dove-siamo" className="hover:text-[color:var(--oro-su-scuro)]">
+              Dove Siamo
+            </Link>
+            <Link to="/contatti" className="hover:text-[color:var(--oro-su-scuro)]">
+              Contatti
+            </Link>
+            <Link to="/faq" className="hover:text-[color:var(--oro-su-scuro)]">
+              FAQ
+            </Link>
+            <Link to="/recensioni" className="hover:text-[color:var(--oro-su-scuro)]">
+              Recensioni
+            </Link>
             <Link to="/legali/privacy" className="hover:text-[color:var(--oro-su-scuro)]">
               Privacy Policy
             </Link>

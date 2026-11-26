@@ -154,7 +154,9 @@ export function Header() {
     };
   }, [drawer]);
 
-  const animaAttiva = ANIME.find((a) => a.to === location.pathname);
+  const animaAttiva =
+    ANIME.some((a) => a.to === location.pathname) ||
+    ["/chi-siamo", "/dove-siamo", "/contatti", "/faq", "/recensioni"].includes(location.pathname);
 
   const isLight = tone === "light";
   const oroText = isLight ? "var(--oro-antico-testo)" : "var(--oro-su-scuro)";
@@ -165,6 +167,7 @@ export function Header() {
   const bgScrolled = isLight
     ? "bg-[color:var(--bianco-calce)]/90 backdrop-blur-md"
     : "bg-[color:var(--biscotto-scuro)]/90 backdrop-blur-md";
+  const desktopItemCls = "font-eyebrow text-[10px] tracking-[0.2em] transition-colors whitespace-nowrap";
 
   return (
     <header
@@ -178,7 +181,7 @@ export function Header() {
       <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-5 md:px-10">
         <Link
           to="/"
-          className="group flex items-center gap-3 leading-none"
+          className="group flex items-center gap-3 leading-none shrink-0"
           aria-label={MASSERIA.nome}
         >
           <img
@@ -209,57 +212,50 @@ export function Header() {
         </Link>
 
         {/* Desktop */}
-        <nav className="hidden items-center gap-6 lg:flex">
+        <nav className="hidden items-center gap-5 xl:gap-6 lg:flex" aria-label="Navigazione principale">
           {HEADER_SEZIONI.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => goToSection(s.id)}
-              className={cn(
-                "font-eyebrow text-[9px] tracking-[0.22em] transition-colors",
-                textSoft,
-              )}
+              className={cn(desktopItemCls, textSoft)}
             >
               {s.nome}
             </button>
           ))}
 
           <Link
-            to="/agriturismo"
-            hash="menu"
-            className={cn(
-              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
-              textSoft,
-            )}
-          >
-            Menù
-          </Link>
-          <Link
             to="/prodotti"
             className={cn(
-              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
-              textSoft,
+              desktopItemCls,
+              "min-h-11 flex items-center",
+              location.pathname === "/prodotti" ? "" : textSoft,
             )}
+            style={location.pathname === "/prodotti" ? { color: oroText } : undefined}
           >
             Prodotti
           </Link>
           <Link
             to="/market"
             className={cn(
-              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
-              textSoft,
+              desktopItemCls,
+              "min-h-11 flex items-center",
+              location.pathname === "/market" ? "" : textSoft,
             )}
+            style={location.pathname === "/market" ? { color: oroText } : undefined}
           >
             Market
           </Link>
           <Link
             to="/eventi"
             className={cn(
-              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
-              textSoft,
+              desktopItemCls,
+              "min-h-11 flex items-center",
+              location.pathname === "/eventi" ? "" : textSoft,
             )}
+            style={location.pathname === "/eventi" ? { color: oroText } : undefined}
           >
-            Eventi
+            Appuntamenti &amp; Menù
           </Link>
           <div className="relative" ref={menuRef}>
             <button
@@ -268,10 +264,7 @@ export function Header() {
               aria-expanded={open}
               aria-haspopup="true"
               onClick={() => setOpen((v) => !v)}
-              className={cn(
-                "font-eyebrow text-[9px] tracking-[0.22em] transition-colors",
-                open || animaAttiva ? "" : textSoft,
-              )}
+              className={cn(desktopItemCls, open || animaAttiva ? "" : textSoft)}
               style={open || animaAttiva ? { color: oroText } : undefined}
             >
               La Masseria
@@ -287,7 +280,7 @@ export function Header() {
                     to={a.to}
                     role="menuitem"
                     tabIndex={-1}
-                    className="flex flex-col gap-1 px-4 py-3 transition-colors hover:bg-white/5"
+                    className="flex flex-col gap-1 px-4 py-2.5 transition-colors hover:bg-white/5"
                   >
                     <span className="font-eyebrow text-[9px] text-[color:var(--oro-su-scuro)]">
                       {a.numero}
@@ -297,21 +290,39 @@ export function Header() {
                     </span>
                   </Link>
                 ))}
+                <div className="my-1 border-t border-white/10 pt-1">
+                  {[
+                    { to: "/chi-siamo" as const, label: "Chi Siamo" },
+                    { to: "/dove-siamo" as const, label: "Dove Siamo" },
+                    { to: "/contatti" as const, label: "Contatti" },
+                    { to: "/faq" as const, label: "FAQ" },
+                  ].map((item) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      role="menuitem"
+                      tabIndex={-1}
+                      className="block px-4 py-2 font-eyebrow text-[10px] tracking-[0.18em] text-[color:var(--bianco-calce)]/80 transition-colors hover:bg-white/5 hover:text-[color:var(--oro-su-scuro)]"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          <Link
-            to="/agriturismo"
-            hash="prenota"
-            className="h-[36px] px-6 font-eyebrow text-[9px] tracking-[0.22em] transition-colors border hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)] flex items-center"
+          <button
+            type="button"
+            onClick={() => goToSection("prenota")}
+            className="h-[36px] px-6 font-eyebrow text-[10px] tracking-[0.2em] transition-colors border hover:bg-[color:var(--oro-antico)] hover:text-[color:var(--carbone)] flex items-center whitespace-nowrap"
             style={{
               color: oroText,
               borderColor: `color-mix(in oklab, ${oroText} 50%, transparent)`,
             }}
           >
             Prenota
-          </Link>
+          </button>
         </nav>
 
         {/* Mobile */}
@@ -336,76 +347,99 @@ export function Header() {
           role="dialog"
           aria-modal="true"
           aria-label="Navigazione della masseria"
-          className="fixed inset-0 z-50 bg-[color:var(--carbone)] p-5 flex flex-col lg:hidden"
+          className="fixed inset-0 z-50 bg-[color:var(--carbone)] p-5 flex flex-col overflow-y-auto lg:hidden"
         >
-          <div className="flex justify-between items-center mb-12">
+          <div className="flex justify-between items-center mb-8">
             <span className="font-display text-[18px] text-[color:var(--bianco-calce)]">
               Masseria Don Gianvito
             </span>
             <button
               onClick={() => setDrawer(false)}
-              className="font-eyebrow text-[10px] text-white/50"
+              className="font-eyebrow text-[10px] text-white/50 min-h-11 px-2"
             >
               Chiudi
             </button>
           </div>
-          <nav className="flex flex-col gap-6">
+          <nav className="flex flex-col gap-4 pb-8" aria-label="Menu mobile">
             {HEADER_SEZIONI.map((s) => (
               <button
                 key={s.id}
                 onClick={() => goToSection(s.id)}
-                className="text-left font-display text-[26px] text-white"
+                className="text-left font-display text-[22px] text-white"
               >
                 {s.nome}
               </button>
             ))}
             <Link
-              to="/agriturismo"
-              hash="menu"
-              onClick={() => setDrawer(false)}
-              className="font-display text-[26px] text-white"
-            >
-              Menù
-            </Link>
-            <Link
               to="/prodotti"
               onClick={() => setDrawer(false)}
-              className="font-display text-[26px] text-white"
+              className="font-display text-[22px] text-white"
             >
               Prodotti
             </Link>
             <Link
               to="/market"
               onClick={() => setDrawer(false)}
-              className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
+              className="font-display text-[22px] text-[color:var(--oro-su-scuro)]"
             >
               Market
             </Link>
             <Link
               to="/eventi"
               onClick={() => setDrawer(false)}
-              className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
+              className="font-display text-[22px] text-[color:var(--oro-su-scuro)]"
             >
-              Eventi e Menù
+              Appuntamenti &amp; Menù
             </Link>
-            <div className="h-px bg-white/10 my-4" />
+            <div className="h-px bg-white/10 my-2" />
             {ANIME.map((a) => (
               <Link
                 key={a.id}
                 to={a.to}
-                className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
+                onClick={() => setDrawer(false)}
+                className="font-display text-[22px] text-[color:var(--oro-su-scuro)]"
               >
                 {a.nome}
               </Link>
             ))}
-            <Link
-              to="/agriturismo"
-              hash="prenota"
-              onClick={() => setDrawer(false)}
-              className="mt-8 h-14 border border-[color:var(--oro-antico)] font-eyebrow text-[11px] text-[color:var(--oro-su-scuro)] flex items-center justify-center"
+            <div className="h-px bg-white/10 my-2" />
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <Link
+                to="/chi-siamo"
+                onClick={() => setDrawer(false)}
+                className="font-eyebrow text-[11px] tracking-[0.18em] text-white/75 py-2"
+              >
+                Chi Siamo
+              </Link>
+              <Link
+                to="/dove-siamo"
+                onClick={() => setDrawer(false)}
+                className="font-eyebrow text-[11px] tracking-[0.18em] text-white/75 py-2"
+              >
+                Dove Siamo
+              </Link>
+              <Link
+                to="/contatti"
+                onClick={() => setDrawer(false)}
+                className="font-eyebrow text-[11px] tracking-[0.18em] text-white/75 py-2"
+              >
+                Contatti
+              </Link>
+              <Link
+                to="/faq"
+                onClick={() => setDrawer(false)}
+                className="font-eyebrow text-[11px] tracking-[0.18em] text-white/75 py-2"
+              >
+                FAQ
+              </Link>
+            </div>
+            <button
+              type="button"
+              onClick={() => goToSection("prenota")}
+              className="mt-4 h-14 border border-[color:var(--oro-antico)] font-eyebrow text-[11px] text-[color:var(--oro-su-scuro)] flex items-center justify-center"
             >
               PRENOTA
-            </Link>
+            </button>
           </nav>
         </div>
       )}

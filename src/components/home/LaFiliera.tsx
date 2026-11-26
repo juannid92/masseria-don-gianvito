@@ -279,8 +279,8 @@ export function LaFiliera() {
           {/* Filo principale — oro antico costante, la luce direzionale dello
               sfondo dà la variazione senza sporcare la tinta. */}
           <linearGradient id="filo-main" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#b2833a" />
-            <stop offset="100%" stopColor="#b2833a" />
+            <stop offset="0%" stopColor="#c84b28" />
+            <stop offset="100%" stopColor="#c84b28" />
           </linearGradient>
         </defs>
         <path
@@ -291,14 +291,14 @@ export function LaFiliera() {
           strokeWidth="2.2"
           strokeLinecap="round"
         />
-        {/* Tratto latte — doppio stroke per staccare dal fondo bianco calce
+        {/* Tratto latte — doppio stroke per staccare dal fondo bianco perla
             senza filtri SVG: sotto un avorio caldo più profondo, sopra un
-            bianco latte. Niente feDropShadow su elemento animato. */}
+            bianco perla. Niente feDropShadow su elemento animato. */}
         <path
           data-filo="latte-under"
           d={D_LATTE}
           fill="none"
-          stroke="#e8dcc0"
+          stroke="#d8cfc2"
           strokeWidth="4.2"
           strokeLinecap="round"
         />
@@ -306,7 +306,7 @@ export function LaFiliera() {
           data-filo="latte"
           d={D_LATTE}
           fill="none"
-          stroke="#fffdf7"
+          stroke="#fdfcfa"
           strokeWidth="2.4"
           strokeLinecap="round"
         />
@@ -314,7 +314,7 @@ export function LaFiliera() {
           data-filo="carne"
           d={D_CARNE}
           fill="none"
-          stroke="#9b2233"
+          stroke="#9e2a1f"
           strokeWidth="2.4"
           strokeLinecap="round"
         />
@@ -322,17 +322,17 @@ export function LaFiliera() {
           data-filo="oro"
           d={D_ORO}
           fill="none"
-          stroke="#b2833a"
+          stroke="#c84b28"
           strokeWidth="4"
           strokeLinecap="round"
         />
         {/* Nodi lungo il filo — appaiono naturalmente man mano che il clip
             supera la loro Y. Nessun tween per-nodo: pop visivo garantito
             dal transito del bordo di clip. */}
-        <circle cx="100" cy="520" r="7" fill="#b2833a" />
-        <circle cx="300" cy="1560" r="7" fill="#b2833a" />
-        <circle cx="200" cy="2200" r="8" fill="#b2833a" />
-        <circle cx="200" cy="3120" r="9" fill="#b2833a" />
+        <circle cx="100" cy="520" r="7" fill="#c84b28" />
+        <circle cx="300" cy="1560" r="7" fill="#c84b28" />
+        <circle cx="200" cy="2200" r="8" fill="#c84b28" />
+        <circle cx="200" cy="3120" r="9" fill="#c84b28" />
       </svg>
 
       {/* Contenuti — 4 nodi in flusso normale, lato alternato rispetto al filo */}

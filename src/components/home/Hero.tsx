@@ -234,7 +234,7 @@ export function Hero() {
         </p>
         <div className="fullscreen-hero-cta">
           <Link to="/eventi" className="fullscreen-hero-btn fullscreen-hero-btn--primary">
-            Eventi &amp; Menù &rarr;
+            Appuntamenti &amp; Menù &rarr;
           </Link>
         </div>
       </div>

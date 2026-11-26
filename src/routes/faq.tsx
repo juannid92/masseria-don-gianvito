@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getAbsoluteUrl } from "@/config/site";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 
 const FAQ_ITEMS = [
@@ -47,6 +47,12 @@ export const Route = createFileRoute("/faq")({
           "Risposte alle domande più frequenti su prenotazioni, orari, menù, parcheggio e servizi della Masseria Don Gianvito a Noci.",
       },
       { property: "og:title", content: "FAQ — Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "Risposte alle domande più frequenti su prenotazioni, orari, menù, parcheggio e servizi della Masseria Don Gianvito a Noci.",
+      },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
       { property: "og:url", content: getAbsoluteUrl("/faq") },
       { property: "og:type", content: "website" },
     ],
@@ -57,7 +63,7 @@ export const Route = createFileRoute("/faq")({
 
 function FaqPage() {
   return (
-    <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+    <div data-tone="light" className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "FAQ" }]} />
       <script
         type="application/ld+json"

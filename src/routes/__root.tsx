@@ -105,6 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: SITE_CONFIG.description },
       { name: "author", content: SITE_CONFIG.name },
       { name: "theme-color", content: SITE_CONFIG.themeColor },
+      { property: "og:locale", content: "it_IT" },
       { property: "og:site_name", content: SITE_CONFIG.name },
       { property: "og:title", content: SITE_CONFIG.title },
       { name: "twitter:title", content: SITE_CONFIG.title },
@@ -147,12 +148,15 @@ function RootShell({ children }: { children: ReactNode }) {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": ["LocalBusiness", "Farm", "Restaurant", "Butcher"],
+              "@type": ["LocalBusiness", "Restaurant", "FoodEstablishment"],
               name: SITE_CONFIG.name,
               description: SITE_CONFIG.description,
               url: SITE_CONFIG.url,
-              image: "https://www.masseriadongianvito.it/images/masseria-luogo.jpg",
+              logo: getAbsoluteUrl("/images/logo-emblema.svg"),
+              image: getAbsoluteUrl(SITE_CONFIG.ogImage),
               telephone: "+393333870292",
+              hasMap: MASSERIA.maps,
+              sameAs: [MASSERIA.instagram, MASSERIA.facebook],
               address: {
                 "@type": "PostalAddress",
                 streetAddress: MASSERIA.indirizzo,
@@ -167,8 +171,7 @@ function RootShell({ children }: { children: ReactNode }) {
                 longitude: MASSERIA.coordinate.lng,
               },
               servesCuisine: "Pugliese",
-              priceRange: "$$",
-              additionalType: ["Farm", "Butcher"],
+              priceRange: "€€",
             }),
           }}
         />

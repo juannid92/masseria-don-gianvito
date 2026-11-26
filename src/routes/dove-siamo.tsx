@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getAbsoluteUrl } from "@/config/site";
+import { SITE_CONFIG, getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
 import { Breadcrumb } from "@/components/site/Breadcrumb";
 
@@ -13,6 +13,12 @@ export const Route = createFileRoute("/dove-siamo")({
           "Come raggiungere la Masseria Don Gianvito a Noci (BA): indicazioni stradali, mappa e coordinate GPS nella Murgia barese.",
       },
       { property: "og:title", content: "Dove Siamo — Masseria Don Gianvito" },
+      {
+        property: "og:description",
+        content:
+          "Come raggiungere la Masseria Don Gianvito a Noci (BA): indicazioni stradali, mappa e coordinate GPS nella Murgia barese.",
+      },
+      { property: "og:image", content: getAbsoluteUrl(SITE_CONFIG.ogImage) },
       { property: "og:url", content: getAbsoluteUrl("/dove-siamo") },
       { property: "og:type", content: "website" },
     ],
@@ -23,7 +29,7 @@ export const Route = createFileRoute("/dove-siamo")({
 
 function DoveSiamoPage() {
   return (
-    <div className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+    <div data-tone="light" className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Dove Siamo" }]} />
       <script
         type="application/ld+json"
@@ -48,7 +54,7 @@ function DoveSiamoPage() {
                 longitude: MASSERIA.coordinate.lng,
               },
               hasMap: MASSERIA.maps,
-              telephone: MASSERIA.telefono,
+              telephone: "+393333870292",
             },
           }),
         }}

@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
   description:
     "Azienda agricola a filiera propria a Noci (BA): allevamento, caseificio, macelleria e agriturismo della Murgia.",
   ogImage: "/images/og-image.png",
-  themeColor: "#f4f0e6",
+  themeColor: "#f2f1ee",
   twitterCard: "summary_large_image",
 } as const;
 
