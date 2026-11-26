@@ -151,7 +151,7 @@ export function Caseificio() {
 
   return (
     <article ref={root} className="journey-story journey-story--caseificio">
-      <header className="journey-chapter-hero" data-tone="light">
+      <header className="journey-chapter-hero" data-tone="dark">
         <CaseificioHero />
         <HeroOverlay chapter={CASEIFICIO} next={NEXT} align="center" />
       </header>

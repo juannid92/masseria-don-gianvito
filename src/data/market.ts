@@ -524,7 +524,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Stagionatura 4 mesi, speziato con vino cotto e pepe.",
     prezzo: 26,
     consegna: true,
-    immagine: "/images/market/salumi-placeholder.jpg",
+    immagine: "/images/market/salumi.webp",
   },
   {
     id: "salame-dolce",
@@ -533,7 +533,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salame a grana media, sapore delicato e aromatico.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/market/salumi-placeholder.jpg",
+    immagine: "/images/market/salumi.webp",
   },
   {
     id: "salame-piccante",
@@ -542,7 +542,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salame con peperoncino, sapore deciso e persistente.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/market/salumi-placeholder.jpg",
+    immagine: "/images/market/salumi.webp",
   },
 
   // ── FARINE ─────────────────────────────────────────────────────────────
