@@ -11,6 +11,7 @@ export interface VarianteProdottoMarket {
   nome: string;
   descrizione?: string;
   prezzo?: number | null;
+  unita?: string;
   immagine: string;
 }
 
@@ -19,13 +20,17 @@ export interface ProdottoMarket {
   nome: string;
   categoria: CategoriaMarket;
   descrizione: string;
-  /** Prezzo indicativo al kg. null = "su richiesta". */
+  /** Prezzo indicativo al kg (o per formato). null = "su richiesta". */
   prezzo: number | null;
+  /** Etichetta unità di vendita (default "/kg"). */
+  unita?: string;
+  /** Etichetta gruppo varianti (default "Gusto"). */
+  variantLabel?: string;
   /** Disponibile per la consegna a domicilio. */
   consegna: boolean;
   /** Percorso immagine prodotto (placeholder se non disponibile). */
   immagine: string;
-  /** Eventuali gusti o varianti selezionabili (es. Bombette). */
+  /** Eventuali gusti o formati selezionabili. */
   varianti?: VarianteProdottoMarket[];
 }
 
@@ -33,7 +38,7 @@ export const CATEGORIE_MARKET: { id: CategoriaMarket; nome: string }[] = [
   { id: "carne", nome: "Carne" },
   { id: "formaggi", nome: "Formaggi" },
   { id: "salumi", nome: "Salumi" },
-  { id: "farina", nome: "Farine" },
+  { id: "farina", nome: "Farine e Pasta" },
   { id: "panificio", nome: "Panificio" },
 ];
 
@@ -259,7 +264,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Macinata grossa di suino nero, condita con sale e pepe.",
     prezzo: 9,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/salsiccia-maiale-nero.webp",
   },
   {
     id: "capocollo-fresco",
@@ -268,7 +273,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Taglio intero di suino allevato in masseria, ideale per arrosti.",
     prezzo: 12,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/capocollo-maiale.webp",
   },
   {
     id: "agnello",
@@ -286,7 +291,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salsiccia fresca di vitello, macinata fine.",
     prezzo: 10,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/salsiccia-vitello.webp",
   },
   {
     id: "costata-maiale",
@@ -295,7 +300,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Costata di suino con osso, perfetta per la griglia.",
     prezzo: 7,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/costata-maiale.webp",
   },
   {
     id: "lonza-maiale",
@@ -304,7 +309,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Taglio magro di suino, versatile per arrosti e fettine.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/lonza-maiale.webp",
   },
   {
     id: "pancetta-maiale",
@@ -313,7 +318,25 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pancetta fresca di suino, ideale per arrosti e brasati.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/pancetta-maiale.webp",
+  },
+  {
+    id: "guanciale",
+    nome: "Guanciale",
+    categoria: "carne",
+    descrizione: "Guanciale fresco di suino allevato in masseria.",
+    prezzo: null,
+    consegna: true,
+    immagine: "/images/market/guanciale.webp",
+  },
+  {
+    id: "maiale-con-osso",
+    nome: "Maiale con osso (Rosticciana / Costine)",
+    categoria: "carne",
+    descrizione: "Taglio di suino con osso della masseria, ideale per brace e forno.",
+    prezzo: null,
+    consegna: true,
+    immagine: "/images/market/maiale-con-osso.webp",
   },
   {
     id: "prosciutto-maiale",
@@ -322,7 +345,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Coscia di suino intera, da cuocere al forno lentamente.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/prosciutto-maiale.webp",
   },
   {
     id: "fettine-vitello",
@@ -367,7 +390,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pollo intero o a pezzi, allevamento locale.",
     prezzo: 8.5,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/pollo.webp",
   },
   {
     id: "coniglio",
@@ -376,7 +399,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Coniglio intero o a pezzi, allevamento locale.",
     prezzo: 8.5,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/coniglio.webp",
   },
   {
     id: "faraona",
@@ -403,7 +426,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Bocconcini di bovino con osso, perfetti per brodi e stufati.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
+    immagine: "/images/market/spezzatino-con-osso.webp",
   },
 
   // ── FORMAGGI E LATTICINI ───────────────────────────────────────────────
@@ -414,7 +437,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Filatura a mano dal latte delle nostre vacche, prodotta ogni mattina.",
     prezzo: 9.5,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/mozzarelle.webp",
   },
   {
     id: "burrata-burratine",
@@ -432,25 +455,25 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Ricotta di siero vaccino, cremosa e delicata, prodotta giornalmente.",
     prezzo: 6.5,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/ricotta-fresca.webp",
   },
   {
     id: "caciocavallo-fresco",
-    nome: "Caciocavallo fresco",
+    nome: "Provola / Caciocavallo fresco",
     categoria: "formaggi",
     descrizione: "Pasta filata fresca, sapore dolce e consistenza morbida.",
     prezzo: 10.5,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/provola-fresca.webp",
   },
   {
     id: "caciocavallo-stagionato",
-    nome: "Caciocavallo stagionato",
+    nome: "Provola stagionata / Caciocavallo stagionato",
     categoria: "formaggi",
     descrizione: "Stagionatura in grotta naturale della masseria, sapore intenso.",
     prezzo: 14,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/provola-stagionata.webp",
   },
   {
     id: "primo-sale",
@@ -459,7 +482,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio fresco a pasta molle, leggero e versatile.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/primo-sale.webp",
   },
   {
     id: "mozzarelle",
@@ -468,7 +491,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Mozzarelle di varie pezzature, filatura tradizionale.",
     prezzo: 9.5,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/mozzarelle.webp",
   },
   {
     id: "formaggio-fresco",
@@ -486,7 +509,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio a pasta dura stagionato, sapore deciso.",
     prezzo: 14,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/formaggio-stagionato.webp",
   },
   {
     id: "ricotta-forte",
@@ -495,7 +518,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Ricotta fermentata tradizionale pugliese, in barattolo.",
     prezzo: 8,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/ricotta-forte.webp",
   },
   {
     id: "cacio-ricotta-misto",
@@ -504,7 +527,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Formaggio misto vaccino-ovino, sapore equilibrato.",
     prezzo: 15,
     consegna: true,
-    immagine: "/images/market/formaggi-placeholder.jpg",
+    immagine: "/images/market/cacioricotta.webp",
   },
   {
     id: "stracciatella",
@@ -524,7 +547,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Stagionatura 4 mesi, speziato con vino cotto e pepe.",
     prezzo: 26,
     consegna: true,
-    immagine: "/images/market/salumi.webp",
+    immagine: "/images/market/capocollo-stagionato.webp",
   },
   {
     id: "salame-dolce",
@@ -533,7 +556,7 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salame a grana media, sapore delicato e aromatico.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/market/salumi.webp",
+    immagine: "/images/market/salame.webp",
   },
   {
     id: "salame-piccante",
@@ -542,30 +565,185 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Salame con peperoncino, sapore deciso e persistente.",
     prezzo: 20,
     consegna: true,
-    immagine: "/images/market/salumi.webp",
+    immagine: "/images/market/salame.webp",
   },
 
-  // ── FARINE ─────────────────────────────────────────────────────────────
-  {
-    id: "semola-dura-senatore-cappelli",
-    nome: "Semola dura Senatore Cappelli",
-    categoria: "farina",
-    descrizione: "Varietà antica di grano duro coltivata in masseria, ideale per pasta.",
-    prezzo: 3.5,
-    consegna: true,
-    immagine: "/images/market/farina-placeholder.jpg",
-  },
+  // ── FARINE E PASTA ──────────────────────────────────────────────────────
   {
     id: "semola-rimacinata-senatore-cappelli",
     nome: "Semola rimacinata Senatore Cappelli",
     categoria: "farina",
-    descrizione: "Semola rimacinata di varietà antica, perfetta per pane e focacce.",
+    descrizione:
+      "Semola rimacinata di grano duro Senatore Cappelli macinata presso mulino artigianale. Scegli la confezione da 500 g o 1 kg.",
     prezzo: 3.5,
+    variantLabel: "Formato",
     consegna: true,
-    immagine: "/images/market/farina-placeholder.jpg",
+    immagine: "/images/market/semola-rimacinata-500g.webp",
+    varianti: [
+      {
+        id: "500g",
+        nome: "500 g",
+        descrizione: "Confezione da 500 g di semola rimacinata di grano duro Senatore Cappelli.",
+        prezzo: 1.75,
+        unita: "/500g",
+        immagine: "/images/market/semola-rimacinata-500g.webp",
+      },
+      {
+        id: "1kg",
+        nome: "1 kg",
+        descrizione: "Confezione da 1 kg di semola rimacinata di grano duro Senatore Cappelli.",
+        prezzo: 3.5,
+        unita: "/1kg",
+        immagine: "/images/market/semola-rimacinata-1kg.webp",
+      },
+    ],
+  },
+  {
+    id: "semola-dura-senatore-cappelli",
+    nome: "Grossetto (Semola dura) Senatore Cappelli",
+    categoria: "farina",
+    descrizione:
+      "Semola dura Senatore Cappelli coltivata in masseria, ideale per pasta fatta in casa e panificazione. Disponibile in 500 g o 1 kg.",
+    prezzo: 3.5,
+    variantLabel: "Formato",
+    consegna: true,
+    immagine: "/images/market/semola-dura-500g.webp",
+    varianti: [
+      {
+        id: "500g",
+        nome: "500 g",
+        descrizione: "Confezione da 500 g di grossetto di grano duro Senatore Cappelli.",
+        prezzo: 1.75,
+        unita: "/500g",
+        immagine: "/images/market/semola-dura-500g.webp",
+      },
+      {
+        id: "1kg",
+        nome: "1 kg",
+        descrizione: "Confezione da 1 kg di grossetto di grano duro Senatore Cappelli.",
+        prezzo: 3.5,
+        unita: "/1kg",
+        immagine: "/images/market/semola-dura-1kg.webp",
+      },
+    ],
+  },
+  {
+    id: "pasta-artigianale-masseria",
+    nome: "Pasta artigianale della Masseria",
+    categoria: "farina",
+    descrizione:
+      "Pasta secca artigianale prodotta con semola di grano duro di produzione propria (500 g). Scegli il formato.",
+    prezzo: 3,
+    unita: "/500g",
+    variantLabel: "Formato",
+    consegna: true,
+    immagine: "/images/market/pasta-strascinati.webp",
+    varianti: [
+      {
+        id: "strascinati",
+        nome: "Strascinati",
+        descrizione: "Strascinati di semola di grano duro della masseria, confezione da 500 g.",
+        prezzo: 3,
+        unita: "/500g",
+        immagine: "/images/market/pasta-strascinati.webp",
+      },
+      {
+        id: "trofiette",
+        nome: "Trofiette",
+        descrizione: "Trofiette artigianali di semola di grano duro della masseria, confezione da 500 g.",
+        prezzo: 3,
+        unita: "/500g",
+        immagine: "/images/market/pasta-trofiette.webp",
+      },
+      {
+        id: "orecchiette",
+        nome: "Orecchiette",
+        descrizione: "Orecchiette pugliesi di semola di grano duro della masseria, confezione da 500 g.",
+        prezzo: 3,
+        unita: "/500g",
+        immagine: "/images/market/pasta-orecchiette.webp",
+      },
+      {
+        id: "fusilloni",
+        nome: "Fusilloni",
+        descrizione: "Fusilloni trafilati al bronzo di semola di grano duro, confezione da 500 g.",
+        prezzo: 3,
+        unita: "/500g",
+        immagine: "/images/market/pasta-fusilloni.webp",
+      },
+      {
+        id: "sedanini",
+        nome: "Sedanini",
+        descrizione: "Sedanini di semola di grano duro della masseria, confezione da 500 g.",
+        prezzo: 3,
+        unita: "/500g",
+        immagine: "/images/market/pasta-sedanini.webp",
+      },
+      {
+        id: "pennoni",
+        nome: "Pennoni trafilati al bronzo",
+        descrizione: "Pennoni trafilati al bronzo di semola di grano duro della masseria, confezione da 500 g.",
+        prezzo: 3,
+        unita: "/500g",
+        immagine: "/images/market/pasta-pennoni.webp",
+      },
+    ],
   },
 
   // ── PANIFICIO ────────────────────────────────────────────────────────────
+  {
+    id: "focaccia-farcita",
+    nome: "Focaccia ripiena",
+    categoria: "panificio",
+    descrizione: "Focaccia ripiena preparata con i prodotti della masseria. Scegli la farcitura.",
+    prezzo: 14,
+    variantLabel: "Ripieno",
+    consegna: true,
+    immagine: "/images/market/focaccia-ripiena-pomodoro.webp",
+    varianti: [
+      {
+        id: "pomodori-cipolla",
+        nome: "Pomodori e cipolla",
+        descrizione: "Focaccia ripiena con pomodorini freschi e cipolla.",
+        prezzo: 14,
+        immagine: "/images/market/focaccia-ripiena-pomodoro.webp",
+      },
+      {
+        id: "verdure-olive",
+        nome: "Scarola e olive",
+        descrizione: "Focaccia ripiena con verdure di stagione e olive.",
+        prezzo: 14,
+        immagine: "/images/market/focaccia-ripiena-verdure.webp",
+      },
+    ],
+  },
+  {
+    id: "focaccia-tipo-pizza",
+    nome: "Focaccia tipo pizza",
+    categoria: "panificio",
+    descrizione: "Focaccia condita con pomodorini, olive e origano.",
+    prezzo: 12,
+    consegna: true,
+    immagine: "/images/market/focaccia-tipo-pizza.webp",
+  },
+  {
+    id: "focaccia-integrale-ruota",
+    nome: "Focaccia integrale ruota",
+    categoria: "panificio",
+    descrizione: "Focaccia integrale con pomodorini e origano, formato ruota.",
+    prezzo: 7,
+    consegna: true,
+    immagine: "/images/market/focaccia-integrale.webp",
+  },
+  {
+    id: "casereccio",
+    nome: "Pane casereccio",
+    categoria: "panificio",
+    descrizione: "Pane casereccio tradizionale, lievitazione lenta.",
+    prezzo: 3,
+    consegna: true,
+    immagine: "/images/market/pane-casereccio.webp",
+  },
   {
     id: "pane-semola",
     nome: "Pane di semola",
@@ -573,51 +751,15 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     descrizione: "Pane di semola rimacinata, crosta dorata e mollica soffice.",
     prezzo: 3.5,
     consegna: true,
-    immagine: "/images/market/panificio-placeholder.jpg",
-  },
-  {
-    id: "casereccio",
-    nome: "Casereccio",
-    categoria: "panificio",
-    descrizione: "Pane casereccio tradizionale, lievitazione lenta.",
-    prezzo: 3,
-    consegna: true,
-    immagine: "/images/market/panificio-placeholder.jpg",
-  },
-  {
-    id: "focaccia-tipo-pizza",
-    nome: "Focaccia tipo pizza",
-    categoria: "panificio",
-    descrizione: "Focaccia condita come una pizza, pomodoro e origano.",
-    prezzo: 12,
-    consegna: true,
-    immagine: "/images/market/panificio-placeholder.jpg",
-  },
-  {
-    id: "focaccia-farcita",
-    nome: "Focaccia farcita",
-    categoria: "panificio",
-    descrizione: "Focaccia ripiena con salumi e formaggi della masseria.",
-    prezzo: 14,
-    consegna: true,
-    immagine: "/images/market/panificio-placeholder.jpg",
+    immagine: "/images/market/pane-semola.webp",
   },
   {
     id: "focaccia-barese-ruota",
     nome: "Focaccia barese ruota",
     categoria: "panificio",
-    descrizione: "Focaccia barese tradizionale con pomodorini e olive, formato ruota.",
+    descrizione: "Focaccia barese tradizionale con pomodorini e origano, formato ruota.",
     prezzo: 6,
     consegna: true,
-    immagine: "/images/market/panificio-placeholder.jpg",
-  },
-  {
-    id: "focaccia-integrale-ruota",
-    nome: "Focaccia integrale ruota",
-    categoria: "panificio",
-    descrizione: "Focaccia integrale con pomodorini e olive, formato ruota.",
-    prezzo: 7,
-    consegna: true,
-    immagine: "/images/market/panificio-placeholder.jpg",
+    immagine: "/images/market/focaccia-barese.webp",
   },
 ];

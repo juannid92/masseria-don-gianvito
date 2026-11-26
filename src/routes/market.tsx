@@ -68,12 +68,18 @@ function resolveCartEntry(item: CartItem, products: ProdottoMarket[]) {
   return { product, variant, label, prezzo };
 }
 
+function formatPrice(val: number) {
+  return Number.isInteger(val) ? String(val) : val.toFixed(2).replace(".", ",");
+}
+
 function buildWhatsappOrder(items: CartItem[], products: ProdottoMarket[]) {
   const lines = items
     .map((item) => {
       const resolved = resolveCartEntry(item, products);
       if (!resolved) return null;
-      const prezzo = resolved.prezzo != null ? `€${resolved.prezzo}/kg` : "su richiesta";
+      const unit = resolved.variant?.unita ?? resolved.product.unita ?? "/kg";
+      const prezzo =
+        resolved.prezzo != null ? `€${formatPrice(resolved.prezzo)}${unit}` : "su richiesta";
       return `• ${resolved.label} × ${item.qty} (${prezzo})`;
     })
     .filter(Boolean);
@@ -432,6 +438,8 @@ function MarketItem({
   const activeDesc = activeVariant?.descrizione ?? product.descrizione;
   const activePrice =
     activeVariant?.prezzo !== undefined ? activeVariant.prezzo : product.prezzo;
+  const activeUnit = activeVariant?.unita ?? product.unita ?? "/kg";
+  const variantLabel = product.variantLabel ?? "Gusto";
   const qty = getQty(activeVariant?.id);
   const fullLabel = activeVariant ? `${product.nome} (${activeVariant.nome})` : product.nome;
 
@@ -476,7 +484,7 @@ function MarketItem({
               ›
             </button>
             <span className="market-image-counter">
-              {activeIndex + 1} / {varianti.length} gusti
+              {activeIndex + 1} / {varianti.length}
             </span>
           </>
         )}
@@ -487,9 +495,9 @@ function MarketItem({
           <p className="market-item-desc">{activeDesc}</p>
 
           {varianti && varianti.length > 0 && (
-            <div className="market-variants" role="group" aria-label={`Gusti di ${product.nome}`}>
+            <div className="market-variants" role="group" aria-label={`${variantLabel} di ${product.nome}`}>
               <p className="market-variants-label">
-                Gusto: <strong>{activeVariant?.nome}</strong>
+                {variantLabel}: <strong>{activeVariant?.nome}</strong>
               </p>
               <div className="market-variant-chips">
                 {varianti.map((v) => {
@@ -516,8 +524,8 @@ function MarketItem({
         <div className="market-item-right">
           {activePrice != null ? (
             <div className="market-item-price-block">
-              <span className="market-item-price">€{activePrice}</span>
-              <span className="market-item-unit">/kg</span>
+              <span className="market-item-price">€{formatPrice(activePrice)}</span>
+              <span className="market-item-unit">{activeUnit}</span>
             </div>
           ) : (
             <span className="market-item-price-request">Prezzo su richiesta</span>

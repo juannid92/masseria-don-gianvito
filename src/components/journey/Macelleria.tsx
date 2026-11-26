@@ -213,8 +213,8 @@ export function Macelleria() {
                   alt: "Tagli di carne fresca selezionati al banco per brace, forno o padella",
                 },
                 3: {
-                  src: "/images/macelleria/macelleria-banco-lavorazione-01.jpeg",
-                  alt: "Chi lavora al banco della macelleria, competenza e ascolto",
+                  src: "/images/macelleria/macelleria-banco-lavorazione-01.webp",
+                  alt: "L'interno della macelleria e del banco Masseria Don Gianvito",
                 },
                 4: {
                   src: "/images/macelleria/macelleria-banco-sala-01.webp",
