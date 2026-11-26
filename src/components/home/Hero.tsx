@@ -201,8 +201,12 @@ export function Hero() {
                 {
                   "--pin-x": `${pin.d.x}%`,
                   "--pin-y": `${pin.d.y}%`,
+                  "--pin-x-tablet": `${pin.t.x}%`,
+                  "--pin-y-tablet": `${pin.t.y}%`,
                   "--pin-x-mobile": `${pin.m.x}%`,
                   "--pin-y-mobile": `${pin.m.y}%`,
+                  "--pin-x-short": `${pin.s.x}%`,
+                  "--pin-y-short": `${pin.s.y}%`,
                 } as CSSProperties
               }
             >

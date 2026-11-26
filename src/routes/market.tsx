@@ -268,10 +268,10 @@ function MarketPage() {
               <circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
             </svg>
-            <span className="font-eyebrow text-xs tracking-widest uppercase">
+            <span className="market-fab-label">
               {cartCount} {cartCount === 1 ? "prodotto" : "prodotti"}
             </span>
-            <span className="font-display text-lg">€{cartTotal.toFixed(2)}</span>
+            <span className="market-fab-total">€{cartTotal.toFixed(2)}</span>
           </button>
         </div>
       )}
@@ -285,7 +285,7 @@ function MarketPage() {
           />
           <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--market-surface)] p-8 shadow-2xl sm:rounded-xl">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="font-display text-2xl text-[color:var(--market-text)]">
+              <h3 className="market-drawer-title">
                 Il tuo ordine
               </h3>
               <button
@@ -304,14 +304,14 @@ function MarketPage() {
                 return (
                   <li key={item.id} className="flex items-center justify-between text-sm">
                     <div>
-                      <span className="font-display text-base text-[color:var(--market-text)]">
+                      <span className="market-drawer-item-name">
                         {p.nome}
                       </span>
                       <span className="ml-2 text-[color:var(--market-text-muted)]/40">
                         × {item.qty}
                       </span>
                     </div>
-                    <span className="font-display text-[color:var(--market-accent)]">
+                    <span className="market-drawer-item-price">
                       €{((p.prezzo ?? 0) * item.qty).toFixed(2)}
                     </span>
                   </li>
@@ -322,10 +322,10 @@ function MarketPage() {
             <div className="my-6 h-px bg-[color:var(--market-accent)]/10" />
 
             <div className="mb-8 flex items-center justify-between">
-              <span className="font-eyebrow text-xs tracking-widest uppercase text-[color:var(--market-text)]">
+              <span className="market-drawer-total-label">
                 Totale stimato
               </span>
-              <span className="font-display text-3xl text-[color:var(--market-accent)]">
+              <span className="market-drawer-total-value">
                 €{cartTotal.toFixed(2)}
               </span>
             </div>
@@ -334,14 +334,14 @@ function MarketPage() {
               href={buildWhatsappOrder(cart, PRODOTTI_MARKET)}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full bg-[color:var(--market-accent)] py-4 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-surface)] transition-opacity hover:opacity-90"
+              className="market-drawer-cta block w-full bg-[color:var(--market-accent)] py-4 text-center text-[color:var(--market-surface)] transition-opacity hover:opacity-90"
             >
               Ordina su WhatsApp
             </a>
 
             <a
               href={MASSERIA.telefonoHref}
-              className="mt-3 block w-full border border-[color:var(--market-accent)]/20 py-3.5 text-center font-eyebrow text-xs tracking-[0.18em] uppercase text-[color:var(--market-text)] transition-colors hover:bg-[color:var(--market-text-muted)]/5"
+              className="market-drawer-cta mt-3 block w-full border border-[color:var(--market-accent)]/20 py-3.5 text-center text-[color:var(--market-text)] transition-colors hover:bg-[color:var(--market-text-muted)]/5"
             >
               Oppure chiama {MASSERIA.telefono}
             </a>

@@ -94,8 +94,8 @@
   --market-accent: #a0522d;       /* sienna/terracotta for prices & CTAs */
   --market-accent-hover: #8b4226; /* darker sienna on hover */
   --market-border: #e8e0d4;       /* subtle warm border */
-  --market-heading-font: var(--font-display);  /* Fraunces serif */
-  --market-body-font: var(--font-sans);        /* Inter sans */
+  --market-heading-font: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --market-body-font: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
   /* === shadcn semantic === */
   /* Allineati alla gerarchia bianco-calce: fondo dominante bianco caldo,

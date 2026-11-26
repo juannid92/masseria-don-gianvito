@@ -6,9 +6,38 @@
    Layout: photo-first card grid at all breakpoints
    ============================================================ */
 
+/* Font dedicati alla sezione Market (caricati solo su /market) */
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/cormorant-garamond-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/cormorant-garamond-italic.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/plus-jakarta-sans-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* ── Page wrapper ─────────────────────────────────────────── */
 .market-page {
   background: var(--market-bg);
+  font-family: var(--market-body-font);
 }
 
 /* ── Hero ─────────────────────────────────────────────────── */
@@ -37,23 +66,27 @@
 
 .market-hero-kicker {
   font-family: var(--market-body-font);
+  font-weight: 600;
   font-size: 11px;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--market-accent);
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .market-hero-title {
   margin-top: 16px;
   font-family: var(--market-heading-font);
-  font-size: clamp(42px, 7vw, 80px);
-  line-height: 0.95;
+  font-weight: 600;
+  font-size: clamp(48px, 7.5vw, 88px);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
   color: var(--market-text);
 }
 
 .market-hero-title em {
-  font-style: normal;
+  font-style: italic;
+  font-weight: 500;
   color: var(--market-accent);
 }
 
@@ -119,7 +152,10 @@
 
 .market-category-title {
   font-family: var(--market-heading-font);
-  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 600;
+  font-size: clamp(28px, 3.4vw, 38px);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
   color: var(--market-text);
   margin-bottom: 24px;
   padding-bottom: 12px;
@@ -181,8 +217,10 @@
 
 .market-item-name {
   font-family: var(--market-heading-font);
-  font-size: 18px;
-  line-height: 1.25;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   color: var(--market-text);
   margin: 0;
 }
@@ -216,9 +254,11 @@
 }
 
 .market-item-price {
-  font-family: var(--market-heading-font);
-  font-size: 22px;
+  font-family: var(--market-body-font);
+  font-size: 20px;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
   color: var(--market-accent);
 }
 
@@ -298,12 +338,76 @@
 }
 
 .market-qty-value {
-  font-family: var(--market-heading-font);
-  font-size: 18px;
+  font-family: var(--market-body-font);
+  font-size: 16px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--market-text);
   min-width: 2ch;
   text-align: center;
+}
+
+/* ── Cart FAB & Drawer Typography ─────────────────────────── */
+.market-fab-label {
+  font-family: var(--market-body-font);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.market-fab-total {
+  font-family: var(--market-body-font);
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.market-drawer-title {
+  font-family: var(--market-heading-font);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.1;
+  color: var(--market-text);
+}
+
+.market-drawer-item-name {
+  font-family: var(--market-heading-font);
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--market-text);
+}
+
+.market-drawer-item-price {
+  font-family: var(--market-body-font);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--market-accent);
+}
+
+.market-drawer-total-label {
+  font-family: var(--market-body-font);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--market-text);
+}
+
+.market-drawer-total-value {
+  font-family: var(--market-body-font);
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--market-accent);
+}
+
+.market-drawer-cta {
+  font-family: var(--market-body-font);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 /* ── Disclaimer ───────────────────────────────────────────── */
@@ -355,7 +459,7 @@
   }
 
   .market-item-name {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .market-item-desc {
@@ -363,7 +467,7 @@
   }
 
   .market-item-price {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .market-btn-add,
