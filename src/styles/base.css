@@ -144,8 +144,11 @@ html.reduce-motion [data-reveal-item] {
   filter: none !important;
 }
 
-/* Aree tap minime su mobile */
+/* Aree tap minime su mobile e ottimizzazione compositing GPU durante lo scroll */
 @media (max-width: 767px) {
+  .grain::after {
+    display: none;
+  }
   a,
   button,
   [role="button"] {

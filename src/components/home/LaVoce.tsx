@@ -188,7 +188,7 @@ export function LaVoce() {
       data-tone="light"
       ref={rootRef}
       aria-label="La Voce"
-      className="relative isolate w-full overflow-hidden bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] min-h-[160dvh] md:min-h-[150dvh]"
+      className="relative isolate w-full overflow-hidden bg-[color:var(--bianco-calce)] text-[color:var(--carbone)] min-h-[160svh] md:min-h-[150dvh]"
     >
       <div aria-hidden className="grain pointer-events-none absolute inset-0 z-0 opacity-10" />
 

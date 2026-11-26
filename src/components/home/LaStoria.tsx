@@ -395,7 +395,7 @@ export function LaStoria() {
             <article
               key={m.id}
               data-moment={m.id}
-              className="relative flex min-h-[100dvh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-screen"
+              className="relative flex min-h-[100svh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-screen"
             >
               {/* Luce propria del momento */}
               <div
@@ -473,7 +473,7 @@ export function LaStoria() {
           ))}
 
           {/* Chiusura dell'atto */}
-          <div className="relative flex min-h-[70dvh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-[80vw]">
+          <div className="relative flex min-h-[70svh] w-full shrink-0 items-center [@media(min-width:900px)]:min-h-0 [@media(min-width:900px)]:h-full [@media(min-width:900px)]:w-[80vw]">
             <div className="relative z-10 mx-auto w-full max-w-[1600px] px-10 md:px-20">
               <p
                 data-chiusura
@@ -507,7 +507,7 @@ export function LaStoria() {
         <div
           aria-hidden
           data-handoff
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[46dvh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[46svh] md:h-[46dvh]"
           style={{
             opacity: statico ? 1 : 0,
             background:

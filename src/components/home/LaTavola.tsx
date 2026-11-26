@@ -120,7 +120,7 @@ export function LaTavola() {
       data-act="tavola"
       data-tone="dark"
       ref={rootRef}
-      className="relative isolate w-full bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] overflow-hidden py-24 md:py-32 min-h-[140dvh] md:min-h-[150dvh]"
+      className="relative isolate w-full bg-[color:var(--biscotto-scuro)] text-[color:var(--bianco-calce)] overflow-hidden py-24 md:py-32 min-h-[140svh] md:min-h-[150dvh]"
     >
       <div aria-hidden className="grain absolute inset-0 opacity-10 pointer-events-none" />
 

@@ -378,7 +378,7 @@ export function LaFiliera() {
         {/* Nodo TRASFORMAZIONE — sdoppiamento */}
         <article
           data-node="trasformazione"
-          className="relative flex min-h-[110dvh] flex-col justify-center py-24 [@media(min-width:900px)]:min-h-[140dvh]"
+          className="relative flex min-h-[110svh] flex-col justify-center py-24 [@media(min-width:900px)]:min-h-[140dvh]"
         >
           <p
             data-eyebrow-trasformazione
@@ -428,7 +428,7 @@ export function LaFiliera() {
         {/* Nodo TAVOLA — testo centrato (il filo oro passa al centro) */}
         <article
           data-node="tavola"
-          className="relative flex min-h-[90dvh] flex-col items-center justify-center py-24 text-center"
+          className="relative flex min-h-[90svh] flex-col items-center justify-center py-24 text-center md:min-h-[90dvh]"
         >
           <p
             data-eyebrow-tavola
@@ -463,7 +463,7 @@ export function LaFiliera() {
           scura pulita, senza gradienti che imitano legno o cibo. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[22dvh]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[22svh] md:h-[22dvh]"
         style={{
           background:
             "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--bianco-calce) 70%, var(--pietra-800)) 65%, var(--pietra-800) 100%)",
@@ -495,7 +495,7 @@ function NodoBlocco({
   return (
     <article
       data-node={nodo.id}
-      className={`relative flex min-h-[90dvh] flex-col justify-center py-24 ${align}`}
+      className={`relative flex min-h-[90svh] md:min-h-[90dvh] flex-col justify-center py-24 ${align}`}
     >
       <div className={lato === "right" ? "max-w-[42ch]" : "max-w-[42ch]"}>
         <p

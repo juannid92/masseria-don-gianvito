@@ -44,6 +44,9 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
     const setupLenis = () => {
       if (lenis) return;
       if (verifyMode) return;
+      // Su dispositivi touch (pointer: coarse) usiamo esclusivamente lo scroll nativo
+      // hardware-accelerated evitando un loop RAF parallelo che può causare micro-scatti.
+      if (window.matchMedia("(pointer: coarse)").matches) return;
       lenis = new Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false });
       (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 

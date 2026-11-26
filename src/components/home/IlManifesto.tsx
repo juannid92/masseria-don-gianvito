@@ -212,7 +212,7 @@ export function IlManifesto() {
     >
       <div
         data-stage
-        className="relative isolate flex w-full flex-col overflow-hidden min-h-[110dvh] bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:h-[100dvh] [@media(min-width:900px)]:min-h-0"
+        className="relative isolate flex w-full flex-col overflow-hidden min-h-[110svh] bg-[color:var(--bianco-calce)] [@media(min-width:900px)]:h-[100dvh] [@media(min-width:900px)]:min-h-0"
       >
         {/* 1 — FONDO BIANCO CALCE (nessuna finta terra: pieno, grana finissima) */}
         <div aria-hidden data-layer="terra" className="pointer-events-none absolute inset-0">
@@ -319,7 +319,7 @@ export function IlManifesto() {
         <div
           aria-hidden
           data-handoff
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[34dvh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[34svh] md:h-[34dvh]"
           style={{
             opacity: statico ? 1 : 0,
             background:

@@ -538,7 +538,7 @@ export function IlLuogo() {
         <div
           aria-hidden
           data-handoff
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[18dvh]"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[18svh] md:h-[18dvh]"
           style={{
             opacity: statico ? 0.85 : 0,
             background:
