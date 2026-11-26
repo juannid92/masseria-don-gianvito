@@ -173,7 +173,7 @@ export function Hero() {
             {source === aerial.url || source === "/images/masseria-aerial.jpg" ? (
               <source
                 type="image/webp"
-                srcSet="/images/masseria-aerial-800w.webp 800w, /images/masseria-aerial-1200w.webp 1200w, /images/masseria-aerial-1920w.webp 1920w"
+                srcSet="/images/masseria-aerial-800w.webp 800w, /images/masseria-aerial-1200w.webp 1200w, /images/masseria-aerial-1920w.webp 1920w, /images/masseria-aerial-2560w.webp 2560w, /images/masseria-aerial-3840w.webp 3840w"
                 sizes="100vw"
               />
             ) : null}
@@ -232,6 +232,11 @@ export function Hero() {
           <br />
           nello stesso luogo, a Noci.
         </p>
+        <div className="fullscreen-hero-cta">
+          <Link to="/eventi" className="fullscreen-hero-btn fullscreen-hero-btn--primary">
+            Eventi &amp; Menù &rarr;
+          </Link>
+        </div>
       </div>
 
       <div className="fullscreen-hero-bottom">

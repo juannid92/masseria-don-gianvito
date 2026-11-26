@@ -61,7 +61,7 @@ function AgriturismoPage() {
               latitude: 40.642739,
               longitude: 17.0426,
             },
-            telephone: "+393339395750",
+            telephone: "+393333870292",
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: "4.8",

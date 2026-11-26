@@ -5,7 +5,7 @@ import { Breadcrumb } from "@/components/site/Breadcrumb";
 const FAQ_ITEMS = [
   {
     q: "Come si prenota un tavolo?",
-    a: "Puoi prenotare tramite WhatsApp al numero 333 939 5750, oppure chiamando direttamente. Ti consigliamo di prenotare con almeno 2-3 giorni di anticipo, specialmente per il sabato sera e la domenica a pranzo.",
+    a: "Puoi prenotare tramite WhatsApp al numero 333 387 0292, oppure chiamando direttamente. Ti consigliamo di prenotare con almeno 2-3 giorni di anticipo, specialmente per il sabato sera e la domenica a pranzo.",
   },
   {
     q: "Quali sono gli orari di apertura?",

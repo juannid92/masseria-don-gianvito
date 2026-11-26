@@ -34,7 +34,7 @@ function ContattiPage() {
             mainEntity: {
               "@type": "LocalBusiness",
               name: MASSERIA.nome,
-              telephone: "+393339395750",
+              telephone: "+393333870292",
               url: getAbsoluteUrl("/"),
               address: {
                 "@type": "PostalAddress",
@@ -67,7 +67,6 @@ function ContattiPage() {
           <div className="rounded-lg bg-[color:var(--pietra-100)] p-8">
             <h2 className="font-display text-2xl text-[color:var(--carbone)]">Telefono</h2>
             <p className="mt-3 text-lg text-[color:var(--carbone)]/80">{MASSERIA.telefono}</p>
-            <p className="text-lg text-[color:var(--carbone)]/80">{MASSERIA.telefono2}</p>
             <a
               href={MASSERIA.telefonoHref}
               className="mt-4 inline-block font-eyebrow text-[11px] tracking-[0.26em] text-[color:var(--terra-cotta)] underline decoration-[color:var(--oro-antico)] underline-offset-4 hover:text-[color:var(--carbone)]"

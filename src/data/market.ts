@@ -6,6 +6,14 @@
 
 export type CategoriaMarket = "carne" | "formaggi" | "salumi" | "farina" | "panificio";
 
+export interface VarianteProdottoMarket {
+  id: string;
+  nome: string;
+  descrizione?: string;
+  prezzo?: number | null;
+  immagine: string;
+}
+
 export interface ProdottoMarket {
   id: string;
   nome: string;
@@ -17,6 +25,8 @@ export interface ProdottoMarket {
   consegna: boolean;
   /** Percorso immagine prodotto (placeholder se non disponibile). */
   immagine: string;
+  /** Eventuali gusti o varianti selezionabili (es. Bombette). */
+  varianti?: VarianteProdottoMarket[];
 }
 
 export const CATEGORIE_MARKET: { id: CategoriaMarket; nome: string }[] = [
@@ -29,6 +39,201 @@ export const CATEGORIE_MARKET: { id: CategoriaMarket; nome: string }[] = [
 
 export const PRODOTTI_MARKET: ProdottoMarket[] = [
   // ── CARNE ──────────────────────────────────────────────────────────────
+  {
+    id: "bombette",
+    nome: "Bombette della Masseria",
+    categoria: "carne",
+    descrizione:
+      "Involtini tradizionali pugliesi preparati a mano nella nostra macelleria. Seleziona il gusto per vedere la foto e aggiungerlo all'ordine.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/bombetta-classica.webp",
+    varianti: [
+      {
+        id: "classica",
+        nome: "Classica",
+        descrizione: "Involtino tradizionale di suino ripieno di formaggio filante.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-classica.webp",
+      },
+      {
+        id: "4-formaggi",
+        nome: "4 Formaggi",
+        descrizione: "Bombetta dal cuore ricco e cremoso ai quattro formaggi.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-4-formaggi.webp",
+      },
+      {
+        id: "pancetta",
+        nome: "Con pancetta",
+        descrizione: "Avvolta nella pancetta per una cottura alla brace ancora più succosa.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-pancetta.webp",
+      },
+      {
+        id: "speck-scamorza",
+        nome: "Speck e scamorza",
+        descrizione: "Leggermente panata, ripiena di speck e scamorza filante.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-speck-scamorza.webp",
+      },
+      {
+        id: "pesto-fontina",
+        nome: "Pesto e fontina",
+        descrizione: "Ripiena di fontina morbida e profumata al pesto.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-pesto-fontina.webp",
+      },
+      {
+        id: "pomodoro-secco-caciocavallo",
+        nome: "Pomodoro secco e caciocavallo",
+        descrizione: "Sapore autentico pugliese con pomodoro secco e caciocavallo.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-pomodoro-secco-caciocavallo.webp",
+      },
+      {
+        id: "rucola-speck-gorgonzola",
+        nome: "Rucola, speck e gorgonzola",
+        descrizione: "Farcita con foglie fresche di rucola, speck e gorgonzola.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-rucola-speck-gorgonzola.webp",
+      },
+      {
+        id: "nduja-gorgonzola",
+        nome: "'Nduja e gorgonzola",
+        descrizione: "Panata, con l'incontro deciso tra 'nduja piccante e gorgonzola.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-nduja-gorgonzola.webp",
+      },
+      {
+        id: "nduja-senza-glutine",
+        nome: "'Nduja senza glutine",
+        descrizione: "Farcita con 'nduja, preparata interamente senza glutine.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-nduja-senza-glutine.webp",
+      },
+      {
+        id: "impanata-senza-glutine",
+        nome: "Impanata senza glutine",
+        descrizione: "Bombetta dorata con panatura dedicata senza glutine.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-impanata-senza-glutine.webp",
+      },
+      {
+        id: "piccante",
+        nome: "Piccante",
+        descrizione: "Ricoperta di spezie e peperoncino per chi ama il gusto deciso.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-piccante.webp",
+      },
+      {
+        id: "capocollo-senza-formaggio",
+        nome: "Capocollo senza formaggio",
+        descrizione: "Solo capocollo scelto della masseria, senza latticini.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-capocollo-senza-formaggio.webp",
+      },
+      {
+        id: "vitello-senza-formaggio",
+        nome: "Vitello senza formaggio",
+        descrizione: "Fettine scelte di vitello arrotolate a mano, senza formaggio.",
+        prezzo: 16,
+        immagine: "/images/market/bombetta-vitello-senza-formaggio.webp",
+      },
+    ],
+  },
+  {
+    id: "costata-vitello",
+    nome: "Costata di vitello",
+    categoria: "carne",
+    descrizione: "Costata di vitello con osso dalla marezzatura fine, ideale per la brace.",
+    prezzo: 20,
+    consegna: true,
+    immagine: "/images/market/costata-di-vitello.webp",
+  },
+  {
+    id: "braciole-manzo-pronte",
+    nome: "Braciole pronte",
+    categoria: "carne",
+    descrizione: "Involtini della tradizione pugliese già farciti e chiusi, pronti per il sugo.",
+    prezzo: 20,
+    consegna: true,
+    immagine: "/images/market/braciole.webp",
+  },
+  {
+    id: "spiedino-misto",
+    nome: "Spiedino misto",
+    categoria: "carne",
+    descrizione: "Spiedini pronti per la griglia con salsiccia, tagli scelti di suino e peperoni.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/spiedino-misto.webp",
+  },
+  {
+    id: "filetti-lardati",
+    nome: "Filetti lardati",
+    categoria: "carne",
+    descrizione: "Medaglioni di filetto avvolti per restare tenerissimi e succosi in cottura.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/filetti-lardati.webp",
+  },
+  {
+    id: "girelle-capocollo-formaggio",
+    nome: "Girelle con capocollo stagionato e formaggio",
+    categoria: "carne",
+    descrizione:
+      "Girelle di carne farcite con capocollo stagionato, formaggio e pomodori secchi.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/girelle-capocollo-formaggio.webp",
+  },
+  {
+    id: "calippo",
+    nome: "Calippo",
+    categoria: "carne",
+    descrizione: "Spiedone di macinato scelto avvolto nella pancetta, perfetto sulla brace.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/calippo.webp",
+  },
+  {
+    id: "gnummirelli",
+    nome: "Gnummirelli",
+    categoria: "carne",
+    descrizione:
+      "Involtini tradizionali pugliesi legati a mano con prezzemolo fresco, pronti da arrostire.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/gnummirelli.webp",
+  },
+  {
+    id: "hamburger-masseria",
+    nome: "Hamburger",
+    categoria: "carne",
+    descrizione: "Blend di bovino adulto della masseria, pronto per piastra o brace.",
+    prezzo: 11,
+    consegna: true,
+    immagine: "/images/market/hamburger.webp",
+  },
+  {
+    id: "polpette",
+    nome: "Polpette",
+    categoria: "carne",
+    descrizione: "Polpette di carne fresca preparate a mano con prezzemolo e aromi.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/polpette.webp",
+  },
+  {
+    id: "polpettine",
+    nome: "Polpettine",
+    categoria: "carne",
+    descrizione: "Polpettine mignon fatte a mano, ideali per sughi, brodi o al forno.",
+    prezzo: 16,
+    consegna: true,
+    immagine: "/images/market/polpettine.webp",
+  },
   {
     id: "bistecca-bovino-cruda",
     nome: "Bistecca di Bovino cruda",
@@ -44,15 +249,6 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     categoria: "carne",
     descrizione: "Il taglio più tenero, ideale per cotture rapide alla brace.",
     prezzo: 30,
-    consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
-  },
-  {
-    id: "braciole-manzo-pronte",
-    nome: "Braciole di manzo pronte",
-    categoria: "carne",
-    descrizione: "Fettine sottili da involtino, tradizione pugliese.",
-    prezzo: 22,
     consegna: true,
     immagine: "/images/market/carne-placeholder.jpg",
   },
@@ -75,15 +271,6 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     immagine: "/images/market/carne-placeholder.jpg",
   },
   {
-    id: "hamburger-masseria",
-    nome: "Hamburger",
-    categoria: "carne",
-    descrizione: "Blend di bovino adulto, pronto per la brace.",
-    prezzo: 11,
-    consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
-  },
-  {
     id: "agnello",
     nome: "Agnello",
     categoria: "carne",
@@ -98,15 +285,6 @@ export const PRODOTTI_MARKET: ProdottoMarket[] = [
     categoria: "carne",
     descrizione: "Salsiccia fresca di vitello, macinata fine.",
     prezzo: 10,
-    consegna: true,
-    immagine: "/images/market/carne-placeholder.jpg",
-  },
-  {
-    id: "bombette",
-    nome: "Bombette classiche e varie",
-    categoria: "carne",
-    descrizione: "Involtini di carne tradizionali pugliesi, ripieni a scelta.",
-    prezzo: 16,
     consegna: true,
     immagine: "/images/market/carne-placeholder.jpg",
   },

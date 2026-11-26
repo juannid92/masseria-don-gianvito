@@ -13,14 +13,12 @@ export const MASSERIA = {
   coordinateLabel: "40.642739, 17.042600",
   piva: "05839280723",
   cciaaDal: 2002,
-  telefono: "333 939 5750",
-  telefonoHref: "tel:+393339395750",
-  telefono2: "333 387 0292",
-  telefono2Href: "tel:+393333870292",
-  whatsapp: "https://wa.me/393339395750",
+  telefono: "333 387 0292",
+  telefonoHref: "tel:+393333870292",
+  whatsapp: "https://wa.me/393333870292",
   /** WhatsApp con messaggio precompilato per la prenotazione di un tavolo. */
   whatsappPrenota:
-    "https://wa.me/393339395750?text=" +
+    "https://wa.me/393333870292?text=" +
     encodeURIComponent(
       "Buongiorno, vorrei prenotare un tavolo alla Masseria Don Gianvito. Siamo in ___ persone, per il giorno ___. Grazie.",
     ),

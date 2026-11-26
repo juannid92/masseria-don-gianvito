@@ -252,6 +252,15 @@ export function Header() {
           >
             Market
           </Link>
+          <Link
+            to="/eventi"
+            className={cn(
+              "font-eyebrow text-[11px] tracking-[0.16em] min-h-11 flex items-center",
+              textSoft,
+            )}
+          >
+            Eventi
+          </Link>
           <div className="relative" ref={menuRef}>
             <button
               ref={triggerRef}
@@ -371,6 +380,13 @@ export function Header() {
               className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
             >
               Market
+            </Link>
+            <Link
+              to="/eventi"
+              onClick={() => setDrawer(false)}
+              className="font-display text-[26px] text-[color:var(--oro-su-scuro)]"
+            >
+              Eventi e Menù
             </Link>
             <div className="h-px bg-white/10 my-4" />
             {ANIME.map((a) => (

@@ -14,6 +14,7 @@ import { Route as ProdottiRouteImport } from './routes/prodotti'
 import { Route as MarketRouteImport } from './routes/market'
 import { Route as MacelleriaRouteImport } from './routes/macelleria'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as EventiRouteImport } from './routes/eventi'
 import { Route as DoveSiamoRouteImport } from './routes/dove-siamo'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
@@ -48,6 +49,11 @@ const MacelleriaRoute = MacelleriaRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventiRoute = EventiRouteImport.update({
+  id: '/eventi',
+  path: '/eventi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DoveSiamoRoute = DoveSiamoRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
   '/dove-siamo': typeof DoveSiamoRoute
+  '/eventi': typeof EventiRoute
   '/faq': typeof FaqRoute
   '/macelleria': typeof MacelleriaRoute
   '/market': typeof MarketRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
   '/dove-siamo': typeof DoveSiamoRoute
+  '/eventi': typeof EventiRoute
   '/faq': typeof FaqRoute
   '/macelleria': typeof MacelleriaRoute
   '/market': typeof MarketRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
   '/dove-siamo': typeof DoveSiamoRoute
+  '/eventi': typeof EventiRoute
   '/faq': typeof FaqRoute
   '/macelleria': typeof MacelleriaRoute
   '/market': typeof MarketRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/chi-siamo'
     | '/contatti'
     | '/dove-siamo'
+    | '/eventi'
     | '/faq'
     | '/macelleria'
     | '/market'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/chi-siamo'
     | '/contatti'
     | '/dove-siamo'
+    | '/eventi'
     | '/faq'
     | '/macelleria'
     | '/market'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/chi-siamo'
     | '/contatti'
     | '/dove-siamo'
+    | '/eventi'
     | '/faq'
     | '/macelleria'
     | '/market'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
   DoveSiamoRoute: typeof DoveSiamoRoute
+  EventiRoute: typeof EventiRoute
   FaqRoute: typeof FaqRoute
   MacelleriaRoute: typeof MacelleriaRoute
   MarketRoute: typeof MarketRoute
@@ -260,6 +273,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eventi': {
+      id: '/eventi'
+      path: '/eventi'
+      fullPath: '/eventi'
+      preLoaderRoute: typeof EventiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dove-siamo': {
@@ -344,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
   DoveSiamoRoute: DoveSiamoRoute,
+  EventiRoute: EventiRoute,
   FaqRoute: FaqRoute,
   MacelleriaRoute: MacelleriaRoute,
   MarketRoute: MarketRoute,

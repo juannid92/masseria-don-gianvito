@@ -8,6 +8,7 @@ import {
   CATEGORIE_MARKET,
   type CategoriaMarket,
   type ProdottoMarket,
+  type VarianteProdottoMarket,
 } from "@/data/market";
 import "@/styles/market.css";
 
@@ -30,21 +31,36 @@ export const Route = createFileRoute("/market")({
 });
 
 // ── Carrello state ─────────────────────────────────────────────────────────────
-type CartItem = { id: string; qty: number };
+type CartItem = { key: string; productId: string; variantId?: string; qty: number };
+
+function makeCartKey(productId: string, variantId?: string) {
+  return variantId ? `${productId}::${variantId}` : productId;
+}
+
+function resolveCartEntry(item: CartItem, products: ProdottoMarket[]) {
+  const product = products.find((pr) => pr.id === item.productId);
+  if (!product) return null;
+  const variant = item.variantId
+    ? product.varianti?.find((v) => v.id === item.variantId)
+    : undefined;
+  const label = variant ? `${product.nome} — ${variant.nome}` : product.nome;
+  const prezzo = variant?.prezzo !== undefined ? variant.prezzo : product.prezzo;
+  return { product, variant, label, prezzo };
+}
 
 function buildWhatsappOrder(items: CartItem[], products: ProdottoMarket[]) {
   const lines = items
     .map((item) => {
-      const p = products.find((pr) => pr.id === item.id);
-      if (!p) return null;
-      const prezzo = p.prezzo != null ? `€${p.prezzo}/kg` : "su richiesta";
-      return `• ${p.nome} × ${item.qty} (${prezzo})`;
+      const resolved = resolveCartEntry(item, products);
+      if (!resolved) return null;
+      const prezzo = resolved.prezzo != null ? `€${resolved.prezzo}/kg` : "su richiesta";
+      return `• ${resolved.label} × ${item.qty} (${prezzo})`;
     })
     .filter(Boolean);
 
   const totale = items.reduce((sum, item) => {
-    const p = products.find((pr) => pr.id === item.id);
-    return sum + (p?.prezzo ?? 0) * item.qty;
+    const resolved = resolveCartEntry(item, products);
+    return sum + (resolved?.prezzo ?? 0) * item.qty;
   }, 0);
 
   const msg = [
@@ -60,8 +76,9 @@ function buildWhatsappOrder(items: CartItem[], products: ProdottoMarket[]) {
   return `${MASSERIA.whatsapp.split("?")[0]}?text=${encodeURIComponent(msg)}`;
 }
 
-function buildWhatsappInfo(product: ProdottoMarket) {
-  const msg = `Buongiorno, vorrei informazioni su "${product.nome}" dal Market della Masseria Don Gianvito. Prezzo, disponibilità e consegna a domicilio. Grazie!`;
+function buildWhatsappInfo(product: ProdottoMarket, variant?: VarianteProdottoMarket) {
+  const nome = variant ? `${product.nome} (${variant.nome})` : product.nome;
+  const msg = `Buongiorno, vorrei informazioni su "${nome}" dal Market della Masseria Don Gianvito. Prezzo, disponibilità e consegna a domicilio. Grazie!`;
   return `${MASSERIA.whatsapp.split("?")[0]}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -83,35 +100,40 @@ function MarketPage() {
   const cartTotal = useMemo(
     () =>
       cart.reduce((sum, item) => {
-        const p = PRODOTTI_MARKET.find((pr) => pr.id === item.id);
-        return sum + (p?.prezzo ?? 0) * item.qty;
+        const resolved = resolveCartEntry(item, PRODOTTI_MARKET);
+        return sum + (resolved?.prezzo ?? 0) * item.qty;
       }, 0),
     [cart],
   );
 
   const cartCount = useMemo(() => cart.reduce((sum, item) => sum + item.qty, 0), [cart]);
 
-  const addToCart = (id: string) => {
+  const addToCart = (productId: string, variantId?: string) => {
+    const key = makeCartKey(productId, variantId);
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === id);
+      const existing = prev.find((item) => item.key === key);
       if (existing) {
-        return prev.map((item) => (item.id === id ? { ...item, qty: item.qty + 1 } : item));
+        return prev.map((item) => (item.key === key ? { ...item, qty: item.qty + 1 } : item));
       }
-      return [...prev, { id, qty: 1 }];
+      return [...prev, { key, productId, variantId, qty: 1 }];
     });
   };
 
-  const removeFromCart = (id: string) => {
+  const removeFromCart = (productId: string, variantId?: string) => {
+    const key = makeCartKey(productId, variantId);
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === id);
+      const existing = prev.find((item) => item.key === key);
       if (existing && existing.qty > 1) {
-        return prev.map((item) => (item.id === id ? { ...item, qty: item.qty - 1 } : item));
+        return prev.map((item) => (item.key === key ? { ...item, qty: item.qty - 1 } : item));
       }
-      return prev.filter((item) => item.id !== id);
+      return prev.filter((item) => item.key !== key);
     });
   };
 
-  const getQty = (id: string) => cart.find((item) => item.id === id)?.qty ?? 0;
+  const getQty = (productId: string, variantId?: string) => {
+    const key = makeCartKey(productId, variantId);
+    return cart.find((item) => item.key === key)?.qty ?? 0;
+  };
 
   // Raggruppa prodotti per categoria quando filtro è "tutti"
   const groupedProducts = useMemo(() => {
@@ -139,7 +161,7 @@ function MarketPage() {
             description:
               "Prodotti tipici della Masseria: carne, formaggi, salumi, farine e legumi con consegna a domicilio.",
             url: getAbsoluteUrl("/market"),
-            telephone: "+393339395750",
+            telephone: "+393333870292",
             address: {
               "@type": "PostalAddress",
               streetAddress: MASSERIA.indirizzo,
@@ -213,10 +235,10 @@ function MarketPage() {
                     <MarketItem
                       key={product.id}
                       product={product}
-                      qty={getQty(product.id)}
-                      onAdd={() => addToCart(product.id)}
-                      onRemove={() => removeFromCart(product.id)}
-                      onInfo={() => buildWhatsappInfo(product)}
+                      getQty={(variantId) => getQty(product.id, variantId)}
+                      onAdd={(variantId) => addToCart(product.id, variantId)}
+                      onRemove={(variantId) => removeFromCart(product.id, variantId)}
+                      onInfo={(variant) => buildWhatsappInfo(product, variant)}
                     />
                   ))}
                 </div>
@@ -230,10 +252,10 @@ function MarketPage() {
               <MarketItem
                 key={product.id}
                 product={product}
-                qty={getQty(product.id)}
-                onAdd={() => addToCart(product.id)}
-                onRemove={() => removeFromCart(product.id)}
-                onInfo={() => buildWhatsappInfo(product)}
+                getQty={(variantId) => getQty(product.id, variantId)}
+                onAdd={(variantId) => addToCart(product.id, variantId)}
+                onRemove={(variantId) => removeFromCart(product.id, variantId)}
+                onInfo={(variant) => buildWhatsappInfo(product, variant)}
               />
             ))}
           </div>
@@ -299,20 +321,20 @@ function MarketPage() {
 
             <ul className="max-h-60 space-y-4 overflow-y-auto">
               {cart.map((item) => {
-                const p = PRODOTTI_MARKET.find((pr) => pr.id === item.id);
-                if (!p) return null;
+                const resolved = resolveCartEntry(item, PRODOTTI_MARKET);
+                if (!resolved) return null;
                 return (
-                  <li key={item.id} className="flex items-center justify-between text-sm">
+                  <li key={item.key} className="flex items-center justify-between text-sm">
                     <div>
                       <span className="market-drawer-item-name">
-                        {p.nome}
+                        {resolved.label}
                       </span>
                       <span className="ml-2 text-[color:var(--market-text-muted)]/40">
                         × {item.qty}
                       </span>
                     </div>
                     <span className="market-drawer-item-price">
-                      €{((p.prezzo ?? 0) * item.qty).toFixed(2)}
+                      €{((resolved.prezzo ?? 0) * item.qty).toFixed(2)}
                     </span>
                   </li>
                 );
@@ -356,51 +378,131 @@ function MarketPage() {
   );
 }
 
-// ── Singolo prodotto — riga compatta e uniforme ────────────────────────────────
+// ── Singolo prodotto — con supporto selezione gusti/varianti ──────────────────
 
 function MarketItem({
   product,
-  qty,
+  getQty,
   onAdd,
   onRemove,
   onInfo,
 }: {
   product: ProdottoMarket;
-  qty: number;
-  onAdd: () => void;
-  onRemove: () => void;
-  onInfo: () => string;
+  getQty: (variantId?: string) => number;
+  onAdd: (variantId?: string) => void;
+  onRemove: (variantId?: string) => void;
+  onInfo: (variant?: VarianteProdottoMarket) => string;
 }) {
+  const varianti = product.varianti;
+  const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(
+    varianti && varianti.length > 0 ? varianti[0].id : undefined,
+  );
+
+  const activeVariant = useMemo(
+    () => varianti?.find((v) => v.id === selectedVariantId) ?? varianti?.[0],
+    [varianti, selectedVariantId],
+  );
+
+  const activeImage = activeVariant?.immagine ?? product.immagine;
+  const activeDesc = activeVariant?.descrizione ?? product.descrizione;
+  const activePrice =
+    activeVariant?.prezzo !== undefined ? activeVariant.prezzo : product.prezzo;
+  const qty = getQty(activeVariant?.id);
+  const fullLabel = activeVariant ? `${product.nome} (${activeVariant.nome})` : product.nome;
+
+  const activeIndex = useMemo(
+    () => (varianti ? Math.max(0, varianti.findIndex((v) => v.id === activeVariant?.id)) : 0),
+    [varianti, activeVariant],
+  );
+
+  const stepVariant = (delta: number) => {
+    if (!varianti || varianti.length === 0) return;
+    const nextIdx = (activeIndex + delta + varianti.length) % varianti.length;
+    setSelectedVariantId(varianti[nextIdx].id);
+  };
+
   return (
-    <article className="market-item">
+    <article className={varianti && varianti.length > 0 ? "market-item market-item--featured" : "market-item"}>
       <div className="market-item-image">
         <img
-          src={product.immagine}
-          alt={product.nome}
+          src={activeImage}
+          alt={fullLabel}
           loading="lazy"
           decoding="async"
           width={400}
-          height={300}
+          height={460}
         />
+        {varianti && varianti.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => stepVariant(-1)}
+              className="market-image-nav market-image-nav--prev"
+              aria-label="Gusto precedente"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() => stepVariant(1)}
+              className="market-image-nav market-image-nav--next"
+              aria-label="Gusto successivo"
+            >
+              ›
+            </button>
+            <span className="market-image-counter">
+              {activeIndex + 1} / {varianti.length} gusti
+            </span>
+          </>
+        )}
       </div>
       <div className="market-item-main">
         <div className="market-item-info">
           <h3 className="market-item-name">{product.nome}</h3>
-          <p className="market-item-desc">{product.descrizione}</p>
+          <p className="market-item-desc">{activeDesc}</p>
+
+          {varianti && varianti.length > 0 && (
+            <div className="market-variants" role="group" aria-label={`Gusti di ${product.nome}`}>
+              <p className="market-variants-label">
+                Gusto: <strong>{activeVariant?.nome}</strong>
+              </p>
+              <div className="market-variant-chips">
+                {varianti.map((v) => {
+                  const vQty = getQty(v.id);
+                  const isSelected = v.id === activeVariant?.id;
+                  return (
+                    <button
+                      key={v.id}
+                      type="button"
+                      onClick={() => setSelectedVariantId(v.id)}
+                      className="market-variant-chip"
+                      data-selected={isSelected}
+                      aria-pressed={isSelected}
+                    >
+                      <span>{v.nome}</span>
+                      {vQty > 0 && <span className="market-variant-badge">{vQty}</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
         <div className="market-item-right">
-          {product.prezzo != null && (
+          {activePrice != null ? (
             <div className="market-item-price-block">
-              <span className="market-item-price">€{product.prezzo}</span>
+              <span className="market-item-price">€{activePrice}</span>
               <span className="market-item-unit">/kg</span>
             </div>
+          ) : (
+            <span className="market-item-price-request">Prezzo su richiesta</span>
           )}
           {qty === 0 ? (
             <div className="market-item-actions">
               <button
-                onClick={onAdd}
+                onClick={() => onAdd(activeVariant?.id)}
                 className="market-btn-add"
-                aria-label={`Aggiungi ${product.nome}`}
+                aria-label={`Aggiungi ${fullLabel}`}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -416,11 +518,11 @@ function MarketItem({
                 </svg>
               </button>
               <a
-                href={onInfo()}
+                href={onInfo(activeVariant)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="market-btn-info"
-                aria-label={`Info su ${product.nome}`}
+                aria-label={`Info su ${fullLabel}`}
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -438,17 +540,17 @@ function MarketItem({
           ) : (
             <div className="market-qty-controls">
               <button
-                onClick={onRemove}
+                onClick={() => onRemove(activeVariant?.id)}
                 className="market-qty-btn"
-                aria-label={`Rimuovi uno ${product.nome}`}
+                aria-label={`Rimuovi uno ${fullLabel}`}
               >
                 −
               </button>
               <span className="market-qty-value">{qty}</span>
               <button
-                onClick={onAdd}
+                onClick={() => onAdd(activeVariant?.id)}
                 className="market-qty-btn"
-                aria-label={`Aggiungi uno ${product.nome}`}
+                aria-label={`Aggiungi uno ${fullLabel}`}
               >
                 +
               </button>

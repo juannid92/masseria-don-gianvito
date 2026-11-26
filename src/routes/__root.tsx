@@ -152,7 +152,7 @@ function RootShell({ children }: { children: ReactNode }) {
               description: SITE_CONFIG.description,
               url: SITE_CONFIG.url,
               image: "https://www.masseriadongianvito.it/images/masseria-luogo.jpg",
-              telephone: ["+393339395750", "+393333870292"],
+              telephone: "+393333870292",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: MASSERIA.indirizzo,

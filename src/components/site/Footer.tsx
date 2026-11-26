@@ -93,6 +93,17 @@ export function Footer() {
                   Prodotti tipici
                 </span>
               </li>
+              <li>
+                <Link
+                  to="/eventi"
+                  className="block font-display text-[19px] leading-tight text-[color:var(--bianco-calce)] transition-colors hover:text-[color:var(--oro-su-scuro)]"
+                >
+                  Eventi e Menù
+                </Link>
+                <span className="text-[13px] text-[color:var(--bianco-calce)]/55">
+                  Ricorrenze &amp; prenotazioni
+                </span>
+              </li>
             </ul>
           </nav>
 
@@ -130,14 +141,6 @@ export function Footer() {
                     className="hover:text-[color:var(--oro-su-scuro)]"
                   >
                     {MASSERIA.telefono}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={MASSERIA.telefono2Href}
-                    className="hover:text-[color:var(--oro-su-scuro)]"
-                  >
-                    {MASSERIA.telefono2}
                   </a>
                 </li>
                 <li>

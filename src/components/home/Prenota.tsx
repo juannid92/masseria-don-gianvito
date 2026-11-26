@@ -297,14 +297,6 @@ export function Prenota() {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href={MASSERIA.telefono2Href}
-                    className="inline-flex min-h-[44px] items-center font-display text-[clamp(1.5rem,3.4vw,2rem)] leading-tight text-[color:var(--bianco-calce)] tabular-nums transition-colors hover:text-[color:var(--bianco-calce)]"
-                  >
-                    {MASSERIA.telefono2}
-                  </a>
-                </li>
-                <li>
                   <button
                     type="button"
                     onClick={() => setFormAperto(!formAperto)}

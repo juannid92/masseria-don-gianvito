@@ -187,8 +187,9 @@
 
 /* Image container — always visible at every breakpoint */
 .market-item-image {
+  position: relative;
   width: 100%;
-  min-height: 180px;
+  aspect-ratio: 4 / 4.2;
   background: var(--market-border);
   overflow: hidden;
 }
@@ -196,9 +197,68 @@
 .market-item-image img {
   width: 100%;
   height: 100%;
-  min-height: 180px;
   object-fit: cover;
+  object-position: center;
   display: block;
+}
+
+.market-image-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(24, 21, 16, 0.58);
+  color: #faf6ec;
+  font-size: 20px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+.market-image-nav:hover {
+  background: rgba(24, 21, 16, 0.82);
+}
+
+.market-image-nav--prev {
+  left: 10px;
+}
+
+.market-image-nav--next {
+  right: 10px;
+}
+
+.market-image-counter {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(24, 21, 16, 0.68);
+  color: #faf6ec;
+  font-family: var(--market-body-font);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+/* Featured multi-variant card spans full width on desktop so all 13 flavors breathe cleanly */
+@media (min-width: 768px) {
+  .market-item--featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(280px, 380px) 1fr;
+  }
+
+  .market-item--featured .market-item-image {
+    aspect-ratio: auto;
+    min-height: 320px;
+  }
 }
 
 /* Card body below image */
@@ -237,6 +297,82 @@
   overflow: hidden;
 }
 
+/* ── Selettore gusti / varianti (es. Bombette) ───────────── */
+.market-variants {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--market-border);
+}
+
+.market-variants-label {
+  font-family: var(--market-body-font);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--market-text-muted);
+  margin: 0 0 8px;
+}
+
+.market-variants-label strong {
+  color: var(--market-text);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.market-variant-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.market-variant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  font-family: var(--market-body-font);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--market-text);
+  background: transparent;
+  border: 1px solid var(--market-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.market-variant-chip:hover {
+  border-color: var(--market-accent);
+  color: var(--market-accent);
+}
+
+.market-variant-chip[data-selected="true"] {
+  background: var(--market-accent);
+  border-color: var(--market-accent);
+  color: var(--market-surface);
+}
+
+.market-variant-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: color-mix(in oklab, var(--market-accent) 18%, transparent);
+  color: var(--market-accent);
+}
+
+.market-variant-chip[data-selected="true"] .market-variant-badge {
+  background: var(--market-surface);
+  color: var(--market-accent);
+}
+
 .market-item-right {
   display: flex;
   align-items: center;
@@ -265,6 +401,15 @@
 .market-item-unit {
   font-family: var(--market-body-font);
   font-size: 12px;
+  color: var(--market-text-muted);
+}
+
+.market-item-price-request {
+  font-family: var(--market-body-font);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--market-text-muted);
 }
 
@@ -446,14 +591,6 @@
     gap: 16px;
   }
 
-  .market-item-image {
-    min-height: 160px;
-  }
-
-  .market-item-image img {
-    min-height: 160px;
-  }
-
   .market-item-main {
     padding: 16px;
   }
@@ -488,14 +625,6 @@
   .market-items {
     grid-template-columns: 1fr;
     gap: 16px;
-  }
-
-  .market-item-image {
-    min-height: 160px;
-  }
-
-  .market-item-image img {
-    min-height: 160px;
   }
 
   .market-item-main {

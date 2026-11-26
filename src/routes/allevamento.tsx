@@ -47,7 +47,7 @@ function AllevamentoPage() {
               latitude: 40.642739,
               longitude: 17.0426,
             },
-            telephone: "+393339395750",
+            telephone: "+393333870292",
           }),
         }}
       />
