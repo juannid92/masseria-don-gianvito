@@ -1,4 +1,4 @@
-# robots.txt — Masseria Don Gianvito
+# robots.txt - Masseria Don Gianvito
 # Updated: 2026-11-27
 # Policy: allow search engines and AI search citability; block AI training crawlers.
 #
@@ -12,7 +12,7 @@
 
 Sitemap: https://www.masseriadongianvito.it/sitemap.xml
 
-# ─── AI Training Crawlers (BLOCKED) ───────────────────────────────────────────
+# === AI Training Crawlers (BLOCKED) ===
 # These crawlers ingest content for model training. Blocked per site policy.
 
 User-agent: GPTBot
@@ -36,7 +36,7 @@ Disallow: /
 User-agent: Applebot-Extended
 Disallow: /
 
-# ─── AI Search Citability Crawlers (ALLOWED) ──────────────────────────────────
+# === AI Search Citability Crawlers (ALLOWED) ===
 # These crawlers index content for real-time search answers and citations.
 # Allowed to improve visibility in AI Overviews, Perplexity, ChatGPT Browse.
 
@@ -52,7 +52,7 @@ Allow: /
 User-agent: ChatGPT-User
 Allow: /
 
-# ─── User-triggered Browser Agents ────────────────────────────────────────────
+# === User-triggered Browser Agents ===
 # These agents browse on behalf of users (ChatGPT browser, Gemini in Chrome).
 # They generally ignore robots.txt but we declare intent explicitly.
 
@@ -62,7 +62,7 @@ Allow: /
 User-agent: Perplexity-User
 Allow: /
 
-# ─── Standard Search Engine Crawlers (ALLOWED) ───────────────────────────────
+# === Standard Search Engine Crawlers (ALLOWED) ===
 
 User-agent: *
 Allow: /
