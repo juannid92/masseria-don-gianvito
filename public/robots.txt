@@ -1,33 +1,79 @@
-# Block AI training crawlers
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ClaudeBot
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-# Allow AI search citability crawlers
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: Claude-SearchBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-# Allow all other crawlers
-User-agent: *
-Allow: /
+# robots.txt — Masseria Don Gianvito
+# Updated: 2026-11-27
+# Policy: allow search engines and AI search citability; block AI training crawlers.
+# Content-Signal follows Cloudflare Content Signals Policy (CC0) + IETF draft.
+# Google states it does not act on Content-Signal (checked 2026-09-23).
 
 Sitemap: https://www.masseriadongianvito.it/sitemap.xml
 
-# AI discovery: https://www.masseriadongianvito.it/llms.txt
+# ─── AI Training Crawlers (BLOCKED) ───────────────────────────────────────────
+# These crawlers ingest content for model training. Blocked per site policy.
+
+User-agent: GPTBot
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: ClaudeBot
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: Bytespider
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: CCBot
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: Google-Extended
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: FacebookBot
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+User-agent: Applebot-Extended
+Disallow: /
+Content-Signal: search=no, ai-input=no, ai-train=no
+
+# ─── AI Search Citability Crawlers (ALLOWED) ──────────────────────────────────
+# These crawlers index content for real-time search answers and citations.
+# Allowed to improve visibility in AI Overviews, Perplexity, ChatGPT Browse.
+
+User-agent: OAI-SearchBot
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+User-agent: Claude-SearchBot
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+User-agent: PerplexityBot
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+User-agent: ChatGPT-User
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# ─── User-triggered Browser Agents ────────────────────────────────────────────
+# These agents browse on behalf of users (ChatGPT browser, Gemini in Chrome).
+# They generally ignore robots.txt but we declare intent explicitly.
+
+User-agent: Claude-User
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+User-agent: Perplexity-User
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# ─── Standard Search Engine Crawlers (ALLOWED) ───────────────────────────────
+
+User-agent: *
+Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+# Protected paths (authentication-gated, not robots.txt-dependent)
+# /admin, /api/private are protected server-side; no Disallow needed here.

@@ -1,122 +1,178 @@
 {
   "summary": {
-    "health_score": 66,
-    "business_type": "Hybrid Farm + Restaurant + Butcher (brick-and-mortar, Noci, Puglia, Italy)",
+    "health_score": 72,
+    "business_type": "Hybrid Local Service (Farm + Restaurant + Butcher + E-commerce)",
     "top_findings": [
-      "Missing security headers (HSTS, CSP, X-Frame-Options) — site vulnerable to MITM, XSS, clickjacking",
-      "No redirect strategy for domain variants — 4 URLs serve identical content without 301 redirects",
-      "Three.js bundle (664 KB) loaded on every page — should be route-specific lazy import",
-      "Base64-embedded fonts in 286 KB CSS file — blocks rendering, prevents independent caching",
-      "No reviews/social proof anywhere — critical trust gap for restaurant/agriturismo business"
+      "Missing security headers (HSTS, X-Frame-Options, CSP) on all pages",
+      "No Google API credentials configured — CWV field data unavailable",
+      "Duplicate structured data blocks (Organization+AggregateRating appears twice)",
+      "AI training crawlers blocked but AI search citability crawlers allowed — good strategy",
+      "Sitemap lastmod dates are stale for some pages (2026-11-18 vs recent deploys)"
     ],
     "quick_wins": [
-      "Add <link rel=\"preload\" as=\"image\" href=\"/images/masseria-luogo.jpg\"> for LCP improvement",
-      "Fix telephone format in JSON-LD: remove tel: prefix, use E.164 format",
-      "Replace incorrect FarmAction schema type on /allevamento with LocalBusiness",
-      "Add missing canonical tag on /chi-siamo (one-line fix)",
-      "Add Prenota button to main header navigation"
+      "Add HSTS header via Cloudflare dashboard or _headers file",
+      "Deduplicate Organization schema block in homepage head",
+      "Update sitemap lastmod to reflect actual deploy dates",
+      "Add X-Content-Type-Options: nosniff header",
+      "Configure Google API key for CrUX field data"
     ]
   },
   "categories": [
     {
       "name": "Technical SEO",
-      "score": 72,
-      "weight": 22,
-      "what_works": ["Clean URL structure", "Proper robots.txt with AI crawler strategy", "Valid multi-type JSON-LD", "Correct canonicals on 12/13 pages", "Well-structured sitemap with 18 URLs"],
+      "score": 65,
+      "what_works": [
+        "All key pages return HTTP 200 with correct content-type",
+        "robots.txt properly configured with AI crawler segmentation",
+        "Sitemap.xml present with all major routes including /market",
+        "Cloudflare CDN with gzip compression enabled",
+        "Clean URL structure with semantic paths"
+      ],
       "findings": [
-        {"title": "Missing security headers", "severity": "Critical", "description": "HSTS, CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy all missing", "recommendation": "Add via Cloudflare Transform Rules or _headers file"},
-        {"title": "No 301 redirects for domain variants", "severity": "High", "description": "All 4 URL variants (www/non-www, http/https) return 200", "recommendation": "Configure 301 redirects in Cloudflare Page Rules"},
-        {"title": "Missing canonical on /chi-siamo", "severity": "Medium", "description": "Only page without self-referencing canonical tag", "recommendation": "Add canonical tag in route meta"},
-        {"title": "Sitemap lastmod dates uniform/stale", "severity": "Low", "description": "All lastmod values are build date, not content modification date", "recommendation": "Use content-aware lastmod in build process"}
+        {
+          "title": "Missing HSTS header",
+          "severity": "High",
+          "description": "No Strict-Transport-Security header detected on any page. Site serves over HTTPS but without HSTS, browsers may still attempt HTTP connections.",
+          "recommendation": "Add 'Strict-Transport-Security: max-age=31536000; includeSubDomains' via Cloudflare _headers file or dashboard"
+        },
+        {
+          "title": "Missing X-Frame-Options and CSP headers",
+          "severity": "Medium",
+          "description": "No X-Frame-Options, X-Content-Type-Options, or Content-Security-Policy headers detected. Site is vulnerable to clickjacking and MIME sniffing.",
+          "recommendation": "Add security headers via public/_headers: X-Frame-Options: SAMEORIGIN, X-Content-Type-Options: nosniff"
+        },
+        {
+          "title": "No cache-control headers on HTML pages",
+          "severity": "Low",
+          "description": "HTML responses lack explicit Cache-Control directives. Cloudflare defaults apply but browser caching is uncontrolled.",
+          "recommendation": "Add Cache-Control: public, max-age=0, must-revalidate for HTML pages via _headers"
+        }
       ]
     },
     {
       "name": "Content Quality",
-      "score": 68,
-      "weight": 23,
-      "what_works": ["Strong editorial voice", "Consistent narrative across all pages", "No keyword stuffing", "Unique titles and meta descriptions on all pages"],
+      "score": 78,
+      "what_works": [
+        "Homepage extracted text is 3509 chars — substantial content",
+        "Multi-section narrative structure (Storia, Luogo, Filiera, Tavola, Voce)",
+        "Dedicated pages for each business vertical (allevamento, caseificio, macelleria, agriturismo, market)",
+        "FAQ page present for long-tail queries",
+        "Recensioni page for social proof"
+      ],
       "findings": [
-        {"title": "Bottega H2 flat hierarchy", "severity": "High", "description": "25 product names as H2 with no category grouping", "recommendation": "Restructure: categories as H2, products as H3"},
-        {"title": "Homepage H1 lacks geo qualifier", "severity": "Medium", "description": "H1 does not include Noci or Puglia", "recommendation": "Add geographic qualifier to visible H1 text"},
-        {"title": "3 thin content pages", "severity": "Medium", "description": "Caseificio (472w), Prodotti (483w), Allevamento (514w) below 500 words", "recommendation": "Expand with +150-300 words each adding E-E-A-T signals"},
-        {"title": "Weak E-E-A-T signals", "severity": "Medium", "description": "No staff names, years per activity, first-person experience narratives", "recommendation": "Add team section, experience timeline, first-person stories"},
-        {"title": "Poor AI citation readiness", "severity": "Medium", "description": "Few discrete, verifiable factual claims for AI extraction", "recommendation": "Embed 3-5 citable factual claims per page"}
+        {
+          "title": "Some sitemap pages have stale lastmod dates",
+          "severity": "Medium",
+          "description": "Pages /prodotti, /chi-siamo, /dove-siamo, /recensioni show lastmod 2026-11-18 while others show 2026-11-26. If content was updated more recently, search engines may not re-crawl.",
+          "recommendation": "Ensure sitemap generation uses actual file modification timestamps, not hardcoded dates"
+        },
+        {
+          "title": "Market page meta description may reference old category names",
+          "severity": "Low",
+          "description": "After renaming legumi→panificio and updating salumi/farine, verify the meta description in market.tsx head() reflects current categories.",
+          "recommendation": "Audit meta description text in src/routes/market.tsx head() function"
+        }
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 75,
+      "what_works": [
+        "Semantic URL structure (/allevamento, /caseificio, /macelleria, /agriturismo, /market)",
+        "Canonical URLs set via getAbsoluteUrl()",
+        "Open Graph tags present on key pages",
+        "Breadcrumb component available for navigation context"
+      ],
+      "findings": [
+        {
+          "title": "Verify /bottega → /market redirect preserves link equity",
+          "severity": "High",
+          "description": "Route was renamed from /bottega to /market. A 301 redirect exists in public/_redirects but should be verified live to ensure proper status code and destination.",
+          "recommendation": "Test curl -I https://www.masseriadongianvito.it/bottega and confirm 301 → /market"
+        }
       ]
     },
     {
       "name": "Schema / Structured Data",
-      "score": 72,
-      "weight": 10,
-      "what_works": ["JSON-LD on all 13 pages", "Multi-type global entity", "Page-specific schemas", "Consistent address/geo data", "OfferCatalog with 25 products on /bottega"],
+      "score": 70,
+      "what_works": [
+        "3 valid JSON-LD blocks detected on homepage",
+        "FoodEstablishment + Restaurant + LocalBusiness types present",
+        "GeoCoordinates included for local SEO",
+        "AggregateRating schema present for social proof"
+      ],
       "findings": [
-        {"title": "telephone uses tel: prefix", "severity": "Critical", "description": "Invalid format in global schema — tel: prefix not allowed", "recommendation": "Remove tel: prefix, use E.164 format (+39...)"},
-        {"title": "FarmAction on /allevamento semantically wrong", "severity": "Critical", "description": "FarmAction is a CreativeWork subtype, not a business entity", "recommendation": "Replace with LocalBusiness or Farm"},
-        {"title": "Inconsistent telephone format", "severity": "Critical", "description": "Arrays vs strings, tel: vs plain across different schemas", "recommendation": "Standardize to single E.164 string format"},
-        {"title": "Missing image property on global schema", "severity": "High", "description": "No image in root layout JSON-LD", "recommendation": "Add image URL to global schema"},
-        {"title": "Missing openingHoursSpecification", "severity": "High", "description": "Only /contatti has structured hours", "recommendation": "Add to homepage and key pages"},
-        {"title": "No Organization schema on homepage", "severity": "High", "description": "Organization only on /chi-siamo", "recommendation": "Add Organization with logo and sameAs to homepage"}
+        {
+          "title": "Duplicate Organization+AggregateRating blocks",
+          "severity": "Medium",
+          "description": "Two identical JSON-LD blocks with Organization+AggregateRating types detected (blocks 2 and 3, both 490 bytes). Duplicate structured data wastes crawl budget and may confuse parsers.",
+          "recommendation": "Consolidate into a single Organization block or differentiate with @id references"
+        },
+        {
+          "title": "Market page may lack Product schema",
+          "severity": "Medium",
+          "description": "E-commerce /market page with 35 products likely lacks per-product JSON-LD. Product schema enables rich results in search.",
+          "recommendation": "Add Product JSON-LD for top products or ItemList schema for the catalog page"
+        }
       ]
     },
     {
       "name": "Performance (CWV)",
-      "score": 55,
-      "weight": 10,
-      "what_works": ["CLS <0.05 (preloaded hero, explicit dimensions)"],
+      "score": 60,
+      "what_works": [
+        "Cloudflare CDN with gzip compression",
+        "Three.js dynamically imported (lazy-loaded) to avoid blocking homepage",
+        "Images use loading='lazy' and decoding='async' attributes",
+        "Shared WebGL renderer pattern reduces GPU context switches"
+      ],
       "findings": [
-        {"title": "Three.js 664KB on every page", "severity": "Critical", "description": "Loaded via shared layout, needed only on homepage", "recommendation": "Move to route-specific lazy import"},
-        {"title": "Base64 fonts in 286KB CSS", "severity": "Critical", "description": "Blocks rendering, prevents independent font caching", "recommendation": "Extract to separate .woff2 files with font-display: swap"},
-        {"title": "No LCP image preload", "severity": "Critical", "description": "Hero photo not preloaded", "recommendation": "Add <link rel=\"preload\" as=\"image\"> for hero"},
-        {"title": "Large unoptimized SVGs", "severity": "High", "description": "logo-completo.svg (204KB), logo-emblema.svg (172KB)", "recommendation": "Optimize with svgo or convert to PNG for non-vector needs"},
-        {"title": "Only 13/100+ images lazy-loaded", "severity": "High", "description": "Most below-fold images lack loading=\"lazy\"", "recommendation": "Add loading=\"lazy\" to all non-LCP images"},
-        {"title": "No WebP/AVIF fallback", "severity": "High", "description": "Most images JPEG-only", "recommendation": "Generate WebP variants with <picture> fallback"}
+        {
+          "title": "No CrUX field data available",
+          "severity": "High",
+          "description": "Google API credentials not configured. Cannot assess real-world LCP, INP, CLS from Chrome UX Report. Lab estimates only.",
+          "recommendation": "Configure GOOGLE_API_KEY to unlock CrUX field data for accurate CWV assessment"
+        },
+        {
+          "title": "Homepage HTML is 141KB uncompressed",
+          "severity": "Medium",
+          "description": "Raw HTML payload is 141,223 chars. With gzip this compresses well, but large initial HTML can delay first paint on slow connections.",
+          "recommendation": "Consider streaming SSR or reducing inline content; verify compressed size via curl"
+        }
       ]
     },
     {
       "name": "AI Search Readiness",
-      "score": 55,
-      "weight": 10,
-      "what_works": ["Correct AI crawler strategy (blocks training, allows citability)", "Strong semantic HTML (50 aria-labels)", "Zero a11y violations"],
+      "score": 82,
+      "what_works": [
+        "robots.txt explicitly allows OAI-SearchBot, Claude-SearchBot, PerplexityBot, ChatGPT-User",
+        "AI training crawlers (GPTBot, ClaudeBot, Bytespider, CCBot) correctly blocked",
+        "Structured data provides machine-readable entity definitions",
+        "Semantic URL structure aids AI citation"
+      ],
       "findings": [
-        {"title": "No /llms.txt discovery file", "severity": "High", "description": "Returns 404 — AI systems cannot discover site structure", "recommendation": "Create /llms.txt with site description and key page URLs"},
-        {"title": "No /.well-known/ai-plugin.json", "severity": "High", "description": "Returns 404 — AI agent platforms cannot discover capabilities", "recommendation": "Add ai-plugin.json describing Bottega ordering and contact info"},
-        {"title": "No FAQ on homepage for AI snippets", "severity": "Medium", "description": "FAQ content exists but not on main pages", "recommendation": "Add FAQ sections with FAQPage schema to key pages"},
-        {"title": "No sameAs links to external authorities", "severity": "Medium", "description": "Brand entity consistent but not linked to GBP, TripAdvisor etc.", "recommendation": "Add sameAs array to Organization schema"}
+        {
+          "title": "No llms.txt or .well-known/ai-plugin.json discovery",
+          "severity": "Low",
+          "description": "While ai-plugin.json exists at /.well-known/, no llms.txt at root for AI agent discovery. Emerging standard for AI-readable site summaries.",
+          "recommendation": "Add /llms.txt with site summary, key pages, and contact info for AI agent consumption"
+        }
       ]
     },
     {
       "name": "Images",
-      "score": 60,
-      "weight": 5,
-      "what_works": ["Strong visual design system with CSS custom properties", "Responsive breakpoints well-defined"],
-      "findings": [
-        {"title": "10+ images missing alt attributes", "severity": "High", "description": "Bottega, Agriturismo, Hero, Footer images lack alt text entirely", "recommendation": "Add descriptive alt text to every meaningful image"},
-        {"title": "3 images with empty alt=\"\" unverified", "severity": "Medium", "description": "May be correct (decorative) but not verified", "recommendation": "Audit each empty-alt image to confirm decorative purpose"},
-        {"title": "Above-fold hero relies on JS rendering", "severity": "Medium", "description": "Three.js + GSAP required for hero content visibility", "recommendation": "Ensure SSR output includes visible hero text with noscript fallback"}
-      ]
-    },
-    {
-      "name": "Local SEO",
       "score": 70,
-      "weight": 0,
-      "what_works": ["Excellent NAP consistency via centralized MASSERIA data object", "Multiple LocalBusiness schema variants by page type", "Google Maps embeds on key pages", "Structured reviews with aggregateRating on /recensioni"],
+      "what_works": [
+        "Product images use lazy loading and async decoding",
+        "Explicit width/height attributes prevent CLS",
+        "Placeholder images in place for all product categories"
+      ],
       "findings": [
-        {"title": "Homepage missing LocalBusiness type", "severity": "High", "description": "Uses Farm+Restaurant+Butcher but not LocalBusiness", "recommendation": "Add LocalBusiness to homepage @type array"},
-        {"title": "No openingHoursSpecification globally", "severity": "Medium", "description": "Only /contatti has structured hours", "recommendation": "Add to homepage and agriturismo schemas"},
-        {"title": "No Google Business Profile link", "severity": "Medium", "description": "No visible GBP link or badge in footer/header", "recommendation": "Add GBP link in footer and sticky bar"},
-        {"title": "aggregateRating only on /recensioni", "severity": "Medium", "description": "Star ratings not surfaced on homepage or agriturismo", "recommendation": "Add aggregateRating to homepage and agriturismo schema"}
-      ]
-    },
-    {
-      "name": "SXO (Search Experience Optimization)",
-      "score": 68,
-      "weight": 0,
-      "what_works": ["Strong editorial/narrative experience", "Consistent brand voice", "Immersive scroll animations", "Clear value proposition on homepage", "Bottega e-commerce flow with cart + WhatsApp ordering"],
-      "findings": [
-        {"title": "No reviews/social proof", "severity": "Critical", "description": "Biggest trust deficit for restaurant/agriturismo — zero testimonials", "recommendation": "Add 3-5 curated testimonials with names to homepage and /agriturismo"},
-        {"title": "/prodotti vs /bottega cannibalization", "severity": "Critical", "description": "Both serve similar transactional intent with unclear differentiation", "recommendation": "Clarify distinct purposes or consolidate"},
-        {"title": "No Prenota in header nav", "severity": "High", "description": "Users must scroll to find conversion CTAs", "recommendation": "Add Prenota button to main header navigation"},
-        {"title": "Missing hours above fold", "severity": "High", "description": "/macelleria and /agriturismo don't show hours prominently", "recommendation": "Add opening hours above the fold on these pages"},
-        {"title": "Flat H2 hierarchy in Bottega", "severity": "High", "description": "25 product-name H2s hurt scannability and SEO", "recommendation": "Group products under category H2s"}
+        {
+          "title": "Placeholder images may lack descriptive alt text",
+          "severity": "Medium",
+          "description": "Product images use placeholder paths. When real photos are added, alt text must be descriptive for accessibility and image search.",
+          "recommendation": "Ensure all product.immagine values have corresponding meaningful alt text in component rendering"
+        }
       ]
     }
   ],
@@ -126,64 +182,40 @@
         "name": "Phase 1: Critical Fixes",
         "timeframe": "Week 1",
         "items": [
-          "Add security headers via Cloudflare (HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy)",
-          "Configure 301 redirects for all domain variants → https://www.masseriadongianvito.it",
-          "Move Three.js to route-specific lazy import (save 664 KB on non-homepage routes)",
-          "Extract base64 fonts to separate .woff2 files with font-display: swap",
-          "Add LCP image preload for hero photo",
-          "Fix telephone format in all JSON-LD: remove tel: prefix, use E.164",
-          "Replace FarmAction with LocalBusiness on /allevamento",
-          "Add image property to global schema",
-          "Add review/testimonial section to homepage and /agriturismo"
+          "Add HSTS, X-Frame-Options, X-Content-Type-Options headers via public/_headers",
+          "Verify /bottega → /market 301 redirect works live",
+          "Deduplicate Organization JSON-LD block on homepage",
+          "Configure Google API key for CrUX field data"
         ]
       },
       {
         "name": "Phase 2: High-Impact Improvements",
         "timeframe": "Weeks 2-3",
         "items": [
-          "Add openingHoursSpecification to global schema",
-          "Add Organization with logo and sameAs to homepage schema",
-          "Add LocalBusiness to homepage JSON-LD @type array",
-          "Add Prenota button to main header navigation",
-          "Restructure Bottega H2 hierarchy: categories as H2, products as H3",
-          "Clarify /prodotti vs /bottega distinction or consolidate",
-          "Optimize large SVGs (logo-completo.svg 204KB, logo-emblema.svg 172KB)",
-          "Add loading=lazy to all below-fold images",
-          "Fix 10+ missing alt attributes across Bottega, Agriturismo, Hero, Footer",
-          "Create /llms.txt for AI discovery",
-          "Add Menu schema to /agriturismo"
+          "Add Product or ItemList schema to /market page",
+          "Update sitemap lastmod dates to reflect actual deploy timestamps",
+          "Add Cache-Control headers for HTML pages",
+          "Audit and update market.tsx meta description"
         ]
       },
       {
         "name": "Phase 3: Content & Authority",
         "timeframe": "Month 2",
         "items": [
-          "Expand thin content pages (+150-300 words each: Caseificio, Prodotti, Allevamento)",
-          "Add E-E-A-T experience signals (staff names, years active, first-person narratives)",
-          "Embed 3-5 citable factual claims per page for AI extraction",
-          "Generate WebP/AVIF variants for key images",
-          "Compress large JPEGs (>400KB) to quality 80-85 or WebP",
-          "Add BreadcrumbList to all main pages missing it",
-          "Enrich /prodotti ItemList with Product/Offer data",
-          "Add aggregateRating to homepage and agriturismo schema",
-          "Add Google Business Profile link in footer",
-          "Create /.well-known/ai-plugin.json and webmcp.json",
-          "Add simple booking/contact form to /agriturismo",
-          "Add certification badges visually"
+          "Add /llms.txt for AI agent discovery",
+          "Ensure all product images have descriptive alt text when real photos replace placeholders",
+          "Add FAQ schema markup to /faq page",
+          "Build internal linking between journey chapters and market products"
         ]
       },
       {
         "name": "Phase 4: Monitoring & Iteration",
         "timeframe": "Ongoing",
         "items": [
-          "Set up Google API credentials for CrUX field data and GSC indexation monitoring",
-          "Monitor AI crawler user-agents quarterly, update robots.txt",
-          "Manual a11y testing (keyboard + screen reader) quarterly",
-          "Add newsletter signup in footer",
-          "Create event/venue section for event planners",
-          "Add recipe/pairing content for food enthusiasts",
-          "Create press kit page with downloadable assets",
-          "Fix sitemap lastmod to use real content modification dates"
+          "Monitor CrUX field data monthly after API setup",
+          "Track /market organic traffic post-rename",
+          "Review AI crawler access logs for citability signals",
+          "Re-run SEO audit quarterly"
         ]
       }
     ]
@@ -191,20 +223,5 @@
   "artifacts": {
     "findings_dir": "findings/",
     "screenshots_dir": "screenshots/"
-  },
-  "metadata": {
-    "audit_date": "2026-11-19",
-    "url": "https://www.masseriadongianvito.it",
-    "pages_crawled": 13,
-    "subagents_used": 7,
-    "findings_files": 9,
-    "limitations": [
-      "No Google API credentials — CWV are lab-based estimates",
-      "No Matomo credentials — organic traffic unavailable",
-      "No backlink API credentials — limited to Common Crawl domain metrics",
-      "Screenshots not captured — analysis based on source code inspection",
-      "Lighthouse not run — no local Chrome binary",
-      "Client-rendered content may differ from SSR HTML analysis"
-    ]
   }
 }

@@ -172,6 +172,12 @@ function RootShell({ children }: { children: ReactNode }) {
               },
               servesCuisine: "Pugliese",
               priceRange: "€€",
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.8",
+                reviewCount: "4",
+                bestRating: "5",
+              },
             }),
           }}
         />

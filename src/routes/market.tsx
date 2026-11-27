@@ -227,7 +227,8 @@ function MarketPage() {
         </h1>
         <p className="market-hero-desc">
           Carne dei nostri allevamenti, formaggi del caseificio interno, salumi stagionati, farine
-          macinate a pietra e legumi della Murgia. Componi il tuo ordine e ricevilo a casa.
+          Senatore Cappelli, pasta artigianale e panificio fresco. Componi il tuo ordine e ricevilo
+          a casa.
         </p>
       </section>
 
@@ -338,9 +339,7 @@ function MarketPage() {
           />
           <div className="relative w-full max-w-md rounded-t-xl bg-[color:var(--market-surface)] p-8 shadow-2xl sm:rounded-xl">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="market-drawer-title">
-                Il tuo ordine
-              </h3>
+              <h3 className="market-drawer-title">Il tuo ordine</h3>
               <button
                 onClick={() => setShowCart(false)}
                 className="text-2xl leading-none text-[color:var(--market-text-muted)]/40 hover:text-[color:var(--market-text)]"
@@ -357,9 +356,7 @@ function MarketPage() {
                 return (
                   <li key={item.key} className="flex items-center justify-between text-sm">
                     <div>
-                      <span className="market-drawer-item-name">
-                        {resolved.label}
-                      </span>
+                      <span className="market-drawer-item-name">{resolved.label}</span>
                       <span className="ml-2 text-[color:var(--market-text-muted)]/40">
                         × {item.qty}
                       </span>
@@ -375,12 +372,8 @@ function MarketPage() {
             <div className="my-6 h-px bg-[color:var(--market-accent)]/10" />
 
             <div className="mb-8 flex items-center justify-between">
-              <span className="market-drawer-total-label">
-                Totale stimato
-              </span>
-              <span className="market-drawer-total-value">
-                €{cartTotal.toFixed(2)}
-              </span>
+              <span className="market-drawer-total-label">Totale stimato</span>
+              <span className="market-drawer-total-value">€{cartTotal.toFixed(2)}</span>
             </div>
 
             <a
@@ -436,15 +429,20 @@ function MarketItem({
 
   const activeImage = activeVariant?.immagine ?? product.immagine;
   const activeDesc = activeVariant?.descrizione ?? product.descrizione;
-  const activePrice =
-    activeVariant?.prezzo !== undefined ? activeVariant.prezzo : product.prezzo;
+  const activePrice = activeVariant?.prezzo !== undefined ? activeVariant.prezzo : product.prezzo;
   const activeUnit = activeVariant?.unita ?? product.unita ?? "/kg";
   const variantLabel = product.variantLabel ?? "Gusto";
   const qty = getQty(activeVariant?.id);
   const fullLabel = activeVariant ? `${product.nome} (${activeVariant.nome})` : product.nome;
 
   const activeIndex = useMemo(
-    () => (varianti ? Math.max(0, varianti.findIndex((v) => v.id === activeVariant?.id)) : 0),
+    () =>
+      varianti
+        ? Math.max(
+            0,
+            varianti.findIndex((v) => v.id === activeVariant?.id),
+          )
+        : 0,
     [varianti, activeVariant],
   );
 
@@ -455,7 +453,11 @@ function MarketItem({
   };
 
   return (
-    <article className={varianti && varianti.length > 0 ? "market-item market-item--featured" : "market-item"}>
+    <article
+      className={
+        varianti && varianti.length > 0 ? "market-item market-item--featured" : "market-item"
+      }
+    >
       <div className="market-item-image">
         <img
           src={activeImage}
@@ -495,7 +497,11 @@ function MarketItem({
           <p className="market-item-desc">{activeDesc}</p>
 
           {varianti && varianti.length > 0 && (
-            <div className="market-variants" role="group" aria-label={`${variantLabel} di ${product.nome}`}>
+            <div
+              className="market-variants"
+              role="group"
+              aria-label={`${variantLabel} di ${product.nome}`}
+            >
               <p className="market-variants-label">
                 {variantLabel}: <strong>{activeVariant?.nome}</strong>
               </p>
