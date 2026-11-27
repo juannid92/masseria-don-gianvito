@@ -144,6 +144,49 @@ function EventiPage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            APPUNTAMENTI.filter((a) => a.id !== "domenica").map((a) => ({
+              "@context": "https://schema.org",
+              "@type": "Event",
+              name: `${a.nome} — ${a.tipo}`,
+              description: `Pranzo di ${a.nome} alla Masseria Don Gianvito di Noci. Menù completo a €${a.prezzo} a persona. Prenotazione obbligatoria.`,
+              startDate:
+                a.id === "natale"
+                  ? "2026-12-25T13:00:00+01:00"
+                  : a.id === "santo-stefano"
+                    ? "2026-12-26T13:00:00+01:00"
+                    : "2027-01-01T13:00:00+01:00",
+              eventStatus: "https://schema.org/EventScheduled",
+              eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+              location: {
+                "@type": "Place",
+                name: MASSERIA.nome,
+                address: {
+                  "@type": "PostalAddress",
+                  streetAddress: MASSERIA.indirizzo,
+                  addressCountry: "IT",
+                },
+              },
+              organizer: {
+                "@type": "Restaurant",
+                name: MASSERIA.nome,
+                telephone: "+393333870292",
+                url: getAbsoluteUrl("/"),
+              },
+              offers: {
+                "@type": "Offer",
+                price: String(a.prezzo),
+                priceCurrency: "EUR",
+                availability: "https://schema.org/InStock",
+                url: getAbsoluteUrl("/eventi"),
+              },
+            })),
+          ),
+        }}
+      />
       <header className="ev-intro">
         <p className="ev-kicker">Masseria Don Gianvito · Noci</p>
         <h1 className="ev-title">

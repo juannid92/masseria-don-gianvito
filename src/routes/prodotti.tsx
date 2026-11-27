@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GalleriaProdotti } from "@/components/galleria/GalleriaProdotti";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 import { getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
 
@@ -58,6 +59,7 @@ function ProdottiPage() {
           }),
         }}
       />
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Prodotti" }]} />
       {/* Hero della pagina */}
       <section
         data-tone="dark"
