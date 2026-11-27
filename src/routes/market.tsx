@@ -19,7 +19,7 @@ export const Route = createFileRoute("/market")({
       {
         name: "description",
         content:
-          "Carne, formaggi, salumi, farine e panificio della Masseria Don Gianvito. Ordina per la consegna a domicilio o chiedi informazioni su ogni prodotto.",
+          "Prodotti tipici della Masseria Don Gianvito: carne, formaggi, salumi, farine Senatore Cappelli, pasta artigianale e panificio. Ordina su WhatsApp con consegna a domicilio.",
       },
       { property: "og:title", content: "Market — Prodotti Tipici · Masseria Don Gianvito" },
       {
