@@ -1,15 +1,19 @@
 # Strategia SEO — Masseria Don Gianvito
 
+> Ultimo aggiornamento: 2026-11-27
+> Health Score audit: 72/100 (claude-seo 2.5.0)
+
 ## Business Profile
 
-- **Tipo**: Local service business (agriturismo + azienda agricola a filiera propria)
+- **Tipo**: Hybrid Local Service (agriturismo + caseificio + macelleria + market online)
 - **URL**: https://www.masseriadongianvito.it
 - **Location**: SP237 ex SS377 per Mottola km 6,5, Zona C 76, 70015 Noci (BA)
 - **Coordinate**: 40.642739, 17.042600
-- **Servizi**: Allevamento, Caseificio, Macelleria, Agriturismo
+- **Servizi**: Allevamento, Caseificio, Macelleria, Agriturismo, Market con consegna a domicilio
 - **Target**: Famiglie, coppie, turisti enogastronomici in Puglia/Murgia barese
-- **Conversione primaria**: Prenotazione tavolo (WhatsApp / telefono)
+- **Conversione primaria**: Prenotazione tavolo (WhatsApp / telefono) + Ordini Market
 - **Orari**: Chiuso lun-mar; cena mer-sab; pranzo dom/festivi
+- **Numero unico**: +39 333 387 0292 (chiamate + WhatsApp)
 
 ## Obiettivi SEO
 
@@ -20,76 +24,106 @@
 | P2 | Conversioni prenotazione da organico | 50+ prenotazioni/mese |
 | P3 | Citazioni AI (ChatGPT, Perplexity) per agriturismo Murgia | Presenza in top 5 risposte |
 
-## Architettura Contenuti Attuale
+## Architettura Contenuti (Stato Novembre 2026)
 
-| Route | Tipo | Stato SEO |
-|-------|------|-----------|
-| `/` | Homepage | ✅ Core page |
-| `/allevamento` | Servizio/Filiera | ✅ Core page |
-| `/caseificio` | Servizio/Filiera | ✅ Core page |
-| `/macelleria` | Servizio/Filiera | ✅ Core page |
-| `/agriturismo` | Servizio/Filiera | ✅ Core page |
-| `/prodotti` | Catalogo prodotti | ⚠️ Needs optimization |
-| `/braceria` | Sotto-servizio | ⚠️ Duplicate risk vs macelleria |
-| `/legali/privacy` | Legal | ✅ OK |
-| `/legali/cookie` | Legal | ✅ OK |
+| Route | Tipo | Stato SEO | Note |
+|-------|------|-----------|------|
+| `/` | Homepage | ✅ Completa | JSON-LD LocalBusiness nel root layout |
+| `/allevamento` | Filiera | ✅ Completa | Foto reali, schema BreadcrumbList |
+| `/caseificio` | Filiera | ✅ Completa | Hero foto caciocavalli, schema BreadcrumbList |
+| `/macelleria` | Filiera | ✅ Completa | 5 stazioni con foto reali |
+| `/agriturismo` | Servizio | ✅ Completa | Schema Restaurant, menu strutturato |
+| `/market` | E-commerce | ✅ Completa | Store + OfferCatalog schema, carrello WhatsApp |
+| `/eventi` | Eventi/Menu | ✅ Completa | Menu schema, locandine interattive |
+| `/prodotti` | Catalogo | ✅ Completa | Panoramica produzioni |
+| `/chi-siamo` | About/E-E-A-T | ✅ Completa | Storia famiglia, CCIAA dal 2002 |
+| `/dove-siamo` | Location | ✅ Completa | Mappa, indicazioni stradali |
+| `/contatti` | Contatti | ✅ Completa | Form, orari, tutti i canali |
+| `/recensioni` | Social proof | ✅ Completa | Testimonianze clienti |
+| `/faq` | FAQ | ✅ Completa | Domande frequenti strutturate |
+| `/legali/privacy` | Legal | ✅ Completa | GDPR compliant |
+| `/legali/cookie` | Legal | ✅ Completa | Cookie policy |
 
-## Gap Analysis
+### Redirect Attivi
+- `/bottega` → `/market` (301 verificato live)
+- `/braceria` → `/macelleria` (301)
+- `/appuntamenti` → `/eventi` (301)
 
-### Pagine Mancanti (High Priority)
-1. **`/chi-siamo`** — Storia della famiglia, E-E-A-T, team
-2. **`/dove-siamo`** — Location page con mappa, indicazioni stradali, landmarks
-3. **`/contatti`** — Contact page dedicata con form, orari, tutti i canali
-4. **`/recensioni`** — Testimonianze clienti, social proof
-5. **`/faq`** — Domande frequenti (prenotazioni, allergeni, animali, parcheggio)
-6. **`/blog`** — Content hub per long-tail keywords
+## Schema Markup Implementato
 
-### Contenuti Blog Prioritari
-- Stagionalità dei prodotti della Murgia
-- Ricette tradizionali pugliesi con ingredienti della masseria
-- Guida agli eventi enogastronomici in zona Noci/Alberobello
-- Come riconoscere un vero agriturismo a filiera propria
-- Differenza tra caseificio artigianale e industriale
-
-## Schema Markup Plan
-
-| Pagina | Schema Type | Proprietà Chiave |
-|--------|-------------|-----------------|
-| Homepage | `LocalBusiness` + `Organization` | name, address, geo, telephone, openingHours, priceRange, areaServed |
-| /agriturismo | `Restaurant` + `LocalBusiness` | servesCuisine, acceptsReservations, menu |
-| /caseificio | `LocalBusiness` + `Product` (per formaggi) | description, brand, category |
-| /macelleria | `LocalBusiness` + `ButcherShop` | description, areaServed |
-| /allevamento | `LocalBusiness` + `FarmAction` | description, location |
-| /prodotti | `ItemList` + `Product[]` | name, description, image, category |
-| /dove-siamo | `ContactPage` + `LocalBusiness` | geo, hasMap, address |
-| /blog/* | `Article` + `BreadcrumbList` | author, datePublished, headline |
-| /faq | `FAQPage` | mainEntity[] |
+| Pagina | Schema Type | Stato |
+|--------|-------------|-------|
+| Root Layout | `LocalBusiness` + `AggregateRating` | ✅ Implementato |
+| /agriturismo | `Restaurant` + `Menu`/`MenuSection` | ✅ Implementato |
+| /market | `Store` + `OfferCatalog` + `Product[]` | ✅ Implementato |
+| /eventi | `Menu` + `MenuSection` | ✅ Implementato |
+| /faq | `FAQPage` | ⏳ Da implementare |
+| /dove-siamo | `ContactPage` | ⏳ Da implementare |
+| Tutte le journey | `BreadcrumbList` | ✅ Implementato |
 
 ## GEO / AI Visibility Strategy
 
-1. **Presenza su liste curate**: Gambero Rosso, Slow Food, TripAdvisor "Best of", guide locali Puglia
-2. **NAP consistency**: Verificare coerenza nome/indirizzo/telefono su Google, Facebook, Instagram, Apple Maps, Yelp
-3. **Contenuto citabile**: Descrizioni servizi chiare e quotabili, prezzi indicativi, orari precisi
-4. **Foto originali**: Foto reali di piatti, animali, caseificio, team (già presenti nel sito)
-5. **FAQ strutturata**: Risposte dirette alle domande più comuni sugli agriturismi in Puglia
-6. **LocalBusiness schema completo**: geo, openingHours, priceRange, areaServed, servesCuisine
+### Completato
+- ✅ `robots.txt` con segmentazione AI crawler (training bloccati, search citability permessi)
+- ✅ `llms.txt` con informazioni chiave, orari, pagine principali
+- ✅ `/.well-known/ai-plugin.json` per discovery agenti AI
+- ✅ Schema markup completo su homepage e pagine core
+- ✅ NAP consistency verificata (numero unico +39 333 387 0292)
+- ✅ Foto originali di alta qualità su tutte le sezioni
+
+### In Progress
+- ⏳ Presenza su liste curate (Gambero Rosso, Slow Food, guide locali)
+- ⏳ Monitoraggio citazioni AI (ChatGPT, Perplexity)
+- ⏳ Review volume e quality building
 
 ## Technical Foundation
 
-- **Hosting**: Cloudflare Pages (edge rendering, global CDN) ✅
-- **SSR**: TanStack Start con server-side rendering ✅
-- **Mobile-first**: Design responsive con breakpoint 899px ✅
-- **Performance target**: LCP < 2.5s, CLS < 0.1, INP < 200ms
-- **Image optimization**: Formato JPEG, lazy loading, dimensioni esplicite ✅
-- **robots.txt**: Da creare/verificare
-- **sitemap.xml**: Da generare (vedi SITE-STRUCTURE.md)
+| Aspetto | Stato | Note |
+|---------|-------|------|
+| Hosting | ✅ Cloudflare Pages | Edge rendering, global CDN |
+| SSR | ✅ TanStack Start | Server-side rendering |
+| Mobile-first | ✅ Responsive | Breakpoint 899px |
+| Security Headers | ✅ HSTS + CSP + X-Frame-Options | In `public/_headers` |
+| Sitemap XML | ✅ 15 URL canonici | lastmod aggiornati al 2026-11-27 |
+| robots.txt | ✅ RFC 9309 compliant | ASCII puro, no direttive non standard |
+| Image optimization | ✅ WebP + lazy loading | Dimensioni esplicite width/height |
+| Core Web Vitals | ⚠️ Da misurare con CrUX | API key Google necessaria |
+
+## Gap Analysis Aggiornata
+
+### Risolto (Novembre 2026)
+- ✅ Pagine mancanti create: chi-siamo, dove-siamo, contatti, recensioni, faq
+- ✅ Schema markup implementato su homepage e pagine core
+- ✅ Sitemap XML generata e mantenuta
+- ✅ robots.txt configurato correttamente
+- ✅ Numero unico consolidato (+39 333 387 0292)
+- ✅ Redirect /bottega → /market verificato
+- ✅ JSON-LD duplicato rimosso dalla homepage
+- ✅ Content-Signal rimosso (non RFC 9309)
+- ✅ llms.txt e ai-plugin.json attivi
+
+### Ancora Aperto
+- ⏳ Blog/content hub non ancora creato
+- ⏳ FAQ schema markup da implementare
+- ⏳ Google API key per CrUX field data
+- ⏳ Outreach per inclusioni su guide (Gambero Rosso, Slow Food)
+- ⏳ Review widget integration (Google/TripAdvisor)
+- ⏳ Certificazioni visibili nel sito
 
 ## Risk Assessment
 
 | Rischio | Probabilità | Impatto | Mitigazione |
 |---------|-------------|---------|-------------|
-| Cannibalizzazione /braceria vs /macelleria | Alta | Medio | Consolidare o differenziare chiaramente |
-| Thin content su /prodotti | Media | Alto | Aggiungere descrizioni uniche per prodotto |
-| Orari non aggiornati | Media | Alto | Mantenere ORARI in masseria.ts come single source |
-| Foto pesanti senza ottimizzazione | Bassa | Medio | Verificare compressione e formati moderni |
-| Mancanza di recensioni strutturate | Alta | Alto | Implementare schema AggregateRating quando disponibile |
+| Orari non aggiornati | Media | Alto | ORARI in masseria.ts come single source of truth |
+| Foto pesanti senza ottimizzazione | Bassa | Medio | WebP + lazy loading già attivo |
+| Recensioni negative non gestite | Media | Alto | Monitoraggio settimanale GSC + risposta tempestiva |
+| Stagionalità del business | Alta | Medio | Eventi stagionali (/eventi) + Market sempre attivo |
+| OTA dominano SERP transazionali | Alta | Alto | Differenziazione con filiera propria + contenuti unici |
+
+## Prossimi Step Prioritari
+
+1. **Implementare FAQ schema** su `/faq` (20 min)
+2. **Configurare Google API key** per dati CrUX reali (15 min)
+3. **Creare primo contenuto blog** su keyword long-tail (2h)
+4. **Outreach guide locali** per inclusioni "best of" (ongoing)
+5. **Monitorare AI citations** mensilmente (ChatGPT, Perplexity)

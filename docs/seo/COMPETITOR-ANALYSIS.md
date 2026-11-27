@@ -1,6 +1,7 @@
 # Analisi Competitor — Masseria Don Gianvito
 
-## Dominio: https://www.masseriadongianvito.it
+> Ultimo aggiornamento: 2026-11-27
+> Dominio: https://www.masseriadongianvito.it
 
 ## Competitor Diretti (Agriturismi Murgia / Noci / Alberobello)
 
@@ -14,7 +15,7 @@
 
 ## Keyword Gap Analysis
 
-### Keywords dove i competitor sono forti ma MDG può competere
+### Keywords dove MDG può competere
 | Keyword | Volume Stimato | Difficoltà | Opportunità |
 |---------|---------------|------------|-------------|
 | agriturismo noci bari | 880 | Media | ✅ MDG è a Noci, vantaggio geografico |
@@ -34,55 +35,69 @@
 - "come riconoscere un vero agriturismo a filiera corta"
 - "ricette orecchiette cime di rapa originali"
 
-## Analisi Tecnica Competitor
+## Confronto Tecnico Aggiornato (Novembre 2026)
 
 | Aspetto | MDG (attuale) | Best Practice Competitor | Gap |
 |---------|--------------|------------------------|-----|
-| Schema LocalBusiness | ❌ Assente | ✅ Presente su 3/5 | HIGH |
-| Sitemap XML | ❌ Assente | ✅ Presente su 5/5 | HIGH |
-| robots.txt | ⚠️ Da verificare | ✅ Presente su 5/5 | MEDIUM |
-| Core Web Vitals | ⚠️ Da misurare | LCP < 2.5s su 2/5 | MEDIUM |
-| Blog / Content Hub | ❌ Assente | ✅ Attivo su 3/5 | HIGH |
-| Recensioni strutturate | ❌ Assente | ✅ AggregateRating su 2/5 | MEDIUM |
-| NAP consistency | ⚠️ Da verificare | ✅ Coerente su 4/5 | MEDIUM |
-| Presenza AI (ChatGPT/Perplexity) | ❌ Nessuna | ⚠️ Emergente | OPPORTUNITY |
+| Schema LocalBusiness | ✅ Implementato | ✅ Presente su 3/5 | CHIUSO |
+| Sitemap XML | ✅ 15 URL canonici | ✅ Presente su 5/5 | CHIUSO |
+| robots.txt | ✅ RFC 9309 compliant | ✅ Presente su 5/5 | CHIUSO |
+| Core Web Vitals | ⚠️ Da misurare con CrUX | LCP < 2.5s su 2/5 | DA MISURARE |
+| Blog / Content Hub | ❌ Assente | ✅ Attivo su 3/5 | APERTO |
+| Recensioni strutturate | ✅ AggregateRating nel root | ✅ AggregateRating su 2/5 | CHIUSO |
+| NAP consistency | ✅ Numero unico verificato | ✅ Coerente su 4/5 | CHIUSO |
+| Presenza AI (llms.txt) | ✅ Attiva | ⚠️ Emergente | VANTAGGIO MDG |
+| Security Headers | ✅ HSTS + CSP + X-Frame | ⚠️ Parziale su competitor | VANTAGGIO MDG |
 
-## E-E-A-T Signals Gap
+## E-E-A-T Signals — Stato Attuale
 
-| Segnale | MDG | Competitor Leader | Azione |
-|---------|-----|-------------------|--------|
-| Pagina Chi Siamo con storia famiglia | ❌ | ✅ Foto + bio fondatori | Creare /chi-siamo |
-| Certificazioni / riconoscimenti | ❌ Parziale | ✅ Logo certificazioni visibili | Aggiungere sezione certificazioni |
-| Team / volti reali | ❌ | ✅ Foto staff in divisa | Foto team nella pagina about |
-| Anni di attività evidenziati | ⚠️ Nel testo | ✅ Badge "Dal 2002" visibile | Evidenziare cciaaDal in hero |
-| Recensioni clienti verificate | ❌ | ✅ Widget TripAdvisor/Google | Integrare recensioni |
+| Segnale | MDG (Nov 2026) | Competitor Leader | Azione |
+|---------|----------------|-------------------|--------|
+| Pagina Chi Siamo con storia famiglia | ✅ Live | ✅ Foto + bio fondatori | Completato |
+| Certificazioni / riconoscimenti | ⏳ Parziale | ✅ Logo certificazioni visibili | Aggiungere sezione |
+| Team / volti reali | ⏳ Da aggiungere | ✅ Foto staff in divisa | Foto team nella pagina about |
+| Anni di attività evidenziati | ✅ CCIAA dal 2002 | ✅ Badge "Dal 2002" visibile | Già presente |
+| Recensioni clienti verificate | ✅ Pagina /recensioni | ✅ Widget TripAdvisor/Google | Integrare widget esterno |
 | Presenza su guide (Gambero Rosso, Slow Food) | ❌ | ✅ Loghi in footer | Outreach per inclusioni |
 
-## SWOT Summary
+## SWOT Summary Aggiornato
 
-### Strengths (da valorizzare)
-- Filiera completa interna (allevamento → caseificio → macelleria → tavola)
-- Location reale a Noci (non generica)
-- Sito moderno, performante, mobile-first
-- Foto originali di alta qualità
-- Dati strutturati in single source of truth
+### Strengths (confermati e nuovi)
+- ✅ Filiera completa interna (allevamento → caseificio → macelleria → tavola)
+- ✅ Location reale a Noci (non generica)
+- ✅ Sito moderno, performante, mobile-first (Cloudflare Pages + SSR)
+- ✅ Foto originali di alta qualità su tutte le sezioni
+- ✅ Dati strutturati in single source of truth (`src/data/masseria.ts`)
+- ✅ Schema markup completo su homepage e pagine core
+- ✅ llms.txt e ai-plugin.json per AI visibility
+- ✅ Security headers (HSTS, CSP, X-Frame-Options)
+- ✅ Market online con carrello WhatsApp e consegna a domicilio
+- ✅ Pagina eventi con menù festivi strutturati
 
 ### Weaknesses (da correggere)
-- Nessun schema markup implementato
-- Nessuna sitemap XML
-- Pagine chiave mancanti (chi-siamo, contatti, FAQ, dove-siamo)
-- Nessun contenuto blog/editoriale
-- Dominio www non configurato come canonical
+- ⏳ Nessun contenuto blog/editoriale
+- ⏳ Certificazioni non visibili nel sito
+- ⏳ Review widget esterno non integrato
+- ⏳ Core Web Vitals non misurati con dati field (CrUX)
 
 ### Opportunities (da sfruttare)
 - Keyword "agriturismo Noci" poco presidiata
-- AI visibility ancora emergente nel settore
-- Few competitors hanno caseificio + macelleria comunicati bene
+- AI visibility già ahead vs competitor (llms.txt attivo)
+- Pochi competitor hanno caseificio + macelleria comunicati bene
 - Turismo enogastronomico in crescita post-pandemia
-- Eventi e esperienze (degustazioni, laboratori)
+- Eventi e esperienze (degustazioni, laboratori) → pagina /eventi già live
+- Market come canale di vendita diretto (no OTA commissioni)
 
 ### Threats (da monitorare)
 - Competitor storici con domain authority consolidata
 - Piattaforme OTA (Booking, TheFork) dominano SERP transazionali
 - Recensioni negative non gestite possono danneggiare
 - Stagionalità del business locale
+
+## Prossimi Step Competitivi
+
+1. **Outreach guide locali** — Gambero Rosso, Slow Food, guide Puglia "best of"
+2. **Creare blog** — Almeno 1 articolo/mese su long-tail keywords identificate
+3. **Integrare review widget** — Google Reviews o TripAdvisor embed
+4. **Misurare CWV** — Configurare Google API key per CrUX field data
+5. **Monitorare AI citations** — Testare mensilmente "agriturismo Noci" su ChatGPT/Perplexity

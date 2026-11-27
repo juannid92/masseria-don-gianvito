@@ -1,151 +1,117 @@
 # Implementation Roadmap — Masseria Don Gianvito
 
-## Dominio: https://www.masseriadongianvito.it
+> Ultimo aggiornamento: 2026-11-27
+> Health Score audit: 72/100 → Target: 85+ entro 6 mesi
 
-## Phase 1: Foundation (Settimane 1-4)
+## Phase 1: Foundation ✅ COMPLETATA (Novembre 2026)
 
-### Week 1: Technical Setup
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Configurare dominio www come canonical | Dev | P0 | ✅ Fatto (site.ts aggiornato) |
-| Generare sitemap.xml | Dev | P0 | 🔄 In corso |
-| Creare robots.txt | Dev | P0 | ❌ Da fare |
-| Implementare schema LocalBusiness su homepage | Dev | P0 | ❌ Da fare |
-| Verificare Google Search Console | Marketing | P0 | ❌ Da fare |
-| Verificare Google Business Profile | Marketing | P0 | ❌ Da verificare |
+| # | Azione | Stato | Note |
+|---|--------|-------|------|
+| 1 | Header di sicurezza (HSTS, CSP, X-Frame-Options) | ✅ Fatto | `public/_headers` |
+| 2 | Redirect 301 /bottega → /market verificato | ✅ Fatto | Live confermato |
+| 3 | JSON-LD duplicato rimosso da homepage | ✅ Fatto | AggregateRating nel root layout |
+| 4 | Sitemap XML con lastmod aggiornati | ✅ Fatto | 15 URL, 2026-11-27 |
+| 5 | robots.txt RFC 9309 compliant (ASCII puro) | ✅ Fatto | No Content-Signal |
+| 6 | llms.txt e ai-plugin.json attivi | ✅ Fatto | AI discovery pronto |
+| 7 | Pagine core create (chi-siamo, dove-siamo, contatti, faq, recensioni) | ✅ Fatto | Tutte live |
+| 8 | Schema markup su homepage e pagine core | ✅ Fatto | LocalBusiness, Store, Restaurant |
+| 9 | Numero unico consolidato (+39 333 387 0292) | ✅ Fatto | In masseria.ts |
+| 10 | Market page con OfferCatalog schema | ✅ Fatto | Carrello WhatsApp attivo |
 
-### Week 2: Core Pages
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Creare pagina /chi-siamo | Content + Dev | P0 | ❌ Da fare |
-| Creare pagina /dove-siamo | Content + Dev | P0 | ❌ Da fare |
-| Creare pagina /contatti | Content + Dev | P0 | ❌ Da fare |
-| Ottimizzare meta title/description homepage | Content | P0 | ❌ Da fare |
-| Aggiungere breadcrumb a tutte le pagine | Dev | P1 | ❌ Da fare |
-
-### Week 3: Schema & Tracking
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Implementare schema Restaurant su /agriturismo | Dev | P0 | ❌ Da fare |
-| Implementare schema LocalBusiness su /caseificio, /macelleria | Dev | P0 | ❌ Da fare |
-| Implementare schema FAQPage su /faq | Dev | P1 | ❌ Da fare |
-| Configurare GA4 tracking eventi (prenotazioni, click telefono) | Dev | P1 | ❌ Da fare |
-| Creare pagina /faq | Content + Dev | P1 | ❌ Da fare |
-
-### Week 4: Local SEO Foundation
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Audit NAP consistency (Google, FB, IG, Apple Maps) | Marketing | P0 | ❌ Da fare |
-| Creare pagina /recensioni | Content + Dev | P1 | ❌ Da fare |
-| Ottimizzare Google Business Profile (foto, orari, servizi) | Marketing | P0 | ❌ Da fare |
-| Submit sitemap a Google Search Console | Dev | P0 | ❌ Da fare |
-| Test Core Web Vitals baseline | Dev | P1 | ❌ Da fare |
-
-### Phase 1 KPI Targets
-- Sitemap XML live e submit
-- Schema markup su 5+ pagine
-- 3 nuove pagine core pubblicate
-- GSC e GBP verificati
-- LCP < 3s, CLS < 0.1
+**Risultato Phase 1**: Sito tecnicamente solido, tutti i fondamentali SEO implementati.
 
 ---
 
-## Phase 2: Expansion (Settimane 5-12)
+## Phase 2: Expansion (Dicembre 2026 - Febbraio 2027)
 
-### Month 2: Content Creation
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Ottimizzare meta + schema su /agriturismo | Content + Dev | P0 | ❌ Da fare |
-| Ottimizzare meta + schema su /caseificio | Content + Dev | P0 | ❌ Da fare |
-| Ottimizzare meta + schema su /macelleria | Content + Dev | P0 | ❌ Da fare |
-| Espandere descrizioni prodotti su /prodotti | Content | P1 | ❌ Da fare |
-| Pubblicare primo blog post: "Filiera propria" | Content | P1 | ❌ Da fare |
-| Pubblicare secondo blog post: "Formaggi Murgia" | Content | P1 | ❌ Da fare |
+| # | Azione | Effort | Impatto | Priorità |
+|---|--------|--------|---------|----------|
+| 11 | Implementare FAQ schema su /faq | 20 min | MEDIUM | P1 |
+| 12 | Configurare Google API key per CrUX field data | 15 min | HIGH | P1 |
+| 13 | Integrare review widget (Google/TripAdvisor) | 1h | HIGH | P1 |
+| 14 | Aggiungere certificazioni visibili nel sito | 2h | MEDIUM | P2 |
+| 15 | Creare primo articolo blog ("agriturismo filiera corta") | 4h | HIGH | P1 |
+| 16 | Outreach guide locali (Gambero Rosso, Slow Food) | Ongoing | HIGH | P1 |
+| 17 | Monitorare AI citations mensilmente | 30 min/mese | MEDIUM | P2 |
+| 18 | Verificare NAP consistency su directory esterne | 2h | MEDIUM | P2 |
 
-### Month 3: Blog Launch & Internal Linking
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Creare sezione /blog con listing page | Dev | P1 | ❌ Da fare |
-| Pubblicare 2 blog post/mese | Content | P1 | ❌ Da fare |
-| Implementare internal linking strategy | Content + Dev | P1 | ❌ Da fare |
-| Aggiungere related posts ai blog articles | Dev | P2 | ❌ Da fare |
-| Ottimizzare immagini (WebP, lazy loading audit) | Dev | P2 | ❌ Da fare |
-
-### Phase 2 KPI Targets
-- 6 blog post pubblicati
-- Schema markup su tutte le pagine servizio
-- Internal linking tra pagine core e blog
-- Traffico organico: +50% vs baseline
-- Keyword top 20: 15+
+### KPI Target Phase 2
+- Indexed pages: 15 → 18 (blog launch)
+- Keyword rankings top 20: 5 nuove keyword
+- Review count: +10 recensioni verificate
+- AI citations: Presenza in almeno 1 risposta ChatGPT/Perplexity
 
 ---
 
-## Phase 3: Scale (Settimane 13-24)
+## Phase 3: Scale (Marzo - Agosto 2027)
 
-### Month 4-5: Advanced Content & GEO
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Pubblicare guida enogastronomica territorio | Content | P1 | ❌ Da fare |
-| Creare contenuto stagionale aggiornabile | Content | P1 | ❌ Da fare |
-| Outreach per inclusioni guide locali | Marketing | P1 | ❌ Da fare |
-| Ottimizzare per AI visibility (contenuto citabile) | Content | P2 | ❌ Da fare |
-| Implementare schema Article su blog posts | Dev | P2 | ❌ Da fare |
+| # | Azione | Effort | Impatto | Priorità |
+|---|--------|--------|---------|----------|
+| 19 | Blog: 2 articoli/mese su long-tail keywords | 8h/mese | HIGH | P1 |
+| 20 | Link building da contenuti blog | Ongoing | HIGH | P1 |
+| 21 | Video contenuti (dietro le quinte caseificio/macelleria) | 4h/video | MEDIUM | P2 |
+| 22 | Ottimizzazione CWV basata su dati CrUX reali | 4h | HIGH | P1 |
+| 23 | Internal linking strutturato tra blog e pagine core | 2h | MEDIUM | P2 |
+| 24 | Schema Article + BreadcrumbList su ogni post blog | 30 min/post | MEDIUM | P2 |
+| 25 | Social sharing automatizzato nuovi contenuti | 1h setup | LOW | P3 |
 
-### Month 6: Performance & Link Building
-| Task | Owner | Priority | Status |
-|------|-------|----------|--------|
-| Core Web Vitals optimization sprint | Dev | P1 | ❌ Da fare |
-| Guest posting / collaborazioni food blogger | Marketing | P2 | ❌ Da fare |
-| Digital PR locale (testate pugliesi) | Marketing | P2 | ❌ Da fare |
-| A/B test CTA prenotazione | Dev + Marketing | P2 | ❌ Da fare |
-| Review e update contenuti esistenti | Content | P2 | ❌ Da fare |
-
-### Phase 3 KPI Targets
-- 12 blog post totali
-- Traffico organico: +200% vs baseline
-- Keyword top 20: 40+
-- Backlink: 10+ da domini rilevanti
-- Citazioni AI: 2+
+### KPI Target Phase 3
+- Organic traffic: +150% vs baseline
+- Keyword rankings top 20: 25 keyword
+- Backlink acquisiti: 15+
+- Blog posts pubblicati: 12
+- Conversioni organiche: 30+ prenotazioni/mese
 
 ---
 
-## Phase 4: Authority (Mesi 7-12)
+## Phase 4: Authority (Settembre 2027 - Novembre 2027)
 
-### Ongoing Activities
-| Task | Frequency | Owner |
-|------|-----------|-------|
-| Blog post nuovi | 1/mese | Content |
-| GBP posts | 1/settimana | Marketing |
-| Review responses | Entro 48h | Marketing |
-| Content update stagionale | Trimestrale | Content |
-| SEO audit tecnico | Mensile | Dev |
-| Competitor monitoring | Mensile | Marketing |
-| AI visibility check (ChatGPT/Perplexity) | Mensile | Marketing |
+| # | Azione | Effort | Impatto | Priorità |
+|---|--------|--------|---------|----------|
+| 26 | Thought leadership: guida completa agriturismo Puglia | 8h | HIGH | P1 |
+| 27 | PR e media mentions (testate locali, food blogger) | Ongoing | HIGH | P1 |
+| 28 | Advanced schema (HowTo per ricette, Event per degustazioni) | 4h | MEDIUM | P2 |
+| 29 | Continuous optimization basata su GSC + CrUX | 2h/mese | HIGH | P1 |
+| 30 | A/B test CTA e conversion paths | 4h | MEDIUM | P2 |
+| 31 | Audit SEO trimestrale completo | 2h/quarter | HIGH | P1 |
 
-### Phase 4 KPI Targets (12 mesi)
-- Traffico organico: +300% vs baseline
-- Keyword top 10: 20+
-- Domain Authority: 15+
-- Prenotazioni da organico: 50+/mese
-- Citazioni AI: 5+
-- Backlink: 30+
+### KPI Target Phase 4
+- Organic traffic: +300% vs baseline
+- Domain Authority: 25+
+- Keyword rankings top 10: 15 keyword
+- Blog posts pubblicati: 24 totali
+- Conversioni organiche: 50+ prenotazioni/mese
+- AI citations: Top 5 risposte per "agriturismo Noci"
 
 ---
 
 ## Resource Requirements
 
-| Ruolo | Ore/Settimana Stimate | Note |
-|-------|----------------------|------|
-| Developer | 4-8h | Schema, pagine, technical SEO |
-| Content Creator | 6-10h | Blog, ottimizzazione copy, social |
-| Marketing/SEO | 3-5h | GBP, outreach, monitoring, reviews |
+| Risorsa | Phase 1 | Phase 2 | Phase 3 | Phase 4 |
+|---------|---------|---------|---------|---------|
+| Dev time | 3h (completato) | 8h | 12h/mese | 8h/mese |
+| Content creation | - | 4h | 8h/mese | 12h/mese |
+| Outreach/PR | - | 2h/mese | 4h/mese | 6h/mese |
+| Monitoring | - | 1h/mese | 2h/mese | 2h/mese |
 
-## Dependencies & Risks
+## Risk Mitigation
 
-| Dependency | Risk | Mitigation |
-|-----------|------|------------|
-| Foto team/famiglia per /chi-siamo | Ritardo pubblicazione | Usare foto esistenti temporaneamente |
-| Accesso GSC/GBP | Blocco tracking | Richiedere credenziali subito |
-| Approvazione contenuti blog | Rallentamento cadence | Batch approval mensile |
-| Budget per outreach/PR | Limitato link building | Focus su organic e relazioni locali |
-| Stagionalità business | Calo traffico inverno | Contenuti evergreen e ricette |
+| Rischio | Probabilità | Mitigazione |
+|---------|-------------|-------------|
+| Blog non genera traffico nei primi 3 mesi | Alta | Normale per nuovi blog; focus su long-tail bassa difficoltà |
+| Outreach guide non risponde | Media | Targettizzare 10+ guide, aspettarsi 10-20% response rate |
+| CWV peggiora con nuovi contenuti | Bassa | Monitoraggio mensile, ottimizzazione immagini obbligatoria |
+| Competitor reagisce con più contenuti | Media | Differenziazione su filiera propria + E-E-A-T autentico |
+| Stagionalità riduce conversioni invernali | Alta | Market sempre attivo + eventi natalizi (/eventi) |
+
+## Success Criteria Globali
+
+| Metrica | Baseline (Nov 2026) | Target 12 Mesi |
+|---------|---------------------|----------------|
+| Health Score audit | 72/100 | 85+/100 |
+| Indexed pages | 15 | 40+ |
+| Organic traffic/mese | ~200 (stima) | 800+ |
+| Keyword top 20 | ~5 | 40+ |
+| Domain Authority | ~10 (nuovo dominio) | 25+ |
+| Prenotazioni organiche/mese | ~5 | 50+ |
+| AI citations | 0 | Top 5 per query locali |

@@ -1,74 +1,85 @@
 # Content Calendar — Masseria Don Gianvito
 
-## Dominio: https://www.masseriadongianvito.it
+> Ultimo aggiornamento: 2026-11-27
+> Stato: Blog non ancora attivo — calendario preparatorio
 
-## Pagine Core (Phase 1 — Settimane 1-4)
+## Strategia Editoriale
 
-| Pagina | Keyword Target | Priorità | Word Count Min | Status |
-|--------|---------------|----------|----------------|--------|
-| `/` (Homepage) | agriturismo noci bari, masseria puglia | P0 | 800 | ✅ Esistente, ottimizzare |
-| `/chi-siamo` | storia masseria don gianvito, famiglia [cognome] | P0 | 600 | ❌ Da creare |
-| `/dove-siamo` | dove si trova masseria don gianvito, indicazioni noci | P0 | 500 | ❌ Da creare |
-| `/contatti` | contatti masseria don gianvito, prenota agriturismo noci | P0 | 400 | ❌ Da creare |
-| `/faq` | faq agriturismo, prenotazioni, allergeni, parcheggio | P1 | 800 | ❌ Da creare |
-| `/recensioni` | recensioni masseria don gianvito, opinioni agriturismo | P1 | 500 | ❌ Da creare |
+### Pillar Tematici
+1. **Filiera e Produzione** — Dietro le quinte di allevamento, caseificio, macelleria
+2. **Ricette e Tradizione** — Piatti tipici pugliesi con ingredienti della masseria
+3. **Territorio e Stagionalità** — Murgia barese, eventi locali, prodotti di stagione
+4. **Educazione Alimentare** — Come riconoscere qualità, differenze artigianale vs industriale
 
-## Pagine Servizio (Phase 2 — Settimane 5-8)
+### Frequenza Target
+- **Fase 1 (Mesi 1-3)**: 1 articolo/mese
+- **Fase 2 (Mesi 4-6)**: 2 articoli/mese
+- **Fase 3 (Mesi 7-12)**: 4 articoli/mese (settimanale)
 
-| Pagina | Keyword Target | Priorità | Word Count Min | Status |
-|--------|---------------|----------|----------------|--------|
-| `/agriturismo` | agriturismo murgia, cena tipica pugliese | P0 | 1000 | ✅ Ottimizzare meta + schema |
-| `/caseificio` | caseificio artigianale puglia, formaggi murgia | P0 | 800 | ✅ Ottimizzare meta + schema |
-| `/macelleria` | macelleria agriturismo, carne brace puglia | P0 | 800 | ✅ Ottimizzare meta + schema |
-| `/allevamento` | allevamento bovini puglia, filiera corta | P1 | 800 | ✅ Ottimizzare meta + schema |
-| `/prodotti` | prodotti tipici masseria, formaggi carne puglia | P1 | 1200 | ⚠️ Espandere descrizioni |
-| `/braceria` | braceria noci, carne alla brace murgia | P2 | 600 | ⚠️ Verificare cannibalizzazione |
+## Contenuti Prioritari per Keyword Long-tail
 
-## Blog Posts (Phase 2-3 — Settimane 5-24)
+| # | Titolo Proposto | Keyword Target | Volume | Difficoltà | Priorità |
+|---|----------------|----------------|--------|------------|----------|
+| 1 | Come riconoscere un vero agriturismo a filiera corta | agriturismo filiera corta puglia | 320 | Bassa | P0 |
+| 2 | Formaggi tipici della Murgia barese: guida completa | formaggi tipici murgia | 260 | Bassa | P0 |
+| 3 | Dove mangiare carne alla brace vicino Alberobello | carne alla brace alberobello | 480 | Media | P1 |
+| 4 | Ricetta orecchiette cime di rapa originali pugliesi | orecchiette cime di rapa ricetta | 1.200 | Alta | P1 |
+| 5 | Pranzo della domenica in agriturismo: cosa aspettarsi | pranzo domenica agriturismo puglia | 590 | Media | P1 |
+| 6 | Differenza tra caseificio artigianale e industriale | caseificio artigianale vs industriale | 180 | Bassa | P2 |
+| 7 | Stagionalità dei prodotti della Murgia: calendario | prodotti stagionali murgia | 140 | Bassa | P2 |
+| 8 | Cena romantica in agriturismo a Noci: consigli | cena romantica agriturismo noci | 90 | Bassa | P2 |
 
-### Mese 1-2: Fondamenta
-| Titolo | Keyword Target | Tipo | Data Target |
-|--------|---------------|------|-------------|
-| Come riconoscere un vero agriturismo a filiera propria | agriturismo filiera corta autentico | Educativo | Settimana 5 |
-| I formaggi tipici della Murgia barese: guida completa | formaggi tipici murgia barese | Guida | Settimana 7 |
-| Orecchiette e cime di rapa: la ricetta originale pugliese | ricetta orecchiette cime di rapa originali | Ricetta | Settimana 9 |
+## Calendario Q1 2027 (Proposta)
 
-### Mese 3-4: Stagionalità ed Esperienze
-| Titolo | Keyword Target | Tipo | Data Target |
-|--------|---------------|------|-------------|
-| Cosa fare ad Alberobello e dintorni: guida enogastronomica | cosa fare alberobello enogastronomia | Guida locale | Settimana 11 |
-| Pranzo della domenica in masseria: tradizione e convivialità | pranzo domenica agriturismo puglia | Esperienza | Settimana 13 |
-| La stagione della burrata: quando è più buona e perché | burrata fresca stagionalità | Educativo | Settimana 15 |
+### Gennaio 2027
+- [ ] "Come riconoscere un vero agriturismo a filiera corta" → P0, keyword bassa difficoltà
+- Focus: E-E-A-T, differenziazione MDG vs competitor generici
 
-### Mese 5-6: Approfondimento e Authority
-| Titolo | Keyword Target | Tipo | Data Target |
-|--------|---------------|------|-------------|
-| Differenza tra caseificio artigianale e industriale | caseificio artigianale vs industriale | Educativo | Settimana 17 |
-| Carne alla brace: i segreti della cottura perfetta in masseria | carne brace segreti cottura | Tutorial | Settimana 19 |
-| Eventi enogastronomici in Puglia: calendario [anno] | eventi enogastronomici puglia [anno] | Aggiornabile | Settimana 21 |
-| Degustazione formaggi in masseria: cosa aspettarsi | degustazione formaggi masseria puglia | Esperienza | Settimana 23 |
+### Febbraio 2027
+- [ ] "Formaggi tipici della Murgia barese: guida completa" → P0, caseificio interno
+- Focus: Link interno a /caseificio e /market (formaggi)
 
-## Cadence di Pubblicazione
+### Marzo 2027
+- [ ] "Dove mangiare carne alla brace vicino Alberobello" → P1, turismo pasquale
+- Focus: Link interno a /macelleria e /agriturismo, CTA prenotazione
 
-- **Blog**: 2 post/mese (bisettimanale) per i primi 6 mesi, poi 1/mese
-- **Social (Instagram/Facebook)**: 3-4 post/settimana con foto reali
-- **Google Business Profile**: 1 post/settimana (eventi, piatti, novità)
-- **Recensioni**: Rispondere entro 48h a tutte le recensioni Google/TripAdvisor
+## Calendario Q2 2027 (Proposta)
 
-## Content Pillars
+### Aprile 2027
+- [ ] "Ricetta orecchiette cime di rapa originali pugliesi" → P1, alta ricerca
+- Focus: Video embed preparazione, link a /market (pasta)
 
-1. **Filiera Propria** — Trasparenza sul processo dall'allevamento alla tavola
-2. **Tradizione Pugliese** — Ricette, sapori, cultura enogastronomica locale
-3. **Esperienza in Masseria** — Cosa si vive visitando MDG (non solo cibo)
-4. **Territorio Murgia** — Noci, Alberobello, Valle d'Itria come destinazione
-5. **Stagionalità** — Prodotti e piatti legati al ciclo naturale
+### Maggio 2027
+- [ ] "Pranzo della domenica in agriturismo: cosa aspettarsi" → P1, stagione estiva
+- Focus: Menu domenicale, link a /eventi e /agriturismo
 
-## KPI Contenuto
+### Giugno 2027
+- [ ] "Stagionalità dei prodotti della Murgia: calendario estivo" → P2
+- Focus: Prodotti estivi market, link a /market
+
+## E-E-A-T Building Plan
+
+| Segnale | Azione | Timeline |
+|---------|--------|----------|
+| Author bio | Creare pagina autore con foto + bio fondatori | Mese 1 |
+| Experience | Foto/video dietro le quinte produzione | Ongoing |
+| Expertise | Citare certificazioni, anni attività, riconoscimenti | Mese 2 |
+| Trust | Recensioni verificate embed, loghi guide | Mese 3 |
+
+## Metriche di Successo Content
 
 | Metrica | Target 3 Mesi | Target 6 Mesi | Target 12 Mesi |
-|---------|--------------|--------------|----------------|
-| Post blog pubblicati | 6 | 12 | 24 |
-| Traffico organico blog | 200 visite/mese | 800 visite/mese | 2.500 visite/mese |
-| Keyword posizionate (top 20) | 15 | 40 | 100+ |
-| Backlink da contenuti | 3 | 10 | 30+ |
-| Citazioni AI (ChatGPT/Perplexity) | 0 | 2 | 5+ |
+|---------|---------------|---------------|----------------|
+| Articoli pubblicati | 3 | 9 | 24 |
+| Traffico organico blog | 100 visite/mese | 500 visite/mese | 2.000 visite/mese |
+| Keyword posizionate top 20 | 5 | 15 | 40 |
+| Backlink acquisiti da contenuti | 2 | 8 | 20 |
+| Conversioni da blog → prenotazione | 5/mese | 20/mese | 50/mese |
+
+## Note Operative
+
+- Ogni articolo deve avere almeno 1 link interno a pagina core (/agriturismo, /market, /caseificio, etc.)
+- Immagini originali obbligatorie (no stock) — usare foto reali masseria
+- Schema `Article` + `BreadcrumbList` su ogni post blog
+- Pubblicare sempre martedì o giovedì mattina (best practice B2C food)
+- Condividere su Instagram/Facebook entro 24h dalla pubblicazione
