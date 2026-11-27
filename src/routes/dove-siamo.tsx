@@ -29,7 +29,10 @@ export const Route = createFileRoute("/dove-siamo")({
 
 function DoveSiamoPage() {
   return (
-    <div data-tone="light" className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]">
+    <div
+      data-tone="light"
+      className="bg-[color:var(--bianco-calce)] pt-[var(--page-header-safe-offset)]"
+    >
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Dove Siamo" }]} />
       <script
         type="application/ld+json"

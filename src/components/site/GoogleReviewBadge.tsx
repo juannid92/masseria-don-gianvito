@@ -28,12 +28,8 @@ export function GoogleReviewBadge() {
           />
         ))}
       </span>
-      <span className="font-medium text-[color:var(--carbone)]">
-        {MASSERIA.ratingValue}/5
-      </span>
-      <span className="text-[color:var(--carbone)]/60">
-        ({MASSERIA.reviewCount} recensioni)
-      </span>
+      <span className="font-medium text-[color:var(--carbone)]">{MASSERIA.ratingValue}/5</span>
+      <span className="text-[color:var(--carbone)]/60">({MASSERIA.reviewCount} recensioni)</span>
     </a>
   );
 }
