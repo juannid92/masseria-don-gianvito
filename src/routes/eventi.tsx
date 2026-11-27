@@ -3,6 +3,7 @@ import { useState } from "react";
 import { MessageCircle, Phone } from "lucide-react";
 import { getAbsoluteUrl } from "@/config/site";
 import { MASSERIA } from "@/data/masseria";
+import { Breadcrumb } from "@/components/site/Breadcrumb";
 import "@/styles/eventi.css";
 
 export const Route = createFileRoute("/eventi")({
@@ -109,6 +110,7 @@ function EventiPage() {
 
   return (
     <main className="ev-page" data-tone="light">
+      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Appuntamenti & Menù" }]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -2,6 +2,7 @@ import { apriPreferenze } from "@/lib/consent";
 import { Link } from "@tanstack/react-router";
 import { ANIME, ATTI, MASSERIA } from "@/data/masseria";
 import { useHomeSectionNav } from "@/lib/nav";
+import { GoogleReviewBadge } from "./GoogleReviewBadge";
 
 /**
  * FOOTER — fondo crema, composizione asimmetrica (non quattro colonne uguali).
@@ -145,6 +146,9 @@ export function Footer() {
               <p className="font-eyebrow mb-5 text-[9px] tracking-[0.34em] text-[color:var(--bianco-calce)]/55">
                 Contatti
               </p>
+              <div className="mb-4">
+                <GoogleReviewBadge />
+              </div>
               <ul className="space-y-2 text-[15px] text-[color:var(--bianco-calce)]/85">
                 <li>
                   <a
