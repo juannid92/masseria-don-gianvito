@@ -58,7 +58,7 @@
 | /market | `Store` + `OfferCatalog` + `Product[]` | ✅ Implementato |
 | /eventi | `Menu` + `MenuSection` | ✅ Implementato |
 | /faq | `FAQPage` | ⏳ Da implementare |
-| /dove-siamo | `ContactPage` | ⏳ Da implementare |
+| /dove-siamo | `ContactPage` | ✅ Implementato |
 | Tutte le journey | `BreadcrumbList` | ✅ Implementato |
 
 ## GEO / AI Visibility Strategy

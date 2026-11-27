@@ -41,7 +41,7 @@
 | `/market` | `Store` + `OfferCatalog` + `Product[]` | name, description, image, price, availability | ✅ |
 | `/eventi` | `Menu` + `MenuSection` | name, description, hasMenuSection | ✅ |
 | `/faq` | `FAQPage` | mainEntity[] | ⏳ Da implementare |
-| `/dove-siamo` | `ContactPage` | geo, hasMap, address | ⏳ Da implementare |
+| `/dove-siamo` | `ContactPage` | geo, hasMap, address | ✅ Implementato |
 | Journey pages | `BreadcrumbList` | itemListElement[] | ✅ |
 
 ## Internal Linking Strategy
