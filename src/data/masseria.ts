@@ -26,7 +26,7 @@ export const MASSERIA = {
   facebook: "https://facebook.com/masseriadongianvito",
   maps: "https://www.google.com/maps?q=40.642739,17.042600",
   mapsEmbed: "https://www.google.com/maps?q=40.642739,17.042600&z=15&output=embed",
-  googleReviews: "https://g.page/r/masseria-don-gianvito/review",
+  googleReviews: "https://www.google.com/maps/search/?api=1&query=40.642739,17.042600",
   ratingValue: "4.8",
   reviewCount: 4,
 } as const;
