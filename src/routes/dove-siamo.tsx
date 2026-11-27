@@ -54,7 +54,7 @@ function DoveSiamoPage() {
                 longitude: MASSERIA.coordinate.lng,
               },
               hasMap: MASSERIA.maps,
-              telephone: "+393333870292",
+              telephone: MASSERIA.telefonoHref,
             },
           }),
         }}
